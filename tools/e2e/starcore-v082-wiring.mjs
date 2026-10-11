@@ -96,7 +96,8 @@ console.log('== A. 战损接线 ==');
     return tab ? tab.textContent : '';
   });
   await p.getByRole('button', { name: /出征/ }).click();
-  await p.waitForTimeout(700);
+  // 战报逐条播完后结果弹窗才出场（v1.56），固定等待改条件等待
+  await p.waitForSelector('.modal', { timeout: 15000 });
   const modal = p.locator('.modal');
   check('战斗结果弹窗出现', (await modal.count()) === 1);
   const victory = await modal.evaluate((el) => el.classList.contains('victory'));
@@ -125,7 +126,8 @@ console.log('== A. 战损接线 ==');
   wipeSave.combat.garrisoned = { raider_1: { strongholdId: 'raider_1', formationId: 'f1', startTime: Date.now() } };
   const pw = await newSeededPage(browser, wipeSave, '/battle/silencer_1');
   await pw.getByRole('button', { name: /出征/ }).click();
-  await pw.waitForTimeout(700);
+  // 战报逐条播完后结果弹窗才出场（v1.56），固定等待改条件等待
+  await pw.waitForSelector('.modal', { timeout: 15000 });
   const modalW = pw.locator('.modal');
   const isDefeat = await modalW.evaluate((el) => el.classList.contains('defeat'));
   check('必败场景判负（defeat 类）', isDefeat);
@@ -174,7 +176,8 @@ console.log('== C. 弹窗样式穿透 ==');
 {
   const p = await newSeededPage(browser, makeSave({ completedStrongholds: ['raider_1'] }), '/battle/raider_1');
   await p.getByRole('button', { name: /出征/ }).click();
-  await p.waitForTimeout(700);
+  // 战报逐条播完后结果弹窗才出场（v1.56），固定等待改条件等待
+  await p.waitForSelector('.modal', { timeout: 15000 });
   const styleInfo = await p.evaluate(() => {
     const m = document.querySelector('.modal');
     if (!m) return null;

@@ -140,7 +140,10 @@ const {
   isGarrisoned,
   garrisonPreview,
   toast,
+  displayedLog,
+  playing,
   startBattle,
+  skipPlayback,
   confirmResult,
   stayHere,
   toggleGarrison,
@@ -219,7 +222,7 @@ const deployButtonLabel = computed(() => {
       <button
         class="btn-accent"
         style="flex: 2; --accent: var(--color-alert)"
-        :disabled="battleDisabled"
+        :disabled="battleDisabled || playing"
         data-testid="battle-start"
         @click="startBattle"
       >
@@ -239,10 +242,17 @@ const deployButtonLabel = computed(() => {
       </button>
     </div>
 
-    <!-- 战斗日志 -->
-    <div v-if="battleLog && !showResult" class="battle-log">
+    <!-- 战斗日志（v1.56 战报逐条播出：播放期点击或 Esc 跳过，播完结果弹窗出场） -->
+    <div
+      v-if="displayedLog && displayedLog.length > 0 && !showResult"
+      class="battle-log"
+      :class="{ 'log-playing': playing }"
+      data-testid="battle-log"
+      @click="skipPlayback"
+    >
       <h3 class="section-title">{{ t('battle.logTitle') }}</h3>
-      <LogList class="log-list" :entries="battleLog" />
+      <p v-if="playing" class="log-hint">{{ t('battle.playSkipHint') }}</p>
+      <LogList class="log-list" :entries="displayedLog" :animate="playing" />
     </div>
 
     <!-- 结果弹窗 -->
@@ -354,6 +364,14 @@ const deployButtonLabel = computed(() => {
   border: 1px solid var(--color-border-line);
   border-radius: var(--radius-lg);
   padding: var(--space-3);
+}
+.battle-log.log-playing {
+  cursor: pointer;
+}
+.log-hint {
+  font-size: var(--text-xs);
+  color: var(--color-t-tertiary);
+  margin-bottom: var(--space-2);
 }
 .log-list {
   max-height: 300px;

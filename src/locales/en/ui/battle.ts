@@ -47,6 +47,7 @@ export default {
   'battle.noStrongholdHint':
     'This stronghold may have been removed; return to the Star Map and choose another',
   'battle.pickFormation': 'Select Formation',
+  'battle.playSkipHint': 'Click the battle log or press Esc to skip the replay',
   'battle.relicGainedLine': 'Relic Gained: {name} ({rarity})',
   'battle.repelled': 'Your units were repelled…',
   'battle.report': 'Battle Report',

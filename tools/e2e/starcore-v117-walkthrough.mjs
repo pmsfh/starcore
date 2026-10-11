@@ -114,7 +114,8 @@ console.log('== C. 探索/出征/驻扎 ==');
   const deploy = page.locator('[data-testid="battle-start"]');
   check('出征按钮可用', !(await deploy.isDisabled()));
   await deploy.click();
-  await page.waitForTimeout(800);
+  // 战报逐条播完后结果弹窗才出场（v1.56），固定等待改条件等待
+  await page.waitForSelector('.modal-overlay', { timeout: 15000 });
   check('战斗结果弹窗出现', (await page.locator('.modal-overlay, [role="dialog"], .result-modal').count()) >= 1
     || (await page.locator('button', { hasText: '留在此据点' }).count()) === 1);
   // 留在此据点 → 驻扎
@@ -163,7 +164,8 @@ console.log('== D. 无尽远征 ==');
   await page.waitForTimeout(200);
   check(`升回前沿第4层（${(await val.textContent()).trim()}）`, (await val.textContent()).replace(/\s/g, '').includes('第4层'));
   await page.locator('[data-testid="battle-start"]').click();
-  await page.waitForTimeout(800);
+  // 战报逐条播完后结果弹窗才出场（v1.56），固定等待改条件等待
+  await page.waitForSelector('.modal', { timeout: 15000 });
   const back = page.locator('button', { hasText: '返回星图' }).last();
   if ((await back.count()) >= 1) { await back.click(); await page.waitForTimeout(400); }
   await nav(page, '探索');

@@ -218,7 +218,8 @@ await sec('C. 探索 / 出征 / 驻扎', async () => {
   const deploy = page.locator('[data-testid="battle-start"]')
   check('出征按钮可用', !(await deploy.isDisabled()))
   await deploy.click()
-  await page.waitForTimeout(800)
+  // 战报逐条播完后结果弹窗才出场（v1.56），固定等待改条件等待
+  await page.waitForSelector('.modal', { timeout: 15000 })
   const modal = page.locator('.modal')
   const victory = (await modal.count()) === 1 && (await modal.evaluate((el) => el.classList.contains('victory')))
   check('战斗胜利（富档对常规据点）', victory)
@@ -275,7 +276,8 @@ await sec('D2. 无尽远征', async () => {
   const deploy = page.locator('[data-testid="battle-start"]')
   check('出征按钮可用', !(await deploy.isDisabled()))
   await deploy.click()
-  await page.waitForTimeout(800)
+  // 战报逐条播完后结果弹窗才出场（v1.56），固定等待改条件等待
+  await page.waitForSelector('.modal', { timeout: 15000 })
   const modal = page.locator('.modal')
   const victory = (await modal.count()) === 1 && (await modal.evaluate((el) => el.classList.contains('victory')))
   check('远征战斗胜利（前沿推进）', victory)
@@ -400,7 +402,8 @@ await sec('I. 每周强敌', async () => {
   const deploy = page.locator('[data-testid="battle-start"]')
   check('出战按钮可用', !(await deploy.isDisabled()))
   await deploy.click()
-  await page.waitForTimeout(800)
+  // 战报逐条播完后结果弹窗才出场（v1.56），固定等待改条件等待
+  await page.waitForSelector('.modal', { timeout: 15000 })
   const modal = page.locator('.modal')
   const victory = (await modal.count()) === 1 && (await modal.evaluate((el) => el.classList.contains('victory')))
   check('周 Boss 胜利（注档军对深度 6/7 必胜）', victory)

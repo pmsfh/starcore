@@ -11,6 +11,8 @@ import type { BattleLogEntry } from '@/stores/combat'
 defineProps<{
   /** 战斗日志条目（来自 combat.resolveBattle） */
   entries: BattleLogEntry[]
+  /** 逐条入场动画（v1.56 战报播出专用；弹窗战报整列静显，不传） */
+  animate?: boolean
 }>()
 </script>
 
@@ -20,7 +22,7 @@ defineProps<{
       v-for="(entry, i) in entries"
       :key="`${entry.round}-${i}`"
       class="log-entry"
-      :class="entry.side"
+      :class="[entry.side, { 'log-enter': animate }]"
     >
       <span class="log-round">R{{ entry.round }}</span>
       <span>{{ entry.msg }}</span>
@@ -38,6 +40,10 @@ defineProps<{
 }
 .log-entry.player {
   color: var(--color-core);
+}
+/* v1.56 战报播出：逐条入场复用全局 floatUp 关键帧（animations.css） */
+.log-entry.log-enter {
+  animation: floatUp 0.3s var(--ease-out);
 }
 .log-entry.enemy {
   color: var(--color-alert);

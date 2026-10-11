@@ -124,7 +124,8 @@ console.log('== C. /battle/endless：深度跟随前沿 + 胜利推进 ==');
 
   // 出征 → 胜利 → 留在此据点（发放奖励+推进深度）
   await page.getByRole('button', { name: /出征/ }).click();
-  await page.waitForTimeout(600);
+  // 战报逐条播完后结果弹窗才出场（v1.56），固定等待改条件等待
+  await page.waitForSelector('.modal', { timeout: 15000 });
   const modal = page.locator('.modal');
   check('战斗结果弹窗出现', (await modal.count()) === 1);
   const victory = await modal.evaluate((el) => el.classList.contains('victory'));
@@ -164,7 +165,8 @@ console.log('== D. 深度步进钳制 + 重打不推进 ==');
   check('敌情随深度变化（第2层）', (await page.locator('.s-name').first().textContent()).includes('第2层'));
   // 重打已过深度：胜利也只拿到奖励，best 仍 3（本处验证 UI 流程；推进语义单测覆盖）
   await page.getByRole('button', { name: /出征/ }).click();
-  await page.waitForTimeout(600);
+  // 战报逐条播完后结果弹窗才出场（v1.56），固定等待改条件等待
+  await page.waitForSelector('.modal', { timeout: 15000 });
   const modal = page.locator('.modal');
   if (await modal.evaluate((el) => el.classList.contains('victory'))) {
     await modal.getByRole('button', { name: '留在此据点' }).click();

@@ -152,7 +152,8 @@ console.log('== C. 击败流：出战胜利 → 记账 → 已击败禁战 ==');
 
   // 击败流：出战 → 胜利弹窗 → 留在此据点 → SPA 回星图验证记账
   await deploy.click();
-  await page.waitForTimeout(700);
+  // 战报逐条播完后结果弹窗才出场（v1.56），固定等待改条件等待
+  await page.waitForSelector('.modal', { timeout: 15000 });
   const modal = page.locator('.modal');
   check('C1 战斗结果弹窗出现', (await modal.count()) === 1);
   const victory = await modal.evaluate((el) => el.classList.contains('victory'));
@@ -222,7 +223,8 @@ console.log('== E. 缩编出战损失区渲染 + 常规据点不回归 ==');
     '/battle/weekly_boss'
   );
   await page.locator('[data-testid="battle-start"]').click();
-  await page.waitForTimeout(700);
+  // 战报逐条播完后结果弹窗才出场（v1.56），固定等待改条件等待
+  await page.waitForSelector('.modal', { timeout: 15000 });
   const modal = page.locator('.modal');
   check('E1 缩编出战弹窗出现', (await modal.count()) === 1);
   const lossArea = modal.locator('.result-losses');

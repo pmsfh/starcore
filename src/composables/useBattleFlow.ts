@@ -6,7 +6,7 @@
  * 由调用方注入；行为、文案与结算时序与拆分前一致。
  */
 import { t } from '@/i18n'
-import { computed, ref } from 'vue'
+import { computed, onScopeDispose, ref } from 'vue'
 import type { ComputedRef, Ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useGameStore } from '@/stores/game'
@@ -46,6 +46,71 @@ export function useBattleFlow(deps: BattleFlowDeps) {
   const showResult = ref(false)
   const showGarrisonConfirm = ref(false)
 
+  // 战报播出（v1.56 战斗过程演出）：结算完成后页内战报逐条入场，
+  // 播完或跳过后结果弹窗才出场；减动效偏好直出弹窗。
+  // 播放纯表现，奖励与战损仍在结算时即时落袋（v0.94 口径不变）。
+  const displayedLog = ref<BattleLogEntry[] | null>(null)
+  const playing = ref(false)
+  let playTimer: ReturnType<typeof setInterval> | null = null
+  /** 播出节奏：基准间隔 220ms，按条数自适应收紧，播放段总时长封顶约 4 秒 */
+  const PLAY_INTERVAL = 220
+  const PLAY_BUDGET = 3600
+
+  function clearPlayTimer() {
+    if (playTimer) {
+      clearInterval(playTimer)
+      playTimer = null
+    }
+  }
+
+  /** 减动效偏好探测：jsdom 等无 matchMedia 环境按非 reduce 处理 */
+  function prefersReducedMotion(): boolean {
+    if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return false
+    return window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  }
+
+  function onPlayKeydown(e: KeyboardEvent) {
+    if (e.key === 'Escape') skipPlayback()
+  }
+
+  function startPlayback(log: BattleLogEntry[]) {
+    clearPlayTimer()
+    displayedLog.value = log
+    // 战报过短（空编成/空敌方快速失败）或减动效：不播，弹窗即出
+    if (log.length <= 1 || prefersReducedMotion()) {
+      showResult.value = true
+      return
+    }
+    playing.value = true
+    displayedLog.value = []
+    const step = Math.max(60, Math.min(PLAY_INTERVAL, PLAY_BUDGET / log.length))
+    let shown = 0
+    window.addEventListener('keydown', onPlayKeydown)
+    playTimer = setInterval(() => {
+      shown++
+      displayedLog.value = log.slice(0, shown)
+      if (shown >= log.length) finishPlayback()
+    }, step)
+  }
+
+  function finishPlayback() {
+    clearPlayTimer()
+    window.removeEventListener('keydown', onPlayKeydown)
+    displayedLog.value = battleLog.value
+    playing.value = false
+    showResult.value = true
+  }
+
+  /** 跳过播出：立即补全战报并弹出结果弹窗（播放期外调用无副作用） */
+  function skipPlayback() {
+    if (playing.value) finishPlayback()
+  }
+
+  onScopeDispose(() => {
+    clearPlayTimer()
+    window.removeEventListener('keydown', onPlayKeydown)
+  }, true)
+
   const isGarrisoned = computed(() => !!game.combat.garrisoned[deps.strongholdId.value])
   /** 本周 Boss 是否已击败（v1.24：出战按钮禁用依据，防重复领取奖励） */
   const isWeeklyBossDefeated = computed(() =>
@@ -67,6 +132,8 @@ export function useBattleFlow(deps: BattleFlowDeps) {
 
   function startBattle() {
     if (!deps.stronghold.value || !deps.formation.value) return
+    // 战报播出期防连点重入（出征按钮同步禁用，此处兜底）
+    if (playing.value) return
     // 周 Boss 已击败：按钮禁用兜底外的防御短路（不重复结算不重复发奖）
     if (deps.isWeeklyBoss?.value && game.daily.isWeeklyBossDefeated()) return
     const result = game.combat.resolveBattle(
@@ -77,7 +144,8 @@ export function useBattleFlow(deps: BattleFlowDeps) {
     )
     battleLog.value = result.log
     battleResult.value = result
-    showResult.value = true
+    // 结果弹窗改由战报播出收尾出场（v1.56）：逐条播完或跳过后 showResult 置真
+    startPlayback(result.log)
     applyBattleLosses(result)
     // 敌方图鉴：交战即记录遭遇条目（胜负都算；远征/周 Boss 合成编成在 store 内排除）
     game.archive.recordEncounter(deps.stronghold.value.id, deps.stronghold.value.enemies)
@@ -149,6 +217,7 @@ export function useBattleFlow(deps: BattleFlowDeps) {
   function stayHere() {
     showResult.value = false
     battleLog.value = null
+    displayedLog.value = null
   }
 
   function toggleGarrison() {
@@ -187,7 +256,10 @@ export function useBattleFlow(deps: BattleFlowDeps) {
     isWeeklyBossDefeated,
     garrisonPreview,
     toast,
+    displayedLog,
+    playing,
     startBattle,
+    skipPlayback,
     confirmResult,
     stayHere,
     toggleGarrison,
