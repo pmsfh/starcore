@@ -1,7 +1,7 @@
 /**
  * encounters.test.ts：随机遭遇事件数据表测试（v1.26 可玩内容扩展方案 8）
  *
- * 覆盖：事件池结构契约（10 模板恰两选项、概率归一、数值形态、风味分布）、
+ * 覆盖：事件池结构契约（25 模板恰两选项、概率归一、数值形态、风味分布）、
  * EV 核验锚点（两选项期望差 ≤15%、赌注类高方差 / 资源类低方差、量级带）、
  * 结果掷取（rollOutcome 通道注入、全分布可达）、间隔窗口边界。
  */
@@ -15,47 +15,49 @@ import {
   getEncounter,
   rollOutcome,
   type EncounterOption,
+  type EncounterRewards,
 } from './encounters'
 import { setEncounterRandomProvider } from '@/stores/encounters'
+import { UNITS } from './units'
 
 /** 折算率与量级带（EV 折算口径；调整数值前先改核验表） */
-const RATE = { energy: 1, alloy: 1, data: 6, dark: 8000, units: 60 } as const
+const RATE = { energy: 1, crystal: 55, alloy: 1, data: 6, dark: 8000 } as const
+/** 兵员折算（按 unitKind，缺省突击兵；v1.58 扩收编类型） */
+const UNIT_EV: Record<string, number> = { assault: 60, guard: 60, heavy: 240, psionic: 8330 }
 const BAND_MIN = 4400
 const BAND_MAX = 120000 // 护栏带放宽上界（实际带 4.4e3~9.2e3，见 encounters.ts 头注）
 const EV_GAP_MAX = 0.15
 
+/** 单条结果的能量当量（units 按 unitKind 折算；unitKind 声明键不计） */
+function rewardEq(rewards: EncounterRewards): number {
+  let sum = 0
+  for (const [k, v] of Object.entries(rewards)) {
+    if (k === 'unitKind' || v === undefined) continue
+    const rate =
+      k === 'units' ? (UNIT_EV[rewards.unitKind ?? 'assault'] ?? 60) : RATE[k as keyof typeof RATE]
+    sum += rate * (v as number)
+  }
+  return sum
+}
+
 function optionEv(opt: EncounterOption): number {
-  return opt.chances.reduce(
-    (a, c) =>
-      a +
-      c.p *
-        (Object.entries(c.rewards) as [keyof typeof RATE, number][]).reduce(
-          (s, [k, v]) => s + RATE[k] * v,
-          0
-        ),
-    0
-  )
+  return opt.chances.reduce((a, c) => a + c.p * rewardEq(c.rewards), 0)
 }
 
 function optionSpread(opt: EncounterOption): number {
-  const vals = opt.chances.map((c) =>
-    (Object.entries(c.rewards) as [keyof typeof RATE, number][]).reduce(
-      (s, [k, v]) => s + RATE[k] * v,
-      0
-    )
-  )
+  const vals = opt.chances.map((c) => rewardEq(c.rewards))
   return Math.max(...vals) - Math.min(...vals)
 }
 
 describe('encounters 事件池结构', () => {
-  it('10 模板、id 唯一、四类风味分布 4/2/1/3', () => {
-    expect(ENCOUNTERS).toHaveLength(10)
-    expect(new Set(ENCOUNTERS.map((e) => e.id)).size).toBe(10)
+  it('25 模板、id 唯一、四类风味分布 9/5/3/8', () => {
+    expect(ENCOUNTERS).toHaveLength(25)
+    expect(new Set(ENCOUNTERS.map((e) => e.id)).size).toBe(25)
     const flavors = ENCOUNTERS.reduce<Record<string, number>>((acc, e) => {
       acc[e.flavor] = (acc[e.flavor] ?? 0) + 1
       return acc
     }, {})
-    expect(flavors).toEqual({ resource: 4, military: 2, explore: 1, gamble: 3 })
+    expect(flavors).toEqual({ resource: 9, military: 5, explore: 3, gamble: 8 })
   })
 
   it('每事件恰两选项、每选项概率归一、结果数值形态合法', () => {
@@ -66,6 +68,12 @@ describe('encounters 事件池结构', () => {
         expect(pSum).toBeCloseTo(1, 9)
         for (const c of opt.chances) {
           for (const [k, v] of Object.entries(c.rewards)) {
+            // unitKind 为兵种声明键（字符串），单独核合法值与 units 配对
+            if (k === 'unitKind') {
+              expect(UNITS.some((u) => u.id === v)).toBe(true)
+              expect(c.rewards.units ?? 0).toBeGreaterThan(0)
+              continue
+            }
             expect(Number.isInteger(v)).toBe(true)
             // 负值仅允许合金（损失结果）；暗物质恒非负个位；发兵量恒正
             if (v < 0) expect(k).toBe('alloy')

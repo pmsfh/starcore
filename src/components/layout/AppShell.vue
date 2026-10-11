@@ -8,6 +8,7 @@ import { useTimeout } from '@/composables/useTimeout'
 import { resourceRows } from '@/lib/resource-rows'
 import { D } from '@/lib/decimal'
 import { APP_STARS } from '@/data/app-stars'
+import { getUnit } from '@/data/units'
 import { useGameStore } from '@/stores/game'
 import TopBar from './TopBar.vue'
 import BottomNav from './BottomNav.vue'
@@ -45,7 +46,8 @@ watch(
   }
 )
 
-// 遭遇事件结算回执（v1.26）：lastResolution 非空即有新结算，呈现并取消待弹提醒
+// 遭遇事件结算回执（v1.26；v1.58 起 units 行显示兵种名）：lastResolution 非空即有新
+// 结算，呈现并取消待弹提醒。unitKind 为兵种声明键，构建资源字典前剔除。
 watch(
   () => game.encounters.lastResolution,
   (r) => {
@@ -54,11 +56,16 @@ watch(
       clearTimeout(encToastTimer)
       encToastTimer = null
     }
-    const entries = Object.entries(r.rewards) as [string, number][]
+    const { unitKind = 'assault', ...rewards } = r.rewards
+    const entries = Object.entries(rewards) as [string, number][]
     const rows = resourceRows(
       Object.fromEntries(entries.map(([k, v]) => [k, D(v)])),
       game.resources.allMeta
     )
+    if ('units' in rewards) {
+      const unitRow = rows.find((x) => x.id === 'units')
+      if (unitRow) unitRow.name = getUnit(unitKind)?.name ?? 'units'
+    }
     const changes =
       rows.length === 0
         ? t('ui.encounter.nothing')

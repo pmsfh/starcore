@@ -5,6 +5,7 @@
 // D. 转生清空：SPA 转生后挂起清空、窗口重开（本轮数据口径）
 // E. 存档往返：挂起入档 / 未知挂起 id 剥离不拒档 / 旧档缺键兼容
 // F. 移动视口（390px）：渲染 / 无溢出 / 双按钮并排 / 结算可用
+// G. 扩容事件（v1.58）：新事件渲染 / 晶体入账 / 收编回执兵种名（池 10 → 25）
 // 随机性控制：addInitScript 固定 Math.random=0（事件恒池首 enc_flux、窗口恒下界 480s）
 import { launch, check, finish, savePayload, injectSave, BASE_URL } from './starcore-pwlib.mjs';
 
@@ -31,14 +32,14 @@ function localDateStr(d = new Date()) { return d.toLocaleDateString('sv'); }
 const TODAY = localDateStr();
 
 /** 种子档（固定随机性下的确定性场景；encounters 为 null 时删键模拟旧档） */
-function makeSeed({ energy = '50000', alloy = '2000', encounters } = {}) {
+function makeSeed({ energy = '50000', alloy = '2000', crystal = '0', encounters } = {}) {
   const now = Date.now();
   const save = {
     version: 1,
     savedAt: now,
     player: { id: 'p1', name: '指挥官' },
     totalPlayTime: 0,
-    resources: { amounts: { energy, alloy, data: '300', dark: '4' }, totals: { energy, alloy, data: '300', dark: '4' } },
+    resources: { amounts: { energy, crystal, alloy, data: '300', dark: '4' }, totals: { energy, crystal, alloy, data: '300', dark: '4' } },
     buildings: { levels: {} },
     research: { completed: [] },
     military: { owned: { assault: 10 }, training: [], formations: [{ id: 'f1', name: 'F1', units: { assault: 10 } }] },
@@ -329,6 +330,74 @@ console.log('== F. 移动视口 390px ==');
     await card.waitFor({ state: 'detached', timeout: 5000 });
   });
   await ctx.close();
+}
+
+// G. 扩容事件（v1.58：池 10 → 25）
+console.log('== G. 扩容事件 ==');
+{
+  // G1 新事件渲染：注入 enc_gravity 挂起
+  const ctx = await stubCtx(browser);
+  const page = await ctx.newPage();
+  await ctx.addInitScript(injectSave, savePayload(makeSeed({ encounters: { nextTriggerAt: Date.now() + 600000, pendingEventId: 'enc_gravity', pendingAt: Date.now() } })));
+  await page.goto(BASE + '/', { waitUntil: 'domcontentloaded' });
+  const card1 = page.locator('[data-testid="encounter-card"]');
+  await v('G1 扩容事件渲染（引力井：标题与双选项齐备）', async () => {
+    await card1.waitFor({ state: 'visible', timeout: 8000 });
+    const t = (await card1.textContent()).replace(/\s+/g, ' ');
+    if (!t.includes('引力井')) throw new Error('缺事件名: ' + t);
+    if (!t.includes('稳妥绕采') || !t.includes('冒险下潜')) throw new Error('缺双选项: ' + t);
+  });
+  await ctx.close();
+
+  // G2 晶体入账：enc_crystal A（晶体 100 → 195）+ 回执含晶体变动
+  const ctx2 = await stubCtx(browser);
+  const page2 = await ctx2.newPage();
+  await ctx2.addInitScript(injectSave, savePayload(makeSeed({ crystal: '100', encounters: { nextTriggerAt: Date.now() + 600000, pendingEventId: 'enc_crystal', pendingAt: Date.now() } })));
+  await page2.goto(BASE + '/', { waitUntil: 'domcontentloaded' });
+  await v('G2 晶体结算入账（100 → 195）与回执含晶体', async () => {
+    const card2 = page2.locator('[data-testid="encounter-card"]');
+    await card2.waitFor({ state: 'visible', timeout: 8000 });
+    await page2.click('[data-testid="encounter-opt-A"]');
+    await card2.waitFor({ state: 'detached', timeout: 5000 });
+    await page2.waitForTimeout(600);
+    const val = await page2.evaluate(() => document.querySelector('.pos-crystal .node-value')?.textContent?.trim() || '');
+    if (val !== '195') throw new Error('晶体未入账 195: ' + val);
+    const toast = (await page2.textContent('.toast')).trim();
+    if (!toast.includes('95 晶体')) throw new Error('回执缺晶体变动: ' + toast);
+  });
+  await ctx2.close();
+
+  // G3 收编回执兵种名：enc_recruit A（v1.58 修复项，回执显示 80 突击兵）
+  const ctx3 = await stubCtx(browser);
+  const page3 = await ctx3.newPage();
+  await ctx3.addInitScript(injectSave, savePayload(makeSeed({ encounters: { nextTriggerAt: Date.now() + 600000, pendingEventId: 'enc_recruit', pendingAt: Date.now() } })));
+  await page3.goto(BASE + '/', { waitUntil: 'domcontentloaded' });
+  await v('G3 收编回执显示兵种名（80 突击兵，修复项）', async () => {
+    const card3 = page3.locator('[data-testid="encounter-card"]');
+    await card3.waitFor({ state: 'visible', timeout: 8000 });
+    await page3.click('[data-testid="encounter-opt-A"]');
+    await card3.waitFor({ state: 'detached', timeout: 5000 });
+    await page3.waitForTimeout(600);
+    const toast = (await page3.textContent('.toast')).trim();
+    if (!toast.includes('80 突击兵')) throw new Error('回执未显示兵种名: ' + toast);
+  });
+  await ctx3.close();
+
+  // G4 新兵种收编回执：enc_vanguard A（20 重装兵）
+  const ctx4 = await stubCtx(browser);
+  const page4 = await ctx4.newPage();
+  await ctx4.addInitScript(injectSave, savePayload(makeSeed({ encounters: { nextTriggerAt: Date.now() + 600000, pendingEventId: 'enc_vanguard', pendingAt: Date.now() } })));
+  await page4.goto(BASE + '/', { waitUntil: 'domcontentloaded' });
+  await v('G4 新兵种收编回执（20 重装兵）', async () => {
+    const card4 = page4.locator('[data-testid="encounter-card"]');
+    await card4.waitFor({ state: 'visible', timeout: 8000 });
+    await page4.click('[data-testid="encounter-opt-A"]');
+    await card4.waitFor({ state: 'detached', timeout: 5000 });
+    await page4.waitForTimeout(600);
+    const toast = (await page4.textContent('.toast')).trim();
+    if (!toast.includes('20 重装兵')) throw new Error('回执未显示重装兵: ' + toast);
+  });
+  await ctx4.close();
 }
 
 // 末行总校并入 pwlib 计数器：finish 退出码与脚本结果一致

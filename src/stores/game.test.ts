@@ -318,6 +318,24 @@ describe('game store — encounters lifecycle（v1.26）', () => {
     expect(r2).not.toBeNull()
     expect(military.getOwned('assault')).toBe(80)
 
+    // 收编扩展（v1.58）：unitKind 分派护卫兵 / 重装兵入库存
+    encounters.pendingEventId = 'enc_barracks'
+    encounters.pendingAt = Date.now()
+    expect(game.resolveEncounter('A')).not.toBeNull()
+    expect(military.getOwned('guard')).toBe(85)
+    encounters.pendingEventId = 'enc_vanguard'
+    encounters.pendingAt = Date.now()
+    expect(game.resolveEncounter('A')).not.toBeNull()
+    expect(military.getOwned('heavy')).toBe(20)
+
+    // 晶体入账（v1.58）：走通用资源路径
+    resources.setAmount('crystal', 100)
+    encounters.pendingEventId = 'enc_crystal'
+    encounters.pendingAt = Date.now()
+    const rc = game.resolveEncounter('A')
+    expect(rc).toEqual({ encounterId: 'enc_crystal', rewards: { crystal: 95 } })
+    expect(resources.getAmount('crystal').toNumber()).toBe(195)
+
     // 损失分支（enc_core B 末支 -1300）：余额充足照额扣减 2000 → 700
     resources.setAmount('alloy', 2000)
     encounters.pendingEventId = 'enc_core'

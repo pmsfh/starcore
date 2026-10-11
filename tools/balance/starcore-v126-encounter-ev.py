@@ -3,7 +3,7 @@
 """
 starcore-v126-encounter-ev.py — 随机遭遇事件 EV 核验表
 
-对设计稿的 10 个事件模板做程序化断言：
+对 25 个事件模板做程序化断言：
   1. 每事件两选项 EV 差 <= 15%（以 max(EV_A, EV_B) 为基）
   2. 能量当量落 [4.4e3, 1.2e5] 量级带（「顺路的糖」口径，对照签到 2e4-1e5）
   3. 每选项概率分布归一（Σp = 1）
@@ -15,13 +15,17 @@ starcore-v126-encounter-ev.py — 随机遭遇事件 EV 核验表
   1 数据   = 6 能量    —— 依据：同上，60 合金 : 10 数据 比价
   1 暗物质 = 8000 能量 —— 依据：据点奖励带 energy/dark = 1e4/5e3/6.7e3/1e4 中值
   1 突击兵 = 60 能量当量 —— 依据：训练成本 50 能量 + 10 合金
+  1 晶体   = 55 能量   —— 依据：据点奖励表 energy:crystal 实值中值（与 v1.27 派遣核验同源）
+  1 护卫兵 = 60 能量当量 —— 依据：训练成本 40 能量 + 20 合金
+  1 重装兵 = 240 能量当量 —— 依据：训练成本 120 能量 + 60 合金 + 10 数据
 
 演进记录：
   - 2026-09-24 v1：初版 10 模板定稿核验。
+  - 2026-10-12 v1.58：扩容 15 模板（10 → 25）；新增晶体、护卫兵、重装兵折算口径。
 """
 
 # 折算率（能量当量）
-RATE = {"energy": 1, "alloy": 1, "data": 6, "dark": 8000, "unit_assault": 60}
+RATE = {"energy": 1, "crystal": 55, "alloy": 1, "data": 6, "dark": 8000, "unit_assault": 60, "unit_guard": 60, "unit_heavy": 240}
 
 # 量级带（能量当量）
 BAND_MIN = 4.4e3
@@ -34,9 +38,9 @@ EV_GAP_MAX = 0.15
 GAMBLE_SPREAD_MIN = 1.0
 RESOURCE_SPREAD_MAX = 1.0
 
-# ---- 10 模板数值表（与设计稿同源；outcomes = [(p, {资源: 数量}), ...]) ----
+# ---- 25 模板数值表（与设计稿同源；outcomes = [(p, {资源: 数量}), ...]) ----
 ENCOUNTERS = [
-    # 资源类 4
+    # 资源类 9
     {
         "id": "enc_flux", "flavor": "resource", "name": "能量涌流",
         "optA": {"label": "就地收集", "outcomes": [(1.0, {"energy": 8000})]},
@@ -57,7 +61,32 @@ ENCOUNTERS = [
         "optA": {"label": "小心回收", "outcomes": [(1.0, {"energy": 6000, "alloy": 400})]},
         "optB": {"label": "强行拖回", "outcomes": [(0.65, {"energy": 9200, "alloy": 600}), (0.35, {"energy": 2500, "alloy": 300})]},
     },
-    # 军事类 2
+    {
+        "id": "enc_thermo", "flavor": "resource", "name": "废热残舱",
+        "optA": {"label": "接入回收", "outcomes": [(1.0, {"energy": 5300})]},
+        "optB": {"label": "深挖热芯", "outcomes": [(0.85, {"energy": 6800}), (0.15, {"energy": 1500})]},
+    },
+    {
+        "id": "enc_crystal", "flavor": "resource", "name": "晶体矿簇",
+        "optA": {"label": "整块切割", "outcomes": [(1.0, {"crystal": 95})]},
+        "optB": {"label": "定向破碎", "outcomes": [(0.80, {"crystal": 125}), (0.20, {"crystal": 40})]},
+    },
+    {
+        "id": "enc_array", "flavor": "resource", "name": "废弃阵列",
+        "optA": {"label": "调取缓存", "outcomes": [(1.0, {"data": 880})]},
+        "optB": {"label": "直连主机", "outcomes": [(0.70, {"data": 1100}), (0.30, {"data": 420})]},
+    },
+    {
+        "id": "enc_hull", "flavor": "resource", "name": "沉船货舱",
+        "optA": {"label": "稳妥打捞", "outcomes": [(1.0, {"energy": 4200, "alloy": 500})]},
+        "optB": {"label": "打开暗舱", "outcomes": [(0.75, {"energy": 5900, "alloy": 700}), (0.25, {"energy": 1500, "alloy": 200})]},
+    },
+    {
+        "id": "enc_orefield", "flavor": "resource", "name": "轨道残矿",
+        "optA": {"label": "网捕回收", "outcomes": [(1.0, {"alloy": 3200, "data": 200})]},
+        "optB": {"label": "现场熔炼", "outcomes": [(0.75, {"alloy": 4000, "data": 300}), (0.25, {"alloy": 1400, "data": 80})]},
+    },
+    # 军事类 5
     {
         "id": "enc_salvage", "flavor": "military", "name": "残骸回收",
         "optA": {"label": "拆解装甲", "outcomes": [(1.0, {"alloy": 2800, "data": 280})]},
@@ -68,13 +97,38 @@ ENCOUNTERS = [
         "optA": {"label": "收编入伍", "outcomes": [(1.0, {"unit_assault": 80})]},
         "optB": {"label": "收下装备", "outcomes": [(1.0, {"energy": 4400, "alloy": 400})]},
     },
-    # 探索类 1
+    {
+        "id": "enc_barracks", "flavor": "military", "name": "废弃兵营",
+        "optA": {"label": "收编残部", "outcomes": [(1.0, {"unit_guard": 85})]},
+        "optB": {"label": "变卖装备", "outcomes": [(1.0, {"energy": 4700, "alloy": 400})]},
+    },
+    {
+        "id": "enc_armory", "flavor": "military", "name": "战备仓库",
+        "optA": {"label": "清点入库", "outcomes": [(1.0, {"alloy": 2500, "data": 320})]},
+        "optB": {"label": "破拆内库", "outcomes": [(0.55, {"alloy": 5000, "data": 500}), (0.45, {})]},
+    },
+    {
+        "id": "enc_vanguard", "flavor": "military", "name": "重装残队",
+        "optA": {"label": "纳入编队", "outcomes": [(1.0, {"unit_heavy": 20})]},
+        "optB": {"label": "收下补给", "outcomes": [(1.0, {"energy": 4300, "alloy": 500})]},
+    },
+    # 探索类 3
     {
         "id": "enc_beacon", "flavor": "explore", "name": "未知信标",
         "optA": {"label": "解码数据核心", "outcomes": [(1.0, {"data": 90, "dark": 1})]},
         "optB": {"label": "抽出能源核心", "outcomes": [(0.85, {"energy": 9600}), (0.15, {"energy": 2000})]},
     },
-    # 赌注类 3
+    {
+        "id": "enc_echo", "flavor": "explore", "name": "深空回响",
+        "optA": {"label": "追踪信号源", "outcomes": [(1.0, {"data": 120, "dark": 1})]},
+        "optB": {"label": "同步解析", "outcomes": [(0.85, {"energy": 9000}), (0.15, {"energy": 1800})]},
+    },
+    {
+        "id": "enc_outpost", "flavor": "explore", "name": "静默观测站",
+        "optA": {"label": "拆解储能", "outcomes": [(1.0, {"data": 100, "dark": 1})]},
+        "optB": {"label": "整站回收", "outcomes": [(0.85, {"energy": 8200}), (0.15, {"energy": 3200})]},
+    },
+    # 赌注类 8
     {
         "id": "enc_well", "flavor": "gamble", "name": "暗物质捕获井",
         "optA": {"label": "安全回收", "outcomes": [(1.0, {"energy": 7000})]},
@@ -90,6 +144,31 @@ ENCOUNTERS = [
         "optA": {"label": "收下货物", "outcomes": [(1.0, {"energy": 4400, "alloy": 400})]},
         "optB": {"label": "接受赌局", "outcomes": [(0.40, {"energy": 12000}), (0.60, {})]},
     },
+    {
+        "id": "enc_gravity", "flavor": "gamble", "name": "引力井",
+        "optA": {"label": "稳妥绕采", "outcomes": [(1.0, {"alloy": 7200})]},
+        "optB": {"label": "冒险下潜", "outcomes": [(0.35, {"alloy": 20500}), (0.65, {})]},
+    },
+    {
+        "id": "enc_fission", "flavor": "gamble", "name": "裂变弹芯",
+        "optA": {"label": "谨慎拆除", "outcomes": [(1.0, {"energy": 4800})]},
+        "optB": {"label": "尝试激活", "outcomes": [(0.45, {"energy": 10000}), (0.55, {})]},
+    },
+    {
+        "id": "enc_matrix", "flavor": "gamble", "name": "晶体母矿",
+        "optA": {"label": "稳妥提取", "outcomes": [(1.0, {"crystal": 140})]},
+        "optB": {"label": "超载开采", "outcomes": [(0.35, {"crystal": 330}), (0.65, {"crystal": 30})]},
+    },
+    {
+        "id": "enc_storm", "flavor": "gamble", "name": "离子风暴",
+        "optA": {"label": "稳妥穿越", "outcomes": [(1.0, {"energy": 4600, "alloy": 400})]},
+        "optB": {"label": "风暴采集", "outcomes": [(0.45, {"energy": 11500}), (0.55, {})]},
+    },
+    {
+        "id": "enc_chips", "flavor": "gamble", "name": "加密芯片",
+        "optA": {"label": "稳妥破解", "outcomes": [(1.0, {"data": 760})]},
+        "optB": {"label": "超频读取", "outcomes": [(0.30, {"data": 2300}), (0.70, {"data": 200})]},
+    },
 ]
 
 
@@ -103,8 +182,8 @@ def spread(outcomes):
 
 
 def fmt_res(rew):
-    order = ["energy", "alloy", "data", "dark", "unit_assault"]
-    zh = {"energy": "能量", "alloy": "合金", "data": "数据", "dark": "暗物质", "unit_assault": "突击兵"}
+    order = ["energy", "crystal", "alloy", "data", "dark", "unit_assault", "unit_guard", "unit_heavy"]
+    zh = {"energy": "能量", "crystal": "晶体", "alloy": "合金", "data": "数据", "dark": "暗物质", "unit_assault": "突击兵", "unit_guard": "护卫兵", "unit_heavy": "重装兵"}
     parts = []
     for k in order:
         if k in rew:
@@ -141,7 +220,7 @@ def main():
                         failures.append(f"{eid} 选项{name}: {k} 非整数 {v}")
                     if k == "dark" and not (0 <= v <= 9):
                         failures.append(f"{eid} 选项{name}: 暗物质 {v} 超个位带")
-                    if k == "unit_assault" and v <= 0:
+                    if k.startswith("unit_") and v <= 0:
                         failures.append(f"{eid} 选项{name}: 发兵量 {v} 非正")
                     if v < 0 and k != "alloy":
                         failures.append(f"{eid} 选项{name}: {k} 负值仅允许合金（损失类）")
@@ -155,13 +234,13 @@ def main():
         rows.append((eid, flavor, enc["optA"]["label"], ev_a, enc["optB"]["label"], ev_b, gap, ratio_b))
 
     # 风味分布
-    expect = {"resource": 4, "military": 2, "explore": 1, "gamble": 3}
+    expect = {"resource": 9, "military": 5, "explore": 3, "gamble": 8}
     if flavor_count != expect:
         failures.append(f"风味分布 {flavor_count} != 预期 {expect}")
-    if len(ENCOUNTERS) != 10:
-        failures.append(f"模板数 {len(ENCOUNTERS)} != 10")
+    if len(ENCOUNTERS) != 25:
+        failures.append(f"模板数 {len(ENCOUNTERS)} != 25")
     ids = [e["id"] for e in ENCOUNTERS]
-    if len(set(ids)) != 10:
+    if len(set(ids)) != 25:
         failures.append("模板 id 有重复")
 
     # ---- 核验表输出 ----
@@ -170,7 +249,7 @@ def main():
     for eid, flavor, la, eva, lb, evb, gap, rb in rows:
         print(f"{eid:<10}{flavor:<9}{la:<8}{eva:>7.0f}  {lb:<10}{evb:>7.0f}  {gap:>5.1%}  {rb:>8.2f}")
     print("-" * 78)
-    print(f"模板数 10（{flavor_count}）；折算率 {RATE}")
+    print(f"模板数 25（{flavor_count}）；折算率 {RATE}")
     print(f"量级带 [{BAND_MIN:.0f}, {BAND_MAX:.0f}]；EV 差上限 {EV_GAP_MAX:.0%}")
     if failures:
         print(f"\nFAIL {len(failures)} 项：")

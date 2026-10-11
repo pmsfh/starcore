@@ -58,10 +58,11 @@ export function createGameRewards(deps: {
   function resolveEncounter(choice: 'A' | 'B'): EncounterResolution | null {
     const result = encounters.resolve(choice)
     if (!result) return null
-    const { rewards } = result
+    // unitKind 为兵种声明键（字符串），不参与资源遍历；缺省突击兵
+    const { unitKind = 'assault', ...rewards } = result.rewards
     for (const [key, value] of Object.entries(rewards)) {
       if (key === 'units') {
-        if (value > 0) military.addToOwned('assault', value)
+        if (value > 0) military.addToOwned(unitKind, value)
         continue
       }
       if (value < 0) {
