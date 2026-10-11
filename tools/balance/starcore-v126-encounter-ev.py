@@ -40,7 +40,7 @@ ENCOUNTERS = [
     {
         "id": "enc_flux", "flavor": "resource", "name": "能量涌流",
         "optA": {"label": "就地收集", "outcomes": [(1.0, {"energy": 8000})]},
-        "optB": {"label": "引导汇聚", "outcomes": [(0.80, {"energy": 10600}), (0.20, {"energy": 3400})]},
+        "optB": {"label": "强行汇聚", "outcomes": [(0.80, {"energy": 10600}), (0.20, {"energy": 3400})]},
     },
     {
         "id": "enc_vein", "flavor": "resource", "name": "合金矿脉",
@@ -50,12 +50,12 @@ ENCOUNTERS = [
     {
         "id": "enc_signal", "flavor": "resource", "name": "数据截获",
         "optA": {"label": "完整破译", "outcomes": [(1.0, {"data": 900})]},
-        "optB": {"label": "快速扫描", "outcomes": [(0.50, {"data": 1450}), (0.50, {"data": 550})]},
+        "optB": {"label": "抢先截取", "outcomes": [(0.50, {"data": 1450}), (0.50, {"data": 550})]},
     },
     {
         "id": "enc_depot", "flavor": "resource", "name": "破损补给舱",
         "optA": {"label": "小心回收", "outcomes": [(1.0, {"energy": 6000, "alloy": 400})]},
-        "optB": {"label": "加压拖曳", "outcomes": [(0.65, {"energy": 9200, "alloy": 600}), (0.35, {"energy": 2500, "alloy": 300})]},
+        "optB": {"label": "强行拖回", "outcomes": [(0.65, {"energy": 9200, "alloy": 600}), (0.35, {"energy": 2500, "alloy": 300})]},
     },
     # 军事类 2
     {
@@ -71,23 +71,23 @@ ENCOUNTERS = [
     # 探索类 1
     {
         "id": "enc_beacon", "flavor": "explore", "name": "未知信标",
-        "optA": {"label": "解码数据核", "outcomes": [(1.0, {"data": 90, "dark": 1})]},
-        "optB": {"label": "抽出能源芯", "outcomes": [(0.85, {"energy": 9600}), (0.15, {"energy": 2000})]},
+        "optA": {"label": "解码数据核心", "outcomes": [(1.0, {"data": 90, "dark": 1})]},
+        "optB": {"label": "抽出能源核心", "outcomes": [(0.85, {"energy": 9600}), (0.15, {"energy": 2000})]},
     },
     # 赌注类 3
     {
-        "id": "enc_well", "flavor": "gamble", "name": "暗捕获井",
-        "optA": {"label": "安全封井", "outcomes": [(1.0, {"energy": 7000})]},
+        "id": "enc_well", "flavor": "gamble", "name": "暗物质捕获井",
+        "optA": {"label": "安全回收", "outcomes": [(1.0, {"energy": 7000})]},
         "optB": {"label": "强行重启", "outcomes": [(0.35, {"energy": 22000}), (0.65, {})]},
     },
     {
         "id": "enc_core", "flavor": "gamble", "name": "曲率核心",
         "optA": {"label": "稳妥切割", "outcomes": [(1.0, {"alloy": 4400})]},
-        "optB": {"label": "完整起爆", "outcomes": [(0.50, {"alloy": 9600}), (0.25, {"alloy": 2000}), (0.25, {"alloy": -1300})]},
+        "optB": {"label": "冒险引爆", "outcomes": [(0.50, {"alloy": 9600}), (0.25, {"alloy": 2000}), (0.25, {"alloy": -1300})]},
     },
     {
         "id": "enc_wager", "flavor": "gamble", "name": "深空赌局",
-        "optA": {"label": "收下开价", "outcomes": [(1.0, {"energy": 4400, "alloy": 400})]},
+        "optA": {"label": "收下货物", "outcomes": [(1.0, {"energy": 4400, "alloy": 400})]},
         "optB": {"label": "接受赌局", "outcomes": [(0.40, {"energy": 12000}), (0.60, {})]},
     },
 ]
