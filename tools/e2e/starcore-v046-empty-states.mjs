@@ -136,9 +136,9 @@ console.log('== BuildView 锁定扇区（无空态，锁定卡预告）==');
   await page.waitForTimeout(800);
   check('能量扇区正常显示建筑卡', (await page.locator('.build-card').count()) > 0);
   // 切到未解锁扇区（若有），检查锁定卡仍显示且无空态
-  const tabs = await page.locator('.sector-tab').count();
+  const tabs = await page.locator('.seg-item').count();
   if (tabs > 1) {
-    await page.locator('.sector-tab').nth(tabs - 1).click();
+    await page.locator('.seg-item').nth(tabs - 1).click();
     await page.waitForTimeout(500);
     check('锁定扇区显示锁定卡（预告）', (await page.locator('.build-card.locked').count()) > 0);
     check('锁定扇区无空态', (await page.locator('.empty-state').count()) === 0);

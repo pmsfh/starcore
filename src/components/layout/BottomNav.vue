@@ -166,8 +166,8 @@ onUnmounted(() => {
   margin-bottom: var(--space-2);
   background: var(--color-surface);
   border: 1px solid var(--color-border-glow);
-  border-radius: var(--radius-lg, 12px);
-  box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.5);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--elevation-up-2);
   padding: var(--space-2);
   display: flex;
   flex-direction: column;
@@ -179,7 +179,7 @@ onUnmounted(() => {
   align-items: center;
   gap: var(--space-3);
   padding: var(--space-3) var(--space-3);
-  border-radius: var(--radius-md, 8px);
+  border-radius: var(--radius-md);
   font-size: var(--text-sm);
   font-weight: 500;
   color: var(--color-t-secondary);

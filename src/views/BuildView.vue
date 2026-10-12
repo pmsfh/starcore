@@ -118,14 +118,14 @@ function tryUpgrade(id: string) {
       @skip="skipAll"
     />
 
-    <!-- 扇区选择 -->
-    <div class="sector-tabs">
+    <!-- 扇区选择（等宽分段基座，v1.60 收敛为全局类） -->
+    <div class="seg-bar">
       <button
         v-for="s in sectors"
         :key="s.id"
-        class="sector-tab"
+        class="seg-item"
         :class="{ active: activeSector === s.id }"
-        :style="{ '--c': s.color }"
+        :style="{ '--accent': s.color }"
         @click="activeSector = s.id"
       >
         {{ s.name }}
@@ -224,41 +224,7 @@ function tryUpgrade(id: string) {
   animation: screenIn 0.4s var(--ease-out);
 }
 
-.sector-tabs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-}
-.sector-tab {
-  flex: 1 1 calc(33.3% - 4px);
-  min-width: 0;
-  min-height: 40px; /* v1.38 触控命中高 ≥40 */
-  padding: var(--space-2) var(--space-2);
-  border-radius: var(--radius-md);
-  background: var(--color-surface);
-  border: 1px solid var(--color-border-line);
-  font-size: var(--text-xs);
-  font-weight: 500;
-  color: var(--color-t-secondary);
-  text-align: center;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  transition: all 0.15s var(--ease-out);
-}
-.sector-tab.active {
-  background: color-mix(in srgb, var(--c) 12%, transparent);
-  border-color: var(--c);
-  color: var(--c);
-  font-weight: 600;
-}
-@media (min-width: 768px) {
-  .sector-tab {
-    flex: 1 1 auto;
-    font-size: var(--text-sm);
-    padding: var(--space-3) var(--space-3);
-  }
-}
+/* 扇区选择：等宽分段基座（.seg-bar / .seg-item）为全局类，见 buttons.css（v1.60 收敛） */
 .sector-desc {
   font-size: var(--text-xs);
   color: var(--color-t-tertiary);

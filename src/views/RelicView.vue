@@ -135,7 +135,9 @@ function onEnhanceFail(msg: string) {
           <span class="slot-name">{{ row.relic.name }}</span>
         </div>
         <div v-else class="slot-empty">
+          <Icon class="empty-ico" name="i-nav-relic" size="sm" />
           <span>{{ t('relics.emptySlot') }} {{ row.idx + 1 }}</span>
+          <span class="empty-hint">{{ t('relics.emptyHint') }}</span>
         </div>
       </div>
     </div>
@@ -429,8 +431,21 @@ function onEnhanceFail(msg: string) {
   font-weight: 600;
 }
 .slot-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-2);
   color: var(--color-locked);
   font-size: var(--text-xs);
+  text-align: center;
+}
+.empty-ico {
+  opacity: 0.7;
+}
+.empty-hint {
+  opacity: 0.72;
+  line-height: 1.4;
 }
 
 .active-effects {

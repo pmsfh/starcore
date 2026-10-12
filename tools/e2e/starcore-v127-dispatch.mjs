@@ -88,7 +88,7 @@ async function gotoArmy(page) {
   await page.waitForURL('**/army', { timeout: 5000 });
   await page.waitForTimeout(400);
   // ArmyView 默认兵营页签，派遣区在编组页签下
-  await page.locator('.tab', { hasText: '编组' }).first().click();
+  await page.locator('.seg-item', { hasText: '编组' }).first().click();
   await page.waitForTimeout(300);
 }
 
@@ -183,7 +183,7 @@ console.log('== B. 派出与结算 ==');
     await ctx4.addInitScript(injectSave, savePayload(seed));
     await page4.goto(BASE + '/army', { waitUntil: 'domcontentloaded' });
     await page4.waitForTimeout(800);
-    await page4.locator('.tab', { hasText: '编组' }).first().click();
+    await page4.locator('.seg-item', { hasText: '编组' }).first().click();
     await page4.waitForTimeout(300);
     await page4.click('[data-testid="dispatch-tier-f1-4"]');
     await page4.waitForTimeout(200);
@@ -343,7 +343,7 @@ console.log('== F. 转生清空 + 移动视口 ==');
   await mctx.addInitScript(injectSave, savePayload(seed));
   await mpage.goto(BASE + '/army', { waitUntil: 'domcontentloaded' });
   await mpage.waitForTimeout(1200);
-  await mpage.locator('.tab', { hasText: '编组' }).first().click();
+  await mpage.locator('.seg-item', { hasText: '编组' }).first().click();
   await mpage.waitForTimeout(400);
   await v('F2 移动视口派遣区渲染（390px）', async () => {
     if (!(await mpage.locator('[data-testid="dispatch-f2"]').isVisible())) throw new Error('f2 派遣区不可见');

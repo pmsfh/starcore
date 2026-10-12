@@ -177,7 +177,7 @@ onBeforeUnmount(() => {
   scrollbar-width: none;
   list-style: none;
   margin: 0;
-  padding: 0;
+  padding: 0 var(--space-4) 0 0; /* 条尾留白：末枚胶囊可完整滚入（v1.60） */
 }
 .res-strip::-webkit-scrollbar {
   display: none;
@@ -241,7 +241,7 @@ onBeforeUnmount(() => {
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 16px;
+  width: 28px;
   pointer-events: none;
   z-index: 2;
   opacity: 0;
@@ -254,16 +254,18 @@ onBeforeUnmount(() => {
   left: 0;
   background: linear-gradient(
     to right,
-    color-mix(in srgb, var(--color-void) 90%, transparent),
-    transparent
+    color-mix(in srgb, var(--color-void) 95%, transparent) 0%,
+    color-mix(in srgb, var(--color-void) 55%, transparent) 55%,
+    transparent 100%
   );
 }
 .scroll-hint-r {
   right: 0;
   background: linear-gradient(
     to left,
-    color-mix(in srgb, var(--color-void) 90%, transparent),
-    transparent
+    color-mix(in srgb, var(--color-void) 95%, transparent) 0%,
+    color-mix(in srgb, var(--color-void) 55%, transparent) 55%,
+    transparent 100%
   );
 }
 

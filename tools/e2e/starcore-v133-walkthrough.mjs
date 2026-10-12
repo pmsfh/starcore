@@ -359,7 +359,7 @@ await sec('E. 遗物：强化 / 套装 / 合成', async () => {
 // ============ F. 编队特性 ============
 await sec('F. 编队特性', async () => {
   const page = await seeded(browser, richSave(), '/army')
-  await page.locator('.tabs .tab', { hasText: '编组' }).click()
+  await page.locator('.seg-bar .seg-item', { hasText: '编组' }).click()
   await page.waitForTimeout(400)
   await page.locator('[data-testid="trait-f1-logistics_doctrine"]').click()
   await page.waitForTimeout(300)
@@ -464,7 +464,7 @@ await sec('J. 随机遭遇', async () => {
 await sec('K. 派遣远征', async () => {
   const save = richSave({ combat: { garrisoned: {}, completed: ['silencer_3'], expeditionBest: 5, milestonesClaimed: [] } })
   const page = await seeded(browser, save, '/army')
-  await page.locator('.tab', { hasText: '编组' }).first().click()
+  await page.locator('.seg-item', { hasText: '编组' }).first().click()
   await page.waitForTimeout(400)
   check('派遣区解锁渲染', (await page.locator('[data-testid="dispatch-f1"]').count()) === 1)
   await page.click('[data-testid="dispatch-tier-f1-4"]')

@@ -62,17 +62,17 @@ function showFeedback(msg: string) {
       </div>
     </div>
 
-    <!-- Tab 切换 -->
-    <div class="tabs">
+    <!-- Tab 切换（等宽分段基座，v1.60 收敛为全局类；部队语义 = alert 红） -->
+    <div class="seg-bar" style="--accent: var(--color-alert)">
       <button
-        class="tab"
+        class="seg-item"
         :class="{ active: activeTab === 'barracks' }"
         @click="activeTab = 'barracks'"
       >
         {{ t('army.barracks') }}
       </button>
       <button
-        class="tab"
+        class="seg-item"
         :class="{ active: activeTab === 'formation' }"
         @click="activeTab = 'formation'"
       >
@@ -128,25 +128,7 @@ function showFeedback(msg: string) {
   font-weight: 700;
 }
 
-.tabs {
-  display: flex;
-  gap: var(--space-2);
-}
-.tab {
-  flex: 1;
-  padding: var(--space-3);
-  border-radius: var(--radius-md);
-  background: var(--color-surface);
-  border: 1px solid var(--color-border-line);
-  font-size: var(--text-sm);
-  font-weight: 500;
-  color: var(--color-t-secondary);
-}
-.tab.active {
-  background: var(--color-alert);
-  color: var(--color-on-core);
-  border-color: var(--color-alert);
-}
+/* Tab 切换：等宽分段基座（.seg-bar / .seg-item）为全局类，见 buttons.css（v1.60 收敛） */
 
 /* onboarding（变体类承载定位与层级，v0.97） */
 .ob-army {

@@ -62,15 +62,15 @@ watch(() => ach.toastQueue.length, showNext, { immediate: true })
   border-radius: var(--radius-lg);
   padding: var(--space-3) var(--space-4);
   box-shadow:
-    0 8px 32px rgba(0, 0, 0, 0.5),
+    var(--elevation-2),
     0 0 16px color-mix(in srgb, var(--color-quantum) 15%, transparent);
   pointer-events: none;
   max-width: min(320px, calc(100vw - 2 * var(--space-4)));
 }
-/* 移动端：顶部居中，置于顶栏（实测高 49px）之下，避开底部导航与「更多」面板 */
+/* 移动端：顶部居中，置于顶栏（--topbar-h）之下，避开底部导航与「更多」面板 */
 @media (max-width: 767px) {
   .ach-toast {
-    top: calc(49px + var(--space-2));
+    top: calc(var(--topbar-h) + var(--space-2));
     bottom: auto;
     right: var(--space-3);
     left: var(--space-3);

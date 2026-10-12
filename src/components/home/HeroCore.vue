@@ -68,7 +68,11 @@ const srSummary = computed(() =>
 
 <template>
   <!-- 星核核心视觉：五资源节点正五角形环绕 -->
-  <section class="hero" :aria-label="t('home.hero.aria')">
+  <section
+    class="hero"
+    :class="{ 'guide-room': activeStep === 'home-core' }"
+    :aria-label="t('home.hero.aria')"
+  >
     <!-- onboarding: 核心引导 -->
     <OnboardingBubble
       v-if="activeStep === 'home-core'"
@@ -90,6 +94,8 @@ const srSummary = computed(() =>
       @keydown.enter="onStageClick"
       @keydown.space.prevent="onStageClick"
     >
+      <!-- 星核微光：中央焦点锚（v1.60；低频呼吸，reduced-motion 走全局降级） -->
+      <span class="core-glow" aria-hidden="true"></span>
       <!-- 五资源节点：图标 + 数值 + 名称 + 产率小字 -->
       <!-- 资源信息顶栏已有读屏名称，节点对读屏隐藏 -->
       <div
@@ -122,6 +128,11 @@ const srSummary = computed(() =>
   gap: var(--space-2);
   padding: var(--space-6) 0 var(--space-4);
   position: relative;
+  transition: padding-top 0.35s var(--ease-out);
+}
+/* 引导让位（v1.60）：home-core 步激活时在舞台上方位气泡留出空位，关闭后平滑回落 */
+.hero.guide-room {
+  padding-top: calc(var(--space-6) + 150px);
 }
 /* 五角形舞台：五节点按坐标环绕（v1.41 中央圆移除后节点区承接点击跳建造页；
    v1.42 节点图形改圆形，舞台随节点直径加宽加高） */
@@ -138,6 +149,25 @@ const srSummary = computed(() =>
 /* 点击脉动反馈 */
 .hero-stage.stage-clicked {
   animation: coreClickPulse 0.6s var(--ease-out);
+}
+
+/* 星核微光：中央焦点锚（v1.60）。氛围层，不承载信息与事件。 */
+.core-glow {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 150px;
+  height: 150px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--color-core) 14%, transparent) 0%,
+    color-mix(in srgb, var(--color-core) 6%, transparent) 45%,
+    transparent 72%
+  );
+  pointer-events: none;
+  animation: coreBreath 7s ease-in-out infinite;
 }
 
 /* 五资源节点：圆形徽章（含零值弱化；新档四资源与暗物质长期为 0 呈弱化态） */
@@ -237,6 +267,13 @@ const srSummary = computed(() =>
 @media (min-width: 768px) {
   .hero {
     padding: var(--space-8) 0 var(--space-6);
+  }
+  .hero.guide-room {
+    padding-top: calc(var(--space-8) + 150px);
+  }
+  .core-glow {
+    width: 180px;
+    height: 180px;
   }
   .hero-stage {
     width: 328px;

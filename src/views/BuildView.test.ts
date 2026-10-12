@@ -33,9 +33,9 @@ describe('BuildView — 挂载与渲染', () => {
     expect(wrapper.find('.build-view').exists()).toBe(true)
     expect(wrapper.text()).toContain('建造')
     // 扇区页签数量 = SECTORS 全部扇区
-    expect(wrapper.findAll('.sector-tab').length).toBe(Object.keys(SECTORS).length)
+    expect(wrapper.findAll('.seg-item').length).toBe(Object.keys(SECTORS).length)
     // 默认选中第一个扇区（energy）
-    expect(wrapper.find('.sector-tab.active').text()).toBe(SECTORS.energy.name)
+    expect(wrapper.find('.seg-item.active').text()).toBe(SECTORS.energy.name)
   })
 
   it('点击扇区页签切换建筑列表', async () => {
@@ -44,8 +44,8 @@ describe('BuildView — 挂载与渲染', () => {
     expect(energyCards).toBe(BUILDINGS.filter((b) => b.sector === 'energy').length)
 
     // 切到晶体扇区（第 2 个页签）
-    await wrapper.findAll('.sector-tab')[1].trigger('click')
-    expect(wrapper.find('.sector-tab.active').text()).toBe(SECTORS.crystal.name)
+    await wrapper.findAll('.seg-item')[1].trigger('click')
+    expect(wrapper.find('.seg-item.active').text()).toBe(SECTORS.crystal.name)
     expect(wrapper.find('.sector-desc').text()).toBe(SECTORS.crystal.desc)
     expect(wrapper.findAll('.build-card').length).toBe(
       BUILDINGS.filter((b) => b.sector === 'crystal').length

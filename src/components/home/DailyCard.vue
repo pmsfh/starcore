@@ -133,7 +133,6 @@ function claim(templateId: string) {
   border-color: var(--color-amber);
 }
 .streak-num {
-  margin-left: auto;
   font-size: var(--text-xs);
   color: var(--color-t-secondary);
 }

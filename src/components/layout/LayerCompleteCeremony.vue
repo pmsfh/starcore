@@ -91,16 +91,16 @@ watch(() => game.exploration.layerCeremonyQueue.length, showNext, { immediate: t
   border-radius: var(--radius-lg);
   padding: var(--space-3) var(--space-5);
   box-shadow:
-    0 8px 32px rgba(0, 0, 0, 0.5),
+    var(--elevation-2),
     0 0 16px color-mix(in srgb, var(--layer-color) 25%, transparent);
   cursor: pointer;
   max-width: min(340px, calc(100vw - 2 * var(--space-4)));
   text-align: center;
 }
-/* 移动端：置于顶栏（实测高 49px）之下，与成就提示同位避让 */
+/* 移动端：置于顶栏（--topbar-h）之下，与成就提示同位避让 */
 @media (max-width: 767px) {
   .layer-banner {
-    top: calc(49px + var(--space-2));
+    top: calc(var(--topbar-h) + var(--space-2));
   }
 }
 .banner-text {

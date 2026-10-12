@@ -66,7 +66,7 @@ const bonusSummary = computed(() => {
     <!-- 汇总面板 -->
     <div class="summary-panel">
       <div class="summary-count">
-        <span class="count-num font-display">{{ ach.unlockedCount }}</span>
+        <span class="count-num font-mono">{{ ach.unlockedCount }}</span>
         <span class="count-total font-mono">/ {{ ACHIEVEMENTS.length }}</span>
       </div>
       <div class="summary-bonus">
@@ -147,7 +147,7 @@ const bonusSummary = computed(() => {
 }
 .count-num {
   font-size: var(--text-2xl);
-  font-weight: 900;
+  font-weight: 700;
   color: var(--color-quantum);
   text-shadow: 0 0 16px color-mix(in srgb, var(--color-quantum) 30%, transparent);
 }

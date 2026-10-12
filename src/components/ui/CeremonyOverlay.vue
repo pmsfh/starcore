@@ -62,14 +62,14 @@ timer.set(() => emit('close'), SHOW_MS)
   display: flex;
   align-items: center;
   justify-content: center;
-  background: color-mix(in srgb, #05070d 88%, transparent);
+  background: color-mix(in srgb, var(--color-void) 88%, transparent);
   cursor: pointer;
 }
 .ceremony-flash {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: #ffffff;
+  background: var(--color-flash);
   opacity: 0;
   animation: warpFlash 0.35s var(--ease-out);
 }

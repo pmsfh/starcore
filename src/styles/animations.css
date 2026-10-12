@@ -95,6 +95,19 @@
   }
 }
 
+/* v1.60：星核微光呼吸（首页中央焦点锚，7s 低频循环） */
+@keyframes coreBreath {
+  0%,
+  100% {
+    opacity: 0.72;
+    transform: translate(-50%, -50%) scale(0.95);
+  }
+  50% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.05);
+  }
+}
+
 /* 路由切换"空间跃迁"光效 */
 @keyframes warpFlash {
   0% {

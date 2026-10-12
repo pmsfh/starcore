@@ -173,38 +173,10 @@ function tryResearch(id: string) {
   animation: screenIn 0.4s var(--ease-out);
 }
 
-.branch-tabs {
-  display: flex;
-  gap: var(--space-2);
-  overflow-x: auto;
-  scrollbar-width: none;
-  padding-bottom: var(--space-1);
-}
-.branch-tabs::-webkit-scrollbar {
-  display: none;
-}
-.branch-tab {
-  flex-shrink: 0;
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-1);
-  min-height: 40px; /* v1.38 触控命中高 ≥40 */
-  padding: var(--space-2) var(--space-3);
-  border-radius: var(--radius-pill);
-  background: var(--color-surface);
-  border: 1px solid var(--color-border-line);
-  font-size: var(--text-xs);
-  font-weight: 500;
-  color: var(--color-t-secondary);
-}
+/* 分支筛选页签：胶囊变体为全局类，见 buttons.css（v1.60 上移登记） */
 .b-icon {
   width: var(--icon-sm);
   height: var(--icon-sm);
-}
-.branch-tab.active {
-  background: color-mix(in srgb, var(--c, var(--color-core)) 12%, transparent);
-  border-color: var(--c, var(--color-core));
-  color: var(--c, var(--color-core));
 }
 
 .tech-list {

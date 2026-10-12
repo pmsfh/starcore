@@ -253,6 +253,13 @@ function cardEnemy(card: EnemyCard) {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+  /* 单卡分组跨列（v1.60）：孤卡跨双列，避免右列留黑；卡内行宽限 68ch */
+  .story-list > .story-card:only-child {
+    grid-column: span 2;
+  }
+  .story-list > .story-card:only-child .st-story {
+    max-width: 68ch;
+  }
 }
 .story-card {
   background: var(--color-surface);

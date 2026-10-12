@@ -47,7 +47,7 @@ function makeSave({ traitF1, traitF2, army = true } = {}) {
 /** 切到编组页并返回页面对象 */
 async function formationPage(browser, save, opts = {}) {
   const page = await newSeededPage(browser, save, '/army', { waitMs: 1500, ...opts });
-  await page.locator('.tabs .tab', { hasText: '编组' }).click();
+  await page.locator('.seg-bar .seg-item', { hasText: '编组' }).click();
   await page.waitForTimeout(400);
   return page;
 }
@@ -195,7 +195,7 @@ console.log('== H. 移动视口与英文标签 ==');
   const page2 = await ctx.newPage();
   await page2.goto(`${BASE_URL}/army`);
   await page2.waitForTimeout(1500);
-  await page2.locator('.tabs .tab', { hasText: 'Formation' }).click();
+  await page2.locator('.seg-bar .seg-item', { hasText: 'Formation' }).click();
   await page2.waitForTimeout(400);
   const segText = (await page2.locator('.seg-btn').allTextContents()).join(',');
   check(`英文特性标签（实际 ${segText}）`, ['Balanced', 'Assault', 'Bastion', 'Counter', 'Logistics'].every((s) => segText.includes(s)));

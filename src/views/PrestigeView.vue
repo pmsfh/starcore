@@ -85,7 +85,7 @@ function cancelTranscend() {
     <div class="neg-panel">
       <div>
         <div class="neg-label">{{ t('prestige.negEntropyLabel') }}</div>
-        <div class="neg-value font-display">{{ fmt(game.transcend.negativeEntropy) }}</div>
+        <div class="neg-value font-mono">{{ fmt(game.transcend.negativeEntropy) }}</div>
       </div>
       <div>
         <div class="preview-label">{{ t('prestige.available') }}</div>
@@ -275,7 +275,7 @@ function cancelTranscend() {
 }
 .neg-value {
   font-size: var(--text-2xl);
-  font-weight: 900;
+  font-weight: 700;
   color: var(--color-amber);
   text-shadow: 0 0 16px color-mix(in srgb, var(--color-amber) 30%, transparent);
 }

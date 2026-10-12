@@ -36,7 +36,7 @@ describe('ArmyView — 挂载与空状态', () => {
     expect(wrapper.find('.army-view').exists()).toBe(true)
     expect(wrapper.text()).toContain('部队')
     expect(wrapper.text()).toContain('总攻击')
-    expect(wrapper.findAll('.tab').length).toBe(2)
+    expect(wrapper.findAll('.seg-item').length).toBe(2)
     // 新档军事科技未解锁 → 空状态引导
     expect(wrapper.find('.empty-state').exists()).toBe(true)
     expect(wrapper.text()).toContain('尚未组建部队')
@@ -152,7 +152,7 @@ describe('ArmyView — 编组操作', () => {
     const military = useMilitaryStore()
     military.owned.assault = 50
     military.owned.guard = 30
-    await wrapper.findAll('.tab')[1].trigger('click') // 切到编组
+    await wrapper.findAll('.seg-item')[1].trigger('click') // 切到编组
     return { wrapper, game, military }
   }
 
@@ -233,7 +233,7 @@ describe('ArmyView — 编组操作', () => {
     expect(military.owned.assault).toBe(0)
     expect(military.formations[0].units.assault).toBe(50)
     // 切回兵营：卡片「已拥有」仍为全量 50
-    await wrapper.findAll('.tab')[0].trigger('click')
+    await wrapper.findAll('.seg-item')[0].trigger('click')
     await wrapper.vm.$nextTick()
     const assaultCard = wrapper
       .findAll('.unit-card')
@@ -251,7 +251,7 @@ describe('ArmyView — 编队特性（v1.23 方案 7）', () => {
     })
     const military = useMilitaryStore()
     military.owned.assault = 20
-    await wrapper.findAll('.tab')[1].trigger('click') // 切到编组
+    await wrapper.findAll('.seg-item')[1].trigger('click') // 切到编组
     await wrapper.vm.$nextTick()
     return { wrapper, military }
   }

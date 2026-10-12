@@ -206,7 +206,7 @@ watch(
   flex: 1;
   /* 移动端默认样式：底部留出底部导航空间 */
   padding: var(--space-4);
-  padding-bottom: 80px; /* 底部导航高度 + 安全距离 */
+  padding-bottom: var(--bottomnav-h); /* 底部导航高度 + 安全距离 */
   max-width: 720px;
   margin: 0 auto;
   width: 100%;
@@ -254,7 +254,7 @@ watch(
 .extra-nav {
   position: fixed;
   /* 紧凑胶囊：坐入操作按钮行与底部导航之间的空隙，不再遮挡「出征」等按钮（v1.37） */
-  bottom: 79px;
+  bottom: calc(var(--bottomnav-h) - 1px);
   left: 50%;
   transform: translateX(-50%);
   /* display: flex 由 JS v-if 控制显隐，仅移动端渲染 */
@@ -282,7 +282,7 @@ watch(
   pointer-events: none;
   background: radial-gradient(
     ellipse at center,
-    rgba(255, 255, 255, 0.25) 0%,
+    color-mix(in srgb, var(--color-flash) 25%, transparent) 0%,
     color-mix(in srgb, var(--color-core) 10%, transparent) 30%,
     transparent 70%
   );

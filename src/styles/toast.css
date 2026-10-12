@@ -14,14 +14,14 @@
   font-weight: 500;
   padding: var(--space-2) var(--space-4);
   border-radius: var(--radius-pill);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: var(--elevation-1);
   z-index: 300;
   pointer-events: none;
 }
 /* 移动端抬高：避开战斗页 extra-nav（bottom 72px + 自身约 42px 高） */
 @media (max-width: 767px) {
   .toast {
-    bottom: 128px;
+    bottom: calc(var(--bottomnav-h) + 48px);
   }
 }
 .toast-enter-active,
