@@ -91,7 +91,7 @@ starcore/
 │  ├─ tests/        test harness (vitest setup and shared helpers)
 │  ├─ views/        11 views (home, build, tech, map, army, battle, relics, rebirth, achievements, archive, settings)
 │  └─ App.vue / main.ts / version.ts / style.css
-├─ docs/            11 specification documents (in Chinese), see Documentation (plus archived history)
+├─ docs/            11 specification documents (in Chinese), see Documentation
 ├─ public/          favicon, share image and self-hosted fonts (Orbitron, JetBrains Mono)
 ├─ scripts/         quality scripts (count conservation, message key checks)
 ├─ tools/           diagnostics (environment self-check, end-to-end and numeric)

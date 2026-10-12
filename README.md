@@ -75,7 +75,7 @@ starcore/
 │  ├─ tests/        测试装置（vitest setup 与公共 helper）
 │  ├─ views/        11 个页面视图（主界面、建造、科技、地图、军队、战斗、遗物、转生、成就、档案馆、设置）
 │  └─ App.vue / main.ts / version.ts / style.css
-├─ docs/            十一册规范文档，见「文档索引」（含 archive 历史归档）
+├─ docs/            十一册规范文档，见「文档索引」
 ├─ public/          favicon、分享图与本地字体（Orbitron、JetBrains Mono）
 ├─ scripts/         质量脚本（计数守恒、文案缺键检查）
 ├─ tools/           诊断工具（环境自检、端到端与数值校验）
