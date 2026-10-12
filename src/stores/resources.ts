@@ -71,10 +71,40 @@ export const useResourcesStore = defineStore('resources', () => {
   const allMeta: Record<string, ResourceMeta> = RES_META
   const getMeta = (t: ResourceType) => RES_META[t]
 
+  // 开发与测试态的未知资源键防线（v1.61）：写入路径直接抛错，把「数据表键名
+  // 手误静默创建幽灵键、下个 tick 崩溃」变成当场失败；成本路径告警维持忽略
+  // 语义。生产构建下判型为 false，零开销、行为与旧版完全一致
+  function devEnv(): boolean {
+    try {
+      return !!(import.meta as { env?: { DEV?: boolean } }).env?.DEV
+    } catch {
+      return false
+    }
+  }
+  function assertKnownKey(t: string, where: string): void {
+    if (!devEnv()) return
+    if (!(t in amounts.value)) {
+      throw new Error(`[resources] ${where} received unknown resource key "${t}"`)
+    }
+  }
+  const warnedKeys = new Set<string>()
+  function warnUnknownKey(k: string, where: string): void {
+    if (!devEnv()) return
+    if (k in amounts.value) return
+    const tag = `${where}:${k}`
+    if (warnedKeys.has(tag)) return
+    warnedKeys.add(tag)
+    console.warn(`[resources] ${where} cost contains unknown resource key "${k}", ignored`)
+  }
+
   /** 是否负担得起一组成本 */
   const canAfford = (cost: Partial<Record<string, number>> | Record<string, number>) => {
     for (const [k, v] of Object.entries(cost)) {
-      if (k in amounts.value && !gte(amounts.value[k as ResourceType], v as number)) return false
+      if (!(k in amounts.value)) {
+        warnUnknownKey(k, 'canAfford')
+        continue
+      }
+      if (!gte(amounts.value[k as ResourceType], v as number)) return false
     }
     return true
   }
@@ -82,6 +112,7 @@ export const useResourcesStore = defineStore('resources', () => {
   // actions
   /** 增加 */
   function gain(t: ResourceType, v: Decimal.Value) {
+    assertKnownKey(t, 'gain')
     amounts.value[t] = add(amounts.value[t], v)
     totals.value[t] = add(totals.value[t], v)
   }
@@ -95,18 +126,27 @@ export const useResourcesStore = defineStore('resources', () => {
   function spendCost(cost: Partial<Record<string, number>>): boolean {
     if (!canAfford(cost)) return false
     for (const [k, v] of Object.entries(cost)) {
-      if (k in amounts.value)
-        amounts.value[k as ResourceType] = amounts.value[k as ResourceType].minus(v as number)
+      if (!(k in amounts.value)) {
+        warnUnknownKey(k, 'spendCost')
+        continue
+      }
+      amounts.value[k as ResourceType] = amounts.value[k as ResourceType].minus(v as number)
     }
     return true
   }
   /** 直接设置（调试/导入用） */
   function setAmount(t: ResourceType, v: Decimal.Value) {
+    assertKnownKey(t, 'setAmount')
     amounts.value[t] = D(v)
   }
   /** 设置产出速率 */
   function setProduction(t: ResourceType, v: Decimal.Value) {
-    production.value[t] = D(v)
+    assertKnownKey(t, 'setProduction')
+    const next = D(v)
+    // 等值跳过（v1.61）：主 tick 每秒对全部资源重写速率，未变值不再重复
+    // 赋值触发依赖方重算；产速变化时的重写语义不变
+    if (production.value[t].eq(next)) return
+    production.value[t] = next
   }
   /** tick 推进：amount += production * dt */
   function applyTick(dt: number) {

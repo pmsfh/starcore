@@ -1,10 +1,15 @@
 /**
  * combat.ts：PVE 战斗系统 store
  * PVE 战斗：4 类据点自动结算、无尽远征、每周强敌、挂机驻扎
+ *
+ * 数值边界（v1.61）：攻防乘数在结算入口经 toNumberChecked 落为双精度浮点
+ * 参与 number 运算，该链隐含约 1e308 上限；当前数值规模（远征深度上限
+ * 999 等）距上限余量充足，超限仅在开发与测试态直接抛错
  */
 import { t } from '@/i18n'
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
+import { toNumberChecked } from '@/lib/decimal'
 import type { Decimal } from '@/lib/decimal'
 import { STRONGHOLDS, getStronghold, type StrongholdDef } from '@/data/pve'
 import {
@@ -145,8 +150,8 @@ export const useCombatStore = defineStore('combat', () => {
       playerUnits.push({
         unitId: uid,
         name: def.name,
-        attack: def.attack * atkMult.toNumber() * trait.atkMult,
-        defense: def.defense * defMult.toNumber(),
+        attack: def.attack * toNumberChecked(atkMult, 'atkMult') * trait.atkMult,
+        defense: def.defense * toNumberChecked(defMult, 'defMult'),
         hp: def.hp * trait.hpMult,
         maxHp: def.hp * trait.hpMult,
         count,

@@ -134,11 +134,11 @@ export const useRelicsStore = defineStore('relics', () => {
     return true
   }
 
-  /** 获得新遗物 */
+  /** 获得新遗物（实例 id 走 crypto.randomUUID，v1.61） */
   function obtain(relic: RelicDef): OwnedRelic {
     const newRelic: OwnedRelic = {
       ...relic,
-      instanceId: 'relic_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 7),
+      instanceId: crypto.randomUUID(),
       obtainedAt: Date.now(),
       level: 0,
     }

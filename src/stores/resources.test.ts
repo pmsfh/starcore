@@ -3,7 +3,7 @@
  * 覆盖：初始状态 / gain / spend / canAfford / spendCost 原子性 /
  * applyTick / reset（含 keepDark）/ serialize-hydrate
  */
-import { describe, it, expect, beforeEach } from 'vitest'
+import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 import { useResourcesStore } from './resources'
 import { D } from '@/lib/decimal'
@@ -194,5 +194,42 @@ describe('resources — serialize / hydrate', () => {
     r.hydrate({ amounts: { crystal: '7' } } as never)
     expect(r.getAmount('crystal').toNumber()).toBe(7)
     expect(r.getAmount('energy').toNumber()).toBe(50) // 默认未被冲掉
+  })
+})
+
+describe('resources — 开发态资源键防线（v1.61）', () => {
+  beforeEach(() => setActivePinia(createPinia()))
+
+  it('写入路径遇未知资源键直接抛错（防幽灵键）', () => {
+    const r = useResourcesStore()
+    expect(() => r.gain('energ' as never, 1)).toThrow(/unknown resource key/)
+    expect(() => r.setAmount('energ' as never, 1)).toThrow(/unknown resource key/)
+    expect(() => r.setProduction('energ' as never, 1)).toThrow(/unknown resource key/)
+    r.gain('energy', 1)
+    expect(r.getAmount('energy').toNumber()).toBe(51)
+  })
+
+  it('成本路径遇未知键告警并维持忽略语义', () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    const r = useResourcesStore()
+    expect(r.canAfford({ energ: 1e9 } as never)).toBe(true)
+    expect(r.spendCost({ energ: 1e9 } as never)).toBe(true)
+    expect(warn).toHaveBeenCalledTimes(2)
+    expect(r.getAmount('energy').toNumber()).toBe(50)
+    warn.mockRestore()
+  })
+})
+
+describe('resources — setProduction 等值跳过（v1.61）', () => {
+  beforeEach(() => setActivePinia(createPinia()))
+
+  it('等值重写不再替换引用；变化值照常写入', () => {
+    const r = useResourcesStore()
+    r.setProduction('energy', D(2.5))
+    const first = r.getRate('energy')
+    r.setProduction('energy', D(2.5))
+    expect(r.getRate('energy')).toBe(first)
+    r.setProduction('energy', D(3))
+    expect(r.getRate('energy').toNumber()).toBe(3)
   })
 })

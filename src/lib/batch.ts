@@ -50,6 +50,8 @@ export function simulateSteps(
     level++
     count++
   }
+  // 边界声明（v1.61）：预览成本在此折算为 number 返回（消费面为展示与
+  // canAfford），量级由成本曲线与层数上界约束，距双精度上限余量充足
   const result: Record<string, number> = {}
   for (const [k, v] of Object.entries(totals)) result[k] = v.toNumber()
   return { count, cost: result }

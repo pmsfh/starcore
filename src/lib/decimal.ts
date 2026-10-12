@@ -24,6 +24,22 @@ export const D = (v: _Decimal.Value | number | string): _Decimal => new Decimal(
 export const add = (a: _Decimal.Value, b: _Decimal.Value): _Decimal => D(a).plus(b)
 export const gte = (a: _Decimal.Value, b: _Decimal.Value): boolean => D(a).gte(b)
 
+/** 开发与测试态校验的 Decimal 转 number（v1.61）：战斗等按 number 运算的
+ * 数值链隐含双精度约 1e308 上限，超限时开发与测试态直接抛错、生产态保持
+ * 原转换结果；用于把静默畸变提前到开发现场 */
+export function toNumberChecked(d: _Decimal, label: string): number {
+  const n = d.toNumber()
+  if (Number.isFinite(n)) return n
+  let dev = false
+  try {
+    dev = !!(import.meta as { env?: { DEV?: boolean } }).env?.DEV
+  } catch {
+    /* 非 Vite 环境按生产态处理 */
+  }
+  if (dev) throw new Error(`[decimal] ${label} exceeds double-precision range: ${d.toString()}`)
+  return n
+}
+
 /** 序列化 Decimal → string（安全保留精度，可反序列化） */
 export const ser = (v: _Decimal.Value): string => D(v).toString()
 /** 反序列化 string → Decimal */

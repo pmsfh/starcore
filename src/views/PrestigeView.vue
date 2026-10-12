@@ -4,6 +4,7 @@ import { computed, ref } from 'vue'
 import { useGameStore } from '@/stores/game'
 import { isInfiniteNode, nextCost } from '@/stores/transcend'
 import { fmt } from '@/lib/format'
+import { D } from '@/lib/decimal'
 import ConfirmModal from '@/components/ui/ConfirmModal.vue'
 import CeremonyOverlay from '@/components/ui/CeremonyOverlay.vue'
 import Icon from '@/components/ui/Icon.vue'
@@ -24,8 +25,12 @@ const infiniteNodes = computed(() => game.transcend.tree.filter((n) => isInfinit
 function totalBonusLabel(node: (typeof game.transcend.tree)[number]): string {
   const eff = node.effects[0]
   if (!eff) return ''
-  const total = Math.pow(eff.value, node.level)
-  const pct = Math.round((total - 1) * 100)
+  // 求值走 Decimal（v1.61）：大等级下 Math.pow 会翻出 Infinity 直显；Decimal
+  // 保持全量级可算，显示仅在超出双精度表示范围时回退 fmt 的科学计数分支
+  const total = D(eff.value).pow(node.level)
+  const pctDec = total.minus(1).times(100)
+  const pctNum = pctDec.toNumber()
+  const pct = Number.isFinite(pctNum) ? Math.round(pctNum) : fmt(pctDec)
   return node.level > 0 ? t('prestige.currentBonus', { pct: pct }) : t('prestige.inactive')
 }
 

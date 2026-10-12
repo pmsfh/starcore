@@ -4,6 +4,7 @@
  */
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
+import { toNumberChecked } from '@/lib/decimal'
 import type { Decimal } from '@/lib/decimal'
 import { UNITS, getUnit, defaultFormations, type UnitId, type UnitDef } from '@/data/units'
 import { isUnlockedBy } from '@/lib/requires'
@@ -101,8 +102,8 @@ export const useMilitaryStore = defineStore('military', () => {
       if (count <= 0) continue
       const u = getUnit(uid as UnitId)
       if (!u) continue
-      atk += u.attack * atkMult.toNumber() * count
-      def += u.defense * defMult.toNumber() * count
+      atk += u.attack * toNumberChecked(atkMult, 'atkMult') * count
+      def += u.defense * toNumberChecked(defMult, 'defMult') * count
       hp += u.hp * count
     }
     return { atk: Math.round(atk), def: Math.round(def), hp }
@@ -126,8 +127,8 @@ export const useMilitaryStore = defineStore('military', () => {
     for (const u of UNITS) {
       const count = totalOwnedOf(u.id)
       if (count <= 0) continue
-      atk += u.attack * atkMult.toNumber() * count
-      def += u.defense * defMult.toNumber() * count
+      atk += u.attack * toNumberChecked(atkMult, 'atkMult') * count
+      def += u.defense * toNumberChecked(defMult, 'defMult') * count
       hp += u.hp * count
     }
     return { atk: Math.round(atk), def: Math.round(def), hp }
@@ -348,6 +349,12 @@ export const useMilitaryStore = defineStore('military', () => {
         ...t,
         count: Math.max(0, Math.floor(t.count)),
       }))
+      // 恢复训练 id 锚点（v1.61）：自增计数器不入档，读档后新任务若从 0 重数
+      // 会与档内旧 id 重复（列表 key 撞车、下游按 id 判等失真）；按档内最大序号续接
+      for (const t of trainingQueue.value) {
+        const m = /^train_(\d+)$/.exec(t.id)
+        if (m) taskId = Math.max(taskId, Number(m[1]))
+      }
     }
     if (data.formations)
       // units 缺键补零：防 f.units[id] += n 对缺键产 NaN；

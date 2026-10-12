@@ -18,6 +18,8 @@ import { useResourcesStore } from '@/stores/resources'
 import { useMilitaryStore } from '@/stores/military'
 import { useCombatStore } from '@/stores/combat'
 import { ENDLESS_STRONGHOLD_ID } from '@/data/endless'
+import { WEEKLY_BOSS_ID } from '@/data/weekly-boss'
+import { useGameStore } from '@/stores/game'
 import { exploredNodes } from '@/tests/fixtures'
 
 // Mock vue-router
@@ -318,6 +320,29 @@ describe('BattleView — 战报逐条播出（v1.56）', () => {
     await wrapper.vm.$nextTick()
     expect(vm.displayedLog.length).toBeGreaterThan(before)
   })
+
+  it('Esc 跳过播出：战报补全并弹出结果弹窗', async () => {
+    const wrapper = mountBattle()
+    const vm = wrapper.vm as any
+    vm.startBattle()
+    await wrapper.vm.$nextTick()
+    expect(vm.playing).toBe(true)
+    window.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }))
+    await wrapper.vm.$nextTick()
+    expect(vm.playing).toBe(false)
+    expect(wrapper.find('.modal-overlay').exists()).toBe(true)
+    expect(vm.displayedLog.length).toBe(vm.battleLog.length)
+  })
+
+  it('播出中卸载视图：播放定时器随作用域清理', async () => {
+    const wrapper = mountBattle()
+    const vm = wrapper.vm as any
+    vm.startBattle()
+    await wrapper.vm.$nextTick()
+    expect(vm.playing).toBe(true)
+    wrapper.unmount()
+    expect(vi.getTimerCount()).toBe(0)
+  })
 })
 
 describe('BattleView — 远征深度上限', () => {
@@ -338,5 +363,157 @@ describe('BattleView — 远征深度上限', () => {
     expect(wrapper.find('.depth-frontier').exists()).toBe(true)
 
     mockRouteParams.value = { id: 'raider_1' }
+  })
+})
+
+describe('BattleView — 战损结算与驻扎切换（v1.61 补测）', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+    mockRouteParams.value = { id: 'raider_1' }
+    setupBattleReady()
+  })
+
+  afterEach(() => {
+    mockRouteParams.value = { id: 'raider_1' }
+  })
+
+  it('编队全灭：清空编队、自动撤驻并提示', async () => {
+    const wrapper = mountBattle()
+    const combat = useCombatStore()
+    exploredNodes('node_orbit')
+    combat.completedStrongholds.add('raider_1')
+    expect(combat.garrison('raider_1', 'f1')).toBe(true)
+    const military = useMilitaryStore()
+    ;(combat as unknown as { resolveBattle: unknown }).resolveBattle = () => ({
+      victory: false,
+      log: [{ round: 1, msg: 'demo', side: 'system' }],
+      rewards: {},
+      losses: { assault: 10 },
+      rounds: 1,
+    })
+    const vm = wrapper.vm as any
+    const shown: string[] = []
+    vi.spyOn(vm.toast, 'show').mockImplementation((...args: unknown[]) => {
+      shown.push(String(args[0]))
+    })
+    vm.startBattle()
+    await wrapper.vm.$nextTick()
+    expect(military.formations[0].units.assault).toBe(0)
+    expect(combat.garrisoned['raider_1']).toBeUndefined()
+    expect(shown.some((m) => m.includes('全军覆没'))).toBe(true)
+    expect(shown.some((m) => m.includes('已从驻扎撤回'))).toBe(true)
+  })
+
+  it('部分战损：编队减员并提示', async () => {
+    const wrapper = mountBattle()
+    const combat = useCombatStore()
+    ;(combat as unknown as { resolveBattle: unknown }).resolveBattle = () => ({
+      victory: true,
+      log: [{ round: 1, msg: 'demo', side: 'system' }],
+      rewards: {},
+      losses: { assault: 4 },
+      rounds: 1,
+    })
+    const military = useMilitaryStore()
+    const vm = wrapper.vm as any
+    const shown: string[] = []
+    vi.spyOn(vm.toast, 'show').mockImplementation((...args: unknown[]) => {
+      shown.push(String(args[0]))
+    })
+    vm.startBattle()
+    await wrapper.vm.$nextTick()
+    expect(military.formations[0].units.assault).toBe(6)
+    expect(shown.some((m) => m.includes('损失 4 支部队'))).toBe(true)
+  })
+
+  it('已驻扎时点击驻扎按钮：直接撤回，不再弹确认', async () => {
+    exploredNodes('node_orbit')
+    const combat = useCombatStore()
+    combat.completedStrongholds.add('raider_1')
+    const wrapper = mountBattle()
+    expect(combat.garrison('raider_1', 'f1')).toBe(true)
+    const btn = wrapper.find('[data-testid="battle-garrison"]')
+    expect((btn.element as HTMLButtonElement).disabled).toBe(false)
+    await btn.trigger('click')
+    expect(combat.garrisoned['raider_1']).toBeUndefined()
+    expect(wrapper.find('.garrison-confirm-modal').exists()).toBe(false)
+  })
+
+  it('编队被他处占用：确认驻扎被拒、弹窗收合并提示', async () => {
+    exploredNodes('node_orbit', 'node_inner')
+    mockRouteParams.value = { id: 'raider_2' }
+    const combat = useCombatStore()
+    combat.completedStrongholds.add('raider_1')
+    combat.completedStrongholds.add('raider_2')
+    const wrapper = mountBattle()
+    expect(combat.garrison('raider_1', 'f1')).toBe(true)
+    const vm = wrapper.vm as any
+    const shown: string[] = []
+    vi.spyOn(vm.toast, 'show').mockImplementation((...args: unknown[]) => {
+      shown.push(String(args[0]))
+    })
+    const btn = wrapper.find('[data-testid="battle-garrison"]')
+    expect((btn.element as HTMLButtonElement).disabled).toBe(false)
+    await btn.trigger('click')
+    const modal = wrapper.find('.garrison-confirm-modal')
+    expect(modal.exists()).toBe(true)
+    await modal.find('.btn-accent').trigger('click')
+    expect(combat.garrisoned['raider_2']).toBeUndefined()
+    expect(wrapper.find('.garrison-confirm-modal').exists()).toBe(false)
+    expect(shown.some((m) => m.includes('无法驻扎'))).toBe(true)
+  })
+})
+
+describe('BattleView — 每周强敌（v1.61 补测）', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+    mockRouteParams.value = { id: WEEKLY_BOSS_ID }
+    setupBattleReady()
+    const combat = useCombatStore()
+    combat.completedStrongholds.add('silencer_3')
+    combat.expeditionBest = 6
+  })
+
+  afterEach(() => {
+    mockRouteParams.value = { id: 'raider_1' }
+  })
+
+  it('本周已击败：出战短路，不结算不重复发奖', async () => {
+    const game = useGameStore()
+    game.daily.claimWeeklyBoss()
+    const combat = useCombatStore()
+    const spy = vi.spyOn(combat, 'resolveBattle')
+    const resources = useResourcesStore()
+    const before = resources.getAmount('energy').toNumber()
+    const wrapper = mountBattle()
+    const vm = wrapper.vm as any
+    vm.startBattle()
+    await wrapper.vm.$nextTick()
+    expect(spy).not.toHaveBeenCalled()
+    expect(resources.getAmount('energy').toNumber()).toBe(before)
+    expect(wrapper.find('.modal-overlay').exists()).toBe(false)
+    const btn = wrapper.find('[data-testid="battle-start"]')
+    expect((btn.element as HTMLButtonElement).disabled).toBe(true)
+    spy.mockRestore()
+  })
+
+  it('周 Boss 胜利：记账本周已击败并即时发放奖励', async () => {
+    const wrapper = mountBattle()
+    const combat = useCombatStore()
+    ;(combat as unknown as { resolveBattle: unknown }).resolveBattle = () => ({
+      victory: true,
+      log: [{ round: 1, msg: 'demo', side: 'system' }],
+      rewards: { energy: 500 },
+      losses: {},
+      rounds: 1,
+    })
+    const resources = useResourcesStore()
+    const before = resources.getAmount('energy').toNumber()
+    const vm = wrapper.vm as any
+    vm.startBattle()
+    await wrapper.vm.$nextTick()
+    expect(useGameStore().daily.isWeeklyBossDefeated()).toBe(true)
+    expect(resources.getAmount('energy').toNumber()).toBe(before + 500)
+    expect(wrapper.find('.modal-overlay').exists()).toBe(true)
   })
 })

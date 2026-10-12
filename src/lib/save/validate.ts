@@ -217,9 +217,9 @@ function validateSaveData(data: unknown): data is SaveData {
   // hours 须为正数（读取侧再按档位表白名单过滤）；startTime 非负有限
   if (mil.dispatches !== undefined) {
     if (!_isObject(mil.dispatches)) return false
-    for (const d of Object.values(mil.dispatches)) {
-      if (!_isObject(d)) return false
-      const { hours, startTime } = d as { hours: unknown; startTime: unknown }
+    for (const disp of Object.values(mil.dispatches)) {
+      if (!_isObject(disp)) return false
+      const { hours, startTime } = disp as { hours: unknown; startTime: unknown }
       if (!_isNonNegFinite(hours) || !(hours > 0)) return false
       if (!_isNonNegFinite(startTime)) return false
     }

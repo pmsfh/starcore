@@ -323,10 +323,14 @@ export const useGameStore = defineStore('game', () => {
     lastTickTime.value = Date.now()
     tickTimer = setInterval(tick, TICK_INTERVAL)
     saveTimer = setInterval(save, 15000) // 自动存档周期 15 秒：压缩崩溃或误关时的进度丢失窗口
-    // 标签页回到前台时立即触发一次 tick，补算后台期间的进度
+    // 标签页回到前台时立即触发一次 tick，补算后台期间的进度；
+    // 切到后台时立即同步落档（v1.61）：移动端进程可能被系统回收，15 秒
+    // 自动存档窗口不可等，失败时由 saveFailed 在界面提示
     visibilityHandler = () => {
       if (document.visibilityState === 'visible') {
         tick()
+      } else if (document.visibilityState === 'hidden') {
+        saveSync()
       }
     }
     document.addEventListener('visibilitychange', visibilityHandler)

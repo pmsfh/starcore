@@ -403,3 +403,23 @@ describe('military store · 派遣远征（v1.27 方案 6）', () => {
     expect(validateAndRepair(bad({ f1: { hours: 4 } }))).toBe(false)
   })
 })
+
+describe('military — 训练 id 锚点恢复（v1.61）', () => {
+  beforeEach(() => {
+    setActivePinia(createPinia())
+    setTrainingSlotProvider(() => MAX_TRAINING_SLOTS)
+  })
+
+  it('读档后新任务 id 与档内旧 id 不重复', () => {
+    const m = useMilitaryStore()
+    m.hydrate({
+      owned: { assault: 0, guard: 0, heavy: 0, psionic: 0 },
+      training: [{ id: 'train_7', unitId: 'assault', count: 1, remaining: 5, totalTime: 5 }],
+      formations: [],
+    })
+    expect(m.startTraining('assault', 1, afford, afford)).toBe(true)
+    const ids = m.trainingQueue.map((t) => t.id)
+    expect(ids).toContain('train_8')
+    expect(new Set(ids).size).toBe(ids.length)
+  })
+})

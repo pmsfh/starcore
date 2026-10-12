@@ -946,3 +946,32 @@ describe('getDisplayRate 实时速率', () => {
     }
   })
 })
+
+describe('game store — 后台切换存档（v1.61）', () => {
+  beforeEach(async () => {
+    setActivePinia(createPinia())
+    setRelicSlotProvider(() => 0)
+    await clearAllSaves()
+  })
+
+  it('切到后台（hidden）：立即同步落档到 localStorage 备份通道', async () => {
+    const game = useGameStore()
+    await game.init()
+    expect(game.isRunning).toBe(true)
+    localStorage.removeItem(BACKUP_KEY)
+    const own = Object.getOwnPropertyDescriptor(document, 'visibilityState')
+    Object.defineProperty(document, 'visibilityState', { value: 'hidden', configurable: true })
+    try {
+      document.dispatchEvent(new Event('visibilitychange'))
+      const raw = localStorage.getItem(BACKUP_KEY)
+      expect(raw).not.toBeNull()
+      const envelope = JSON.parse(raw as string) as { d: string; c: string }
+      const payload = JSON.parse(envelope.d) as { version: number }
+      expect(payload.version).toBe(1)
+    } finally {
+      if (own) Object.defineProperty(document, 'visibilityState', own)
+      else delete (document as unknown as { visibilityState?: string }).visibilityState
+      game.stop()
+    }
+  })
+})

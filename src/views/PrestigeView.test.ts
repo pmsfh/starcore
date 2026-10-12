@@ -197,3 +197,25 @@ describe('PrestigeView — 无限天赋批量预览', () => {
     expect((btn.element as HTMLButtonElement).disabled).toBe(true)
   })
 })
+
+describe('PrestigeView — 无限节点总加成显示（v1.61）', () => {
+  beforeEach(() => {
+    pinia = createPinia()
+    setActivePinia(pinia)
+  })
+
+  it('大等级改用 Decimal 求值：不出现 Infinity，超双精度回退科学计数', async () => {
+    const transcend = useTranscendStore()
+    const node = transcend.tree.find((n) => n.id === 't_inf_prod')
+    expect(node).toBeTruthy()
+    node!.level = 3
+    const wrapper = mountPrestige()
+    await wrapper.vm.$nextTick()
+    const labels = () => wrapper.findAll('.node-eff-total').map((w) => w.text())
+    expect(labels().some((s) => s.includes('+33%'))).toBe(true)
+    node!.level = 9000
+    await wrapper.vm.$nextTick()
+    expect(wrapper.html()).not.toContain('Infinity')
+    expect(labels().some((s) => /e\d+%/.test(s))).toBe(true)
+  })
+})
