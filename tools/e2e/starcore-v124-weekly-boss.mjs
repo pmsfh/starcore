@@ -143,7 +143,7 @@ console.log('== C. 击败流：出战胜利 → 记账 → 已击败禁战 ==');
 
   await page.goto(BASE + '/battle/weekly_boss', { waitUntil: 'networkidle' });
   await page.waitForTimeout(600);
-  check('B4 战斗页渲染 Boss 名（周强敌）', (await page.locator('.s-name').first().textContent()).includes('周强敌'));
+  check('B4 战斗页渲染 Boss 名（每周强敌）', (await page.locator('.s-name').first().textContent()).includes('每周强敌'));
   check('B5 敌方编成渲染', (await page.locator('.enemy-card').count()) > 0);
   check('B6 驻扎按钮隐藏', (await page.locator('[data-testid="battle-garrison"]').count()) === 0);
   check('B7 深度面板隐藏', (await page.locator('[data-testid="endless-depth-panel"]').count()) === 0);

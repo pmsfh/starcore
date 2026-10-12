@@ -50,7 +50,7 @@ export default {
   'content.transcend.t_inf_offline.name': 'Time Dilation',
   'content.transcend.t_inf_prod.desc':
     'All resource production permanently +10% per level; repeatable',
-  'content.transcend.t_inf_prod.effect.0.label': 'All production ×1.1/level',
+  'content.transcend.t_inf_prod.effect.0.label': 'All resource production ×1.1/level',
   'content.transcend.t_inf_prod.name': 'Singularity Resonance',
   'content.transcend.t_offline.desc': 'Offline earnings +50% more',
   'content.transcend.t_offline.effect.0.label': 'Offline earnings ×1.5',

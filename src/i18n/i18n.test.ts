@@ -12,7 +12,7 @@ describe('t — 取词与回退', () => {
   })
 
   it('命名插值', () => {
-    expect(t('home.daily.checkedIn', { streak: 3 })).toBe('今日已签 · 连击 3 天')
+    expect(t('home.daily.checkedIn', { streak: 3 })).toBe('今日已签到 · 连续 3 天')
     expect(t('home.actions.upgradable', { count: 2 })).toBe('2 个建筑可升级')
   })
 

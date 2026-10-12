@@ -8,7 +8,7 @@ A sci-fi idle web game. In 2387 AD, a colony ship arrives at the ruins of a
 Dyson sphere in the Andromeda Galaxy. You run a StarCore civilization,
 accumulating energy, exploring the stars, conquering strongholds and
 collecting relics in the eternal contest between civilization and entropy,
-growing on through "Singularity Restart" rebirth cycles.
+growing through "Singularity Restart" rebirth cycles.
 
 ## Gameplay Overview
 

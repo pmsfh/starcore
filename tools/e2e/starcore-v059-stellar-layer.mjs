@@ -147,7 +147,7 @@ console.log('== E. 新科技渲染 + 成就 34 卡不回归 ==');
 {
   const page = await newSeededPage(browser, makeSave({}), '/tech');
   for (const [id, zh] of [
-    ['stellar_charting', '银河测绘'],
+    ['stellar_charting', '恒星系测绘'],
     ['wormhole_stabilization', '虫洞稳定理论'],
     ['fleet_logistics', '舰队后勤学'],
     ['dark_resonance', '暗物质共振'],
@@ -157,7 +157,7 @@ console.log('== E. 新科技渲染 + 成就 34 卡不回归 ==');
     check(`科技「${zh}」渲染`, (await card.count()) === 1);
   }
   check('科卡总数 59', (await page.locator('.tech-card').count()) === 59);
-  // 富档：舰队后勤学（前置 adv_units 未研究）应显示锁定/不可研究；银河测绘同理。
+  // 富档：舰队后勤学（前置 adv_units 未研究）应显示锁定/不可研究；恒星系测绘同理。
   // 这里只验证渲染与状态类存在，不验证可研（前置链由 requires 数据保证）
   await page.context().close();
   const page2 = await newSeededPage(browser, makeSave({}), '/achievements');

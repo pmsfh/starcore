@@ -9,7 +9,7 @@
  * 改数值前先改核验表再同步此处）：
  * - 奖励 = silencer_3 奖励五资源 × 1.35^(max(1,best)-1) × 时长权重 × 特性乘区，
  *   与 endlessStronghold 同源锚玩家远征前沿（expeditionBest 终身数据，实时派生不冻结，
- *   周强敌同口径）；relicChance/relicRarityBias 不入派遣奖励（纯资源包）
+ *   每周强敌同口径）；relicChance/relicRarityBias 不入派遣奖励（纯资源包）
  * - 时长档位 4/8/12/24h，权重 1.0/2.2/3.6/8.0（每小时费率单调不减）
  * - 提前召回按已过时长占比结算（round(全额 × t/H)），反复短派小时收益恒为 w/H 无套利
  * - 后勤特性 ×1.2 后置作用（复用 traits.garrisonMult）
@@ -21,7 +21,7 @@ import type { TraitId } from './traits'
 import { getTrait, DEFAULT_TRAIT_ID } from './traits'
 import { STRONGHOLDS } from './pve'
 
-/** 派遣奖励基准据点（与远征里程碑/周强敌同源：silencer_3 奖励包） */
+/** 派遣奖励基准据点（与远征里程碑/每周强敌同源：silencer_3 奖励包） */
 const DISPATCH_BASE_STRONGHOLD = 'silencer_3'
 
 /** 派遣奖励键面：纯资源包（基础包里的遗物概率字段不进派遣奖励） */

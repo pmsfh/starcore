@@ -1,7 +1,7 @@
 /**
  * traits：English content strings
  *
- * Chinese is the baseline language; translations follow the shared glossary.
+ * Chinese is the baseline language; translations follow references/i18n-en-glossary.md.
  */
 export default {
   'content.traits.balanced.name': 'Balanced',

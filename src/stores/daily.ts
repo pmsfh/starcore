@@ -3,11 +3,11 @@
  *
  * 职责：
  * - 每日签到：当日首次进游戏自动签到（本地日期字符串判定，放置游戏少一次交互）；
- *   连击 1/3/7 天给节点奖励（7 天封顶循环），断签给回归补偿包（回来总有东西拿）
+ *   连续 1/3/7 天给节点奖励（7 天封顶循环），断签给回归补偿包（回来总有东西拿）
  * - 周期挑战：每周一（本地时区）换新 3 项，从固定模板池按周标识种子抽取
  *   （同周确定性，FNV-1a 哈希 → 洗牌，与战斗 PRNG 同族）；计数复用成就
  *   终身计数钩子（bump 接线在 game store 各 record 处），换周清零；
- *   完成后手动领取（暗物质 + 签到连击 +1，两个系统勾连）
+ *   完成后手动领取（暗物质 + 连续签到 +1，两个系统勾连）
  *
  * 设计意图：
  * - 量级克制：签到/挑战奖励都是「顺路的糖」（成就奖励同级），不造第二资源轴
@@ -57,7 +57,7 @@ interface ChallengeTemplate {
     | 'garrisonHours'
   /** 档位阈值（从低到高） */
   targets: number[]
-  /** 完成奖励：暗物质 + 签到连击加成天数 */
+  /** 完成奖励：暗物质 + 连续签到加成天数 */
   rewardDark: number[]
   name: (target: number) => string
 }
@@ -142,7 +142,7 @@ export interface WeeklyChallenge {
   claimed: boolean
 }
 
-/** 连击节点奖励：第 1/3/7 天，7 天封顶循环 */
+/** 连续签到节点奖励：第 1/3/7 天，7 天封顶循环 */
 export const STREAK_CYCLE = 7
 
 /** 每周挑战条数（模板池洗牌后截取数；测试断言派生用，v1.04） */
@@ -179,7 +179,7 @@ export const useDailyStore = defineStore('daily', () => {
   const weeklyCounters = ref(emptyCounters())
   const challengeWeek = ref('')
   const weekChallenges = ref<WeeklyChallenge[]>([])
-  // 本周强敌已击败的周标识（v1.24 方案 5；空串 = 未击败。
+  // 每周强敌已击败的周标识（v1.24 方案 5；空串 = 未击败。
   // 语义：仅当值 === 当前周标识时视为已击败，跨周自动失效）
   const weeklyBossClaimedWeek = ref('')
   // 响应式「当前周」（v1.25）：由 ensureWeek 随 tick 对齐、跨周自动更新，
@@ -196,7 +196,7 @@ export const useDailyStore = defineStore('daily', () => {
     ensureWeek(now)
     const today = localDateStr(now)
     if (lastCheckIn.value === today) return null
-    // 断签判定：上次签到不是昨天 → 连击清零 + 回归补偿
+    // 断签判定：上次签到不是昨天 → 连续天数清零 + 回归补偿
     const yesterday = localDateStr(new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1))
     const returned = lastCheckIn.value !== '' && lastCheckIn.value !== yesterday
     if (returned) {
@@ -269,12 +269,12 @@ export const useDailyStore = defineStore('daily', () => {
     return !c.claimed && weeklyCounters.value[c.kind] >= c.target
   }
 
-  /** 领取挑战奖励：暗物质 + 连击 +1。返回奖励（暗物质量），未达成/已领返回 null */
+  /** 领取挑战奖励：暗物质 + 连续 +1。返回奖励（暗物质量），未达成/已领返回 null */
   function claim(templateId: string): { dark: number; streakBonus: number } | null {
     const c = weekChallenges.value.find((x) => x.templateId === templateId)
     if (!c || c.claimed || weeklyCounters.value[c.kind] < c.target) return null
     c.claimed = true
-    streak.value++ // 勾连：挑战完成给连击 +1（可跳过断签判定提前到下一节点）
+    streak.value++ // 勾连：挑战完成给连续 +1（可跳过断签判定提前到下一节点）
     return { dark: c.rewardDark, streakBonus: 1 }
   }
 
@@ -362,7 +362,7 @@ export const useDailyStore = defineStore('daily', () => {
         })
         .filter((c): c is WeeklyChallenge => c !== null)
     }
-    // 本周强敌标记（v1.24 可选字段）：旧档缺键保持空串（未击败）；
+    // 每周强敌标记（v1.24 可选字段）：旧档缺键保持空串（未击败）；
     // 仅认字符串形态，内容真伪由读取侧按当前周比较兜底
     const wb = (data as { weeklyBoss?: { claimedWeek?: unknown } }).weeklyBoss
     if (wb && typeof wb.claimedWeek === 'string') {

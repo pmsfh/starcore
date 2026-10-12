@@ -7,7 +7,7 @@ export default {
   'achievements.bonusExplore': 'Exploration +{explore}%',
   'achievements.bonusOffline': 'Offline +{offline}%',
   'achievements.bonusPrestige': 'Negative Entropy +{prestige}%',
-  'achievements.bonusProd': 'All production +{prod}%',
+  'achievements.bonusProd': 'All resource production +{prod}%',
   'achievements.noBonus': 'No bonuses earned yet',
   'achievements.subtitle': 'Milestones spanning rebirths, lighting permanent bonuses',
   'achievements.title': 'Hall of Achievements',

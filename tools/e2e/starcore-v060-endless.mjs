@@ -1,9 +1,9 @@
 // 星核纪元 v0.60 专项回归：无尽远征模式
 // A. 未解锁：MapView 远征区块渲染、置灰卡、提示文案、点击不跳转
-// B. 注档克沉默者旗舰：解锁亮卡、前沿=第1层；旧档无 expeditionBest 字段兼容
+// B. 注档克沉默者旗舰：解锁亮卡、前沿=第 1 层；旧档无 expeditionBest 字段兼容
 // C. /battle/endless：深度面板（跟随前沿）、敌情预览、驻扎隐藏、出征胜利推进深度
 // D. 深度步进器：上下限钳制、重打不推进；失败不推进
-// E. 注档 expeditionBest=3：前沿第4层、旧层数值随深度递增；转生后入口重新锁定但档案深度保留
+// E. 注档 expeditionBest=3：前沿第 4 层、旧层数值随深度递增；转生后入口重新锁定但档案深度保留
 // F. 常规据点战斗页不受影响（驻扎按钮仍在）；成就 49 卡不回归；移动视口不溢出
 // G. 远征里程碑（v1.20）：领取条显示/领取回执、补领逐档清账、终身数据不挂本轮解锁、已领幂等
 import { launch, check, finish, newSeededPage } from './starcore-pwlib.mjs';
@@ -89,7 +89,7 @@ console.log('== A. 未解锁：置灰卡 + 提示 + 点击不跳转 ==');
 }
 
 // B. 解锁 + 旧档兼容
-console.log('== B. 克旗舰解锁：亮卡 + 前沿第1层 + 旧档无字段兼容 ==');
+console.log('== B. 克旗舰解锁：亮卡 + 前沿第 1 层 + 旧档无字段兼容 ==');
 {
   const page = await newSeededPage(browser, makeSave({ completedNodes: UNLOCK_NODE, completedStrongholds: ['silencer_3'] }), '/map');
   const unlocked = page.locator('[data-testid="endless-card-unlocked"]');
@@ -116,7 +116,7 @@ console.log('== C. /battle/endless：深度跟随前沿 + 胜利推进 ==');
   check('默认深度=前沿第 1 层', (await panel.locator('[data-testid="endless-depth-value"]').textContent()).includes('第 1 层'));
   check('前沿徽标显示', (await panel.locator('.depth-frontier').count()) === 1);
   check('减按钮禁用（已在下限）', await panel.locator('[data-testid="endless-depth-minus"]').isDisabled());
-  check('据点名「无尽深渊·第1层」', (await page.locator('.s-name').first().textContent()).includes('无尽深渊·第1层'));
+  check('据点名「无尽深渊·第 1 层」', (await page.locator('.s-name').first().textContent()).includes('无尽深渊·第 1 层'));
   check('敌方预览渲染', (await page.locator('.enemy-card').count()) >= 1);
   check('敌方带深渊前缀', (await page.locator('.e-name').first().textContent()).includes('深渊'));
   check('驻扎按钮隐藏', (await page.locator('button', { hasText: '挂机驻扎' }).count()) === 0);
@@ -162,7 +162,7 @@ console.log('== D. 深度步进钳制 + 重打不推进 ==');
   check('连续－降到第 2 层', (await value()).includes('第 2 层'));
   check('非前沿时＋恢复可用', !(await plus.isDisabled()));
   check('前沿徽标消失（非前沿）', (await panel.locator('.depth-frontier').count()) === 0);
-  check('敌情随深度变化（第2层）', (await page.locator('.s-name').first().textContent()).includes('第2层'));
+  check('敌情随深度变化（第2层）', (await page.locator('.s-name').first().textContent()).includes('第 2 层'));
   // 重打已过深度：胜利也只拿到奖励，best 仍 3（本处验证 UI 流程；推进语义单测覆盖）
   await page.getByRole('button', { name: /出征/ }).click();
   // 战报逐条播完后结果弹窗才出场（v1.56），固定等待改条件等待

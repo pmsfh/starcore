@@ -1,8 +1,8 @@
 // 星核纪元 v0.62 专项回归：每日签到/周期挑战
-// A. 全新档：首页 DailyCard 渲染（badge 待签/已签、3 项挑战、连击点）
-// B. 自动签到：全新档进游戏数秒后 tick 自动首签（badge 变已签 + 连击 1）
+// A. 全新档：首页 DailyCard 渲染（badge 待签/已签到、3 项挑战、连续进度点）
+// B. 自动签到：全新档进游戏数秒后 tick 自动首签（badge 变已签到 + 连续 1）
 // C. 注档已完成挑战：领取按钮出现 → 点击 → 暗物质到账 + 按钮变已领取
-// D. 注档连击 5 天 + 今日已签：badge 连击 5、圆点 5 亮
+// D. 注档连续 5 天 + 今日已签到：badge 连续 5、圆点 5 亮
 // E. 换周重掷：注档旧周标识 → 加载后挑战重掷（challengeWeek 变当前周）
 // F. 成就 49 卡不回归；导航无新增项；移动视口不溢出
 // G. 扩类挑战（v1.21）：新 kind（远征/合成/强化/驻扎）注档渲染与领取，旧五键计数器兼容
@@ -60,18 +60,18 @@ console.log('== A/B. 全新档：卡片渲染 + 自动首签 ==');
   const page = await newSeededPage(browser, makeSave(), '/', { waitMs: 1500 });
   check('DailyCard 渲染', (await page.locator('[data-testid="daily-card"]').count()) === 1);
   check('挑战 3 行', (await page.locator('.challenge-row').count()) === 3);
-  check('连击点 7 个', (await page.locator('.streak-dots .dot').count()) === 7);
-  // 自动签到：等 tick（1s 间隔），badge 变「今日已签」
+  check('连续进度点 7 个', (await page.locator('.streak-dots .dot').count()) === 7);
+  // 自动签到：等 tick（1s 间隔），badge 变「今日已签到」
   await page.waitForTimeout(2500);
   const badge = (await page.locator('[data-testid="checkin-badge"]').textContent()).trim();
-  check('自动首签完成（badge 已签）', badge.includes('今日已签'));
-  check('连击 1 天', badge.includes('连击 1 天'));
+  check('自动首签完成（badge 已签到）', badge.includes('今日已签到'));
+  check('连续 1 天', badge.includes('连续 1 天'));
   check('首签点亮 1 个圆点', (await page.locator('.streak-dots .dot.lit').count()) === 1);
-  // 刷新后不重复签（连击仍 1）
+  // 刷新后不重复签（连续仍 1）
   await page.reload({ waitUntil: 'networkidle' });
   await page.waitForTimeout(2500);
   const badge2 = (await page.locator('[data-testid="checkin-badge"]').textContent()).trim();
-  check('刷新后不重复签到（仍连击 1）', badge2.includes('连击 1 天'));
+  check('刷新后不重复签到（仍连续 1）', badge2.includes('连续 1 天'));
   await page.context().close();
 }
 
@@ -94,21 +94,21 @@ console.log('== C. 注档完成态：领取 → 暗物质到账 ==');
         ],
       },
     }), '/', { waitMs: 1500 });
-  check('连击 5 不适用（badge 连击 2）', (await page.locator('[data-testid="checkin-badge"]').textContent()).includes('连击 2 天'));
+  check('连续 5 不适用（badge 连续 2）', (await page.locator('[data-testid="checkin-badge"]').textContent()).includes('连续 2 天'));
   check('挑战行显示 5/5', (await page.locator('[data-testid="challenge-wk_battles"] .c-count').textContent()).trim() === '5/5');
   const claimBtn = page.locator('[data-testid="claim-wk_battles"]');
   check('领取按钮出现', (await claimBtn.count()) === 1);
   await claimBtn.click();
   await page.waitForTimeout(500);
   check('领取后按钮消失（已领取）', (await page.locator('[data-testid="challenge-wk_battles"] .c-claimed').count()) === 1);
-  // 暗物质到账：签到勾连连击 +1（2→3），且 +3 暗物质进资源，检查资源面板数值变化
+  // 暗物质到账：签到勾连：连续 +1（2→3），且 +3 暗物质进资源，检查资源面板数值变化
   const overviewDark = await page.evaluate(() => localStorage.getItem('starcore_save_v1_backup'));
   check('存档已更新（领取落库）', overviewDark !== null);
   await page.context().close();
 }
 
-// D. 连击 5 天注档
-console.log('== D. 连击 5 天：圆点 5 亮 ==');
+// D. 连续 5 天注档
+console.log('== D. 连续 5 天：圆点 5 亮 ==');
 {
   const page = await newSeededPage(browser, makeSave({
       daily: {
@@ -119,7 +119,7 @@ console.log('== D. 连击 5 天：圆点 5 亮 ==');
         weekChallenges: [],
       },
     }), '/', { waitMs: 1500 });
-  check('badge 连击 5 天', (await page.locator('[data-testid="checkin-badge"]').textContent()).includes('连击 5 天'));
+  check('badge 连续 5 天', (await page.locator('[data-testid="checkin-badge"]').textContent()).includes('连续 5 天'));
   check('圆点 5 亮', (await page.locator('.streak-dots .dot.lit').count()) === 5);
   // v0.94：空表 + 当前周在加载时补掷（不再整周空窗）
   check('空挑战列表加载后补掷 3 项', (await page.locator('.challenge-row').count()) === 3);

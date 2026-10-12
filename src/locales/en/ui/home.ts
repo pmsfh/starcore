@@ -41,10 +41,10 @@ export default {
   'home.daily.pendingAuto': 'Pending check-in (auto)',
   'home.daily.streakUnit': 'days',
   'home.daily.title': 'Daily Check-in',
-  'home.hero.aria': 'StarCore Core',
+  'home.hero.aria': 'StarCore',
   'home.hero.buttonAria': 'StarCore resources; click to enter the Build page',
   'home.hero.finalSalute':
-    'The Forerunners’ road ends here; the StarCore civilization takes up the Gatekeepers’ watch. The entire universe has been explored',
+    'The Forerunners’ road ends here; the StarCore civilization takes up the Gatekeepers’ watch. The entire universe has been explored.',
   'home.hero.onboarding':
     'Here are your five resources with amounts and rates. Click to jump to the Build page.',
   'home.overview.army': 'Units',

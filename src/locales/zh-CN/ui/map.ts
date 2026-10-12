@@ -6,7 +6,7 @@
 export default {
   'map.abyssDepth': '深渊·第 {depth} 层',
   'map.abyssLocked': '？？？',
-  'map.allDoneHint': '先驱者的航路与信号就此走完，星核文明接过了守门者的位置',
+  'map.allDoneHint': '先驱者的航路与信号就此走完，星核文明接过了守门者的位置。',
   'map.allDoneTitle': '全宇宙已探索完毕',
   'map.deepest': '历史最深',
   'map.depthLead': '第',
@@ -18,7 +18,7 @@ export default {
   'map.milestoneClaim': '领取奖励',
   'map.weeklyBossTitle': '每周强敌',
   'map.weeklyBossReady': '本周考题：{name}，击败领取丰厚奖励',
-  'map.weeklyBossDone': '本周强敌已击败，下周一刷新',
+  'map.weeklyBossDone': '每周强敌已击败，下周一刷新',
   'map.weeklyBossLocked': '攻克沉默者旗舰后开放',
   'map.milestoneClaimed': '已领取第 {depth} 层里程碑奖励',
   'map.explore': '探索',

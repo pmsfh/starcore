@@ -47,15 +47,14 @@ export default {
   'content.pve.beast_8.enemy.3.name': 'Stareater Leviathan',
   'content.pve.beast_8.enemy.4.name': 'Void White Whale King',
   'content.pve.beast_8.name': 'Void White Whale Pod',
-  'content.pve.raider_1.desc':
-    'Scattered raiders entrenched in the Orbital Debris Belt; good practice for new recruits',
+  'content.pve.raider_1.desc': 'Scattered raiders entrenched in the Orbital Debris Belt',
   'content.pve.raider_1.enemy.0.name': 'Raider Infantry',
   'content.pve.raider_1.name': 'Small Raider Camp',
   'content.pve.raider_10.desc':
     'The ultimate Court built by Raiders who crossed the gate; galaxy-scale plunder begins here',
   'content.pve.raider_10.enemy.0.name': 'Marauder Skiff',
-  'content.pve.raider_10.enemy.1.name': 'Heavy Raider Cruiser',
-  'content.pve.raider_10.enemy.2.name': 'Raider Escort',
+  'content.pve.raider_10.enemy.1.name': 'Marauder Cruiser',
+  'content.pve.raider_10.enemy.2.name': 'Marauder Escort',
   'content.pve.raider_10.enemy.3.name': 'Marauder Dreadnought',
   'content.pve.raider_10.enemy.4.name': 'Broodnest Tyrant',
   'content.pve.raider_10.name': 'Galactic Imperial Court',
@@ -77,13 +76,13 @@ export default {
   'content.pve.raider_12.name': 'Void Raider Flagship',
   'content.pve.raider_13.desc':
     'The Arbiter Legion of Raiders who raised their stone at the Star-Veil Hub, crossing the line without knowing',
-  'content.pve.raider_13.enemy.0.name': 'Deep Space Overlord',
+  'content.pve.raider_13.enemy.0.name': 'Void Overlord',
   'content.pve.raider_13.enemy.1.name': 'Broodnest Tyrant',
   'content.pve.raider_13.enemy.2.name': 'Brood Carrier',
   'content.pve.raider_13.enemy.3.name': 'Elite Armada',
   'content.pve.raider_13.enemy.4.name': 'Marauder Dreadnought',
-  'content.pve.raider_13.name': 'Deep Space Arbiter Legion',
-  'content.pve.raider_2.desc': 'An organized Raider outpost with heavier firepower',
+  'content.pve.raider_13.name': 'Void Arbiter Legion',
+  'content.pve.raider_2.desc': 'An organized Raider outpost',
   'content.pve.raider_2.enemy.0.name': 'Raider Infantry',
   'content.pve.raider_2.enemy.1.name': 'Raider Gunner',
   'content.pve.raider_2.name': 'Raider Outpost',
@@ -104,8 +103,8 @@ export default {
   'content.pve.raider_6.desc':
     'A Raider fleet that rushed into the cluster first, salvaging wrecks scattered from the ring structure',
   'content.pve.raider_6.enemy.0.name': 'Marauder Skiff',
-  'content.pve.raider_6.enemy.1.name': 'Heavy Raider Cruiser',
-  'content.pve.raider_6.enemy.2.name': 'Raider Escort',
+  'content.pve.raider_6.enemy.1.name': 'Marauder Cruiser',
+  'content.pve.raider_6.enemy.2.name': 'Marauder Escort',
   'content.pve.raider_6.name': 'Cluster Marauder Fleet',
   'content.pve.raider_7.desc':
     'A Raider broodnest armada built around the ring structure, the Tyrant flagship seated at its core',
@@ -117,8 +116,8 @@ export default {
   'content.pve.raider_8.desc':
     'A Raider Court that slipped through the Frozen Gate first, claiming the ancient lane as private property',
   'content.pve.raider_8.enemy.0.name': 'Marauder Skiff',
-  'content.pve.raider_8.enemy.1.name': 'Heavy Raider Cruiser',
-  'content.pve.raider_8.enemy.2.name': 'Raider Escort',
+  'content.pve.raider_8.enemy.1.name': 'Marauder Cruiser',
+  'content.pve.raider_8.enemy.2.name': 'Marauder Escort',
   'content.pve.raider_8.enemy.3.name': 'Marauder Dreadnought',
   'content.pve.raider_8.name': 'Arm-Rim Marauder Court',
   'content.pve.raider_9.desc':
@@ -127,14 +126,14 @@ export default {
   'content.pve.raider_9.enemy.1.name': 'Brood Carrier',
   'content.pve.raider_9.enemy.2.name': 'Elite Armada',
   'content.pve.raider_9.enemy.3.name': 'Brood Scout Boat',
-  'content.pve.raider_9.enemy.4.name': 'Raider Escort',
+  'content.pve.raider_9.enemy.4.name': 'Marauder Escort',
   'content.pve.raider_9.name': 'Court Fleet Main Force',
   'content.pve.ruin_1.desc':
     'Automated defenses left by the Forerunner civilization, holding precious data',
   'content.pve.ruin_1.enemy.0.name': 'Ancient Drone',
   'content.pve.ruin_1.name': 'Forerunner Ruins',
   'content.pve.ruin_2.desc':
-    'A sanctum said to store singularity knowledge; its guardians are immensely powerful',
+    'A sanctum said to store singularity knowledge; its guardians keep watch',
   'content.pve.ruin_2.enemy.0.name': 'Sanctum Guardian',
   'content.pve.ruin_2.enemy.1.name': 'Ancient Drone',
   'content.pve.ruin_2.name': 'Singularity Sanctum',
@@ -194,7 +193,7 @@ export default {
   'content.pve.silencer_3.enemy.1.name': 'Silent Elite',
   'content.pve.silencer_3.name': 'Flagship of the Silent Ones',
   'content.pve.silencer_4.desc':
-    'The Gatekeepers’ true body, the last harbor before the Frozen Gate, the origin of every signal',
+    'The Gatekeepers’ true body, the last harbor before the Frozen Gate',
   'content.pve.silencer_4.enemy.0.name': 'Homeport Bulwark',
   'content.pve.silencer_4.enemy.1.name': 'Gate Sentinel',
   'content.pve.silencer_4.enemy.2.name': 'Silent Watcher',

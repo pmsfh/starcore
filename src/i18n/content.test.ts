@@ -117,13 +117,13 @@ describe('内容层键闭合（数据条目 → 语言包键）', () => {
 
 describe('参数化内容键插值', () => {
   it('endless 命名与据点描述', () => {
-    expect(t('content.endless.name', { d: 3 })).toBe('无尽深渊·第3层')
-    expect(t('content.endless.prefix', { d: 12 })).toBe('深渊·第12层')
+    expect(t('content.endless.name', { d: 3 })).toBe('无尽深渊·第 3 层')
+    expect(t('content.endless.prefix', { d: 12 })).toBe('深渊·第 12 层')
     expect(t('content.endless.desc')).toContain('未知威胁')
   })
 
   it('成就助手模板', () => {
-    expect(t('content.achievements.prodLabel', { pct: 10 })).toBe('全产出 +10%')
+    expect(t('content.achievements.prodLabel', { pct: 10 })).toBe('全资源产出 +10%')
     expect(t('content.achievements.combatAttackLabel', { pct: 5 })).toBe('攻击 +5%')
     expect(t('content.achievements.combatDefenseLabel', { pct: 5 })).toBe('防御 +5%')
   })

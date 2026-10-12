@@ -11,7 +11,7 @@ export default {
   'offline.eventEnergy': '深空探测到能量波动，获得额外能量',
   'offline.gainBuildings': '建筑产出',
   'offline.gainDeepSpace': '深空事件',
-  'offline.gainGarrison': '据点驻扎收益',
+  'offline.gainGarrison': '据点驻扎产出',
   'offline.gainTraining': '部队训练完成',
   'offline.gone': '你离开了',
   'offline.title': '离线收益报告',

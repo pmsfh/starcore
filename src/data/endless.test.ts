@@ -69,7 +69,7 @@ describe('endless 敌方编成', () => {
       expect(power(d)).toBeGreaterThan(power(d - 1))
     }
     expect(d1.every((e) => e.name.includes('深渊'))).toBe(true)
-    expect(d1.some((e) => e.name.includes('第1层'))).toBe(true)
+    expect(d1.some((e) => e.name.includes('第 1 层'))).toBe(true)
   })
 
   it('编成按深度轮换 4 类模板（克制关系随模板变化）', () => {
@@ -95,7 +95,7 @@ describe('endless 敌方编成', () => {
 
   it('非法深度（0/负数/小数）钳制为正整数', () => {
     expect(endlessEnemies(0).length).toBe(endlessEnemies(1).length)
-    expect(endlessStronghold(2.7).name).toContain('第2层')
+    expect(endlessStronghold(2.7).name).toContain('第 2 层')
   })
 })
 

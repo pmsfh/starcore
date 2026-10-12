@@ -118,7 +118,7 @@ describe('transcend — 无限节点成本递增', () => {
 })
 
 describe('transcend — 效果按 level 叠加', () => {
-  it('t_inf_prod Lv3 → 全产出 ×1.1^3（target all 匹配任意资源）', () => {
+  it('t_inf_prod Lv3 → 全资源产出 ×1.1^3（target all 匹配任意资源）', () => {
     store.negativeEntropy = D(100)
     store.purchaseNode('t_inf_prod')
     store.purchaseNode('t_inf_prod')

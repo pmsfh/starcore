@@ -141,7 +141,7 @@ await sec('A. 新档冒烟', async () => {
   await page.goto(BASE_URL + '/', { waitUntil: 'networkidle' })
   await page.waitForTimeout(2500)
   const badge = await page.locator('[data-testid="checkin-badge"]').textContent().catch(() => '')
-  check('新档自动首签（连击 1 天）', badge.includes('连击 1 天'))
+  check('新档自动首签（连续 1 天）', badge.includes('连续 1 天'))
   await shot(page, 'a-new-home')
   await ctx.close()
 })
@@ -398,7 +398,7 @@ await sec('I. 每周强敌', async () => {
   await open.click()
   await page.waitForURL('**/battle/weekly_boss', { timeout: 5000 })
   await page.waitForTimeout(600)
-  check('战斗页 Boss 渲染（周强敌）', (await page.locator('.s-name').first().textContent()).includes('周强敌'))
+  check('战斗页 Boss 渲染（每周强敌）', (await page.locator('.s-name').first().textContent()).includes('每周强敌'))
   const deploy = page.locator('[data-testid="battle-start"]')
   check('出战按钮可用', !(await deploy.isDisabled()))
   await deploy.click()
@@ -511,7 +511,7 @@ await sec('L. 签到 / 周期挑战', async () => {
     ],
   }
   const page = await seeded(browser, save, '/')
-  check('每日卡渲染（连击 3 天）', (await page.locator('[data-testid="checkin-badge"]').textContent()).includes('连击 3 天'))
+  check('每日卡渲染（连续 3 天）', (await page.locator('[data-testid="checkin-badge"]').textContent()).includes('连续 3 天'))
   check('挑战行 3 条', (await page.locator('.challenge-row').count()) === 3)
   check('达标挑战进度 5/5', (await page.locator('[data-testid="challenge-wk_battles"] .c-count').textContent()).trim() === '5/5')
   await shot(page, 'l-daily')

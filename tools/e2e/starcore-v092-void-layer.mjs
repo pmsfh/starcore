@@ -47,16 +47,16 @@ const VOID_NODES = [
   'node_void_origin',
 ];
 const NEW_TECHS = [
-  ['void_charting', '深空测绘'],
+  ['void_charting', '虚空测绘'],
   ['void_command', '虚空统帅'],
   ['dark_veil', '暗幕收集网'],
-  ['void_archive', '深空记忆库'],
+  ['void_archive', '虚空记忆库'],
 ];
 const VOID_STRONGHOLDS = {
   raider_12: '虚空掠夺者旗舰',
   beast_8: '虚空白鲸群',
   ruin_8: '先驱者归航港',
-  raider_13: '深空裁决军团',
+  raider_13: '虚空裁决军团',
   silencer_7: '沉默者回响',
 };
 

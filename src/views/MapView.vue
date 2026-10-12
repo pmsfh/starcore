@@ -134,7 +134,7 @@ const weeklyBossCard = computed(() => {
   }
 })
 
-/** 周强敌卡测试标识：已击败 / 可挑战 / 未解锁（v1.50 自模板抽离） */
+/** 每周强敌卡测试标识：已击败 / 可挑战 / 未解锁（v1.50 自模板抽离） */
 const weeklyBossTestid = computed(() => {
   if (weeklyBossDefeated.value) return 'weekly-boss-done'
   if (weeklyBossUnlocked.value) return 'weekly-boss-open'
@@ -276,7 +276,7 @@ const weeklyBossTestid = computed(() => {
         </button>
       </div>
 
-      <!-- 周强敌卡（v1.24）：随远征区块并置；解锁口径同远征，未解锁置灰可见 -->
+      <!-- 每周强敌卡（v1.24）：随远征区块并置；解锁口径同远征，未解锁置灰可见 -->
       <button
         class="endless-card weekly-boss-card"
         :class="{ unlocked: weeklyBossUnlocked, defeated: weeklyBossDefeated }"
@@ -429,7 +429,7 @@ const weeklyBossTestid = computed(() => {
   padding: var(--space-2) var(--space-3);
 }
 
-/* 周强敌卡（v1.24）：复用远征卡骨架，实线边框区分 */
+/* 每周强敌卡（v1.24）：复用远征卡骨架，实线边框区分 */
 .weekly-boss-card {
   margin-top: var(--space-2);
   border-style: solid;

@@ -204,7 +204,7 @@ export default {
   'content.tech.void_charting.effect.0.label': 'Exploration efficiency ×1.3',
   'content.tech.void_charting.name': 'Void Charting',
   'content.tech.void_command.desc':
-    'A deep-space combat doctrine evolved against Void Behemoths and the Arbiter Legions; unit attack and defense +25%',
+    'A void combat doctrine evolved against Void Behemoths and the Arbiter Legions; unit attack and defense +25%',
   'content.tech.void_command.name': 'Void Command',
   'content.tech.weapon_upg.desc': 'All unit attack +20%',
   'content.tech.weapon_upg.effect.0.label': 'Unit attack ×1.2',

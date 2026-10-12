@@ -3,5 +3,5 @@
  */
 export default {
   'ui.gotIt': 'Got It',
-  'ui.skipOnboarding': 'Skip Guide',
+  'ui.skipOnboarding': 'Skip Tutorial',
 }

@@ -105,7 +105,7 @@ console.log('== C. 注档现值指标：敌情/套装解锁 ==');
   });
   const p20 = await newSeededPage(browser, mkArchive(KEYS20), '/achievements', { waitMs: 1500 });
   const b8 = p20.locator('.ach-card', { has: p20.locator('.ach-name:text-is("侦察分析员")') });
-  check('20 种敌种 →「侦察分析员」解锁', await b8.evaluate((el) => el.classList.contains('unlocked')));
+  check('20 种敌人 →「侦察分析员」解锁', await b8.evaluate((el) => el.classList.contains('unlocked')));
   const b9a = p20.locator('.ach-card', { has: p20.locator('.ach-name:text-is("敌情全录")') });
   check('20 种未达「敌情全录」', !(await b9a.evaluate((el) => el.classList.contains('unlocked'))));
   await p20.context().close();

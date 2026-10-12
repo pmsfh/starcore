@@ -187,7 +187,7 @@ describe('achievements — 外部现值指标', () => {
   })
 
   it('敌方图鉴/套装/远征长线走 provider（v1.22）', () => {
-    // 20 种敌种 → ach_battle_8（+2% 攻防），56 未满
+    // 20 种敌人 → ach_battle_8（+2% 攻防），56 未满
     zeroAchievementProviders({ enemyKinds: () => 20 })
     expect(store.checkAndUnlock().map((a) => a.id)).toContain('ach_battle_8')
     expect(store.isUnlocked('ach_battle_9')).toBe(false)

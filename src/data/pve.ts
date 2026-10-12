@@ -1,6 +1,6 @@
 /**
  * pve.ts：PVE 据点定义
- * 4 类据点（共 36 个）：掠夺者营地、异星巨兽、古代遗迹、沉默者前哨
+ * 4 类据点（共 36 个）：掠夺者营地、异星巨兽、古代遗迹、沉默者前哨站
  * 每类有多个难度层级，难度越高奖励越好
  */
 
@@ -284,7 +284,7 @@ export const STRONGHOLDS: StrongholdDef[] = [
     requires: 'node_deep',
   },
 
-  // 沉默者前哨
+  // 沉默者前哨站
   {
     id: 'silencer_1',
     name: t('content.pve.silencer_1.name'),

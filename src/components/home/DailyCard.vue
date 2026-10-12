@@ -9,7 +9,7 @@ import ProgressBar from '@/components/ui/ProgressBar.vue'
 
 const game = useGameStore()
 const checkedInToday = computed(() => game.daily.lastCheckIn === localDateStr())
-/** 连击在 7 天循环内的节点位置（1~7） */
+/** 连续签到在 7 天循环内的节点位置（1~7） */
 const cycleDay = computed(() => ((game.daily.streak - 1) % 7) + 1)
 
 /**
@@ -42,7 +42,7 @@ function claim(templateId: string) {
       </span>
     </div>
 
-    <!-- 连击进度点：7 天循环，1/3/7 为奖励节点（金色） -->
+    <!-- 连续进度点：7 天循环，1/3/7 为奖励节点（金色） -->
     <div class="streak-dots" data-testid="streak-dots">
       <span
         v-for="i in 7"

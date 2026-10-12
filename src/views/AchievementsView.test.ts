@@ -78,7 +78,7 @@ describe('AchievementsView — 解锁与进度', () => {
 
     const bonus = wrapper.find('.bonus-value').text()
     expect(bonus).not.toBe('尚未获得加成')
-    expect(bonus).toContain('全产出 +1%')
+    expect(bonus).toContain('全资源产出 +1%')
   })
 
   it('全解锁时的加成汇总为连乘实测值（v0.95）', async () => {
@@ -88,7 +88,7 @@ describe('AchievementsView — 解锁与进度', () => {
     await wrapper.vm.$nextTick()
     const bonus = wrapper.find('.bonus-value').text()
     // 与 EffectSystem 实际生效的连乘口径一致（求和口径会系统性低报）
-    expect(bonus).toContain('全产出 +75.5%')
+    expect(bonus).toContain('全资源产出 +75.5%')
     expect(bonus).toContain('攻防 +75%')
     expect(bonus).toContain('探索 +69.1%')
     expect(bonus).toContain('离线 +61.1%')

@@ -23,7 +23,7 @@ export default {
   'content.story.node_cluster_ruin':
     'The wreck of a Forerunner observatory, logging the same origin for the signal: the cluster’s core, a fleet older than the Forerunner civilization itself. At the end of the record the Forerunners wrote: "We built a gate, and never knew who stood behind it."',
   'content.story.node_cluster_silence':
-    'The home port of the Silent Ones. They were not silent; they were standing watch. The gate was frozen the instant before it opened, a civilization downing tools at the last moment before its duty was done, waiting for the "recall signal" from the cluster. We are the ones who triggered it.',
+    'The home port of the Silent Ones. They were not silent; they were standing watch. The gate was frozen the instant before it opened, a civilization downing tools at the last moment before its duty was done, waiting for the "recall signal" from deep within the cluster’s core. We are the ones who triggered it.',
   'content.story.node_cluster_swarm':
     'Thousands of colony ships drift motionless in the crystal-dust cloud, the faces behind their portholes perfectly preserved. They are not dead. They are waiting.',
   'content.story.node_deep':
@@ -43,7 +43,7 @@ export default {
   'content.story.node_inner':
     'Crystal veins web the surface of the inner planets, but from the depths come biosignals of unknown origin.',
   'content.story.node_orbit':
-    'Scanners pick up Raider traces in the orbital debris belt. They seem to be looking for something...',
+    'Scanners pick up Raider traces in the orbital debris belt. They seem to be looking for something…',
   'content.story.node_outer':
     'Ancient ruins found on a moon of the gas giant. Deep within them, a voice whispers: "They have come."',
   'content.story.node_stellar_core':
@@ -59,7 +59,7 @@ export default {
   'content.story.node_stellar_mine':
     'Deep in the shard belt hums the drone of crystal resonance. Scanners catch vast living outlines cruising through the crystal dust — they feed on the veins.',
   'content.story.node_void_beacon':
-    'The beacon still works, and its lamp speaks one phrase: "Course unchanged." The Void White Whales gather around it, as if waiting for a light that has burned for them for a hundred million years.',
+    'The beacon still works, and its lamp speaks one phrase: "Course unchanged." The Void White Whales gather around it, as if waiting for a light that has burned for them for eons.',
   'content.story.node_void_gate':
     'The departure footage ends here. The galaxy closes behind into a single point of light; the relay chain snaps at the edge of the void, and the coordinates at the break still blink — this is where the Forerunners left their own galaxy.',
   'content.story.node_void_hub':

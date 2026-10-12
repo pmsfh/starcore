@@ -9,7 +9,7 @@ export default {
   'offline.eventEnergy': 'Deep-space probes detected an energy surge; extra Energy gained',
   'offline.gainBuildings': 'Building production',
   'offline.gainDeepSpace': 'Deep-space events',
-  'offline.gainGarrison': 'Garrison earnings',
+  'offline.gainGarrison': 'Garrison production',
   'offline.gainTraining': 'Unit training completed',
   'offline.gone': 'You were away for',
   'offline.title': 'Offline Earnings Report',

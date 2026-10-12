@@ -102,7 +102,7 @@ console.log('== B. 终身计数档解锁态与进度条 ==');
   const countText = norm(await page.locator('.summary-count').textContent());
   check(`汇总 9/49（实际 ${countText}）`, countText === '9/49');
   const bonus = await page.locator('.bonus-value').textContent();
-  check(`汇总加成含全产出（实际 ${norm(bonus)}）`, bonus.includes('全产出'));
+  check(`汇总加成含全资源产出（实际 ${norm(bonus)}）`, bonus.includes('全资源产出'));
   // 进度条：暗物质 500/1,000
   const darkCard = page.locator('.ach-card', { hasText: '暗流涌动' }).first();
   const progText = norm(await darkCard.locator('.progress-text').textContent());

@@ -39,7 +39,7 @@ export default {
   'army.train': '训练',
   'army.trainStarted': '开始训练：{unitName} ×{count}',
   'army.training': '训练中（{doing}/{total}）',
-  'army.trainingEta': '训练中…剩 {trainingEta}',
+  'army.trainingEta': '训练中……剩 {trainingEta}',
   'army.trainingTech1': '集群操练 I',
   'army.trainingTech2': '集群操练 II',
   'army.unitsEmptyHint': '训练你的第一支星际防卫军',

@@ -5,7 +5,7 @@ export default {
   'map.abyssDepth': 'Abyss · Layer {depth}',
   'map.abyssLocked': '???',
   'map.allDoneHint':
-    'The Forerunners’ road and signal end here; the StarCore civilization takes up the Gatekeepers’ watch',
+    'The Forerunners’ road and signal end here; the StarCore civilization takes up the Gatekeepers’ watch.',
   'map.allDoneTitle': 'The Entire Universe Has Been Explored',
   'map.deepest': 'Deepest ever',
   'map.depthLead': 'Layer',

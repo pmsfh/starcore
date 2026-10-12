@@ -47,7 +47,7 @@ export default {
   'battle.pickFormation': '选择编队',
   'battle.playSkipHint': '点击战报或按 Esc 跳过播出',
   'battle.relicGainedLine': '获得遗物：{name}（{rarity}）',
-  'battle.repelled': '部队被击退…',
+  'battle.repelled': '部队被击退……',
   'battle.report': '战报',
   'battle.resultLoss': '战斗失败',
   'battle.resultWin': '战斗胜利',

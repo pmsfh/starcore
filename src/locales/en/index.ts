@@ -5,7 +5,7 @@
  * (mirroring src/data filenames). Pure data modules: relative imports with
  * explicit .ts suffixes so plain Node toolchains (guard scripts etc.) can load them.
  *
- * Note: merged into a flat key table; each domain's keys carry the domain prefix
+ * Note: merged into a flat key table; each domain’s keys carry the domain prefix
  * (e.g. nav.* / home.* / resources.*). Follow the prefix convention for new keys.
  */
 import achievements from './ui/achievements.ts'

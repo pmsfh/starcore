@@ -76,7 +76,7 @@ export const useArchiveStore = defineStore('archive', () => {
 
   const seenCount = computed(() => seenEnemies.value.size)
 
-  /** 已收录敌种数（按显示名聚合桶：桶内任一条目已遭遇即该种已见；v1.22 成就指标） */
+  /** 已收录敌人种数（按显示名聚合桶：桶内任一条目已遭遇即该种已见；v1.22 成就指标） */
   const seenKinds = computed(() => {
     let kinds = 0
     for (const bucket of ENEMY_KIND_BUCKETS.values()) {

@@ -11,7 +11,7 @@ starcore-v092-battle-sim.py — 深空层（v0.92 候选）新据点战斗平衡
 三档玩家进度（终层口径：档 A = 星系层满配传承，乘数全部连乘实测）：
   档 A 门槛（深空开门档）：科技 55 满(攻防×3.046875) + 成就面全(×1.469)
             + t_combat_1(×1.3) + t_inf_combat L8(×1.05^8) + 遗物强化均 Lv16
-  档 B 中位（深空中段）：科技 59 满(攻防×3.80859，含深空统帅×1.25)
+  档 B 中位（深空中段）：科技 59 满(攻防×3.80859，含虚空统帅×1.25)
             + 成就面 + t_combat_1 + t_inf_combat L10 + 遗物强化均 Lv18
   档 C 满配：科技 59 满 + 成就面 + t_combat_1 + t_inf_combat L12 + 遗物 5 槽满 Lv20
   遗物代表配装（5 槽）：传说攻 1.4 / 史诗攻防 1.3+1.2 / 稀有防 1.15 /
@@ -126,8 +126,8 @@ STRONGHOLDS = {
         dict(unitId='ruin_drone',        name='遗迹无人机',   attack=290,  defense=155, hp=2900,  count=260, counteredBy=['heavy']),
         dict(unitId='void_drone_king',   name='虚空白蚁后',   attack=3100, defense=1500,hp=420000,count=3,   counteredBy=['guard', 'psionic']),
     ]),
-    'raider_13': dict(name='深空裁决军团', enemies=[
-        dict(unitId='raider_emperor',    name='深空主宰',     attack=4400, defense=2600,hp=680000,count=14,  counteredBy=['guard', 'psionic']),
+    'raider_13': dict(name='虚空裁决军团', enemies=[
+        dict(unitId='raider_emperor',    name='虚空主宰',     attack=4400, defense=2600,hp=680000,count=14,  counteredBy=['guard', 'psionic']),
         dict(unitId='hive_tyrant',       name='母巢暴君',     attack=1500, defense=900, hp=180000,count=10,  counteredBy=['guard', 'psionic']),
         dict(unitId='brood_carrier',     name='育群航母',     attack=700,  defense=450, hp=60000, count=18,  counteredBy=['heavy']),
         dict(unitId='raider_elite_flt',  name='精锐舰群',     attack=350,  defense=200, hp=2500,  count=300, counteredBy=['assault']),

@@ -18,9 +18,9 @@ export default {
   'content.achievements.ach_battle_6.name': '深空远航者',
   'content.achievements.ach_battle_7.desc': '无尽远征推进至 40 层',
   'content.achievements.ach_battle_7.name': '深渊尽头',
-  'content.achievements.ach_battle_8.desc': '敌方档案收录 20 种敌种',
+  'content.achievements.ach_battle_8.desc': '敌方档案收录 20 种敌人',
   'content.achievements.ach_battle_8.name': '侦察分析员',
-  'content.achievements.ach_battle_9.desc': '敌方档案收录全部 56 种敌种',
+  'content.achievements.ach_battle_9.desc': '敌方档案收录全部 56 种敌人',
   'content.achievements.ach_battle_9.name': '敌情全录',
   'content.achievements.ach_build_1.desc': '累计升级建筑 50 次',
   'content.achievements.ach_build_1.name': '奠基者',
@@ -126,5 +126,5 @@ export default {
   'content.achievements.cat.transcend.label': '奇点轮回',
   'content.achievements.combatAttackLabel': '攻击 +{pct}%',
   'content.achievements.combatDefenseLabel': '防御 +{pct}%',
-  'content.achievements.prodLabel': '全产出 +{pct}%',
+  'content.achievements.prodLabel': '全资源产出 +{pct}%',
 }

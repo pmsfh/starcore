@@ -201,7 +201,7 @@ console.log('== S4. 时间作弊：系统时间拨快 30 天 ==');
     for (let i = 0; i < 5; i++) {
       await page.evaluate(() => {
         // 直接驱动应用可见的日期变化不可行（Date.now 不可控），
-        // 退而求其次：验证连击记录在档内的一致性
+        // 退而求其次：验证连续签到记录在档内的一致性
       });
     }
     const s = await page.evaluate(() => {

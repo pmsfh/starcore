@@ -32,7 +32,7 @@ export default {
   'save.importConfirmTitle': '确认导入存档？',
   'save.importInvalid': '导入失败：存档无效',
   'save.importOk': '导入成功，页面将刷新',
-  'save.importPlaceholder': '粘贴存档代码…',
+  'save.importPlaceholder': '粘贴存档代码……',
   'save.importWarnLead': '导入将',
   'save.importWarnStrong': '完全替换',
   'save.importWarnTail': '当前存档，当前进度不可恢复',

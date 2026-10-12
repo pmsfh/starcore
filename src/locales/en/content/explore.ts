@@ -43,7 +43,7 @@ export default {
     'A cluster branch built of Forerunner observatory wrecks, red arcades spanning the sea of stars',
   'content.explore.node_cluster_ruin.name': 'Red Arch Ruins',
   'content.explore.node_cluster_silence.desc':
-    'The home port of the Silent Ones in the cluster’s deepest reach; the origin of every signal',
+    'The home port of the Silent Ones in the cluster’s deepest reach; the foundation of the Gatekeeper civilization',
   'content.explore.node_cluster_silence.name': 'Nest of Silence',
   'content.explore.node_cluster_swarm.desc':
     'A cluster branch veiled in crystal-dust clouds, drifting with thousands of motionless colony ships',

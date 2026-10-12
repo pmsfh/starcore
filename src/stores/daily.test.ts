@@ -62,7 +62,7 @@ describe('daily — 签到', () => {
     store = useDailyStore()
   })
 
-  it('全新档首签：连击 1，普通日无节点奖励保底能量', () => {
+  it('全新档首签：连续 1，普通日无节点奖励保底能量', () => {
     const r = store.onTickCheckIn(dateOf(2026, 9, 7))! // 周一
     expect(r.streakDay).toBe(1)
     expect(r.returned).toBe(false)
@@ -75,7 +75,7 @@ describe('daily — 签到', () => {
     expect(store.onTickCheckIn(d)).toBeNull()
   })
 
-  it('连续签到连击递增，第 3 天有暗物质', () => {
+  it('连续签到递增，第 3 天有暗物质', () => {
     store.onTickCheckIn(dateOf(2026, 9, 7))
     const r = store.onTickCheckIn(dateOf(2026, 9, 8))!
     expect(r.streakDay).toBe(2)
@@ -84,14 +84,14 @@ describe('daily — 签到', () => {
     expect(r3.dark).toBe(3)
   })
 
-  it('连击 7 天封顶后第 8 天回到节点 1', () => {
+  it('连续 7 天封顶后第 8 天回到节点 1', () => {
     for (let i = 0; i < 7; i++) store.onTickCheckIn(dateOf(2026, 9, 1 + i))
     const r8 = store.onTickCheckIn(dateOf(2026, 9, 8))!
     expect(r8.streakDay).toBe(8)
     expect(r8.energy).toBe(streakReward(8)!.energy) // 循环节点 1 的奖励
   })
 
-  it('断签：连击清零 + 回归补偿包', () => {
+  it('断签：连续天数清零 + 回归补偿包', () => {
     store.onTickCheckIn(dateOf(2026, 9, 7))
     store.onTickCheckIn(dateOf(2026, 9, 8))
     // 跳过 9/9、9/10，9/11 回来
@@ -153,7 +153,7 @@ describe('daily — 周挑战', () => {
     const reward = store.claim(c.templateId)!
     expect(reward.dark).toBe(c.rewardDark)
     expect(reward.streakBonus).toBe(1)
-    expect(store.streak).toBe(before + 1) // 勾连：连击 +1
+    expect(store.streak).toBe(before + 1) // 勾连：连续 +1
     expect(store.claim(c.templateId)).toBeNull() // 已领
   })
 

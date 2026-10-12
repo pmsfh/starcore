@@ -46,7 +46,7 @@ export default {
   'content.transcend.t_inf_offline.effect.0.label': '离线收益 ×1.1/级',
   'content.transcend.t_inf_offline.name': '时间膨胀',
   'content.transcend.t_inf_prod.desc': '全资源产出每级永久 +10%，可重复购买',
-  'content.transcend.t_inf_prod.effect.0.label': '全产出 ×1.1/级',
+  'content.transcend.t_inf_prod.effect.0.label': '全资源产出 ×1.1/级',
   'content.transcend.t_inf_prod.name': '奇点共振',
   'content.transcend.t_offline.desc': '离线收益再 +50%',
   'content.transcend.t_offline.effect.0.label': '离线收益 ×1.5',

@@ -58,7 +58,7 @@ console.log('== A. 新档冒烟 ==');
   // 自动首签（tick 1s）
   await page.waitForTimeout(2500);
   const badge = await page.locator('[data-testid="checkin-badge"]').textContent().catch(() => '');
-  check('新档自动首签（连击 1）', badge.includes('连击 1 天'));
+  check('新档自动首签（连续 1）', badge.includes('连续 1 天'));
   await page.context().close();
 }
 
@@ -140,7 +140,7 @@ console.log('== C. 探索/出征/驻扎 ==');
 console.log('== D. 无尽远征 ==');
 {
   const save = richSave();
-  save.combat.expeditionBest = 3; // 前沿 = best+1 = 第4层
+  save.combat.expeditionBest = 3; // 前沿 = best+1 = 第 4 层
   const page = await newSeededPage(browser, save, '/', { waitMs: 1500 });
   wire(page);
   await nav(page, '探索');
@@ -154,7 +154,7 @@ console.log('== D. 无尽远征 ==');
   const down = page.locator('[data-testid="endless-depth-minus"]');
   const val = page.locator('[data-testid="endless-depth-value"]');
   // 前沿语义：depth=best+1 处 ＋ 禁用（钳制行为用 isDisabled 断言，勿点）
-  check('前沿第4层 ＋ 按钮禁用', await up.isDisabled());
+  check('前沿第 4 层 ＋ 按钮禁用', await up.isDisabled());
   check('初始深度显示前沿', (await val.textContent()).includes('前沿'));
   await down.click();
   await page.waitForTimeout(200);

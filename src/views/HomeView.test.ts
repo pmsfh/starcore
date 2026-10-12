@@ -129,7 +129,7 @@ describe('HomeView — 行动队列', () => {
 describe('HomeView — DailyCard', () => {
   useViewTestHooks()
 
-  it('未签到时显示待签到，连击 0', () => {
+  it('未签到时显示待签到，连续天数 0', () => {
     const wrapper = mountView(HomeView, {
       stubs: { Transition: { template: '<div><slot /></div>' } },
     })
@@ -141,7 +141,7 @@ describe('HomeView — DailyCard', () => {
     expect(wrapper.findAll('[data-testid="streak-dots"] .dot').length).toBe(STREAK_CYCLE)
   })
 
-  it('签到后显示今日已签与连击天数', async () => {
+  it('签到后显示今日已签到与连续天数', async () => {
     const wrapper = mountView(HomeView, {
       stubs: { Transition: { template: '<div><slot /></div>' } },
     })
@@ -151,8 +151,8 @@ describe('HomeView — DailyCard', () => {
 
     expect(game.daily.lastCheckIn).toBe(localDateStr())
     const badge = wrapper.find('[data-testid="checkin-badge"]')
-    expect(badge.text()).toContain('今日已签')
-    expect(badge.text()).toContain('连击 1 天')
+    expect(badge.text()).toContain('今日已签到')
+    expect(badge.text()).toContain('连续 1 天')
   })
 
   it('周挑战三项渲染', async () => {
