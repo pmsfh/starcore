@@ -122,7 +122,7 @@ const rarityColor = relicRarityColor
           {{ t('resources.energy') }}
         </div>
       </div>
-      <div class="btn-group">
+      <div class="confirm-actions">
         <div v-if="!isMax" class="enhance-actions">
           <div class="bulk-toggle" role="group" :aria-label="t('relics.enhanceStepsAria')">
             <button

@@ -1,6 +1,9 @@
 /**
  * tech.ts：科技树定义
  * 8 大分支：能量学、晶脉学、材料学、计算学、军事学、探索学、暗物质学、奇点学
+ *
+ * 图标口径：同族科技复用 symbol 为 Phase 1 去重定案
+ * （与 IconsTech.vue 头注互证）；如需逐科技独立图标另行评估新增。
  */
 
 import { t } from '@/i18n'
@@ -1087,7 +1090,7 @@ export const TECHS: TechDef[] = [
 ]
 
 /** 科技查找 Map（O(1) 查找） */
-const TECH_MAP = new Map(TECHS.map((t) => [t.id, t]))
+const TECH_MAP = new Map(TECHS.map((tech) => [tech.id, tech]))
 
 export const getTech = (id: string): TechDef | undefined => TECH_MAP.get(id)
 

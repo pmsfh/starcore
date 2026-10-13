@@ -14,7 +14,7 @@
 import { t } from '@/i18n'
 import type { EffectTypeBase } from '@/lib/effect-types'
 import { RELIC_SETS } from '@/data/relics'
-import { ENEMY_KIND_TOTAL } from '@/stores/archive'
+import { ENEMY_KIND_TOTAL } from '@/data/pve'
 
 /** 成就奖励效果（与转生树/科技/遗物效果同构，走 EffectSystem 聚合） */
 export interface AchievementEffect {

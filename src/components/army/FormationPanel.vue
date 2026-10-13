@@ -312,8 +312,8 @@ function removeAll(fid: string, uid: UnitId) {
   gap: var(--space-1);
 }
 .fu-btn {
-  min-width: 36px;
-  height: 28px;
+  min-width: 40px;
+  height: 40px;
   padding: 0 var(--space-2);
   border-radius: var(--radius-sm);
   background: var(--color-elevated);

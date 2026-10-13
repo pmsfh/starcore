@@ -1731,3 +1731,33 @@ export const STRONGHOLDS: StrongholdDef[] = [
 const STRONGHOLD_MAP = new Map(STRONGHOLDS.map((s) => [s.id, s]))
 
 export const getStronghold = (id: string): StrongholdDef | undefined => STRONGHOLD_MAP.get(id)
+
+/** 图鉴条目键：据点 id + 敌方编成序号（语言无关） */
+export function enemyKey(strongholdId: string, index: number): string {
+  return `${strongholdId}#${index}`
+}
+
+interface EnemyKindBucket {
+  type: keyof typeof STRONGHOLD_TYPES
+  entries: { key: string; name: string }[]
+}
+
+/**
+ * 敌方种数聚合（v1.22 自 ArchiveView 下沉单一来源，后自 archive store 再下沉
+ * 到数据层）：按显示名分桶（同 unitId 换皮条目自然合并）；条目键语言无关，
+ * 桶数与键面同样语言无关，成就阈值与展示口径共用。
+ */
+export const ENEMY_KIND_BUCKETS: ReadonlyMap<string, EnemyKindBucket> = (() => {
+  const byName = new Map<string, EnemyKindBucket>()
+  for (const s of STRONGHOLDS) {
+    s.enemies.forEach((e, i) => {
+      const bucket = byName.get(e.name) ?? { type: s.type, entries: [] }
+      bucket.entries.push({ key: enemyKey(s.id, i), name: e.name })
+      byName.set(e.name, bucket)
+    })
+  }
+  return byName
+})()
+
+/** 敌方种数（显示名聚合桶数；ach_battle_9 阈值同源） */
+export const ENEMY_KIND_TOTAL = ENEMY_KIND_BUCKETS.size

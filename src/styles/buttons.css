@@ -112,7 +112,7 @@
 .btn-ghost.sm {
   padding: var(--space-2) var(--space-3);
   font-size: var(--text-xs);
-  min-height: 40px; /* v1.38 触控命中高 ≥40（紧凑档一并抬升） */
+  min-height: var(--touch-min); /* v1.38 触控命中高 ≥40（紧凑档一并抬升） */
 }
 /* 全宽变体 */
 .btn-primary.block,
@@ -167,7 +167,7 @@
 .seg-item {
   flex: 1 1 30%;
   min-width: 0;
-  min-height: 40px; /* v1.38 触控命中高 ≥40 */
+  min-height: var(--touch-min); /* v1.38 触控命中高 ≥40 */
   padding: var(--space-2) var(--space-2);
   border-radius: var(--radius-md);
   background: var(--color-surface);
@@ -220,7 +220,7 @@
   display: inline-flex;
   align-items: center;
   gap: var(--space-1);
-  min-height: 40px; /* v1.38 触控命中高 ≥40 */
+  min-height: var(--touch-min); /* v1.38 触控命中高 ≥40 */
   padding: var(--space-2) var(--space-3);
   border-radius: var(--radius-pill);
   background: var(--color-surface);

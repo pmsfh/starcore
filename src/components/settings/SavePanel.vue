@@ -166,7 +166,7 @@ function cancelHardReset() {
     :aria-label="t('save.importConfirmTitle')"
     :confirm-text="t('save.importConfirm')"
     :stretch="false"
-    actions-class="btn-group"
+    actions-class="confirm-actions"
     @cancel="cancelImport"
     @confirm="confirmImport"
   >

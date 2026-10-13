@@ -503,10 +503,9 @@ export function rollOutcome(
   return { ...opt.chances[opt.chances.length - 1]!.rewards }
 }
 
-/** 下一次触发间隔（毫秒，均匀随机窗口） */
-export function rollIntervalMs(): number {
+/** 下一次触发间隔（毫秒，均匀随机窗口；store 侧经 randomProvider 注入通道消费） */
+export function rollIntervalMs(rng: () => number = Math.random): number {
   return (
-    ENCOUNTER_INTERVAL_MIN * 1000 +
-    Math.random() * (ENCOUNTER_INTERVAL_MAX - ENCOUNTER_INTERVAL_MIN) * 1000
+    ENCOUNTER_INTERVAL_MIN * 1000 + rng() * (ENCOUNTER_INTERVAL_MAX - ENCOUNTER_INTERVAL_MIN) * 1000
   )
 }

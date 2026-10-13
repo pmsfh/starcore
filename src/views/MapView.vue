@@ -143,7 +143,7 @@ const weeklyBossTestid = computed(() => {
 </script>
 
 <template>
-  <div class="map-view">
+  <div class="map-view screen-enter">
     <h2 class="page-title font-display">{{ t('map.title') }}</h2>
     <p class="page-sub">{{ t('map.subtitle') }}</p>
     <p v-if="game.autoExplore" class="auto-badge" :title="t('map.protocolActive')">
@@ -324,7 +324,6 @@ const weeklyBossTestid = computed(() => {
   display: flex;
   flex-direction: column;
   gap: var(--space-5);
-  animation: screenIn 0.4s var(--ease-out);
 }
 
 .layer-section {
@@ -465,11 +464,12 @@ const weeklyBossTestid = computed(() => {
   flex-shrink: 0;
   font-size: var(--text-sm);
   padding: var(--space-1) var(--space-3);
-  min-height: 40px; /* v1.38 触控命中高 ≥40 */
+  min-height: var(--touch-min); /* v1.38 触控命中高 ≥40 */
 }
 
 /* onboarding */
 .onboard-map {
+  position: relative;
   width: 100%;
   margin-bottom: var(--space-2);
 }

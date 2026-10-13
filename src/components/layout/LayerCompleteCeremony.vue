@@ -42,8 +42,9 @@ function showNext() {
   if (layer !== FINALE_LAYER) timer.set(dismiss, SHOW_MS)
 }
 
-// watch 队列长度：新增与 shift 后都会触发 showNext 链式推进
-watch(() => game.exploration.layerCeremonyQueue.length, showNext, { immediate: true })
+// watch 队首层：shift 与新增同批发生时净长度不变、盯长度会漏推进；
+// 盯队首则任何队首变化（含同批 shift+push）都触发链式推进
+watch(() => game.exploration.layerCeremonyQueue[0], showNext, { immediate: true })
 </script>
 
 <template>

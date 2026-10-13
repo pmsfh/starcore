@@ -24,9 +24,8 @@ import {
   ENCOUNTERS,
   ENCOUNTER_EXPIRE_MS,
   ENCOUNTER_IDS,
-  ENCOUNTER_INTERVAL_MAX,
-  ENCOUNTER_INTERVAL_MIN,
   getEncounter,
+  rollIntervalMs,
   rollOutcome,
   type EncounterDef,
   type EncounterRewards,
@@ -36,12 +35,6 @@ import {
 let randomProvider: () => number = Math.random
 export function setEncounterRandomProvider(fn: () => number) {
   randomProvider = fn
-}
-function rollIntervalMs(): number {
-  return (
-    ENCOUNTER_INTERVAL_MIN * 1000 +
-    randomProvider() * (ENCOUNTER_INTERVAL_MAX - ENCOUNTER_INTERVAL_MIN) * 1000
-  )
 }
 
 /** 结算结果：选项命中的事件与资源变动（空对象 = 一无所获） */
@@ -97,7 +90,7 @@ export const useEncountersStore = defineStore('encounters', () => {
 
   /** 下一次窗口间隔（ms）：均匀随机 [MIN, MAX]；经注入通道取随机，测试可固定 */
   function rollInterval(): number {
-    return rollIntervalMs()
+    return rollIntervalMs(randomProvider)
   }
 
   /**

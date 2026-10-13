@@ -27,7 +27,7 @@ function showFeedback(msg: string) {
 </script>
 
 <template>
-  <div class="army-view">
+  <div class="army-view screen-enter">
     <h2 class="page-title font-display">{{ t('army.title') }}</h2>
 
     <!-- onboarding -->
@@ -100,7 +100,6 @@ function showFeedback(msg: string) {
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
-  animation: screenIn 0.4s var(--ease-out);
 }
 .page-title {
   color: var(--color-alert);

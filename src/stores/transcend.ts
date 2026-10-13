@@ -21,6 +21,7 @@ import { ref, computed } from 'vue'
 import { D, Decimal, ser, deser } from '@/lib/decimal'
 import { aggregateMult, aggregateValue } from '@/lib/effect-system'
 import { repeatUntilFail, simulateSteps } from '@/lib/batch'
+import { clampSavedInt } from '@/lib/saved-int'
 import { ceilPow } from '@/lib/cost'
 import type { EffectTypeBase } from '@/lib/effect-types'
 import type { TranscendSaveData } from '@/lib/storage'
@@ -355,6 +356,9 @@ export const INFINITE_NODE_IDS: ReadonlySet<string> = new Set(
 )
 export const MAX_INFINITE_NODE_LEVEL = 1_000_000
 
+/** 转生门槛：累计能量达到该值才产出负熵（预览公式硬门，视图提示文案同源） */
+export const TRANSCEND_MIN_ENERGY = 3e5
+
 export const useTranscendStore = defineStore('transcend', () => {
   const negativeEntropy = ref<Decimal>(D(0)) // 负熵余额
   const totalTranscends = ref(0) // 转生次数
@@ -388,7 +392,7 @@ export const useTranscendStore = defineStore('transcend', () => {
 
   /** 预估可获得的负熵（基于当前历史总能量） */
   function previewNegEntropy(totalEnergy: Decimal, prestigeMult: Decimal): Decimal {
-    if (totalEnergy.lt(3e5)) return D(0)
+    if (totalEnergy.lt(TRANSCEND_MIN_ENERGY)) return D(0)
     // 公式：sqrt(totalEnergy / 3e5) * 1 * prestigeMult
     const base = totalEnergy.div(3e5).sqrt().times(prestigeMult).floor()
     // 首次转生保底 +1 负熵（首转至少 2 负熵，可同时购买 t_energy_1 + t_alloy_1）
@@ -476,7 +480,7 @@ export const useTranscendStore = defineStore('transcend', () => {
         // 防御：level 非法（缺失/非有限数）跳过该条目
         if (typeof saved.level !== 'number' || !isFinite(saved.level)) continue
         // 防御：等级不得超过节点上限，且必须为非负整数
-        node.level = Math.max(0, Math.min(Math.floor(saved.level), node.maxLevel ?? 1))
+        node.level = clampSavedInt(saved.level, node.maxLevel ?? 1)
       }
     }
   }

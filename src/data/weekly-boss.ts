@@ -14,6 +14,7 @@
  *
  * 奖励 = endlessStronghold(max(6, expeditionBest + 1)) 全套 × 1.5，
  * 锚玩家前沿、与模板解耦（消除「难的模板周反而奖金低」错位）；
+ * 纯资源包：relicChance/relicRarityBias 不入周 Boss 奖励（与派遣同口径）；
  * 量级 = 1.5 场前沿远征单场，周频一次性，不构成第二资源轴。
  *
  * 数据契约：

@@ -162,7 +162,7 @@ const deployButtonLabel = computed(() => {
 </script>
 
 <template>
-  <div v-if="stronghold" class="battle-view">
+  <div v-if="stronghold" class="battle-view screen-enter">
     <button class="back-btn" @click="router.push('/map')">← {{ t('battle.backToMap') }}</button>
 
     <!-- 据点信息 -->
@@ -288,14 +288,13 @@ const deployButtonLabel = computed(() => {
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
-  animation: screenIn 0.4s var(--ease-out);
 }
 .back-btn {
   align-self: flex-start;
   font-size: var(--text-sm);
   color: var(--color-t-secondary);
   padding: var(--space-2) var(--space-3);
-  min-height: 40px; /* v1.38 触控命中高 ≥40 */
+  min-height: var(--touch-min); /* v1.38 触控命中高 ≥40 */
 }
 
 .stronghold-info {

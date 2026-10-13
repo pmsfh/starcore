@@ -52,7 +52,7 @@ function choose(code: string) {
 </script>
 
 <template>
-  <div class="settings-view">
+  <div class="settings-view screen-enter">
     <h2 class="page-title font-display">{{ t('settings.title') }}</h2>
     <p class="page-sub">{{ t('settings.subtitle') }}</p>
 
@@ -96,7 +96,6 @@ function choose(code: string) {
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
-  animation: screenIn 0.4s var(--ease-out);
 }
 
 .settings-section {

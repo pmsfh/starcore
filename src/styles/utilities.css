@@ -154,6 +154,11 @@
   gap: var(--space-2);
 }
 
+/* 页面入场（视图根统一引用；screenIn 关键帧见 animations.css） */
+.screen-enter {
+  animation: screenIn 0.4s var(--ease-out);
+}
+
 /* ============================================================
    导航栏响应式安全网 (defense-in-depth)
    组件已通过 useBreakpoint + v-if 控制显隐，

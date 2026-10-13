@@ -8,7 +8,7 @@
 import { t } from '@/i18n'
 import { useGameStore } from '@/stores/game'
 import { fmtTime } from '@/lib/format'
-import { EXPLORE_NODES } from '@/data/explore'
+import { getNode } from '@/data/explore'
 import type { ExploreNode } from '@/data/explore'
 import type { ResourceRow } from '@/lib/resource-rows'
 import ProgressBar from '@/components/ui/ProgressBar.vue'
@@ -73,10 +73,7 @@ const game = useGameStore()
 
     <!-- 锁定 -->
     <div v-else-if="locked" class="n-locked">
-      {{ t('map.needsPrereq')
-      }}{{
-        (node.requires ?? []).map((r) => EXPLORE_NODES.find((x) => x.id === r)?.name).join(', ')
-      }}
+      {{ t('map.needsPrereq') }}{{ (node.requires ?? []).map((r) => getNode(r)?.name).join(', ') }}
     </div>
 
     <!-- 已完成奖励预览 -->

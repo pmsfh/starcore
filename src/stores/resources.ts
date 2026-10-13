@@ -118,6 +118,7 @@ export const useResourcesStore = defineStore('resources', () => {
   }
   /** 消耗（返回是否成功） */
   function spend(t: ResourceType, v: Decimal.Value): boolean {
+    assertKnownKey(t, 'spend')
     if (!gte(amounts.value[t], v)) return false
     amounts.value[t] = amounts.value[t].minus(v)
     return true

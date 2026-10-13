@@ -89,7 +89,7 @@ function tryUpgrade(id: string) {
 </script>
 
 <template>
-  <div class="build-view">
+  <div class="build-view screen-enter">
     <h2 class="page-title font-display">{{ t('build.title') }}</h2>
     <!-- v0.86 批量升级段位切换（页头级，全部建筑卡共用） -->
     <div class="bulk-toggle" role="group" :aria-label="t('build.bulkLevelAria')">
@@ -221,7 +221,6 @@ function tryUpgrade(id: string) {
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
-  animation: screenIn 0.4s var(--ease-out);
 }
 
 /* 扇区选择：等宽分段基座（.seg-bar / .seg-item）为全局类，见 buttons.css（v1.60 收敛） */

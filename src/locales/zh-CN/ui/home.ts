@@ -4,7 +4,7 @@
  * 简体中文为基线语言；新增文案直接在此维护，并跑缺键扫描守卫。
  */
 export default {
-  'home.actionQueue.empty': '星核静默中，等待你的指令',
+  'home.actionQueue.empty': '暂无进行中的行动，从下方入口继续',
   'home.actionQueue.onboarding': '这里显示当前正在进行和可执行的操作，点击即可跳转。',
   'home.actionQueue.title': '行动队列',
   'home.actions.build': '建造',

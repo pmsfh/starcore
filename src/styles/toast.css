@@ -4,7 +4,7 @@
    ============================================================ */
 .toast {
   position: fixed;
-  bottom: 80px;
+  bottom: var(--bottomnav-h);
   left: 50%;
   transform: translateX(-50%);
   background: var(--color-surface);

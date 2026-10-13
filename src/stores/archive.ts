@@ -17,39 +17,9 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import type { ArchiveSaveData } from '@/lib/storage'
-import { STRONGHOLDS, STRONGHOLD_TYPES, type EnemyUnit } from '@/data/pve'
+import { STRONGHOLDS, enemyKey, ENEMY_KIND_BUCKETS, type EnemyUnit } from '@/data/pve'
 import { ENDLESS_STRONGHOLD_ID } from '@/data/endless'
 import { WEEKLY_BOSS_ID } from '@/data/weekly-boss'
-
-/** 图鉴条目键：据点 id + 敌方编成序号 */
-function enemyKey(strongholdId: string, index: number): string {
-  return `${strongholdId}#${index}`
-}
-
-/**
- * 敌方种数聚合（v1.22，从 ArchiveView 下沉单一来源）：
- * 按显示名分桶（同 unitId 换皮条目自然合并）；条目键语言无关，
- * 桶数与键面同样语言无关，成就阈值与展示口径共用。
- */
-interface EnemyKindBucket {
-  type: keyof typeof STRONGHOLD_TYPES
-  entries: { key: string; name: string }[]
-}
-
-export const ENEMY_KIND_BUCKETS: ReadonlyMap<string, EnemyKindBucket> = (() => {
-  const byName = new Map<string, EnemyKindBucket>()
-  for (const s of STRONGHOLDS) {
-    s.enemies.forEach((e, i) => {
-      const bucket = byName.get(e.name) ?? { type: s.type, entries: [] }
-      bucket.entries.push({ key: enemyKey(s.id, i), name: e.name })
-      byName.set(e.name, bucket)
-    })
-  }
-  return byName
-})()
-
-/** 敌方种数（显示名聚合桶数；ach_battle_9 阈值同源） */
-export const ENEMY_KIND_TOTAL = ENEMY_KIND_BUCKETS.size
 
 /**
  * 合法图鉴键全集（数据表派生，validate/hydrate 白名单同源）：

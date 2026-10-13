@@ -233,9 +233,6 @@ function toggleCollapsed() {
   /* v1.38 对比度：tertiary 4.30 → secondary（elevated 5.30 / surface 6.14） */
   color: var(--color-t-secondary);
 }
-.stat .val {
-  color: var(--color-t-primary);
-}
 
 /* 折叠按钮（v0.85 重设计：面板收合图标 + 常驻边框控件态） */
 .collapse-toggle {

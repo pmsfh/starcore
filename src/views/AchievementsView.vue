@@ -59,7 +59,7 @@ const bonusSummary = computed(() => {
 </script>
 
 <template>
-  <div class="achievements-view">
+  <div class="achievements-view screen-enter">
     <h2 class="page-title font-display">{{ t('achievements.title') }}</h2>
     <p class="page-sub">{{ t('achievements.subtitle') }}</p>
 
@@ -123,7 +123,6 @@ const bonusSummary = computed(() => {
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
-  animation: screenIn 0.4s var(--ease-out);
 }
 .page-title {
   color: var(--color-quantum);

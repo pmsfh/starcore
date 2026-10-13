@@ -2,7 +2,7 @@
  * home：English locale messages (translated from the zh-CN baseline)
  */
 export default {
-  'home.actionQueue.empty': 'The StarCore rests silent, awaiting your command',
+  'home.actionQueue.empty': 'Nothing in progress. Pick an entry below to continue',
   'home.actionQueue.onboarding':
     'Ongoing and available actions appear here; click one to jump to it.',
   'home.actionQueue.title': 'Action Queue',

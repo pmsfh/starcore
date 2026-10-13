@@ -31,8 +31,9 @@ function showNext() {
   }, SHOW_MS)
 }
 
-// watch 队列长度：新增与 shift 后都会触发 showNext 链式推进
-watch(() => ach.toastQueue.length, showNext, { immediate: true })
+// watch 队首 id：shift 与新增同批发生时净长度不变、盯长度会漏推进；
+// 盯队首则任何队首变化（含同批 shift+push）都触发链式推进
+watch(() => ach.toastQueue[0]?.id, showNext, { immediate: true })
 </script>
 
 <template>

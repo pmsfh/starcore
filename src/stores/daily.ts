@@ -20,6 +20,7 @@ import { t } from '@/i18n'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import type { DailySaveData } from '@/lib/storage'
+import { clampSavedInt } from '@/lib/saved-int'
 import { fnv1a, mulberry32 } from '@/lib/random'
 import { fmtDate } from '@/lib/format'
 
@@ -226,8 +227,8 @@ export const useDailyStore = defineStore('daily', () => {
     const wk = weekStr(now)
     // 响应式当前周对齐（跨周驱动周 Boss 消费侧自动刷新；同值赋值无副作用）
     if (currentWeek.value !== wk) currentWeek.value = wk
-    // 同周且列表完整（3 项）才跳过；列表不完整时重掷补全
-    if (challengeWeek.value === wk && weekChallenges.value.length === 3) return
+    // 同周且列表完整才跳过；列表不完整时重掷补全
+    if (challengeWeek.value === wk && weekChallenges.value.length === WEEK_CHALLENGE_COUNT) return
     if (challengeWeek.value !== wk) {
       // 换周才清计数；同周补掷保留本周计数
       weeklyCounters.value = emptyCounters()
@@ -325,14 +326,15 @@ export const useDailyStore = defineStore('daily', () => {
     if (!data) return
     if (typeof data.lastCheckIn === 'string') lastCheckIn.value = data.lastCheckIn
     if (typeof data.streak === 'number' && isFinite(data.streak) && data.streak >= 0) {
-      streak.value = Math.floor(data.streak)
+      streak.value = clampSavedInt(data.streak)
     }
     if (data.weeklyCounters && typeof data.weeklyCounters === 'object') {
       const wc = data.weeklyCounters
       // 逐键容缺：键缺失（v1.19 旧档无 v1.21 新四键）保持 0，非法值跳过
       for (const k of Object.keys(weeklyCounters.value) as (keyof typeof weeklyCounters.value)[]) {
         const v = (wc as Record<string, unknown>)[k]
-        if (typeof v === 'number' && isFinite(v) && v >= 0) weeklyCounters.value[k] = Math.floor(v)
+        if (typeof v === 'number' && isFinite(v) && v >= 0)
+          weeklyCounters.value[k] = clampSavedInt(v)
       }
     }
     if (typeof data.challengeWeek === 'string') challengeWeek.value = data.challengeWeek

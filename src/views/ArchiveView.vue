@@ -12,7 +12,7 @@
 import { t } from '@/i18n'
 import { computed } from 'vue'
 import { useGameStore } from '@/stores/game'
-import { ENEMY_KIND_BUCKETS } from '@/stores/archive'
+import { ENEMY_KIND_BUCKETS } from '@/data/pve'
 import { EXPLORE_NODES, LAYER_INFO, type StarLayer } from '@/data/explore'
 import { STRONGHOLDS, STRONGHOLD_TYPES } from '@/data/pve'
 import { NODE_STORIES } from '@/data/story'
@@ -110,7 +110,7 @@ function cardEnemy(card: EnemyCard) {
 </script>
 
 <template>
-  <div class="archive-view">
+  <div class="archive-view screen-enter">
     <h2 class="page-title font-display">{{ t('archive.title') }}</h2>
     <p class="page-sub">{{ t('archive.subtitle') }}</p>
 
@@ -201,7 +201,6 @@ function cardEnemy(card: EnemyCard) {
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
-  animation: screenIn 0.4s var(--ease-out);
 }
 .page-title {
   color: var(--color-quantum);

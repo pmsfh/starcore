@@ -72,6 +72,9 @@
   --topbar-h: 49px;
   --bottomnav-h: 80px;
 
+  /* 触控命中高标准（v1.38 起 40px；控件命中区统一引用） */
+  --touch-min: 40px;
+
   /* 字号（1:1.250 模数，Major Third，base 16px） */
   --text-xs: 12px;
   --text-sm: 14px;

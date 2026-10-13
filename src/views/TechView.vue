@@ -2,7 +2,7 @@
 import { t } from '@/i18n'
 import { computed, ref } from 'vue'
 import { useGameStore } from '@/stores/game'
-import { TECHS, TECH_BRANCHES, adjustedTechCost, type TechBranch } from '@/data/tech'
+import { TECHS, TECH_BRANCHES, adjustedTechCost, getTech, type TechBranch } from '@/data/tech'
 import CostTag from '@/components/ui/CostTag.vue'
 import OnboardingBubble from '@/components/ui/OnboardingBubble.vue'
 import EmptyState from '@/components/ui/EmptyState.vue'
@@ -36,16 +36,18 @@ const emptyText = computed(() =>
 // onboarding
 const { activeStep, dismiss, skipAll } = useOnboarding(['tech-research'])
 
-function techStatus(id: string): 'completed' | 'available' | 'locked' {
-  if (game.research.isCompleted(id)) return 'completed'
-  const def = TECHS.find((t) => t.id === id)!
-  if (game.research.available(def)) return 'available'
-  return 'locked'
-}
-
-function getAdjustedCost(def: (typeof TECHS)[0]) {
-  return adjustedTechCost(def.cost, game.techCostMult.toNumber())
-}
+// 视图行派生：状态/成本/可负担一次计算，模板整行消费
+const techRows = computed(() =>
+  techsToShow.value.map((tech) => {
+    const status: 'completed' | 'available' | 'locked' = game.research.isCompleted(tech.id)
+      ? 'completed'
+      : game.research.available(tech)
+        ? 'available'
+        : 'locked'
+    const cost = adjustedTechCost(tech.cost, game.techCostMult.toNumber())
+    return { tech, status, cost, affordable: game.resources.canAfford(cost) }
+  })
+)
 
 // v1.38 研究成功闪光（动效规范 §1.4：科技系统 plasma 紫）
 const flashState = ref<Record<string, boolean>>({})
@@ -59,7 +61,7 @@ function tryResearch(id: string) {
 </script>
 
 <template>
-  <div class="tech-view">
+  <div class="tech-view screen-enter">
     <h2 class="page-title font-display">{{ t('tech.title') }}</h2>
     <p class="page-sub">{{ t('tech.subtitle') }}</p>
     <p v-if="game.autoResearch" class="auto-badge" :title="t('tech.protocolActive')">
@@ -111,10 +113,10 @@ function tryResearch(id: string) {
     <!-- 科技列表 -->
     <ul v-else class="tech-list" :aria-label="t('tech.listAria')">
       <li
-        v-for="tech in techsToShow"
+        v-for="{ tech, status, cost, affordable } in techRows"
         :key="tech.id"
         class="tech-card"
-        :class="[techStatus(tech.id), { 'flash-success': flashState[tech.id] }]"
+        :class="[status, { 'flash-success': flashState[tech.id] }]"
         :style="{ '--flash-color': 'var(--color-plasma)' }"
       >
         <div class="t-head">
@@ -128,7 +130,7 @@ function tryResearch(id: string) {
             </div>
           </div>
           <div>
-            <span v-if="techStatus(tech.id) === 'completed'" class="status-done">
+            <span v-if="status === 'completed'" class="status-done">
               <Icon name="i-ui-check" size="md" />
             </span>
           </div>
@@ -141,21 +143,20 @@ function tryResearch(id: string) {
         </div>
 
         <!-- 成本 -->
-        <div v-if="techStatus(tech.id) !== 'completed'" class="t-cost">
-          <CostTag :cost="getAdjustedCost(tech)" />
+        <div v-if="status !== 'completed'" class="t-cost">
+          <CostTag :cost="cost" />
         </div>
 
         <!-- 前置 -->
-        <div v-if="tech.requires && techStatus(tech.id) === 'locked'" class="t-req">
-          {{ t('tech.needs')
-          }}{{ tech.requires.map((r) => TECHS.find((x) => x.id === r)?.name).join(', ') }}
+        <div v-if="tech.requires && status === 'locked'" class="t-req">
+          {{ t('tech.needs') }}{{ tech.requires.map((r) => getTech(r)?.name).join(', ') }}
         </div>
 
         <button
-          v-if="techStatus(tech.id) === 'available'"
+          v-if="status === 'available'"
           class="btn-accent block"
           style="--accent: var(--color-plasma)"
-          :disabled="!game.resources.canAfford(getAdjustedCost(tech))"
+          :disabled="!affordable"
           @click="tryResearch(tech.id)"
         >
           {{ t('tech.research') }}
@@ -170,7 +171,6 @@ function tryResearch(id: string) {
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
-  animation: screenIn 0.4s var(--ease-out);
 }
 
 /* 分支筛选页签：胶囊变体为全局类，见 buttons.css（v1.60 上移登记） */
@@ -286,6 +286,7 @@ function tryResearch(id: string) {
 
 /* onboarding */
 .onboard-tech {
+  position: relative;
   width: 100%;
   margin-bottom: var(--space-2);
 }

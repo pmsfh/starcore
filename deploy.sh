@@ -24,10 +24,11 @@ done
 DEST="${EXPLICIT_DEST:-${DEPLOY_DEST:-/var/www/starcore}}"
 SITE_URL="${EXPLICIT_URL:-${DEPLOY_URL:-}}"
 [[ -n "$SITE_URL" ]] || { echo "[FAIL] 未配置 DEPLOY_URL（环境变量或配置文件）" >&2; exit 1; }
-
-SKIP_BUILD=0
-if [[ "${1:-}" == "--skip-build" ]]; then
-  SKIP_BUILD=1
+# SITE_URL 形态校验：其值进入 sed 替换段，& 与反斜杠会被 sed 特殊消费，
+# 限定裸站点形态（协议 + 域名 + 可选端口，无路径/查询串）快速失败
+if [[ ! "$SITE_URL" =~ ^https?://[A-Za-z0-9.-]+(:[0-9]+)?$ ]]; then
+  echo "[FAIL] SITE_URL 形态不支持（须为协议 + 域名 + 可选端口，无路径与查询串）: $SITE_URL" >&2
+  exit 1
 fi
 
 REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -60,22 +61,21 @@ if [[ -n "$(git status --porcelain 2>/dev/null || true)" ]]; then
 fi
 corepack pnpm check
 
-# 2. 构建（含 vue-tsc 类型检查）
-if [[ $SKIP_BUILD -eq 0 ]]; then
-  echo "[2/5] 构建 ..."
-  corepack pnpm build
-else
-  [[ -f dist/index.html ]] || { echo "[FAIL] dist/ 不存在，先构建" >&2; exit 1; }
-  echo "[2/5] 跳过构建（--skip-build），预检本地产物版本 ..."
-  # 版本证据：构建期注入 index.html 的 app-version 元标记（与入口/分块结构无关）；
-  # 显示串为运行时 replace 生成、bundle 无静态 v 串，去零逻辑在产物 JS 中直查
-  if ! grep -qF "name=\"app-version\" content=\"$VERSION\"" dist/index.html \
-    || ! grep -rqF 'replace(/\.0$/' dist/assets; then
-    echo "[FAIL] 本地产物版本与 package.json（v$VERSION）不符，先重新构建" >&2
-    exit 1
-  fi
-  echo "  [OK] 本地产物 v$VERSION（app-version 元标记）"
+# 2. 校验本地产物版本：check 段已含完整构建（build 为其首段），产物即部署对象；
+#    早年流程在此重复构建一次已取消。--skip-build 随之退役：传参仅提示不生效。
+if [[ "${1:-}" == "--skip-build" ]]; then
+  echo "  [注] --skip-build 已退役：check 段产物即部署产物，无需跳过"
 fi
+echo "[2/5] 校验本地产物版本 ..."
+[[ -f dist/index.html ]] || { echo "[FAIL] dist/ 不存在，先构建" >&2; exit 1; }
+# 版本证据：构建期注入 index.html 的 app-version 元标记（与入口/分块结构无关）；
+# 显示串为运行时 replace 生成、bundle 无静态 v 串，去零逻辑在产物 JS 中直查
+if ! grep -qF "name=\"app-version\" content=\"$VERSION\"" dist/index.html \
+  || ! grep -rqF 'replace(/\.0$/' dist/assets; then
+  echo "[FAIL] 本地产物版本与 package.json（v$VERSION）不符，先重新构建" >&2
+  exit 1
+fi
+echo "  [OK] 本地产物 v$VERSION（app-version 元标记）"
 
 # 3. 同步产物
 # rsync --delete 清掉站点里已从产物中移除的旧文件；

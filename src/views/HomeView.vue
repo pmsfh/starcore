@@ -15,7 +15,7 @@ const { activeStep, dismiss, skipAll } = useOnboarding(['home-core', 'home-quick
 </script>
 
 <template>
-  <div class="home">
+  <div class="home screen-enter">
     <!-- 上部行：Hero + 行动队列并排（桌面）/ 堆叠（移动） -->
     <div class="home-top-row">
       <HeroCore :active-step="activeStep" @dismiss="dismiss" @skip="skipAll" />
@@ -34,7 +34,6 @@ const { activeStep, dismiss, skipAll } = useOnboarding(['home-core', 'home-quick
   display: flex;
   flex-direction: column;
   gap: var(--space-5);
-  animation: screenIn 0.4s var(--ease-out);
 }
 
 /* 桌面端双列布局 */

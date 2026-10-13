@@ -229,7 +229,7 @@ const unitRows = computed(() =>
           :disabled="slotsFull || row.count === 0 || !row.canAfford"
           @click="tryTrain(row.def.id)"
         >
-          <span aria-live="polite">{{
+          <span>{{
             slotsFull ? t('army.trainingEta', { trainingEta: trainingEta }) : t('army.train')
           }}</span>
         </button>

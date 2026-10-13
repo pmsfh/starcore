@@ -38,11 +38,11 @@ watch(
 // 点不点由玩家决定（不打断，首页事件卡挂起待处理）。
 // 提醒延迟 500ms 且结算时取消：首页点选项后不弹「遭遇事件」提醒、
 // 回执文案不被覆盖（结算先清挂起，挂起 watch 的待弹 timer 作废）
-let encToastTimer: ReturnType<typeof setTimeout> | null = null
+const encToastTimer = useTimeout()
 watch(
   () => game.encounters.pendingEventId,
   (id) => {
-    if (id) encToastTimer = setTimeout(() => toast.show(t('ui.encounter.title'), 2500), 500)
+    if (id) encToastTimer.set(() => toast.show(t('ui.encounter.title'), 2500), 500)
   }
 )
 
@@ -52,10 +52,7 @@ watch(
   () => game.encounters.lastResolution,
   (r) => {
     if (!r) return
-    if (encToastTimer) {
-      clearTimeout(encToastTimer)
-      encToastTimer = null
-    }
+    encToastTimer.clear()
     const { unitKind = 'assault', ...rewards } = r.rewards
     const entries = Object.entries(rewards) as [string, number][]
     const rows = resourceRows(
@@ -64,7 +61,7 @@ watch(
     )
     if ('units' in rewards) {
       const unitRow = rows.find((x) => x.id === 'units')
-      if (unitRow) unitRow.name = getUnit(unitKind)?.name ?? 'units'
+      if (unitRow) unitRow.name = getUnit(unitKind)?.name ?? t('ui.encounter.unitsFallback')
     }
     const changes =
       rows.length === 0

@@ -13,11 +13,11 @@ import {
   ENCOUNTER_INTERVAL_MIN,
   ENCOUNTER_INTERVAL_MAX,
   getEncounter,
+  rollIntervalMs,
   rollOutcome,
   type EncounterOption,
   type EncounterRewards,
 } from './encounters'
-import { setEncounterRandomProvider } from '@/stores/encounters'
 import { UNITS } from './units'
 
 /** 折算率与量级带（EV 折算口径；调整数值前先改核验表） */
@@ -156,15 +156,8 @@ describe('encounters 结果掷取', () => {
   })
 
   it('间隔窗口：rollIntervalMs 落 [MIN, MAX]（固定通道验证两端）', () => {
-    setEncounterRandomProvider(() => 0)
-    const lo =
-      ENCOUNTER_INTERVAL_MIN * 1000 + 0 * (ENCOUNTER_INTERVAL_MAX - ENCOUNTER_INTERVAL_MIN) * 1000
-    setEncounterRandomProvider(() => 0.999999)
-    const hi =
-      ENCOUNTER_INTERVAL_MIN * 1000 +
-      0.999999 * (ENCOUNTER_INTERVAL_MAX - ENCOUNTER_INTERVAL_MIN) * 1000
-    expect(lo).toBe(ENCOUNTER_INTERVAL_MIN * 1000)
-    expect(hi).toBeLessThan(ENCOUNTER_INTERVAL_MAX * 1000)
+    expect(rollIntervalMs(() => 0)).toBe(ENCOUNTER_INTERVAL_MIN * 1000)
+    expect(rollIntervalMs(() => 0.999999)).toBeLessThan(ENCOUNTER_INTERVAL_MAX * 1000)
     expect(ENCOUNTER_INTERVAL_MIN).toBe(480)
     expect(ENCOUNTER_INTERVAL_MAX).toBe(900)
     expect(ENCOUNTER_EXPIRE_MS).toBe(60_000)

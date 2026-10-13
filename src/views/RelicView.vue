@@ -111,7 +111,7 @@ function onEnhanceFail(msg: string) {
 </script>
 
 <template>
-  <div class="relic-view">
+  <div class="relic-view screen-enter">
     <h2 class="page-title font-display">{{ t('relics.title') }}</h2>
     <p class="page-sub">
       {{ t('relics.subtitle', { slots: game.relics.maxSlots }) }}
@@ -306,7 +306,6 @@ function onEnhanceFail(msg: string) {
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
-  animation: screenIn 0.4s var(--ease-out);
 }
 .page-title {
   color: var(--color-amber);

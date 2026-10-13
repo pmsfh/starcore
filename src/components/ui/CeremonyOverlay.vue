@@ -8,7 +8,7 @@
  * 点击任意处或约 4 秒自动关闭；Escape 同语义。减动效由全局规则
  * 统一降级（闪场与入场动画瞬时完成，仪式卡静态可读）。
  */
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { t } from '@/i18n'
 import { useFocusTrap } from '@/composables/useFocusTrap'
 import { useTimeout } from '@/composables/useTimeout'
@@ -31,6 +31,8 @@ const SHOW_MS = 4000
 
 const cardRef = ref<HTMLElement | null>(null)
 useFocusTrap(cardRef, ref(true), { onEscape: () => emit('close') })
+// 卡内无可聚焦元素：程序化聚焦使读屏播报仪式内容（tabindex=-1 不入 Tab 序）
+onMounted(() => cardRef.value?.focus())
 
 const timer = useTimeout()
 timer.set(() => emit('close'), SHOW_MS)
@@ -45,7 +47,7 @@ timer.set(() => emit('close'), SHOW_MS)
     @click="emit('close')"
   >
     <div class="ceremony-flash" aria-hidden="true"></div>
-    <div ref="cardRef" class="ceremony-card" :style="{ '--accent': accent }">
+    <div ref="cardRef" class="ceremony-card" tabindex="-1" :style="{ '--accent': accent }">
       <Icon class="ceremony-icon" :name="icon" />
       <h2 class="ceremony-title font-display">{{ title }}</h2>
       <slot />
@@ -64,6 +66,9 @@ timer.set(() => emit('close'), SHOW_MS)
   justify-content: center;
   background: color-mix(in srgb, var(--color-void) 88%, transparent);
   cursor: pointer;
+}
+.ceremony-card:focus {
+  outline: none;
 }
 .ceremony-flash {
   position: absolute;

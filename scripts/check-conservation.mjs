@@ -38,6 +38,15 @@ const PW_DIR = pwDirIdx >= 0 ? args[pwDirIdx + 1] : process.env.STARCORE_PW_DIR 
 //    镜像目录不能放 node_modules 下（Node 禁其内文件类型剥离）。
 // ---------------------------------------------------------------
 const TRUTH_TMP = mkdtempSync(join(ROOT, '.conservation-truth-'))
+// 崩溃路径兜底清理：真值导入段任一数据模块抛错时进程非零退出，
+// 不挂 exit 钩子会把临时目录遗留在仓库根（触发部署脏树告警）
+process.on('exit', () => {
+  try {
+    rmSync(TRUTH_TMP, { recursive: true, force: true })
+  } catch {
+    // 清理失败不遮蔽原退出码
+  }
+})
 const mirrored = new Map() // 源绝对路径 → 镜像文件绝对路径
 
 function truthName(abs) {

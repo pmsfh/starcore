@@ -19,6 +19,7 @@ import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { D, Decimal, add, ser, deser } from '@/lib/decimal'
 import { aggregateMult } from '@/lib/effect-system'
+import { clampSavedInt } from '@/lib/saved-int'
 import type { AchievementsSaveData } from '@/lib/storage'
 import {
   ACHIEVEMENTS,
@@ -229,7 +230,7 @@ export const useAchievementsStore = defineStore('achievements', () => {
       if (typeof lt.dark === 'string') lifetimeBig.value.dark = deser(lt.dark)
       for (const k of INT_KEYS) {
         const v = lt[k]
-        if (typeof v === 'number' && isFinite(v) && v >= 0) lifetimeInt.value[k] = Math.floor(v)
+        if (typeof v === 'number' && isFinite(v) && v >= 0) lifetimeInt.value[k] = clampSavedInt(v)
       }
     }
     if (data.unlocked && typeof data.unlocked === 'object') {

@@ -8,4 +8,5 @@ export default {
   'ui.encounter.title': '遭遇事件',
   'ui.encounter.resolved': '{name}：{changes}',
   'ui.encounter.nothing': '一无所获',
+  'ui.encounter.unitsFallback': '兵员',
 }

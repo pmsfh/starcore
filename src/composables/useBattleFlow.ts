@@ -187,7 +187,7 @@ export function useBattleFlow(deps: BattleFlowDeps) {
             break
           }
         }
-      } else if (totalLoss > 0) {
+      } else {
         toast.show(t('battle.logLosses', { formationName: f.name, totalLoss: totalLoss }))
       }
     }

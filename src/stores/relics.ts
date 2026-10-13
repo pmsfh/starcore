@@ -3,7 +3,7 @@
  * 收集遗物、装备到槽位（基础 4 个槽位，可通过转生树 t_slot 扩展）
  */
 import { defineStore } from 'pinia'
-import { ref, computed, watch, shallowRef } from 'vue'
+import { ref, computed, watch } from 'vue'
 import {
   type RelicDef,
   type RelicEffect,
@@ -31,33 +31,33 @@ export interface OwnedRelic extends RelicDef {
 /** 外部传入的槽位扩展数（由 game.ts 注入，避免 setup 阶段隐式依赖 transcend store） */
 export type RelicSlotProvider = () => number
 
-const slotProvider = shallowRef<RelicSlotProvider>(() => 0)
+let slotProvider: RelicSlotProvider = () => 0
 export function setRelicSlotProvider(p: RelicSlotProvider) {
-  slotProvider.value = p
+  slotProvider = p
 }
 
 /** 强化能量支出通道（由 game.ts 注入 resources.spend，避免 relics 隐式依赖 resources） */
 export type RelicEnhanceSpendProvider = (cost: number) => boolean
 
-const enhanceSpend = shallowRef<RelicEnhanceSpendProvider>(() => false)
+let enhanceSpend: RelicEnhanceSpendProvider = () => false
 export function setRelicEnhanceSpendProvider(p: RelicEnhanceSpendProvider) {
-  enhanceSpend.value = p
+  enhanceSpend = p
 }
 
 /** 强化完成回调（v1.22 成就扩展：由 game-effects 注入，n = 实际完成级数） */
 export type RelicEnhanceDoneProvider = (levels: number) => void
 
-const enhanceDone = shallowRef<RelicEnhanceDoneProvider>(() => {})
+let enhanceDone: RelicEnhanceDoneProvider = () => {}
 export function setRelicEnhanceDoneProvider(p: RelicEnhanceDoneProvider) {
-  enhanceDone.value = p
+  enhanceDone = p
 }
 
 /** 合成计数通道（v1.21 周挑战扩类：由 game-effects 注入 daily.bump，同注入先例） */
 export type RelicSynthCountProvider = () => void
 
-const synthCount = shallowRef<RelicSynthCountProvider>(() => {})
+let synthCount: RelicSynthCountProvider = () => {}
 export function setRelicSynthCountProvider(p: RelicSynthCountProvider) {
-  synthCount.value = p
+  synthCount = p
 }
 
 /** 强化后效果副本（视图展示与 equippedEffects 共用；0 级返回原始效果） */
@@ -77,7 +77,7 @@ export function enhancedEffectsOf(relic: OwnedRelic): RelicEffect[] {
 export const useRelicsStore = defineStore('relics', () => {
   const owned = ref<OwnedRelic[]>([])
   /** 槽位上限：基础 4 + 转生树 relic_slot 加成（由 game.ts 注入） */
-  const maxSlots = computed(() => 4 + slotProvider.value())
+  const maxSlots = computed(() => 4 + slotProvider())
   const equipped = ref<(string | null)[]>([null, null, null, null])
 
   // 槽位数随转生树购买扩展（或回退保持对齐）
@@ -209,9 +209,12 @@ export const useRelicsStore = defineStore('relics', () => {
     const pool = RELIC_POOL.filter((r) => r.rarity === nextRarity)
     if (pool.length === 0) return null
     const product = pool[Math.floor(rng() * pool.length)]
+    // 注入 rng 越界（返回 1）时取不到产物：直接放弃合成，勿毁材料（守卫须在
+    // discard 之前才真原子；同族 encounters.tick 的 def 守卫同口径）
+    if (!product) return null
     // 原子提交：先移除材料再入库产物
     for (const m of materials) discard(m.instanceId)
-    synthCount.value()
+    synthCount()
     return obtain(product)
   }
 
@@ -238,10 +241,10 @@ export const useRelicsStore = defineStore('relics', () => {
     if (!relic) return false
     if (relic.level >= MAX_RELIC_LEVEL) return false
     const cost = enhanceCost(relic.rarity, relic.level + 1)
-    if (!enhanceSpend.value(cost)) return false
+    if (!enhanceSpend(cost)) return false
     relic.level += 1
     // 强化完成回调（v1.22 成就计数；失败零调用）
-    enhanceDone.value(1)
+    enhanceDone(1)
     return true
   }
 

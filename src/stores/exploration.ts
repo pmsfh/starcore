@@ -98,6 +98,8 @@ export const useExplorationStore = defineStore('exploration', () => {
     if (!node) return false
     if (isCompleted(nodeId) || isExploring(nodeId)) return false
     if (!prereqMet(node.requires)) return false
+    // 防御：探索乘数非正数即数据异常，快速失败（避免除零产生 Infinity 完成时间）
+    if (!exploreMult.isFinite() || exploreMult.lte(0)) return false
     if (!canAffordFn(node.cost)) return false
     if (!spendFn(node.cost)) return false
     // 锁定完成时间：基于当前 exploreMult 计算，之后 mult 变化不影响本次探索

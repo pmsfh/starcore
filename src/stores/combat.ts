@@ -28,6 +28,7 @@ import type { Formation } from './military'
 import { getTrait, type TraitId } from '@/data/traits'
 import { rollRelic, type RelicDef } from '@/data/relics'
 import type { CombatSaveData } from '@/lib/storage'
+import { clampSavedInt } from '@/lib/saved-int'
 import { fnv1a, mulberry32 } from '@/lib/random'
 
 export interface BattleLogEntry {
@@ -306,10 +307,6 @@ export const useCombatStore = defineStore('combat', () => {
     rounds: number,
     rng: () => number
   ): BattleResult {
-    // 限制日志条数：保留首条（遭遇）+ 最后 MAX_LOG-1 条
-    const MAX_LOG = 30
-    const trimmedLog = log.length > MAX_LOG ? [log[0], ...log.slice(-(MAX_LOG - 1))] : log
-
     const rewards: BattleResult['rewards'] = {}
     let relic: RelicDef | undefined
     if (victory) {
@@ -319,10 +316,11 @@ export const useCombatStore = defineStore('combat', () => {
       if (r.alloy) rewards.alloy = r.alloy
       if (r.data) rewards.data = r.data
       if (r.dark) rewards.dark = r.dark
-      // 遗物掉落：由 rewards.relicChance 触发，稀有度偏置 relicRarityBias
+      // 遗物掉落：由 rewards.relicChance 触发，稀有度偏置 relicRarityBias；
+      // 掉落条先入日志再统一截断，MAX_LOG 上限语义不被悄悄 +1
       if (r.relicChance && rng() < r.relicChance) {
         relic = rollRelic(r.relicRarityBias ?? 0, rng)
-        trimmedLog.push({
+        log.push({
           round: rounds,
           msg: t('battle.logRelicFound', { relicName: relic.name }),
           side: 'system',
@@ -336,6 +334,9 @@ export const useCombatStore = defineStore('combat', () => {
         completedStrongholds.value.add(stronghold.id)
       }
     }
+    // 限制日志条数：保留首条（遭遇）+ 最后 MAX_LOG-1 条
+    const MAX_LOG = 30
+    const trimmedLog = log.length > MAX_LOG ? [log[0], ...log.slice(-(MAX_LOG - 1))] : log
     return { victory, log: trimmedLog, rewards, relic, losses, rounds }
   }
 
@@ -473,7 +474,7 @@ export const useCombatStore = defineStore('combat', () => {
     }
     // 远征深度：旧档缺失保持 0；防御性钳制非负整数
     if (typeof data.expeditionBest === 'number' && isFinite(data.expeditionBest)) {
-      expeditionBest.value = Math.max(0, Math.floor(data.expeditionBest))
+      expeditionBest.value = clampSavedInt(data.expeditionBest)
     }
     // 里程碑领取记录：旧档缺失保持空（零迁移）；条目级自愈，只留「深度达标内、
     // 正整数、未重复」的档位，伪领（超现有深度档）与非法条目静默剥离

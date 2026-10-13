@@ -2,7 +2,7 @@
 import { t } from '@/i18n'
 import { computed, ref } from 'vue'
 import { useGameStore } from '@/stores/game'
-import { isInfiniteNode, nextCost } from '@/stores/transcend'
+import { isInfiniteNode, nextCost, TRANSCEND_MIN_ENERGY } from '@/stores/transcend'
 import { fmt } from '@/lib/format'
 import { D } from '@/lib/decimal'
 import ConfirmModal from '@/components/ui/ConfirmModal.vue'
@@ -82,7 +82,7 @@ function cancelTranscend() {
 </script>
 
 <template>
-  <div class="prestige-view">
+  <div class="prestige-view screen-enter">
     <h2 class="page-title font-display">{{ t('prestige.title') }}</h2>
     <p class="page-sub">{{ t('prestige.subtitle') }}</p>
 
@@ -106,7 +106,7 @@ function cancelTranscend() {
       {{ t('prestige.doTranscend') }}
     </button>
     <p v-if="!canTranscend" class="req-hint">
-      {{ t('prestige.needLead') }} 300,000 {{ t('prestige.needTail') }}
+      {{ t('prestige.needLead') }} {{ fmt(TRANSCEND_MIN_ENERGY) }} {{ t('prestige.needTail') }}
     </p>
     <p v-else class="ready-hint">{{ t('prestige.ready') }}</p>
 
@@ -259,7 +259,6 @@ function cancelTranscend() {
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
-  animation: screenIn 0.4s var(--ease-out);
 }
 .page-title {
   color: var(--color-amber);

@@ -1,5 +1,5 @@
 // 星核纪元 发布校验：本地预览与远程目标冒烟
-// 验证点：首屏渲染 / 版本号断言 / 十路由无错误 / 移动端无横向溢出 / 控制台无 error
+// 验证点：首屏渲染 / 版本号断言 / 十一路由无错误 / 移动端无横向溢出 / 控制台无 error
 // 期望版本读自仓库 package.json，避免每次发版改脚本
 import { readFileSync } from 'node:fs';
 import { launch, PREVIEW_URL } from './starcore-pwlib.mjs';
@@ -11,7 +11,8 @@ const EXPECTED_VERSION = `v${JSON.parse(
 const TARGETS = [];
 if (!process.env.SC_URL || process.env.E2E_LOCAL) TARGETS.push(['本地预览', PREVIEW_URL]);
 if (process.env.SC_URL) TARGETS.push(['远程目标', process.env.SC_URL]);
-const ROUTES = ['/', '/build', '/tech', '/map', '/army', '/battle', '/relic', '/prestige', '/achievements', '/archive', '/settings'];
+// /battle 须带参数形态：裸路径不匹配 /battle/:id 参数路由，会落兜底重定向空转
+const ROUTES = ['/', '/build', '/tech', '/map', '/army', '/battle/raider_1', '/relic', '/prestige', '/achievements', '/archive', '/settings'];
 
 const browser = await launch();
 let fail = 0;
@@ -40,7 +41,7 @@ for (const [name, base] of TARGETS) {
       await page.goto(base + r, { waitUntil: 'networkidle' });
       await page.waitForTimeout(300);
     }
-    console.log(`  十路由遍历: 完成（HTTP≥400: ${errors.length ? JSON.stringify(errors) : '无'}；console error: ${consoleErrors.length ? JSON.stringify(consoleErrors) : '无'}）`);
+    console.log(`  十一路由遍历: 完成（HTTP≥400: ${errors.length ? JSON.stringify(errors) : '无'}；console error: ${consoleErrors.length ? JSON.stringify(consoleErrors) : '无'}）`);
     if (errors.length || consoleErrors.length) fail++;
     await ctx.close();
   }

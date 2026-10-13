@@ -8,6 +8,7 @@ import { toNumberChecked } from '@/lib/decimal'
 import type { Decimal } from '@/lib/decimal'
 import { UNITS, getUnit, defaultFormations, type UnitId, type UnitDef } from '@/data/units'
 import { isUnlockedBy } from '@/lib/requires'
+import { clampSavedInt } from '@/lib/saved-int'
 import { DEFAULT_TRAIT_ID, TRAITS, type TraitId } from '@/data/traits'
 import { getDispatchTier, dispatchRecallReward } from '@/data/dispatch'
 import type { ResourceType } from '@/data/buildings'
@@ -337,7 +338,7 @@ export const useMilitaryStore = defineStore('military', () => {
       const next = { ...owned.value }
       for (const [uid, n] of Object.entries(data.owned)) {
         if (uid in next && typeof n === 'number' && isFinite(n)) {
-          next[uid as UnitId] = Math.max(0, Math.floor(n))
+          next[uid as UnitId] = clampSavedInt(n)
         }
       }
       owned.value = next
@@ -347,7 +348,7 @@ export const useMilitaryStore = defineStore('military', () => {
       // （完成后 owned += count，小数 count 产小数兵力 → owned intOnly 拒 → 整档判废）
       trainingQueue.value = data.training.map((t) => ({
         ...t,
-        count: Math.max(0, Math.floor(t.count)),
+        count: clampSavedInt(t.count),
       }))
       // 恢复训练 id 锚点（v1.61）：自增计数器不入档，读档后新任务若从 0 重数
       // 会与档内旧 id 重复（列表 key 撞车、下游按 id 判等失真）；按档内最大序号续接
