@@ -113,7 +113,7 @@ function closeResult(fusion: RelicFusionApi) {
             }}</span>
           </div>
         </div>
-        <div class="btn-group">
+        <div class="confirm-actions">
           <button class="btn-primary" style="flex: 1" @click="closeResult(fusion)">
             {{ t('common.confirm') }}
           </button>
