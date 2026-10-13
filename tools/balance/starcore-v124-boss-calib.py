@@ -6,15 +6,15 @@ starcore-v124-boss-calib.py — 每周强敌（周 Boss）数值校准模拟（v
 派生（可复现，与 endless TEMPLATE_NORMALIZE 同公式），不依赖 /tmp 缓存。
 
 设计口径演进（本校准六轮记录）：
-  v1 暂定 bossDepth = max(6, floor(best×0.85)) —— 证伪：×0.85 落在
+  v1 暂定 bossDepth = max(6, floor(best×0.85))，证伪：×0.85 落在
      深度全胜区，三档 1 回合 0 损耗白给（远征挑战带在前沿「前方」）。
-  v2 best+K 锚 —— 档C 墙区胜率带合理但模板锯齿 100pp；档A/B 锚定假设错误
+  v2 best+K 锚，档C 墙区胜率带合理但模板锯齿 100pp；档A/B 锚定假设错误
      （v120 的「档A 至 D15」是里程碑边界校准点口径，非全胜截止）。
-  v3 前沿锚+relax —— beast_4（单体巨兽）在墙+1 全档位 0/200，relax 救不动；
+  v3 前沿锚+relax，beast_4（单体巨兽）在墙+1 全档位 0/200，relax 救不动；
      固定深度 + 随机模板必出「某周必败」。各模板墙位差为结构性（±1..3 深度）。
-  v4 best+1+OFFSET —— OFFSET 方向正确但锚定双计 +1：卡墙玩家的 best 已≈墙位
+  v4 best+1+OFFSET，OFFSET 方向正确但锚定双计 +1：卡墙玩家的 best 已≈墙位
      （重试可推过半胜带，胜率跌到个位数才停），Boss 被推到墙+1 → 全模板过难。
-  v5 best+OFFSET 首版（{−1,0,−3,+2}）—— 判定带 [20,70] 偏紧：出带格全部
+  v5 best+OFFSET 首版（{−1,0,−3,+2}），判定带 [20,70] 偏紧：出带格全部
      落在 [78,87]%（偏移差一格，实测交叉点 raider 为 best+1、beast 为 best−2）；
      且 200 局二项噪声 ±3.5pp、深度整数量化下，70% 上缘不具备判读意义。
   v6（本轮定稿）OFFSET = {silencer_3:−1, raider_5:+1, beast_4:−2, ruin_4:+2}；

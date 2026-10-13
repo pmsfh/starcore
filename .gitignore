@@ -30,3 +30,7 @@ verify-screenshots/
 *.njsproj
 *.sln
 *.sw?
+
+# Python 工具链
+__pycache__/
+*.pyc

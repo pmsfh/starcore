@@ -53,7 +53,7 @@ describe('时间加速全玩法仿真', () => {
     }
   }
 
-  it('阶段一：建造产出与时间严格线性（数值守恒基线）', () => {
+  it('建造产出与时间严格线性（数值守恒基线）', () => {
     const game = useGameStore()
     const resources = useResourcesStore()
     const buildings = useBuildingsStore()
@@ -69,7 +69,7 @@ describe('时间加速全玩法仿真', () => {
     expectFiniteNonNegative(resources)
   })
 
-  it('阶段二：科技→解锁→训练链路无死锁推进', () => {
+  it('科技解锁训练链路无死锁推进', () => {
     const game = useGameStore()
     const resources = useResourcesStore()
     const military = useMilitaryStore()
@@ -99,7 +99,7 @@ describe('时间加速全玩法仿真', () => {
     expectFiniteNonNegative(resources)
   })
 
-  it('阶段三：探索全流程（2h 加速）——完成、发奖、解锁链', () => {
+  it('探索全流程（2h 加速）：完成、发奖、解锁链', () => {
     const game = useGameStore()
     const resources = useResourcesStore()
     const exploration = useExplorationStore()
@@ -131,7 +131,7 @@ describe('时间加速全玩法仿真', () => {
     expectFiniteNonNegative(resources)
   })
 
-  it('转生循环——重置范围与保留范围精确', () => {
+  it('转生循环：重置范围与保留范围精确', () => {
     const game = useGameStore()
     const resources = useResourcesStore()
     const buildings = useBuildingsStore()
@@ -162,7 +162,7 @@ describe('时间加速全玩法仿真', () => {
     expectFiniteNonNegative(resources)
   })
 
-  it('阶段五：极端加速（12h×2）+ 批量压力，无 NaN/Infinity', () => {
+  it('极端加速（12h×2）+ 批量压力，无 NaN/Infinity', () => {
     const game = useGameStore()
     const resources = useResourcesStore()
     const buildings = useBuildingsStore()
@@ -175,7 +175,7 @@ describe('时间加速全玩法仿真', () => {
     expect(buildings.getLevel(SOLAR)).toBeGreaterThan(50)
   }, 30_000)
 
-  it('阶段六：自动化协议长跑——买协议后挂机自动升级', () => {
+  it('自动化协议长跑：买协议后挂机自动升级', () => {
     const game = useGameStore()
     const resources = useResourcesStore()
     const transcend = useTranscendStore()
