@@ -16,6 +16,12 @@
  * setAchievementExternalProviders 注入全 0 桩达到同等效果（未注入指标
  * 按 0 判定，是 store 的既有语义）；garrisonGuard 走 resetGarrisonGuard
  * 显式清空（未注入时 garrison 本体门槛仍生效，是既有语义）。
+ *
+ * 覆盖清单（新增模块级 provider 单例时必须同步补入）：
+ * military = trainingSlot / dispatchBest；
+ * relics = slot / enhanceSpend / enhanceDone / synthCount（四个）；
+ * combat = garrisonGuard / formationTrait；
+ * achievements = externalProviders；encounters = random。
  */
 import {
   setTrainingSlotProvider,
@@ -26,6 +32,7 @@ import {
   setRelicSlotProvider,
   setRelicEnhanceSpendProvider,
   setRelicEnhanceDoneProvider,
+  setRelicSynthCountProvider,
 } from '@/stores/relics'
 import { resetGarrisonGuard, resetFormationTraitProvider } from '@/stores/combat'
 import { setAchievementExternalProviders } from '@/stores/achievements'
@@ -37,6 +44,7 @@ export function resetProviderSingletons(): void {
   setRelicSlotProvider(() => 0)
   setRelicEnhanceSpendProvider(() => false) // 未注入扣费通道时拒绝强化（安全语义）
   setRelicEnhanceDoneProvider(() => {})
+  setRelicSynthCountProvider(() => {})
   resetGarrisonGuard()
   resetFormationTraitProvider()
   resetDispatchBestProvider()

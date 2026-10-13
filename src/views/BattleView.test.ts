@@ -10,9 +10,13 @@
  * @vitest-environment jsdom
  */
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
-import { createPinia, setActivePinia } from 'pinia'
-import { mount } from '@vue/test-utils'
-import { defineComponent, ref } from 'vue'
+import {
+  mountView,
+  useViewTestHooks,
+  sharedVueRouterMock,
+  focusTrapMock,
+  routeState,
+} from '@/tests/view-mount'
 import BattleView from './BattleView.vue'
 import { useResourcesStore } from '@/stores/resources'
 import { useMilitaryStore } from '@/stores/military'
@@ -21,47 +25,23 @@ import { ENDLESS_STRONGHOLD_ID } from '@/data/endless'
 import { WEEKLY_BOSS_ID } from '@/data/weekly-boss'
 import { useGameStore } from '@/stores/game'
 import { exploredNodes } from '@/tests/fixtures'
+import { resetProviderSingletons } from '@/tests/reset-providers'
 
-// Mock vue-router
-const mockPush = vi.fn()
-const mockRouteParams = ref({ id: 'raider_1' })
+vi.mock('vue-router', () => sharedVueRouterMock())
 
-vi.mock('vue-router', () => ({
-  useRoute: () => ({ params: mockRouteParams.value }),
-  useRouter: () => ({ push: mockPush }),
-  RouterLink: defineComponent({
-    props: {
-      to: { type: String, required: false, default: '' },
-    },
-    template: '<a><slot /></a>',
-  }),
-  RouterView: defineComponent({
-    template: '<div />',
-  }),
-}))
+vi.mock('@/composables/useFocusTrap', () => focusTrapMock())
 
-// Mock useFocusTrap
-vi.mock('@/composables/useFocusTrap', () => ({
-  useFocusTrap: () => {},
-}))
-
-let pinia: ReturnType<typeof createPinia>
+// isolate:false 下旧 pinia 的 provider 残留闭包会把 active pinia 切回旧实例，
+// 致组件与直取 store 读不到同一实例（连跑泄漏）；全文件统一前置重置。
+beforeEach(() => {
+  resetProviderSingletons()
+})
 
 function mountBattle() {
-  return mount(BattleView, {
-    global: {
-      plugins: [pinia],
-      stubs: {
-        Icons: defineComponent({ template: '<svg />' }),
-      },
-    },
-  })
+  return mountView(BattleView)
 }
 
 function setupBattleReady() {
-  pinia = createPinia()
-  setActivePinia(pinia)
-
   const resources = useResourcesStore()
   const military = useMilitaryStore()
 
@@ -76,8 +56,10 @@ function setupBattleReady() {
 }
 
 describe('BattleView — 挂载与渲染', () => {
+  useViewTestHooks()
+
   beforeEach(() => {
-    vi.clearAllMocks()
+    routeState.params = { id: 'raider_1' }
     setupBattleReady()
   })
 
@@ -97,9 +79,10 @@ describe('BattleView — 挂载与渲染', () => {
 })
 
 describe('BattleView — 驻扎守卫与确认', () => {
+  useViewTestHooks()
+
   beforeEach(() => {
-    vi.clearAllMocks()
-    mockRouteParams.value = { id: 'raider_1' }
+    routeState.params = { id: 'raider_1' }
     setupBattleReady()
   })
 
@@ -127,14 +110,11 @@ describe('BattleView — 驻扎守卫与确认', () => {
 })
 
 describe('BattleView — 无尽远征深度步进', () => {
-  beforeEach(() => {
-    vi.clearAllMocks()
-    mockRouteParams.value = { id: ENDLESS_STRONGHOLD_ID }
-    setupBattleReady()
-  })
+  useViewTestHooks()
 
-  afterEach(() => {
-    mockRouteParams.value = { id: 'raider_1' }
+  beforeEach(() => {
+    routeState.params = { id: ENDLESS_STRONGHOLD_ID }
+    setupBattleReady()
   })
 
   it('进页跟随前沿且加号禁用，退至深度 1 后减号禁用', async () => {
@@ -156,8 +136,10 @@ describe('BattleView — 无尽远征深度步进', () => {
 })
 
 describe('BattleView — 战斗流程与奖励发放', () => {
+  useViewTestHooks()
+
   beforeEach(() => {
-    vi.clearAllMocks()
+    routeState.params = { id: 'raider_1' }
     setupBattleReady()
   })
 
@@ -202,6 +184,8 @@ describe('BattleView — 战斗流程与奖励发放', () => {
 })
 
 describe('BattleView — 战报逐条播出（v1.56）', () => {
+  useViewTestHooks()
+
   // matchMedia 托管：共享 worker 下他文件（TopBar/AppShell）的文件级桩
   // 不可配置且 matches 取值不定，本组用例须自行钉死环境（默认非减动效）。
   // 不可配置桩只能换值还原；属性不存在时用可配置 defineProperty、用后删除。
@@ -239,8 +223,7 @@ describe('BattleView — 战报逐条播出（v1.56）', () => {
   }
 
   beforeEach(() => {
-    vi.clearAllMocks()
-    mockRouteParams.value = { id: 'raider_1' }
+    routeState.params = { id: 'raider_1' }
     setupBattleReady()
     vi.useFakeTimers()
     priorMm = Object.getOwnPropertyDescriptor(window, 'matchMedia')
@@ -346,10 +329,10 @@ describe('BattleView — 战报逐条播出（v1.56）', () => {
 })
 
 describe('BattleView — 远征深度上限', () => {
+  useViewTestHooks()
+
   it('前沿达到最大深度时选择封顶，不出现超过上限的层数', async () => {
-    mockRouteParams.value = { id: 'endless' }
-    pinia = createPinia()
-    setActivePinia(pinia)
+    routeState.params = { id: 'endless' }
     const combat = useCombatStore()
     combat.completedStrongholds.add('silencer_3')
     combat.expeditionBest = 999
@@ -361,20 +344,15 @@ describe('BattleView — 远征深度上限', () => {
     expect(depthText).toContain('第 999 层')
     expect(depthText).not.toContain('1000')
     expect(wrapper.find('.depth-frontier').exists()).toBe(true)
-
-    mockRouteParams.value = { id: 'raider_1' }
   })
 })
 
 describe('BattleView — 战损结算与驻扎切换（v1.61 补测）', () => {
-  beforeEach(() => {
-    vi.clearAllMocks()
-    mockRouteParams.value = { id: 'raider_1' }
-    setupBattleReady()
-  })
+  useViewTestHooks()
 
-  afterEach(() => {
-    mockRouteParams.value = { id: 'raider_1' }
+  beforeEach(() => {
+    routeState.params = { id: 'raider_1' }
+    setupBattleReady()
   })
 
   it('编队全灭：清空编队、自动撤驻并提示', async () => {
@@ -441,7 +419,7 @@ describe('BattleView — 战损结算与驻扎切换（v1.61 补测）', () => {
 
   it('编队被他处占用：确认驻扎被拒、弹窗收合并提示', async () => {
     exploredNodes('node_orbit', 'node_inner')
-    mockRouteParams.value = { id: 'raider_2' }
+    routeState.params = { id: 'raider_2' }
     const combat = useCombatStore()
     combat.completedStrongholds.add('raider_1')
     combat.completedStrongholds.add('raider_2')
@@ -465,17 +443,14 @@ describe('BattleView — 战损结算与驻扎切换（v1.61 补测）', () => {
 })
 
 describe('BattleView — 每周强敌（v1.61 补测）', () => {
+  useViewTestHooks()
+
   beforeEach(() => {
-    vi.clearAllMocks()
-    mockRouteParams.value = { id: WEEKLY_BOSS_ID }
+    routeState.params = { id: WEEKLY_BOSS_ID }
     setupBattleReady()
     const combat = useCombatStore()
     combat.completedStrongholds.add('silencer_3')
     combat.expeditionBest = 6
-  })
-
-  afterEach(() => {
-    mockRouteParams.value = { id: 'raider_1' }
   })
 
   it('本周已击败：出战短路，不结算不重复发奖', async () => {

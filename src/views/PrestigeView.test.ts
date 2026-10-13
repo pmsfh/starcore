@@ -8,37 +8,26 @@
  * @vitest-environment jsdom
  */
 import { describe, it, expect, beforeEach, vi } from 'vitest'
-import { createPinia, setActivePinia } from 'pinia'
-import { mount } from '@vue/test-utils'
-import { defineComponent } from 'vue'
+import { mountView, useViewTestHooks, focusTrapMock, selectBulk10 } from '@/tests/view-mount'
 import PrestigeView from './PrestigeView.vue'
 import { useResourcesStore } from '@/stores/resources'
 import { useTranscendStore, nextCost } from '@/stores/transcend'
-import { selectBulk10 } from '@/tests/view-mount'
 import { resetProviderSingletons } from '@/tests/reset-providers'
 import { D } from '@/lib/decimal'
 
-// Mock useFocusTrap
-vi.mock('@/composables/useFocusTrap', () => ({
-  useFocusTrap: () => {},
-}))
+vi.mock('@/composables/useFocusTrap', () => focusTrapMock())
 
-let pinia: ReturnType<typeof createPinia>
+// isolate:false 防旧 pinia provider 残留闭包致子 store 分裂（连跑泄漏）
+beforeEach(() => {
+  resetProviderSingletons()
+})
 
 function mountPrestige() {
-  return mount(PrestigeView, {
-    global: {
-      plugins: [pinia],
-      stubs: { Icons: defineComponent({ template: '<svg />' }) },
-    },
-  })
+  return mountView(PrestigeView)
 }
 
 describe('PrestigeView — 挂载与渲染', () => {
-  beforeEach(() => {
-    pinia = createPinia()
-    setActivePinia(pinia)
-  })
+  useViewTestHooks()
 
   it('正常挂载并渲染', () => {
     const wrapper = mountPrestige()
@@ -55,10 +44,9 @@ describe('PrestigeView — 挂载与渲染', () => {
 })
 
 describe('PrestigeView — 转生确认流程', () => {
-  beforeEach(() => {
-    pinia = createPinia()
-    setActivePinia(pinia)
+  useViewTestHooks()
 
+  beforeEach(() => {
     const resources = useResourcesStore()
     // 设置足够转生的资源（total energy 需 >= 3e5）
     resources.setAmount('energy', 1e9)
@@ -101,11 +89,9 @@ describe('PrestigeView — 转生确认流程', () => {
 })
 
 describe('PrestigeView — 转生仪式（v1.55）', () => {
-  beforeEach(() => {
-    pinia = createPinia()
-    setActivePinia(pinia)
-    resetProviderSingletons()
+  useViewTestHooks()
 
+  beforeEach(() => {
     const resources = useResourcesStore()
     resources.setAmount('energy', 1e9)
     resources.gain('energy', 1e9)
@@ -159,10 +145,7 @@ describe('PrestigeView — 转生仪式（v1.55）', () => {
 })
 
 describe('PrestigeView — 无限天赋批量预览', () => {
-  beforeEach(() => {
-    pinia = createPinia()
-    setActivePinia(pinia)
-  })
+  useViewTestHooks()
 
   it('切至 ×10 档位显示可买级数与预计总花费', async () => {
     const transcend = useTranscendStore()
@@ -199,10 +182,7 @@ describe('PrestigeView — 无限天赋批量预览', () => {
 })
 
 describe('PrestigeView — 无限节点总加成显示（v1.61）', () => {
-  beforeEach(() => {
-    pinia = createPinia()
-    setActivePinia(pinia)
-  })
+  useViewTestHooks()
 
   it('大等级改用 Decimal 求值：不出现 Infinity，超双精度回退科学计数', async () => {
     const transcend = useTranscendStore()

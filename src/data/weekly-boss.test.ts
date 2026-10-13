@@ -18,7 +18,7 @@ import {
   weeklyBossStronghold,
 } from './weekly-boss'
 import { STRONGHOLDS, getStronghold } from './pve'
-import { ENDLESS_UNLOCK_STRONGHOLD, endlessScale } from './endless'
+import { ENDLESS_UNLOCK_STRONGHOLD } from './endless'
 
 /** 校准脚本的墙位锚（档A/B/C 50% 墙位中位，starcore-v124-boss-calib.py v6） */
 const CALIB_WALLS = { A: 33, B: 37, C: 40 } as const
@@ -126,13 +126,6 @@ describe('weekly-boss 合成据点', () => {
     const s = weeklyBossStronghold(30, wk)
     const tpl = getStronghold(tid)!
     expect(s.enemies.length).toBe(tpl.enemies.length)
-    const depth = weeklyBossDepth(30, tid)
-    const normalize =
-      tpl.enemies.reduce((a, e) => a + (e.attack + e.defense + e.hp) * e.count, 0) /
-      tpl.enemies.reduce((a, e) => a + (e.attack + e.defense + e.hp) * e.count, 0) // 归一基准内自洽
-    void normalize
-    const scale = endlessScale(depth) * 1 // 具体系数由实现内聚，此处验结构
-    void scale
     s.enemies.forEach((e, i) => {
       expect(e.unitId).toBe(tpl.enemies[i]!.unitId)
       expect(e.count).toBe(tpl.enemies[i]!.count)
@@ -141,6 +134,28 @@ describe('weekly-boss 合成据点', () => {
       expect(e.attack).toBeGreaterThan(0)
       expect(e.hp).toBeGreaterThan(0)
     })
+  })
+
+  it('归一不变量：同深度下四模板合成总强度一致（取整误差内）', () => {
+    // 每模板取能落到同一目标深度的 best：best = 目标深度 - OFFSET；
+    // 模板所属周标识经轮换表反查（同周确定性已由上方用例覆盖）
+    const targetDepth = 30
+    const weekFor = (tid: string): string => {
+      for (let w = 1; w <= 53; w++) {
+        const wk = `2026-W${String(w).padStart(2, '0')}`
+        if (weeklyBossTemplateId(wk) === tid) return wk
+      }
+      throw new Error(`no week maps to ${tid}`)
+    }
+    const powers = WEEKLY_BOSS_TEMPLATE_IDS.map((tid) => {
+      const best = targetDepth - WEEKLY_BOSS_OFFSET[tid]
+      expect(weeklyBossDepth(best, tid)).toBe(targetDepth) // 前置自证同深度
+      const s = weeklyBossStronghold(best, weekFor(tid))
+      return s.enemies.reduce((a, e) => a + (e.attack + e.defense + e.hp) * e.count, 0)
+    })
+    const max = Math.max(...powers)
+    const min = Math.min(...powers)
+    expect((max - min) / max).toBeLessThan(0.01)
   })
 
   it('深度越大强度越高：同周 best=20 vs best=30 的编成攻/血更大', () => {

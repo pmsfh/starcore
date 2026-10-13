@@ -55,19 +55,20 @@ export function vueRouterMock(options?: {
  *
  * 用法：
  *   vi.mock('vue-router', () => sharedVueRouterMock())
- *   it('...', () => { routeState.path = '/build'; ... })
- * useViewTestHooks 每个用例前置重置 path='/' 与 meta={}。
+ *   it('...', () => { routeState.path = '/build'; routeState.params = { id: 'x' }; ... })
+ * useViewTestHooks 每个用例前置重置 path='/'、meta={} 与 params={}。
  */
 export const routeState = {
   path: '/',
   meta: {} as Record<string, unknown>,
+  params: {} as Record<string, unknown>,
   push: vi.fn(),
 }
 
 /** vue-router 共享 mock 工厂（消费 routeState；各文件顶层 vi.mock 的工厂体） */
 export function sharedVueRouterMock() {
   return {
-    useRoute: () => ({ path: routeState.path, meta: routeState.meta }),
+    useRoute: () => ({ path: routeState.path, meta: routeState.meta, params: routeState.params }),
     useRouter: () => ({ push: routeState.push }),
     RouterLink: defineComponent({
       props: { to: { type: String, required: false, default: '' } },
@@ -109,6 +110,7 @@ export function useViewTestHooks(): void {
     setActivePinia(createPinia())
     routeState.path = '/'
     routeState.meta = {}
+    routeState.params = {}
   })
   afterEach(() => {
     for (const w of wrappers) w.unmount()
