@@ -4,7 +4,7 @@
  *
  * 背景：星层扩展的「守恒触点」随层数增长已达 10 处，v0.71 设计复查曾靠人工
  * 抓出 4 处关键漏项。本脚本把「数据真值 → 单测断言 → Playwright 硬断言 →
- * 文档计数词表」四方核对机械化，任何一处漏改直接报错退出。
+ * 文档计数词表 → README 结构计数」多方核对机械化，任何一处漏改直接报错退出。
  *
  * 用法：node scripts/check-conservation.mjs
  *   --pw-dir <dir>  端到端脚本目录（可用环境变量 STARCORE_PW_DIR 覆盖；
@@ -446,7 +446,102 @@ for (const r of docRules) {
 }
 console.log('  （漂移会逐条列出；无漂移仅打命中清单）')
 
-// 3d. 汇总
+// 3d. 结构计数（README 项目结构块）
+//     结构类数字不在数据词表内，直接按「树内枚举真值 vs 双语声明」对账；
+//     计数方式：组件 = src/components 全部 .vue（含图标子组件，
+//     icons = ui/icons 目录）；组合式/数据表/lib = 非测试 .ts（lib 含 save/）；
+//     stores = defineStore 出现数；样式 = 文件数；视图 = .vue 数；册数/档数 = .md 数。
+console.log('\n== 结构计数（README 项目结构块）==')
+function countTree(dir, pred) {
+  let n = 0
+  for (const f of readdirSync(dir, { withFileTypes: true })) {
+    const p = join(dir, f.name)
+    if (f.isDirectory()) n += countTree(p, pred)
+    else if (pred(f.name)) n++
+  }
+  return n
+}
+const isVueName = (f) => f.endsWith('.vue')
+const isTsName = (f) => f.endsWith('.ts') && !f.endsWith('.test.ts')
+function countDefineStore() {
+  const dir = join(ROOT, 'src', 'stores')
+  let n = 0
+  for (const f of readdirSync(dir)) {
+    if (!f.endsWith('.ts') || f.endsWith('.test.ts')) continue
+    n += (readFileSync(join(dir, f), 'utf8').match(/\bdefineStore\s*\(/g) ?? []).length
+  }
+  return n
+}
+const S = {
+  components: countTree(join(ROOT, 'src', 'components'), isVueName),
+  iconComponents: countTree(join(ROOT, 'src', 'components', 'ui', 'icons'), isVueName),
+  composables: countTree(join(ROOT, 'src', 'composables'), isTsName),
+  dataTables: countTree(join(ROOT, 'src', 'data'), isTsName),
+  libModules: countTree(join(ROOT, 'src', 'lib'), isTsName),
+  stores: countDefineStore(),
+  styles: countTree(join(ROOT, 'src', 'styles'), () => true),
+  views: countTree(join(ROOT, 'src', 'views'), isVueName),
+  docBooks: countTree(join(ROOT, 'docs'), (f) => f.endsWith('.md')),
+  changelogTiers: countTree(join(ROOT, 'changelog'), (f) => f.endsWith('.md')),
+}
+// 中文数词/英文数词（册数、版本历史档数用词形表述）
+const ZH_D = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九']
+function zhNum(n) {
+  if (n < 10) return ZH_D[n]
+  if (n === 10) return '十'
+  if (n < 20) return '十' + ZH_D[n - 10]
+  return ZH_D[Math.floor(n / 10)] + '十' + (n % 10 ? ZH_D[n % 10] : '')
+}
+const EN_W = ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten']
+const readmes = {
+  zh: readFileSync(join(ROOT, 'README.md'), 'utf8'),
+  en: readFileSync(join(ROOT, 'README.en.md'), 'utf8'),
+}
+const structRules = [
+  { label: '组件数', zh: /(\d+)\s*个组件/, en: /(\d+)\s*components/, expect: S.components },
+  { label: '图标子组件数', zh: /图标子组件\s*(\d+)\s*个/, en: /(\d+)\s*icon sub-components/, expect: S.iconComponents },
+  { label: '组合式函数数', zh: /(\d+)\s*个组合式函数/, en: /(\d+)\s*composables/, expect: S.composables },
+  { label: '数据表数', zh: /(\d+)\s*份数据表/, en: /(\d+)\s*data tables/, expect: S.dataTables },
+  { label: '基础模块数', zh: /(\d+)\s*个基础模块/, en: /(\d+)\s*core modules/, expect: S.libModules },
+  { label: 'store 数', zh: /(\d+)\s*个 Pinia store/, en: /(\d+)\s*Pinia stores/, expect: S.stores },
+  { label: '样式模块数', zh: /(\d+)\s*个样式模块/, en: /(\d+)\s*style modules/, expect: S.styles },
+  { label: '页面视图数', zh: /(\d+)\s*个页面视图/, en: /(\d+)\s*views/, expect: S.views },
+]
+for (const r of structRules) {
+  const before = issues.length
+  for (const [tag, re, file] of [
+    ['zh', r.zh, 'README.md'],
+    ['en', r.en, 'README.en.md'],
+  ]) {
+    const text = readmes[tag]
+    const hits = [...text.matchAll(new RegExp(re.source, 'g'))]
+    if (hits.length === 0) {
+      bad(`结构计数 · ${r.label}`, `${file} 无命中（规则失配或表述被改）`)
+      continue
+    }
+    for (const m of hits) {
+      if (Number(m[1]) !== r.expect) {
+        const line = text.slice(0, m.index).split('\n').length
+        bad(`结构计数 · ${r.label}`, `${file} 第 ${line} 行「${m[0].trim()}」= ${m[1]} ≠ 真值 ${r.expect}`)
+      }
+    }
+  }
+  if (issues.length === before) ok(`结构计数 · ${r.label}`, `zh/en 双语 = ${r.expect}`)
+}
+// 词形计数：构造预期串核存在性（中文数词 / 英文数词两种形态）
+const wordRules = [
+  { tag: 'zh', s: `${zhNum(S.docBooks)}册规范文档`, label: '规范册数（词形）' },
+  { tag: 'en', s: `${S.docBooks} specification documents`, label: '规范册数（en）' },
+  { tag: 'zh', s: `版本历史${zhNum(S.changelogTiers)}档`, label: '版本历史档数（词形）' },
+  { tag: 'en', s: `active file and ${EN_W[S.changelogTiers - 1]} archives`, label: '版本历史档数（en）' },
+]
+for (const r of wordRules) {
+  const file = r.tag === 'zh' ? 'README.md' : 'README.en.md'
+  if (readmes[r.tag].includes(r.s)) ok(`结构计数 · ${r.label}`, `「${r.s}」`)
+  else bad(`结构计数 · ${r.label}`, `${file} 未找到「${r.s}」（结构计数未同步？）`)
+}
+
+// 3e. 汇总
 console.log('\n== 汇总 ==')
 rmSync(TRUTH_TMP, { recursive: true, force: true })
 if (issues.length === 0) {
