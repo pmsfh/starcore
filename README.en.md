@@ -81,7 +81,7 @@ starcore/
 │  ├─ composables/  13 composables (breakpoints, Toast, action queue, onboarding, particles, …)
 │  ├─ data/         15 data tables (buildings, tech, exploration, strongholds, relics, achievements, expeditions, weekly boss, encounters, dispatch, units, formation doctrines, navigation, story, background stars)
 │  ├─ i18n/         i18n facade (message lookup and locale detection)
-│  ├─ lib/          18 core modules (decimal math, formatting, effect system, offline gains, random, integrity signatures, save pipeline under save/, batch and cost helpers, …)
+│  ├─ lib/          19 core modules (decimal math, formatting, effect system, offline gains, random, integrity signatures, integer clamping, save pipeline under save/, batch and cost helpers, …)
 │  ├─ locales/      locale bundles (zh-CN baseline + en English, split by domain under ui/ and content/)
 │  ├─ router/       route definitions
 │  ├─ stores/       13 Pinia stores (resources, buildings, research, military, combat,
