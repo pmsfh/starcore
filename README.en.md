@@ -90,12 +90,13 @@ starcore/
 │  ├─ styles/       8 style modules (tokens, base, fonts, buttons, Toast, animations, background, utilities)
 │  ├─ tests/        test harness (vitest setup and shared helpers)
 │  ├─ views/        11 views (home, build, tech, map, army, battle, relics, rebirth, achievements, archive, settings)
-│  └─ App.vue / main.ts / version.ts / style.css
+│  └─ App.vue / app.ts / main.ts / version.ts / style.css
 ├─ docs/            11 specification documents (in Chinese), see Documentation
 ├─ references/      reference materials (English copy glossary)
 ├─ public/          favicon, touch icon, share image and self-hosted fonts (Orbitron, JetBrains Mono)
 ├─ scripts/         quality scripts (count conservation, message key checks)
 ├─ tools/           diagnostics (environment self-check, end-to-end and numeric)
+├─ .github/         CI workflow (full checks on push to main)
 ├─ changelog/       version history; active file and three archives
 ├─ deploy.sh        deployment script
 └─ project configs (vite.config.ts, vitest.config.ts, tsconfig*.json, eslint.config.js)

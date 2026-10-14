@@ -74,12 +74,13 @@ starcore/
 │  ├─ styles/       8 个样式模块（tokens、基础、字体、按钮、Toast、动效、背景、工具类）
 │  ├─ tests/        测试装置（vitest setup 与公共 helper）
 │  ├─ views/        11 个页面视图（主界面、建造、科技、地图、军队、战斗、遗物、转生、成就、档案馆、设置）
-│  └─ App.vue / main.ts / version.ts / style.css
+│  └─ App.vue / app.ts / main.ts / version.ts / style.css
 ├─ docs/            十一册规范文档，见「文档索引」
 ├─ references/      参考资料（英语文案术语表）
 ├─ public/          favicon、主屏图标、分享图与本地字体（Orbitron、JetBrains Mono）
 ├─ scripts/         质量脚本（计数守恒、文案缺键检查）
 ├─ tools/           诊断工具（环境自检、端到端与数值校验）
+├─ .github/         CI 工作流（推送 main 自动跑全量检查）
 ├─ changelog/       版本历史四档（活跃档 changelog.md 与三份历史存档）
 ├─ deploy.sh        部署脚本
 └─ 工程配置（vite.config.ts、vitest.config.ts、tsconfig*.json、eslint.config.js）
