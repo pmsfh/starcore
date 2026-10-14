@@ -492,3 +492,109 @@ describe('BattleView — 每周强敌（v1.61 补测）', () => {
     expect(wrapper.find('.modal-overlay').exists()).toBe(true)
   })
 })
+
+describe('BattleView — 对阵舞台血条回放（v1.65）', () => {
+  useViewTestHooks()
+
+  // matchMedia 托管：共享 worker 下他文件桩不可配置且 matches 取值不定，
+  // 本组用例须自行钉死环境（默认非减动效）。用法同 v1.56 组。
+  let priorMm: PropertyDescriptor | undefined
+  function stubMatchMedia(matches: boolean) {
+    const stub = (query: string) => ({
+      matches,
+      media: query,
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      onchange: null,
+      dispatchEvent: vi.fn(),
+    })
+    if (priorMm && !priorMm.configurable) {
+      ;(window as { matchMedia?: unknown }).matchMedia = stub
+    } else {
+      Object.defineProperty(window, 'matchMedia', {
+        configurable: true,
+        writable: true,
+        value: stub,
+      })
+    }
+  }
+  function restoreMatchMedia() {
+    if (priorMm && !priorMm.configurable) {
+      ;(window as { matchMedia?: unknown }).matchMedia = priorMm.value
+    } else if (priorMm) {
+      Object.defineProperty(window, 'matchMedia', priorMm)
+    } else {
+      delete (window as { matchMedia?: unknown }).matchMedia
+    }
+    priorMm = undefined
+  }
+
+  beforeEach(() => {
+    routeState.params = { id: 'raider_1' }
+    setupBattleReady()
+    vi.useFakeTimers()
+    priorMm = Object.getOwnPropertyDescriptor(window, 'matchMedia')
+    stubMatchMedia(false)
+  })
+  afterEach(() => {
+    vi.useRealTimers()
+    restoreMatchMedia()
+  })
+
+  it('舞台随演出出现并随步进推进帧；播完后随演出面隐去', async () => {
+    const wrapper = mountBattle()
+    const vm = wrapper.vm as any
+    vm.startBattle()
+    await wrapper.vm.$nextTick()
+    // 首条战报入场前舞台未渲染
+    expect(wrapper.find('[data-testid="battle-stage"]').exists()).toBe(false)
+
+    vi.advanceTimersByTime(260)
+    await wrapper.vm.$nextTick()
+    expect(wrapper.find('[data-testid="battle-stage"]').exists()).toBe(true)
+    const frameEarly = vm.stageFrame
+    expect(frameEarly).toBeTruthy()
+
+    vi.advanceTimersByTime(700)
+    await wrapper.vm.$nextTick()
+    // 帧随步进推进（引用换新），且敌方血池不回升
+    expect(vm.stageFrame).not.toBe(frameEarly)
+    expect(vm.stageFrame.enemy.totalHp).toBeLessThanOrEqual(frameEarly.enemy.totalHp)
+
+    vi.advanceTimersByTime(6000)
+    await wrapper.vm.$nextTick()
+    // 播完：弹窗出场、舞台随演出面隐去、帧定格为最终状态（全胜敌方血池归零）
+    expect(wrapper.find('.modal-overlay').exists()).toBe(true)
+    expect(wrapper.find('[data-testid="battle-stage"]').exists()).toBe(false)
+    expect(vm.stageFrame.enemy.totalHp).toBe(0)
+  })
+
+  it('点击舞台跳过播出：立即补全并弹出结果弹窗', async () => {
+    const wrapper = mountBattle()
+    const vm = wrapper.vm as any
+    vm.startBattle()
+    await wrapper.vm.$nextTick()
+    vi.advanceTimersByTime(260)
+    await wrapper.vm.$nextTick()
+    const stage = wrapper.find('[data-testid="battle-stage"]')
+    expect(stage.exists()).toBe(true)
+    await stage.trigger('click')
+    await wrapper.vm.$nextTick()
+    expect(vm.playing).toBe(false)
+    expect(wrapper.find('.modal-overlay').exists()).toBe(true)
+    expect(vm.displayedLog.length).toBe(vm.battleLog.length)
+  })
+
+  it('减动效偏好：不出舞台，结算后弹窗即出', async () => {
+    stubMatchMedia(true)
+    const wrapper = mountBattle()
+    const vm = wrapper.vm as any
+    vm.startBattle()
+    await wrapper.vm.$nextTick()
+    expect(vm.playing).toBe(false)
+    expect(wrapper.find('[data-testid="battle-stage"]').exists()).toBe(false)
+    expect(wrapper.find('.modal-overlay').exists()).toBe(true)
+  })
+})

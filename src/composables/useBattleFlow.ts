@@ -15,7 +15,7 @@ import { resourceRows } from '@/lib/resource-rows'
 import type { ResourceType } from '@/data/buildings'
 import type { StrongholdDef } from '@/data/pve'
 import type { useCombatStore } from '@/stores/combat'
-import type { BattleLogEntry } from '@/stores/combat'
+import type { BattleLogEntry, BattleReplayFrame } from '@/stores/combat'
 import { useToast } from '@/composables/useToast'
 
 type CombatStore = ReturnType<typeof useCombatStore>
@@ -50,11 +50,20 @@ export function useBattleFlow(deps: BattleFlowDeps) {
   // 播完或跳过后结果弹窗才出场；减动效偏好直出弹窗。
   // 播放纯表现，奖励与战损仍在结算时即时落袋（v0.94 口径不变）。
   const displayedLog = ref<BattleLogEntry[] | null>(null)
+  const battleReplay = ref<BattleReplayFrame[] | null>(null)
   const playing = ref(false)
   let playTimer: ReturnType<typeof setInterval> | null = null
   /** 播出节奏：基准间隔 220ms，按条数自适应收紧，播放段总时长封顶约 4 秒 */
   const PLAY_INTERVAL = 220
   const PLAY_BUDGET = 3600
+
+  /** 对阵舞台当前帧（v1.65）：与战报播出同索引推进（显示第 N 条时取第 N 帧） */
+  const stageFrame = computed<BattleReplayFrame | null>(() => {
+    const frames = battleReplay.value
+    const shown = displayedLog.value?.length ?? 0
+    if (!frames || frames.length === 0 || shown === 0) return null
+    return frames[Math.min(shown, frames.length) - 1] ?? null
+  })
 
   function clearPlayTimer() {
     if (playTimer) {
@@ -144,6 +153,8 @@ export function useBattleFlow(deps: BattleFlowDeps) {
     )
     battleLog.value = result.log
     battleResult.value = result
+    // 回放帧（v1.65）：与战报同索引，供对阵舞台逐条推进
+    battleReplay.value = result.replay ?? null
     // 结果弹窗改由战报播出收尾出场（v1.56）：逐条播完或跳过后 showResult 置真
     startPlayback(result.log)
     applyBattleLosses(result)
@@ -218,6 +229,7 @@ export function useBattleFlow(deps: BattleFlowDeps) {
     showResult.value = false
     battleLog.value = null
     displayedLog.value = null
+    battleReplay.value = null
   }
 
   function toggleGarrison() {
@@ -257,7 +269,9 @@ export function useBattleFlow(deps: BattleFlowDeps) {
     garrisonPreview,
     toast,
     displayedLog,
+    battleReplay,
     playing,
+    stageFrame,
     startBattle,
     skipPlayback,
     confirmResult,

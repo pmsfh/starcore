@@ -439,3 +439,110 @@ describe('combat store · 编队特性（v1.23）', () => {
     }
   })
 })
+
+// v1.65 对阵舞台：回放帧
+describe('combat store · 对阵舞台回放帧（v1.65）', () => {
+  beforeEach(() => {
+    setActivePinia(createPinia())
+    setGarrisonGuard(() => true)
+    setFormationTraitProvider(() => undefined)
+  })
+
+  it('帧与战报一一对齐：首帧满血池、末帧敌方归零、损失对平（胜战）', () => {
+    const combat = useCombatStore()
+    const formation = makeFormation('f1', { assault: 100 })
+    const stronghold = STRONGHOLDS.find((s) => s.id === 'raider_1')!
+    const result = combat.resolveBattle(formation, stronghold, D(1), D(1))
+    expect(result.victory).toBe(true)
+    // 帧数与战报条数一致；首帧为开战初始（双侧满血池）
+    expect(result.replay.length).toBe(result.log.length)
+    const first = result.replay[0]
+    expect(first.player.totalHp).toBe(first.player.totalHpMax)
+    expect(first.enemy.totalHp).toBe(first.enemy.totalHpMax)
+    // 末帧与结算对平：敌方血池归零、我方存活数与 losses 一致
+    const last = result.replay[result.replay.length - 1]
+    expect(last.enemy.totalHp).toBe(0)
+    expect(last.enemy.groups.every((g) => g.count === 0)).toBe(true)
+    const aliveCount = last.player.groups.reduce((sum, g) => sum + g.count, 0)
+    const lost = Object.values(result.losses).reduce((a, b) => a + b, 0)
+    expect(100 - aliveCount).toBe(lost)
+  })
+
+  it('血池随帧单调不增（双侧不回升）', () => {
+    const combat = useCombatStore()
+    const formation = makeFormation('f1', { assault: 60 })
+    const stronghold = STRONGHOLDS.find((s) => s.id === 'raider_2')!
+    const result = combat.resolveBattle(formation, stronghold, D(1), D(1))
+    expect(result.replay.length).toBeGreaterThanOrEqual(2)
+    let prevP = Number.POSITIVE_INFINITY
+    let prevE = Number.POSITIVE_INFINITY
+    for (const f of result.replay) {
+      expect(f.player.totalHp).toBeLessThanOrEqual(prevP)
+      expect(f.enemy.totalHp).toBeLessThanOrEqual(prevE)
+      prevP = f.player.totalHp
+      prevE = f.enemy.totalHp
+    }
+  })
+
+  it('战败全灭：末帧我方血池归零、敌方未归零', () => {
+    const combat = useCombatStore()
+    const dummy: StrongholdDef = {
+      id: 'dummy_replay_wipe',
+      name: '测试据点',
+      type: 'raider',
+      tier: 1,
+      desc: '',
+      enemies: [{ unitId: 'dummy', name: '测试单位', attack: 1000, defense: 0, hp: 100, count: 1 }],
+      rewards: {},
+      idle: {},
+    }
+    const result = combat.resolveBattle(makeFormation('f1', { assault: 1 }), dummy, D(1), D(1))
+    expect(result.victory).toBe(false)
+    expect(result.replay.length).toBe(result.log.length)
+    const last = result.replay[result.replay.length - 1]
+    expect(last.player.totalHp).toBe(0)
+    expect(last.enemy.totalHp).toBeGreaterThan(0)
+  })
+
+  it('超长战报截断：帧与战报同段保留（首帧 + 末段），长度封顶 30', () => {
+    const combat = useCombatStore()
+    // 40 组单兵敌（每组 20 血）：每回合击杀 1 组 → 40 次击杀；敌攻 0 的
+    // 保底伤害仍会造成我方减员事件，战报必超 30 条、触发截断路径
+    const enemies = Array.from({ length: 40 }, (_, i) => ({
+      unitId: `dummy_${i}`,
+      name: `测试单位${i}`,
+      attack: 0,
+      defense: 0,
+      hp: 20,
+      count: 1,
+    }))
+    const stronghold: StrongholdDef = {
+      id: 'dummy_replay_trim',
+      name: '截断测试',
+      type: 'raider',
+      tier: 1,
+      desc: '',
+      enemies,
+      rewards: {},
+      idle: {},
+    }
+    const result = combat.resolveBattle(
+      makeFormation('f1', { assault: 200 }),
+      stronghold,
+      D(1),
+      D(1)
+    )
+    expect(result.victory).toBe(true)
+    expect(result.rounds).toBe(40)
+    // 战报与帧同段截断，长度一致且封顶 30
+    expect(result.log.length).toBe(30)
+    expect(result.replay.length).toBe(30)
+    // 首帧仍为开战初始状态（与截断后首条遭遇日志同帧）
+    const first = result.replay[0]
+    expect(first.player.totalHp).toBe(first.player.totalHpMax)
+    expect(first.enemy.totalHp).toBe(800)
+    expect(first.enemy.groups.length).toBe(40)
+    // 末帧 = 末条日志（胜利）同帧：敌方归零
+    expect(result.replay[29].enemy.totalHp).toBe(0)
+  })
+})

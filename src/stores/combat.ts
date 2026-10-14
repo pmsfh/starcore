@@ -5,6 +5,10 @@
  * 数值边界（v1.61）：攻防乘数在结算入口经 toNumberChecked 落为双精度浮点
  * 参与 number 运算，该链隐含约 1e308 上限；当前数值规模（远征深度上限
  * 999 等）距上限余量充足，超限仅在开发与测试态直接抛错
+ *
+ * 对阵舞台回放（v1.65）：战报推送点同步快照双方状态帧（各组存活数与残兵
+ * 血量 + 聚合血池），与截断后战报按索引一一对齐；帧仅供战斗页演出消费，
+ * 瞬态数据不入存档、不参与结算
  */
 import { t } from '@/i18n'
 import { defineStore } from 'pinia'
@@ -37,9 +41,33 @@ export interface BattleLogEntry {
   side: 'player' | 'enemy' | 'system'
 }
 
+/** 对阵舞台回放组快照（v1.65）：一组兵的开战编制与当前状态 */
+export interface BattleReplayGroup {
+  unitId: string
+  name: string
+  count: number
+  hp: number
+  maxHp: number
+}
+
+/** 对阵舞台单侧快照：各组状态与聚合血池，血池上限为开战初始编制 */
+export interface BattleReplaySide {
+  groups: BattleReplayGroup[]
+  totalHp: number
+  totalHpMax: number
+}
+
+/** 对阵舞台回放帧：与战报条目按索引一一对齐（每帧为该条目事件后的双方状态） */
+export interface BattleReplayFrame {
+  player: BattleReplaySide
+  enemy: BattleReplaySide
+}
+
 export interface BattleResult {
   victory: boolean
   log: BattleLogEntry[]
+  /** 回放帧（v1.65，瞬态演出数据：与 log 同索引对齐，不入存档、不参与结算） */
+  replay: BattleReplayFrame[]
   rewards: { energy?: number; crystal?: number; alloy?: number; data?: number; dark?: number }
   relic?: RelicDef
   losses: Record<string, number> // 玩家损失 {unitId: count}
@@ -139,6 +167,7 @@ export const useCombatStore = defineStore('combat', () => {
     defMult: Decimal
   ): BattleResult {
     const log: BattleLogEntry[] = []
+    const replay: BattleReplayFrame[] = []
     // 编队特性（v1.23 方案 7）：id 相同的编队特性一致（编队 id 是稳定标识），
     // 经 provider 查询而非直接读 military（跨 store 注入惯例）
     const trait = getTrait(formationTraitProvider(formation.id))
@@ -176,6 +205,7 @@ export const useCombatStore = defineStore('combat', () => {
       return {
         victory: false,
         log: [{ round: 0, msg: t('battle.noFormation'), side: 'system' }],
+        replay: [],
         rewards: {},
         losses: {},
         rounds: 0,
@@ -188,13 +218,46 @@ export const useCombatStore = defineStore('combat', () => {
       return {
         victory: false,
         log: [{ round: 0, msg: t('battle.noEnemy'), side: 'system' }],
+        replay: [],
         rewards: {},
         losses: {},
         rounds: 0,
       }
     }
 
-    log.push({
+    // 对阵舞台回放（v1.65）：血池上限取开战初始编制为分母；帧仅读取既有
+    // 模拟中间态，不改变任何结算逻辑（机制数值零变化）
+    const playerHpMax = playerUnits.reduce((sum, u) => sum + u.count * u.maxHp, 0)
+    const enemyHpMax = enemyUnits.reduce((sum, u) => sum + u.count * u.maxHp, 0)
+    function buildSide(units: CombatUnit[], totalHpMax: number): BattleReplaySide {
+      let totalHp = 0
+      const groups = units.map((u) => {
+        const alive = u.count > 0
+        const hpTotal = alive ? (u.count - 1) * u.maxHp + u.hp : 0
+        totalHp += hpTotal
+        return {
+          unitId: u.unitId,
+          name: u.name,
+          count: alive ? u.count : 0,
+          hp: alive ? u.hp : 0,
+          maxHp: u.maxHp,
+        }
+      })
+      return { groups, totalHp, totalHpMax }
+    }
+    function snapshot(): BattleReplayFrame {
+      return {
+        player: buildSide(playerUnits, playerHpMax),
+        enemy: buildSide(enemyUnits, enemyHpMax),
+      }
+    }
+    /** 战报条目与回放帧同步推送（两者按索引一一对齐，截断时同段保留） */
+    function pushLog(entry: BattleLogEntry) {
+      log.push(entry)
+      replay.push(snapshot())
+    }
+
+    pushLog({
       round: 0,
       msg: t('battle.logEncounter', { strongholdName: stronghold.name }),
       side: 'system',
@@ -236,7 +299,7 @@ export const useCombatStore = defineStore('combat', () => {
         const remaining = totalHp - dmgDealt
         if (remaining <= 0) {
           tgt.count = 0
-          log.push({
+          pushLog({
             round,
             msg: t('battle.logKill', { attacker: p.name, target: tgt.name }),
             side: 'player',
@@ -249,8 +312,8 @@ export const useCombatStore = defineStore('combat', () => {
       }
       // 检查胜利
       if (enemyUnits.every((e) => e.count <= 0)) {
-        log.push({ round, msg: t('battle.logVictory'), side: 'system' })
-        return buildResult(true, log, stronghold, losses, round, rng)
+        pushLog({ round, msg: t('battle.logVictory'), side: 'system' })
+        return buildResult(true, log, replay, snapshot, stronghold, losses, round, rng)
       }
       // 敌方攻击
       for (const e of enemyUnits) {
@@ -269,7 +332,7 @@ export const useCombatStore = defineStore('combat', () => {
         if (remaining <= 0) {
           losses[tgt.unitId] = (losses[tgt.unitId] || 0) + tgt.count
           tgt.count = 0
-          log.push({
+          pushLog({
             round,
             msg: t('battle.logKill', { attacker: e.name, target: tgt.name }),
             side: 'enemy',
@@ -279,7 +342,7 @@ export const useCombatStore = defineStore('combat', () => {
           const lost = tgt.count - newCount
           if (lost > 0) {
             losses[tgt.unitId] = (losses[tgt.unitId] || 0) + lost
-            log.push({
+            pushLog({
               round,
               msg: t('battle.logDamage', { attacker: e.name, target: tgt.name, lost: lost }),
               side: 'enemy',
@@ -291,17 +354,19 @@ export const useCombatStore = defineStore('combat', () => {
       }
       // 检查失败
       if (playerUnits.every((p) => p.count <= 0)) {
-        log.push({ round, msg: t('battle.logWipeAll'), side: 'system' })
-        return buildResult(false, log, stronghold, losses, round, rng)
+        pushLog({ round, msg: t('battle.logWipeAll'), side: 'system' })
+        return buildResult(false, log, replay, snapshot, stronghold, losses, round, rng)
       }
     }
-    log.push({ round, msg: t('battle.logTimeout'), side: 'system' })
-    return buildResult(false, log, stronghold, losses, round, rng)
+    pushLog({ round, msg: t('battle.logTimeout'), side: 'system' })
+    return buildResult(false, log, replay, snapshot, stronghold, losses, round, rng)
   }
 
   function buildResult(
     victory: boolean,
     log: BattleLogEntry[],
+    replay: BattleReplayFrame[],
+    snapshot: () => BattleReplayFrame,
     stronghold: StrongholdDef,
     losses: Record<string, number>,
     rounds: number,
@@ -325,6 +390,7 @@ export const useCombatStore = defineStore('combat', () => {
           msg: t('battle.logRelicFound', { relicName: relic.name }),
           side: 'system',
         })
+        replay.push(snapshot())
       }
       // 远征合成据点（id='endless'，不在 STRONGHOLDS 白名单内）不入正式通关集：
       // 其进度由 expeditionBest 独立承担，误入会导致存档校验整档失败。
@@ -334,10 +400,13 @@ export const useCombatStore = defineStore('combat', () => {
         completedStrongholds.value.add(stronghold.id)
       }
     }
-    // 限制日志条数：保留首条（遭遇）+ 最后 MAX_LOG-1 条
+    // 限制日志条数：保留首条（遭遇）+ 最后 MAX_LOG-1 条；
+    // 回放帧与日志按同索引截断（首帧 + 末段），保持一一对齐
     const MAX_LOG = 30
     const trimmedLog = log.length > MAX_LOG ? [log[0], ...log.slice(-(MAX_LOG - 1))] : log
-    return { victory, log: trimmedLog, rewards, relic, losses, rounds }
+    const trimmedReplay =
+      replay.length > MAX_LOG ? [replay[0], ...replay.slice(-(MAX_LOG - 1))] : replay
+    return { victory, log: trimmedLog, replay: trimmedReplay, rewards, relic, losses, rounds }
   }
 
   /** 驻扎据点（挂机）：已驻 / 未攻克 / 守卫拒绝时返回 false */

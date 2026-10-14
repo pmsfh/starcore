@@ -54,6 +54,8 @@ export default {
   'battle.resultLoss': 'Defeat',
   'battle.resultWin': 'Victory',
   'battle.spoils': 'Spoils',
+  'battle.stageAlly': 'Friendly Forces',
+  'battle.stageEnemy': 'Enemy Forces',
   'battle.stay': 'Stay at This Stronghold',
   'battle.strongholdCaptured': 'Stronghold conquered!',
   'battle.strongholdLocked': 'Stronghold not yet unlocked; cannot deploy',

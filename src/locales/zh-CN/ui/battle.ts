@@ -52,6 +52,8 @@ export default {
   'battle.resultLoss': '战斗失败',
   'battle.resultWin': '战斗胜利',
   'battle.spoils': '战利品',
+  'battle.stageAlly': '我方',
+  'battle.stageEnemy': '敌方',
   'battle.stay': '留在此据点',
   'battle.strongholdCaptured': '据点已被攻克！',
   'battle.strongholdLocked': '据点尚未解锁，无法出征',

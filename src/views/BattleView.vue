@@ -12,6 +12,7 @@ import { getUnit } from '@/data/units'
 import Icon from '@/components/ui/Icon.vue'
 import EmptyState from '@/components/ui/EmptyState.vue'
 import Toast from '@/components/ui/Toast.vue'
+import BattleStage from '@/components/battle/BattleStage.vue'
 import LogList from '@/components/battle/LogList.vue'
 import EndlessDepthPanel from '@/components/battle/EndlessDepthPanel.vue'
 import FormationPicker from '@/components/battle/FormationPicker.vue'
@@ -142,6 +143,7 @@ const {
   toast,
   displayedLog,
   playing,
+  stageFrame,
   startBattle,
   skipPlayback,
   confirmResult,
@@ -242,17 +244,20 @@ const deployButtonLabel = computed(() => {
       </button>
     </div>
 
-    <!-- 战斗日志（v1.56 战报逐条播出：播放期点击或 Esc 跳过，播完结果弹窗出场） -->
+    <!-- 战斗演出（v1.56 战报逐条播出；v1.65 对阵舞台血条回放）：播放期点击或 Esc 跳过 -->
     <div
       v-if="displayedLog && displayedLog.length > 0 && !showResult"
-      class="battle-log"
-      :class="{ 'log-playing': playing }"
-      data-testid="battle-log"
+      class="battle-playback"
+      :class="{ 'playback-playing': playing }"
+      data-testid="battle-playback"
       @click="skipPlayback"
     >
-      <h3 class="section-title">{{ t('battle.logTitle') }}</h3>
-      <p v-if="playing" class="log-hint">{{ t('battle.playSkipHint') }}</p>
-      <LogList class="log-list" :entries="displayedLog" :animate="playing" />
+      <BattleStage v-if="stageFrame" :frame="stageFrame" />
+      <div class="battle-log" :class="{ 'log-playing': playing }" data-testid="battle-log">
+        <h3 class="section-title">{{ t('battle.logTitle') }}</h3>
+        <p v-if="playing" class="log-hint">{{ t('battle.playSkipHint') }}</p>
+        <LogList class="log-list" :entries="displayedLog" :animate="playing" />
+      </div>
     </div>
 
     <!-- 结果弹窗 -->
@@ -356,6 +361,15 @@ const deployButtonLabel = computed(() => {
   background: var(--color-quantum) !important;
   color: var(--color-on-core) !important;
   border-color: var(--color-quantum) !important;
+}
+
+.battle-playback {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.battle-playback.playback-playing {
+  cursor: pointer;
 }
 
 .battle-log {
