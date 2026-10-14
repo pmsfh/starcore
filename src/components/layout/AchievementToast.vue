@@ -62,9 +62,8 @@ watch(() => ach.toastQueue[0]?.id, showNext, { immediate: true })
   border: 1px solid var(--color-quantum);
   border-radius: var(--radius-lg);
   padding: var(--space-3) var(--space-4);
-  box-shadow:
-    var(--elevation-2),
-    0 0 16px color-mix(in srgb, var(--color-quantum) 15%, transparent);
+  --c: var(--color-quantum);
+  box-shadow: var(--elevation-2), var(--glow-2);
   pointer-events: none;
   max-width: min(320px, calc(100vw - 2 * var(--space-4)));
 }

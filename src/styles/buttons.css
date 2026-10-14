@@ -31,7 +31,7 @@
 }
 .btn-primary:hover:not(:disabled) {
   background: var(--color-core-dim);
-  box-shadow: 0 0 16px color-mix(in srgb, var(--color-core) 30%, transparent);
+  box-shadow: var(--glow-2);
 }
 .btn-primary:active {
   transform: scale(0.95);
@@ -72,7 +72,8 @@
 }
 .btn-accent:hover:not(:disabled) {
   filter: brightness(1.1);
-  box-shadow: 0 0 16px color-mix(in srgb, var(--accent, var(--color-core)) 30%, transparent);
+  --c: var(--accent, var(--color-core));
+  box-shadow: var(--glow-2);
 }
 .btn-accent:active {
   transform: scale(0.95);

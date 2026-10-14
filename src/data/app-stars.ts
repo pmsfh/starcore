@@ -8,7 +8,7 @@ export const APP_STARS = [
   {
     top: '18%',
     left: '12%',
-    background: 'rgba(255,255,255,.6)',
+    background: 'color-mix(in srgb, var(--color-flash) 60%, transparent)',
     size: '2px',
     duration: '3.2s',
     delay: '0s',
@@ -24,7 +24,7 @@ export const APP_STARS = [
   {
     top: '65%',
     left: '35%',
-    background: 'rgba(255,255,255,.4)',
+    background: 'color-mix(in srgb, var(--color-flash) 40%, transparent)',
     size: '2px',
     duration: '3.5s',
     delay: '-1.4s',
@@ -40,7 +40,7 @@ export const APP_STARS = [
   {
     top: '88%',
     left: '22%',
-    background: 'rgba(255,255,255,.3)',
+    background: 'color-mix(in srgb, var(--color-flash) 30%, transparent)',
     size: '2px',
     duration: '2.5s',
     delay: '-0.5s',

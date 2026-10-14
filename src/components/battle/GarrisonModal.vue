@@ -52,7 +52,8 @@ const emit = defineEmits<{ cancel: []; confirm: [] }>()
 <style scoped>
 :deep(.garrison-confirm-modal) {
   border-color: var(--color-quantum);
-  box-shadow: 0 0 40px color-mix(in srgb, var(--color-quantum) 15%, transparent);
+  --c: var(--color-quantum);
+  box-shadow: var(--glow-3);
 }
 .result-title {
   font-size: var(--text-xl);

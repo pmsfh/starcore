@@ -1,18 +1,5 @@
 <template>
-  <!-- 遗物图标（含 i-nav-relic 导航兜底 + i-relic-omega r_omega 遗物占用 + i-relic-armor / i-relic-capsule） -->
-  <symbol
-    id="i-nav-relic"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    stroke-width="1.75"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-  >
-    <path d="M12 2 2 8l10 6 8-6-8-6z" />
-    <path d="M2 16l10 6 8-6" />
-    <path d="M2 12l10 6 8-6" />
-  </symbol>
+  <!-- 遗物图标（i-relic-omega r_omega 遗物占用 + i-relic-armor / i-relic-capsule） -->
   <symbol
     id="i-relic-omega"
     viewBox="0 0 24 24"

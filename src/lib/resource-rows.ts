@@ -12,7 +12,7 @@ export interface ResourceRow {
 /**
  * resourceRows：资源字典 → 展示行（v1.07 合并自离线报告 / 战报 / 星图 / 顶栏四处组装）
  *
- * 名称与颜色查 meta 表，缺失时回退 id / '#fff'；金额统一走 fmt 管线。
+ * 名称与颜色查 meta 表，缺失时回退 id / var(--color-flash)；金额统一走 fmt 管线。
  * positiveOnly 时仅保留正值条目（战报与驻扎收益等过滤零值场景）。
  */
 export function resourceRows(
@@ -27,7 +27,12 @@ export function resourceRows(
       if (!positive) continue
     }
     const meta = metaMap[id]
-    rows.push({ id, name: meta?.name ?? id, color: meta?.color ?? '#fff', amount: fmt(v) })
+    rows.push({
+      id,
+      name: meta?.name ?? id,
+      color: meta?.color ?? 'var(--color-flash)',
+      amount: fmt(v),
+    })
   }
   return rows
 }

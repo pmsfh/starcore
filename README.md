@@ -76,7 +76,7 @@ starcore/
 │  ├─ views/        11 个页面视图（主界面、建造、科技、地图、军队、战斗、遗物、转生、成就、档案馆、设置）
 │  └─ App.vue / main.ts / version.ts / style.css
 ├─ docs/            十一册规范文档，见「文档索引」
-├─ public/          favicon、分享图与本地字体（Orbitron、JetBrains Mono）
+├─ public/          favicon、主屏图标、分享图与本地字体（Orbitron、JetBrains Mono）
 ├─ scripts/         质量脚本（计数守恒、文案缺键检查）
 ├─ tools/           诊断工具（环境自检、端到端与数值校验）
 ├─ changelog/       版本历史四档（活跃档 changelog.md 与三份历史存档）

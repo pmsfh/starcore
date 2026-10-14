@@ -60,7 +60,7 @@ export const RARITY_INFO: Record<
 
 /** 稀有度展示色（v0.97：图鉴/强化/合成三处共用，替代各自本地的拷贝） */
 export function relicRarityColor(rarity: string): string {
-  return RARITY_INFO[rarity as RelicRarity]?.color ?? '#fff'
+  return RARITY_INFO[rarity as RelicRarity]?.color ?? 'var(--color-flash)'
 }
 
 export const RELIC_POOL: RelicDef[] = [

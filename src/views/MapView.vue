@@ -406,7 +406,7 @@ const weeklyBossTestid = computed(() => {
 .endless-card.unlocked {
   border: 1px solid var(--c);
   opacity: 1;
-  box-shadow: 0 0 12px color-mix(in srgb, var(--c) 25%, transparent);
+  box-shadow: var(--glow-2);
 }
 .endless-card.unlocked:active {
   transform: scale(0.98);

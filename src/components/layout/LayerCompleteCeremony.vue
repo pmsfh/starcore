@@ -91,9 +91,8 @@ watch(() => game.exploration.layerCeremonyQueue[0], showNext, { immediate: true 
   border: 1px solid var(--layer-color);
   border-radius: var(--radius-lg);
   padding: var(--space-3) var(--space-5);
-  box-shadow:
-    var(--elevation-2),
-    0 0 16px color-mix(in srgb, var(--layer-color) 25%, transparent);
+  --c: var(--layer-color);
+  box-shadow: var(--elevation-2), var(--glow-2);
   cursor: pointer;
   max-width: min(340px, calc(100vw - 2 * var(--space-4)));
   text-align: center;

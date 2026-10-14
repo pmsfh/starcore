@@ -152,7 +152,7 @@ function toggleCollapsed() {
     var(--color-core-deep) 70%,
     transparent 100%
   );
-  box-shadow: 0 0 16px color-mix(in srgb, var(--color-core) 40%, transparent);
+  box-shadow: var(--glow-2);
   animation: corePulse 3s ease-in-out infinite;
 }
 .brand-name {
@@ -253,7 +253,7 @@ function toggleCollapsed() {
 .collapse-toggle:hover {
   border-color: var(--color-core);
   color: var(--color-core);
-  box-shadow: 0 0 10px color-mix(in srgb, var(--color-core) 25%, transparent);
+  box-shadow: var(--glow-2);
 }
 .collapse-toggle svg {
   transition: transform 0.2s var(--ease-out);

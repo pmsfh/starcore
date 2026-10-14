@@ -121,7 +121,8 @@ const game = useGameStore()
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  box-shadow: 0 0 8px currentColor;
+  --c: currentColor;
+  box-shadow: var(--glow-1);
 }
 .n-name {
   flex: 1;

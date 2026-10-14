@@ -158,7 +158,7 @@ const { displayActions, hasActions } = useActionQueue()
   --pb-fill: var(--c);
   --pb-fill-radius: 0 2px 2px 0;
   --pb-transition: width 0.5s var(--ease-out);
-  --pb-glow: 0 0 4px var(--c);
+  --pb-glow: var(--glow-1);
   --pb-overflow: visible;
 }
 

@@ -278,7 +278,7 @@ onBeforeUnmount(() => {
   height: 2px;
   border-radius: 50%;
   background: var(--c, var(--color-core));
-  box-shadow: 0 0 4px var(--c, var(--color-core));
+  box-shadow: var(--glow-1);
   pointer-events: none;
   animation: particleRise var(--duration, 1s) var(--ease-out) forwards;
   z-index: 1;

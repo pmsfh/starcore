@@ -232,7 +232,8 @@ function toggleExpand() {
   height: 8px;
   border-radius: 50%;
   flex-shrink: 0;
-  box-shadow: 0 0 6px currentColor;
+  --c: currentColor;
+  box-shadow: var(--glow-1);
 }
 
 /* 倒计时文字 */
@@ -273,7 +274,7 @@ function toggleExpand() {
   background: var(--color-amber);
   color: var(--color-amber);
   border: 1px dashed color-mix(in srgb, var(--color-amber) 50%, transparent);
-  box-shadow: 0 0 6px color-mix(in srgb, var(--color-amber) 30%, transparent);
+  box-shadow: var(--glow-1);
 }
 .countdown-row.rate-zero .countdown-text {
   color: var(--color-amber);

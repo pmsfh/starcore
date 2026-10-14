@@ -111,11 +111,13 @@ const hasNoLoss = computed(
    本组件 scoped 规则须经 :deep() 穿透才能命中（v0.77 RelicView 同源坑补齐） */
 :deep(.modal.victory) {
   border-color: var(--color-quantum);
-  box-shadow: 0 0 40px color-mix(in srgb, var(--color-quantum) 20%, transparent);
+  --c: var(--color-quantum);
+  box-shadow: var(--glow-3);
 }
 :deep(.modal.defeat) {
   border-color: var(--color-alert);
-  box-shadow: 0 0 40px color-mix(in srgb, var(--color-alert) 20%, transparent);
+  --c: var(--color-alert);
+  box-shadow: var(--glow-3);
 }
 .result-title {
   font-size: var(--text-xl);

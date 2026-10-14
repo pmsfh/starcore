@@ -312,7 +312,8 @@ function cancelTranscend() {
   transition: all 0.15s var(--ease-out);
 }
 .btn-transcend:hover:not(:disabled) {
-  box-shadow: 0 0 20px color-mix(in srgb, var(--color-amber) 30%, transparent);
+  --c: var(--color-amber);
+  box-shadow: var(--glow-2);
 }
 .btn-transcend:active:not(:disabled) {
   transform: scale(0.97);

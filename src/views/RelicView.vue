@@ -332,7 +332,7 @@ function onEnhanceFail(msg: string) {
   border-color: var(--c);
 }
 .set-row.full {
-  box-shadow: 0 0 10px color-mix(in srgb, var(--c) 25%, transparent);
+  box-shadow: var(--glow-2);
 }
 .set-name {
   font-size: var(--text-sm);
