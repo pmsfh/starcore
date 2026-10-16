@@ -21,7 +21,7 @@
   padding: var(--space-3) var(--space-4);
   font-size: var(--text-sm);
   border-radius: var(--radius-md);
-  transition: all 0.15s var(--ease-out);
+  transition: all var(--duration-fast) var(--ease-out);
   cursor: pointer;
 }
 .btn-primary {
@@ -141,7 +141,7 @@
   font-family: var(--font-mono, monospace);
   color: var(--color-t-secondary);
   background: transparent;
-  transition: all 0.15s var(--ease-out);
+  transition: all var(--duration-fast) var(--ease-out);
 }
 .seg-btn + .seg-btn {
   border-left: 1px solid var(--color-border-line);
@@ -181,9 +181,9 @@
   overflow: hidden;
   text-overflow: ellipsis;
   transition:
-    color 0.15s var(--ease-out),
-    background 0.15s var(--ease-out),
-    border-color 0.15s var(--ease-out);
+    color var(--duration-fast) var(--ease-out),
+    background var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out);
 }
 .seg-item:hover {
   color: var(--color-t-primary);

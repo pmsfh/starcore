@@ -269,9 +269,9 @@ const unitRows = computed(() =>
   border-radius: var(--radius-lg);
   padding: var(--space-3);
   transition:
-    transform 0.2s var(--ease-out),
-    border-color 0.2s,
-    box-shadow 0.2s var(--ease-out);
+    transform var(--duration-base) var(--ease-out),
+    border-color var(--duration-base),
+    box-shadow var(--duration-base) var(--ease-out);
 }
 .unit-card:not(.locked):hover {
   transform: translateY(-2px);

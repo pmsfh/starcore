@@ -92,7 +92,7 @@
 /* fade transition */
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.2s var(--ease-out);
+  transition: opacity var(--duration-base) var(--ease-out);
 }
 .fade-enter-from,
 .fade-leave-to {
@@ -156,7 +156,7 @@
 
 /* 页面入场（视图根统一引用；screenIn 关键帧见 animations.css） */
 .screen-enter {
-  animation: screenIn 0.4s var(--ease-out);
+  animation: screenIn var(--duration-slow) var(--ease-out);
 }
 
 /* ============================================================

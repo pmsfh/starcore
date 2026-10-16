@@ -127,7 +127,7 @@ function toggleCollapsed() {
   height: 100vh;
   height: 100dvh; /* 移动浏览器动态视口：地址栏收展不裁切（100vh 为回退，v1.66） */
   overflow-y: auto;
-  transition: width 0.2s var(--ease-out);
+  transition: width var(--duration-base) var(--ease-out);
 }
 .side-nav.collapsed {
   width: 48px;
@@ -161,7 +161,7 @@ function toggleCollapsed() {
   color: var(--color-core);
   white-space: nowrap;
   overflow: hidden;
-  transition: opacity 0.15s var(--ease-out);
+  transition: opacity var(--duration-fast) var(--ease-out);
 }
 .side-nav.collapsed .brand-name {
   opacity: 0;
@@ -177,7 +177,7 @@ function toggleCollapsed() {
   font-weight: 500;
   flex-shrink: 0; /* v1.44：低高度视口不再压缩，侧栏转内部滚动 */
   color: var(--color-t-secondary);
-  transition: all 0.15s var(--ease-out);
+  transition: all var(--duration-fast) var(--ease-out);
   overflow: hidden;
 }
 .nav-item:hover {
@@ -197,7 +197,7 @@ function toggleCollapsed() {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  transition: opacity 0.15s var(--ease-out);
+  transition: opacity var(--duration-fast) var(--ease-out);
 }
 .side-nav.collapsed .nav-label {
   /* v0.95：真正移出布局（原 opacity:0 仍占位、图标被压缩至 0 宽不可见） */
@@ -219,7 +219,7 @@ function toggleCollapsed() {
   flex-direction: column;
   gap: var(--space-2);
   overflow: hidden;
-  transition: opacity 0.15s var(--ease-out);
+  transition: opacity var(--duration-fast) var(--ease-out);
   flex-shrink: 0;
 }
 .side-nav.collapsed .side-footer {
@@ -247,7 +247,7 @@ function toggleCollapsed() {
   border-radius: var(--radius-md);
   background: var(--color-hover);
   color: var(--color-t-secondary);
-  transition: all 0.15s var(--ease-out);
+  transition: all var(--duration-fast) var(--ease-out);
   flex-shrink: 0;
   overflow: hidden;
 }
@@ -257,6 +257,6 @@ function toggleCollapsed() {
   box-shadow: var(--glow-2);
 }
 .collapse-toggle svg {
-  transition: transform 0.2s var(--ease-out);
+  transition: transform var(--duration-base) var(--ease-out);
 }
 </style>

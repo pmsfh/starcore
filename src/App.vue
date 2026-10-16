@@ -159,7 +159,7 @@ async function clearAndRestart() {
     var(--color-core-deep) 70%,
     transparent 100%
   );
-  animation: corePulse 2s ease-in-out infinite;
+  animation: corePulse var(--duration-ambient) ease-in-out infinite;
 }
 .error-mark {
   display: flex;

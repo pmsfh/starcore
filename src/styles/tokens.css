@@ -86,6 +86,14 @@
 
   /* 动效 */
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  /* 时长令牌（v1.67 入库）：fast 交互反馈 / base 卡片与常见过渡 / slow 事件反馈与
+     页面入场 / ambient 低频氛围循环。命名避让：无后缀的 --duration 已被 TopBar
+     particleRise 的 JS 随机注入点占用（var(--duration, 1s)），故四枚均带后缀。
+     映射与迁移面见 docs/动效规范.md §5.1；新增动效优先引用令牌 */
+  --duration-fast: 0.15s;
+  --duration-base: 0.2s;
+  --duration-slow: 0.4s;
+  --duration-ambient: 2s;
 
   /* Elevation 阴影（三级深色 UI 专用） */
   --elevation-1: 0 1px 0 rgba(255, 255, 255, 0.03) inset, 0 2px 8px rgba(0, 0, 0, 0.3);

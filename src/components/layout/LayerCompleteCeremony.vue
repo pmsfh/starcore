@@ -123,7 +123,7 @@ watch(() => game.exploration.layerCeremonyQueue[0], showNext, { immediate: true 
 @media (prefers-reduced-motion: reduce) {
   .layer-banner-enter-active,
   .layer-banner-leave-active {
-    transition: opacity 0.15s ease;
+    transition: opacity var(--duration-fast) ease;
   }
   .layer-banner-enter-from,
   .layer-banner-leave-to {

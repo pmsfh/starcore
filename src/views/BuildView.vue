@@ -245,9 +245,9 @@ function tryUpgrade(id: string) {
   padding: var(--space-3);
   box-shadow: var(--elevation-1);
   transition:
-    transform 0.2s var(--ease-out),
-    border-color 0.2s,
-    box-shadow 0.2s var(--ease-out);
+    transform var(--duration-base) var(--ease-out),
+    border-color var(--duration-base),
+    box-shadow var(--duration-base) var(--ease-out);
 }
 .build-card:not(.locked):hover {
   transform: translateY(-2px);

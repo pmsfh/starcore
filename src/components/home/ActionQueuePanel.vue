@@ -104,7 +104,7 @@ const { displayActions, hasActions } = useActionQueue()
   gap: var(--space-3);
   width: 100%;
   padding: var(--space-3);
-  transition: all 0.2s var(--ease-out);
+  transition: all var(--duration-base) var(--ease-out);
   position: relative;
 }
 
@@ -116,7 +116,7 @@ const { displayActions, hasActions } = useActionQueue()
   border-radius: var(--radius-md);
   position: relative;
   overflow: hidden;
-  animation: actionPulse 2s ease-in-out infinite;
+  animation: actionPulse var(--duration-ambient) ease-in-out infinite;
 }
 .action-item.in-progress .action-icon {
   color: var(--c);
@@ -167,7 +167,7 @@ const { displayActions, hasActions } = useActionQueue()
   background: var(--color-surface);
   border: 1px solid var(--color-border-line);
   border-radius: var(--radius-md);
-  transition: all 0.2s var(--ease-out);
+  transition: all var(--duration-base) var(--ease-out);
 }
 .action-item.actionable:hover {
   transform: translateY(-2px);
@@ -212,8 +212,8 @@ const { displayActions, hasActions } = useActionQueue()
   flex-shrink: 0;
   opacity: 0;
   transition:
-    opacity 0.2s var(--ease-out),
-    transform 0.2s var(--ease-out);
+    opacity var(--duration-base) var(--ease-out),
+    transform var(--duration-base) var(--ease-out);
 }
 .action-item.actionable:hover .action-arrow {
   opacity: 1;

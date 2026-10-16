@@ -125,7 +125,7 @@ watch(() => ach.toastQueue[0]?.id, showNext, { immediate: true })
 @media (prefers-reduced-motion: reduce) {
   .ach-toast-enter-active,
   .ach-toast-leave-active {
-    transition: opacity 0.15s ease;
+    transition: opacity var(--duration-fast) ease;
   }
   .ach-toast-enter-from,
   .ach-toast-leave-to {

@@ -125,7 +125,7 @@ function choose(code: string) {
   background: var(--color-elevated);
   color: var(--color-t-secondary);
   font-size: var(--text-sm);
-  transition: all 0.15s var(--ease-out);
+  transition: all var(--duration-fast) var(--ease-out);
 }
 .lang-item:hover {
   border-color: var(--color-core);

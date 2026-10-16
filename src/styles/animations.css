@@ -166,7 +166,7 @@
   animation: warpIn 0.3s var(--ease-out);
 }
 .warp-leave-active {
-  animation: warpOut 0.2s var(--ease-out);
+  animation: warpOut var(--duration-base) var(--ease-out);
 }
 
 /* ============================================================
@@ -189,7 +189,7 @@
   }
 }
 .flash-success {
-  animation: flashSuccess 0.4s var(--ease-out);
+  animation: flashSuccess var(--duration-slow) var(--ease-out);
 }
 @keyframes shakeError {
   0%,

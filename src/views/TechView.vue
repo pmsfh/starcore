@@ -201,10 +201,10 @@ function tryResearch(id: string) {
   padding: var(--space-3);
   box-shadow: var(--elevation-1);
   transition:
-    opacity 0.2s,
-    transform 0.2s var(--ease-out),
-    border-color 0.2s,
-    box-shadow 0.2s var(--ease-out);
+    opacity var(--duration-base),
+    transform var(--duration-base) var(--ease-out),
+    border-color var(--duration-base),
+    box-shadow var(--duration-base) var(--ease-out);
 }
 .tech-card:not(.locked):not(.completed):hover {
   transform: translateY(-2px);

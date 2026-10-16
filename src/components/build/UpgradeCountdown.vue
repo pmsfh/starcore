@@ -214,7 +214,7 @@ function toggleExpand() {
   border-radius: var(--radius-md);
   border: 1px solid var(--color-border-line);
   cursor: pointer;
-  transition: all 0.15s var(--ease-out);
+  transition: all var(--duration-fast) var(--ease-out);
   user-select: none;
 }
 .countdown-row:hover {
@@ -259,7 +259,7 @@ function toggleExpand() {
   display: flex;
   align-items: center;
   gap: var(--space-1);
-  transition: transform 0.2s var(--ease-out);
+  transition: transform var(--duration-base) var(--ease-out);
 }
 .countdown-row[aria-expanded='true'] .cd-hint .cd-arrow {
   transform: rotate(180deg);
@@ -416,7 +416,7 @@ function toggleExpand() {
 .cd-expand-enter-active,
 .cd-expand-leave-active {
   transition:
-    opacity 0.2s var(--ease-out),
+    opacity var(--duration-base) var(--ease-out),
     max-height 0.25s var(--ease-out);
   overflow: hidden;
 }

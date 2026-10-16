@@ -136,7 +136,7 @@ onUnmounted(() => {
   gap: var(--space-1);
   padding: var(--space-2) var(--space-1);
   color: var(--color-t-tertiary);
-  transition: color 0.2s var(--ease-out);
+  transition: color var(--duration-base) var(--ease-out);
   position: relative;
 }
 .tab .label {
@@ -155,7 +155,7 @@ onUnmounted(() => {
   transform: scale(1.15);
 }
 .icon {
-  transition: transform 0.2s var(--ease-out);
+  transition: transform var(--duration-base) var(--ease-out);
 }
 
 /* 更多面板，向上弹出 */
@@ -183,7 +183,7 @@ onUnmounted(() => {
   font-size: var(--text-sm);
   font-weight: 500;
   color: var(--color-t-secondary);
-  transition: all 0.15s var(--ease-out);
+  transition: all var(--duration-fast) var(--ease-out);
   white-space: nowrap;
 }
 .more-item:hover {

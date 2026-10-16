@@ -196,8 +196,8 @@ onBeforeUnmount(() => {
   white-space: nowrap;
   flex-shrink: 0;
   transition:
-    background 0.15s var(--ease-out),
-    box-shadow 0.15s var(--ease-out);
+    background var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out);
 }
 .r-icon {
   color: var(--c);
@@ -247,7 +247,7 @@ onBeforeUnmount(() => {
   pointer-events: none;
   z-index: 2;
   opacity: 0;
-  transition: opacity 0.15s var(--ease-out);
+  transition: opacity var(--duration-fast) var(--ease-out);
 }
 .scroll-hint.on {
   opacity: 1;

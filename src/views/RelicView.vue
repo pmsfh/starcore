@@ -366,8 +366,8 @@ function onEnhanceFail(msg: string) {
   border-radius: var(--radius-md);
   padding: var(--space-3);
   transition:
-    transform 0.2s var(--ease-out),
-    box-shadow 0.2s var(--ease-out);
+    transform var(--duration-base) var(--ease-out),
+    box-shadow var(--duration-base) var(--ease-out);
 }
 .relic-card:not(.material-disabled):hover {
   transform: translateY(-2px);

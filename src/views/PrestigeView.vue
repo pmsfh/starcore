@@ -309,7 +309,7 @@ function cancelTranscend() {
   align-items: center;
   justify-content: center;
   gap: var(--space-2);
-  transition: all 0.15s var(--ease-out);
+  transition: all var(--duration-fast) var(--ease-out);
 }
 .btn-transcend:hover:not(:disabled) {
   --c: var(--color-amber);

@@ -76,7 +76,7 @@ const quickActions = QUICK_ENTRIES.map(({ id, color, label }) => {
   color: var(--color-t-secondary);
   font-size: var(--text-xs);
   font-weight: 500;
-  transition: all 0.15s var(--ease-out);
+  transition: all var(--duration-fast) var(--ease-out);
   cursor: pointer;
 }
 .quick-action-btn svg {

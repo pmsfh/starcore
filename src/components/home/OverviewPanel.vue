@@ -119,7 +119,7 @@ const overviewItems = computed<OverviewItem[]>(() => {
   flex-direction: row;
   align-items: center;
   gap: var(--space-2);
-  transition: all 0.2s var(--ease-out);
+  transition: all var(--duration-base) var(--ease-out);
   box-shadow: var(--elevation-1);
 }
 .ov-item:hover {

@@ -141,7 +141,7 @@ const srSummary = computed(() =>
   width: 280px;
   height: 272px;
   cursor: pointer;
-  transition: transform 0.2s var(--ease-out);
+  transition: transform var(--duration-base) var(--ease-out);
 }
 .hero-stage:active {
   transform: scale(0.98);
@@ -187,7 +187,7 @@ const srSummary = computed(() =>
   border: 1px solid color-mix(in srgb, var(--c) 40%, transparent);
   border-radius: 50%;
   box-shadow: var(--elevation-1);
-  transition: opacity 0.4s var(--ease-out);
+  transition: opacity var(--duration-slow) var(--ease-out);
 }
 .node-icon {
   color: var(--c);
