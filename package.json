@@ -21,7 +21,7 @@
     "check:locales": "node scripts/check-locales.mjs",
     "format": "prettier --write src",
     "format:check": "prettier --check src",
-    "check": "corepack pnpm build && corepack pnpm test && corepack pnpm check:conservation && corepack pnpm check:locales --strict && corepack pnpm lint:check && corepack pnpm format:check",
+    "check": "corepack pnpm build && corepack pnpm test:cov && corepack pnpm check:conservation && corepack pnpm check:locales --strict && corepack pnpm lint:check && corepack pnpm format:check",
     "diagnose": "node tools/diagnose.mjs",
     "e2e": "node tools/e2e/run.mjs"
   },
