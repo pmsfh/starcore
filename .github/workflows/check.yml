@@ -18,3 +18,20 @@ jobs:
           node-version: 22
       - run: pnpm install --frozen-lockfile
       - run: pnpm check
+
+  # 数值核验独立 job（v1.67 入库）：EV 核验表「退出码即结论」天然适合 CI 红绿判定；
+  # python3 守卫承担可选依赖语义，缺 python3 时显式打印跳过说明、不硬失败
+  # （同 diagnose 的 Python 可选先例）。范围与理由见 tools/README.md「数值校验」。
+  balance:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: 数值核验（v126 遭遇 EV / v127 派遣 EV）
+        run: |
+          if ! command -v python3 >/dev/null 2>&1; then
+            echo "::notice::python3 不可用，balance 数值核验跳过（可选依赖口径）"
+            exit 0
+          fi
+          python3 --version
+          python3 tools/balance/starcore-v126-encounter-ev.py
+          python3 tools/balance/starcore-v127-dispatch-ev.py

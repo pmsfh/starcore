@@ -43,3 +43,10 @@ python3 tools/balance/starcore-v123-trait-calib.py    # 编队特性校准模拟
 - `starcore-v120-milestone-calib.py` / `starcore-v123-trait-calib.py` / `starcore-v124-boss-calib.py`：数值校准模拟；
 - `starcore-v126-encounter-ev.py` / `starcore-v127-dispatch-ev.py`：EV 核验表（断言式，退出码即结论）；
 - 多数脚本运行时直接读取仓库内数据源（`src/data/*.ts`）复算，改数值后先过核验表再同步数据表。
+- CI 口径（v1.67 起）：`.github/workflows/check.yml` 的 `balance` 独立 job 依序运行
+  v126 / v127 两枚 EV 核验表；`command -v python3` 守卫承担可选依赖语义，缺
+  python3 时显式打印跳过说明、不硬失败（同 diagnose 的 Python 可选先例）。
+- 校准三枚（v120 / v123 / v124）不进 CI，理由与断言语况分开说：v123 / v124 对
+  FAIL 本就以非零退出码硬判、v120 为纯报告输出；
+  排除它们的真实原因是红线语义与「有意调参」耦合，调参触线也会红，作门禁会
+  产生预期外红灯，且全域扫描耗时更长。是否断言化收口另行议定，登记为候选。
