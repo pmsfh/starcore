@@ -91,7 +91,7 @@ starcore/
 │  ├─ tests/        test harness (vitest setup and shared helpers)
 │  ├─ views/        11 views (home, build, tech, map, army, battle, relics, rebirth, achievements, archive, settings)
 │  └─ App.vue / app.ts / main.ts / version.ts / style.css
-├─ docs/            11 specification documents (in Chinese), see Documentation
+├─ docs/            12 specification documents (in Chinese), see Documentation
 ├─ references/      reference materials (English copy glossary)
 ├─ public/          favicon, touch icon, share image and self-hosted fonts (Orbitron, JetBrains Mono)
 ├─ scripts/         quality scripts (count conservation, message key checks)
@@ -105,7 +105,7 @@ starcore/
 ## Quality
 
 - **Unit / component tests**: Vitest + @vue/test-utils + jsdom; 57 test files,
-  790 cases
+  792 cases
 - **Types & conventions**: vue-tsc type checking in the build; ESLint and
   Prettier pass with zero output
 - **Count conservation**: `scripts/check-conservation.mjs` validates document
@@ -141,6 +141,7 @@ The self-check covers Node, dependencies, build output, the browser and Python p
 - [存档与数据安全规范](docs/存档与数据安全规范.md) · Save Data & Security Specification
 - [弹窗与确认流规范](docs/弹窗与确认流规范.md) · Dialogs & Confirmation Flows Specification
 - [图标设计规范](docs/图标设计规范.md) · Icon Design Specification
+- [UI回归体检清单](docs/UI回归体检清单.md) · UI Regression Checklist
 
 ## Version History
 
