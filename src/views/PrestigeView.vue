@@ -340,6 +340,13 @@ function cancelTranscend() {
   flex-direction: column;
   gap: var(--space-2);
 }
+/* 桌面端宽屏：双列网格，利用横向空间（v1.68），买断树 / 无限树两处容器同规则 */
+@media (min-width: 1024px) {
+  .tree-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
 .tree-node {
   background: var(--color-surface);
   border: 1px solid var(--color-border-line);

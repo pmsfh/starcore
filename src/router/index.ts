@@ -16,10 +16,20 @@ const routes = [
     component: () => import('@/views/TechView.vue'),
     meta: { grid: true },
   },
-  { path: '/map', name: 'map', component: () => import('@/views/MapView.vue') },
+  {
+    path: '/map',
+    name: 'map',
+    component: () => import('@/views/MapView.vue'),
+    meta: { grid: true },
+  },
   { path: '/army', name: 'army', component: () => import('@/views/ArmyView.vue') },
   { path: '/relic', name: 'relic', component: () => import('@/views/RelicView.vue') },
-  { path: '/prestige', name: 'prestige', component: () => import('@/views/PrestigeView.vue') },
+  {
+    path: '/prestige',
+    name: 'prestige',
+    component: () => import('@/views/PrestigeView.vue'),
+    meta: { grid: true },
+  },
   {
     path: '/achievements',
     name: 'achievements',

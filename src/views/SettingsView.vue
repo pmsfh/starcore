@@ -97,6 +97,18 @@ function choose(code: string) {
   flex-direction: column;
   gap: var(--space-4);
 }
+/* 桌面端宽屏：存档与语言两分组在 720 阅读宽内并置（v1.68），
+   内容区不加宽；页题与副题跨双列，两组各占一列 */
+@media (min-width: 1024px) {
+  .settings-view {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .settings-view > .page-title,
+  .settings-view > .page-sub {
+    grid-column: 1 / -1;
+  }
+}
 
 .settings-section {
   background: var(--color-surface);

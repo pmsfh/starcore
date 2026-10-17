@@ -355,6 +355,20 @@ const weeklyBossTestid = computed(() => {
   flex-direction: column;
   gap: var(--space-2);
 }
+/* 桌面端宽屏：双列网格，利用横向空间（v1.68），与科技 / 成就 / 档案馆同构 */
+@media (min-width: 1024px) {
+  .node-list,
+  .stronghold-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  /* 单卡分组跨列（v1.68）：孤卡跨双列避免右列留黑，覆盖轨道带 / 内层
+     星系 / 外层星系 / 深空带四个单节点层；沿用档案馆 v1.60 先例 */
+  .node-list > .node-card:only-child,
+  .stronghold-list > .stronghold-card:only-child {
+    grid-column: span 2;
+  }
+}
 .stronghold-card {
   display: flex;
   align-items: center;
