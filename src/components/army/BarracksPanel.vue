@@ -246,7 +246,9 @@ const unitRows = computed(() =>
           })
         }}
       </h3>
-      <p v-if="slotHint" class="slot-hint">{{ slotHint }}</p>
+      <p v-if="slotHint" class="slot-hint" role="status" aria-live="polite">
+        {{ slotHint }}
+      </p>
       <div v-for="task in game.military.trainingQueue" :key="task.id" class="queue-item">
         <span class="q-name"
           >{{ getUnit(task.unitId)?.name ?? task.unitId }} ×{{ task.count }}</span

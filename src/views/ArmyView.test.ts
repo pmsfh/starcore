@@ -137,6 +137,9 @@ describe('ArmyView — 兵营训练', () => {
       .find((c) => c.find('.u-name').text().includes('突击兵'))!
     expect(assaultCard.find('.btn-accent').attributes('disabled')).toBeDefined()
     expect(wrapper.find('.slot-hint').exists()).toBe(true)
+    const hint = wrapper.find('.slot-hint')
+    expect(hint.attributes('role')).toBe('status')
+    expect(hint.attributes('aria-live')).toBe('polite')
   })
 })
 

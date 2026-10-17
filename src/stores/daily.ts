@@ -298,6 +298,11 @@ export const useDailyStore = defineStore('daily', () => {
     weeklyBossClaimedWeek.value = weekStr(now)
   }
 
+  /** 转生清空本周强敌击败标记；不动签到、连续天数与周期挑战状态 */
+  function clearWeeklyBossClaim(): void {
+    weeklyBossClaimedWeek.value = ''
+  }
+
   function reset(): void {
     lastCheckIn.value = ''
     streak.value = 0
@@ -390,6 +395,7 @@ export const useDailyStore = defineStore('daily', () => {
     currentWeek,
     isWeeklyBossDefeated,
     claimWeeklyBoss,
+    clearWeeklyBossClaim,
     reset,
     serialize,
     hydrate,

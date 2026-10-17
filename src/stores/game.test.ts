@@ -157,6 +157,24 @@ describe('game store — transcend reset', () => {
     // 转生次数应增加
     expect(transcend.totalTranscends).toBeGreaterThan(0)
   })
+
+  it('doTranscend 清空本周强敌标记并保留签到与挑战状态', () => {
+    const game = useGameStore()
+    const resources = useResourcesStore()
+
+    resources.setAmount('energy', 1e9)
+    resources.gain('energy', 1e9)
+    game.daily.claimWeeklyBoss()
+    game.daily.streak = 4
+    game.daily.challengeWeek = '2026-W41'
+    expect(game.daily.isWeeklyBossDefeated()).toBe(true)
+
+    expect(game.doTranscend()).toBe(true)
+    expect(game.daily.weeklyBossClaimedWeek).toBe('')
+    expect(game.daily.isWeeklyBossDefeated()).toBe(false)
+    expect(game.daily.streak).toBe(4)
+    expect(game.daily.challengeWeek).toBe('2026-W41')
+  })
 })
 
 describe('game store — archive lifecycle', () => {

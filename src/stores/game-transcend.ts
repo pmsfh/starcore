@@ -96,6 +96,8 @@ export function createGameTranscend(deps: {
     // 执行转生
     transcend.transcend(gain)
     daily.bump('transcends')
+    // 本周强敌标记随转生清零，签到与周期挑战状态保留
+    daily.clearWeeklyBossClaim()
     // 重置非保留项
     resources.reset(true) // 保留暗物质
     buildings.reset()
