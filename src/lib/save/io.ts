@@ -73,6 +73,14 @@ export type SaveReadOutcome =
   | { status: 'corrupt'; raw?: string }
   | { status: 'none' }
 
+/**
+ * 双档比较：savedAt 相同时后到的 localStorage 备份入选。
+ * 单独导出以便测试锁定同值行为，避免依赖 IndexedDB 环境。
+ */
+export function shouldReplaceBackup(currentSavedAt: number, candidateSavedAt: number): boolean {
+  return candidateSavedAt >= currentSavedAt
+}
+
 /** 读取存档：IndexedDB 主存与 localStorage 备份双通道都尝试，取 savedAt 更新的一档 */
 export async function readSave(): Promise<SaveReadOutcome> {
   let best: SaveReadOutcome | null = null
@@ -83,7 +91,7 @@ export async function readSave(): Promise<SaveReadOutcome> {
   // savedAt 相同（含双档都不可用的 -1 垫底值）时后到者（localStorage 备份）入选；
   // 用 >= 而非 >，保证 -1 垫底值也能入选
   const consider = (candidate: SaveReadOutcome, savedAt: number): void => {
-    if (savedAt >= bestSavedAt) {
+    if (shouldReplaceBackup(bestSavedAt, savedAt)) {
       best = candidate
       bestSavedAt = savedAt
     }
