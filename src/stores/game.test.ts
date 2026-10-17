@@ -842,6 +842,19 @@ describe('game store — 初始化错误态（v0.75）', () => {
     game.stop()
   })
 
+  it('错误态 doImport 直接拒绝，不替换内存状态', async () => {
+    writeBackupSave({ ...minimalSaveData(), version: 2 })
+    const game = useGameStore()
+    await game.init()
+    expect(game.initError).toBe('too_new')
+    game.buildings.setLevel('solar_collector', 4)
+
+    const code = await exportSave(minimalSaveData())
+    const result = await game.doImport(code)
+    expect(result.success).toBe(false)
+    expect(game.buildings.getLevel('solar_collector')).toBe(4)
+  })
+
   it('v0.81 doImport 替换语义：缺省字段回落初始值，totalTranscends=0 可清零', async () => {
     // 先把内存状态堆起来
     const game = useGameStore()

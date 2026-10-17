@@ -16,6 +16,7 @@ export default {
   'save.clearWarnTail': 'all data below; it cannot be recovered:',
   'save.copyUnavailable': 'Auto-copy unavailable; long-press the text box below to copy manually',
   'save.errBroken': 'Save data is abnormal; import failed',
+  'save.errInit': 'Save is not ready; import is unavailable',
   'save.errInvalid': 'Save is invalid or corrupted',
   'save.errTampered': 'Save data is corrupted or tampered with',
   'save.errTooNew': 'This save comes from a newer version of the game and cannot be imported',

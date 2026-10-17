@@ -250,6 +250,7 @@ export function createGamePersistence(deps: {
   }
 
   async function doImport(code: string): Promise<{ success: boolean; message?: string }> {
+    if (initError.value) return { success: false, message: t('save.errInit') }
     const result = await importSave(code)
     if (!result.ok) {
       const msg =

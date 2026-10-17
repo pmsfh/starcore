@@ -18,6 +18,7 @@ export default {
   'save.clearWarnTail': '以下全部数据，不可恢复：',
   'save.copyUnavailable': '自动复制不可用，请长按下方文本框手动复制',
   'save.errBroken': '存档数据异常，导入失败',
+  'save.errInit': '存档未就绪，无法导入',
   'save.errInvalid': '存档无效或已损坏',
   'save.errTampered': '存档数据已损坏或被篡改',
   'save.errTooNew': '存档来自更新的游戏版本，无法导入',
