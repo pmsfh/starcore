@@ -20,7 +20,7 @@ export default mergeConfig(
         reporter: ['text', 'html'],
         include: ['src/**/*.{ts,vue}'],
         exclude: ['src/**/*.test.ts', 'src/tests/**', 'src/main.ts', 'src/router/index.ts'],
-        // 覆盖率门禁（v1.67 入库）：档位取 v1.66 实跑基线（全局 lines 92.78 /
+        // 覆盖率门禁（v1.67 入库）：档位取 v1.66 实测基线（全局 lines 92.78 /
         // stores 97.57 / lib 92.78）取整留余。branches 现状约 73.5，首版不挂，
         // 登记观察 1-2 版后再议；下调阈值须有版本级理由，不得顺手改小消化劣化。
         thresholds: {
