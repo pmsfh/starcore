@@ -62,7 +62,7 @@
 
 ## 五、用词分野（防混用）
 
-- **深空 / 虚空**：层名用「深空层」（Void Layer）；该层内容的叙事与科技、敌方域词用「虚空」——虚空航道 / 虚空测绘 / 虚空记忆库 / 虚空裁决军团（Void Charting / Void Memory Archive / Void Arbiter Legion）；「深空带」（Deep Space Belt）为星核层分区名；泛指用法保留「深空」（深空探索 / 深空事件 / 深空远航者等）。
+- **深空 / 虚空**：层名用「深空层」（Void Layer）；该层内容的叙事与科技、敌方域词用「虚空」：虚空航道 / 虚空测绘 / 虚空记忆库 / 虚空裁决军团（Void Charting / Void Memory Archive / Void Arbiter Legion）；「深空带」（Deep Space Belt）为星核层分区名；泛指用法保留「深空」（深空探索 / 深空事件 / 深空远航者等）。
 - **掠夺者 / 劫掠**：族名与单位前缀用「掠夺者 → Raider」；舰级名缀用「劫掠 → Marauder」；两类不混用。
 - **王庭 / 帝庭**：分级称谓，各自统一（Court / Imperial Court），不互串。
 
