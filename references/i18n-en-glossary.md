@@ -10,6 +10,8 @@
 |------|------|------|
 | 掠夺者 | Raider | 族名与单位前缀（如 Raider Infantry） |
 | 劫掠 | Marauder | 舰级名缀（如 Marauder Skiff / Marauder Cruiser / Marauder Escort） |
+| 劫掠舰队 | Marauder Fleet | 编制名缀（如 Cluster Marauder Fleet，星团劫掠舰队） |
+| 劫掠王庭 | Marauder Court | 编制名缀（如 Arm-Rim Marauder Court，臂缘劫掠王庭） |
 | 王庭 | Court | 掠夺者各级王庭（Raider Court） |
 | 帝庭 | Imperial Court | 顶层称谓（如 Galactic Imperial Court） |
 | 沉默者 | the Silent Ones | |
@@ -99,7 +101,7 @@
 | 伏笔 | 要点 | 锚点键 | 状态 | 允许回收篇章 |
 |---|---|---|---|---|
 | 七扇死门 | 星臂尽头七扇与冻结之门同款巨门，仅一扇应答源仍在工作；七门应答源在银心汇成中继链 | `content.story.node_arm_threshold`、`content.story.node_galaxy_gate`、`content.explore.node_arm_threshold.*` | 未回收 | 七扇死门篇章（与门后回响共用总纲） |
-| 永不熄灭的炉 | 掠夺者帝庭进贡的终点是银心之「炉」，炉的真身未揭示 | `content.pve.raider_11.desc`、`content.story.node_galaxy_hub` | 未回收 | 帝庭与炉篇章 |
+| 永不熄灭的炉 | 各掠夺者王庭的进贡由帝庭裁决舰队收束执行，目标是银心之「炉」，炉的真身未揭示 | `content.pve.raider_11.desc`、`content.story.node_galaxy_hub` | 未回收 | 帝庭与炉篇章 |
 | 驱赶者之谜 | 噬星鲲群迁徙绕开特定空域，「像在听从某种驱赶」，驱赶者未现身 | `content.pve.beast_7.desc`、`content.explore.node_galaxy_range.*`、`content.story.node_galaxy_range` | 未回收 | 巨兽生态志篇章 |
 | 主脑之后 | 沉默者主脑（应答源实体）给出坐标：信号最初源头在银河之外；其上/其后的存在未揭示 | `content.explore.node_galaxy_heart.*`、`content.story.node_galaxy_heart` | 未回收 | 门后回响篇章 |
 | 先驱者下落 | 先驱者自虚空边缘出航离开本星系；虚空航标灯语「航向未变」仍为白鲸群亮着 | `content.explore.node_void_beacon.*`、`content.story.node_void_beacon`、`content.story.node_void_gate` | 未回收 | 门后回响篇章 |
