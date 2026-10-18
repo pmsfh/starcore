@@ -21,15 +21,17 @@ export default mergeConfig(
         include: ['src/**/*.{ts,vue}'],
         exclude: ['src/**/*.test.ts', 'src/tests/**', 'src/main.ts', 'src/router/index.ts'],
         // 覆盖率门禁（v1.67 入库）：档位取 v1.66 实测基线（全局 lines 92.78 /
-        // stores 97.57 / lib 92.78）取整留余。branches 现状约 73.5，首版不挂，
-        // 登记观察 1-2 版后再议；下调阈值须有版本级理由，不得顺手改小消化劣化。
+        // stores 97.57）取整留余。lib 档 v1.70 起改取 glob 组真实值 94.78
+        // （text 报告直属行口径曾失真 2.78pp），阈值取整留余 0.78pp。
+        // branches 现状约 73.5，首版不挂，登记观察 1-2 版后再议；
+        // 下调阈值须有版本级理由，不得顺手改小消化劣化。
         thresholds: {
           lines: 92,
           'src/stores/**': {
             lines: 97,
           },
           'src/lib/**': {
-            lines: 92,
+            lines: 94,
           },
         },
       },

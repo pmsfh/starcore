@@ -12,7 +12,7 @@
  *
  * 用法：node scripts/check-size.mjs [--warn-only]
  *   --warn-only  超额仅告警不阻塞（特殊情形临时放行的逃生口，不入常态链）
- * 退出码：0 = 预算内（或 --warn-only 放行）；1 = 超预算 / dist 缺失
+ * 退出码：0 = 预算内（或 --warn-only 放行）；1 = 超预算 / dist 缺失 / 零匹配
  */
 import { readdirSync, readFileSync, existsSync } from 'node:fs'
 import { join, dirname, resolve, extname } from 'node:path'
@@ -40,6 +40,13 @@ const files = []
     else if (EXTS.has(extname(f.name).toLowerCase())) files.push(p)
   }
 })(DIST)
+
+// 零匹配守卫（v1.70 补）：dist 存在但扩展名零命中（如产物形态变更、
+// 意外清空）时不再静默 0 KiB 假绿，按检查失败处理
+if (files.length === 0) {
+  console.error('dist/ 存在但零匹配产物文件（js/css/html）：产物形态异常，体积检查失败')
+  process.exit(1)
+}
 
 let total = 0
 const rows = files

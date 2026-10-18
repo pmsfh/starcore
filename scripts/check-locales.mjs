@@ -10,6 +10,8 @@
  * 多语言键面一致性：注册表内每种非默认语言与默认语言键集、{参数} 占位符一致。
  * 术语分野禁用扫描（v1.66 新增）：层名/族名/称谓分级的确定性禁用 pattern，
  * 依据 references/i18n-en-glossary.md §五用词分野与 §七设定事实源。
+ * en 侧分野暂不设门禁（观察中；en 文案按术语表 §一 落笔，首版只收 zh
+ * 确定性 pattern）。
  *
  * 用法：node scripts/check-locales.mjs [--strict]
  *   --strict：缺键 / 未使用键 / 非字面量调用 / 硬编码中文残留 / 键面一致性 /
@@ -137,9 +139,17 @@ const bannedPatterns = [
     test: (v) => v.includes('虚空层'),
   },
   {
-    // 族名定稿「掠夺者」；「劫掠」仅限舰级名缀（快艇/巡洋舰/护航舰/无畏舰）
-    label: '单位名「劫掠」前缀（族名定稿「掠夺者」，舰级名缀仅限四舰级）',
-    test: (v) => /^劫掠(?!快艇|巡洋舰|护航舰|无畏舰)/.test(v),
+    // 族名定稿「掠夺者」；「劫掠」限舰级名缀（快艇/巡洋舰/护航舰/无畏舰）
+    // 与编制名缀（舰队/王庭，EN 实值 Marauder Fleet/Court），锚定值首
+    label: '「劫掠」前缀越界（舰级名缀仅限四舰级，舰队/王庭在册）',
+    test: (v) => /^劫掠(?!快艇|巡洋舰|护航舰|无畏舰|舰队|王庭)/.test(v),
+  },
+  {
+    // 名词键（*.name）中位的「劫掠」同受名缀约束；desc 等散文键的动词
+    // 用法不受限。去锚 pattern 仅作用 name 键，避免散文误报
+    label: 'name 键中位「劫掠」越界（舰级名缀仅限四舰级，舰队/王庭在册）',
+    scope: (key) => key.endsWith('.name'),
+    test: (v) => /劫掠(?!快艇|巡洋舰|护航舰|无畏舰|舰队|王庭)/.test(v),
   },
   {
     // 王庭/帝庭分级称谓不互串：禁族名冠顶层（「掠夺者帝庭」）与两者相邻拼接
@@ -151,6 +161,7 @@ const banned = []
 for (const [key, value] of Object.entries(bundle)) {
   if (typeof value !== 'string') continue
   for (const p of bannedPatterns) {
+    if (p.scope && !p.scope(key)) continue
     if (p.test(value)) {
       banned.push(`${key}  [${p.label}]`)
       break

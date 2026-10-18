@@ -9,6 +9,9 @@ starcore-v126-encounter-ev.py — 随机遭遇事件 EV 核验表
   3. 每选项概率分布归一（Σp = 1）
   4. 资源数值非负整数、暗物质个位数（损失类结果允许负合金，至多扣空）
   5. 赌注类方差显著大于资源类（结果跨度 / EV >= 1.0，资源类 < 1.0）
+  6. 数据源对账：模板、风味与数值全部从 src/data/encounters.ts 运行时提取
+     （与 v127 派遣核验同路的仓库真值提取），选项标签取 zh-CN 语言包，
+     脚本不内嵌可能漂移的数值快照
 
 折算率（设计声明，非市场价）：
   1 合金   = 1 能量   ；依据：重装兵训练成本 120 能量 + 60 合金 + 10 数据
@@ -22,10 +25,22 @@ starcore-v126-encounter-ev.py — 随机遭遇事件 EV 核验表
 演进记录：
   - 2026-09-24 v1：初版 10 模板定稿核验。
   - 2026-10-12 v1.58：扩容 15 模板（10 → 25）；新增晶体、护卫兵、重装兵折算口径。
+  - 2026-10-18：改读活数据——数值与概率改从 src/data/encounters.ts 提取，
+    收编兵员 units + unitKind 并入折算键，选项标签取 zh-CN 语言包。
 """
+
+import re
+from pathlib import Path
+
+REPO = Path(__file__).resolve().parents[2]
+ENCOUNTERS_TS = REPO / "src/data/encounters.ts"
+ENCOUNTERS_LOCALE = REPO / "src/locales/zh-CN/content/encounters.ts"
 
 # 折算率（能量当量）
 RATE = {"energy": 1, "crystal": 55, "alloy": 1, "data": 6, "dark": 8000, "unit_assault": 60, "unit_guard": 60, "unit_heavy": 240}
+
+# 收编兵员字段映射：encounters.ts 的 units + unitKind → 折算键（缺省突击兵）
+UNIT_KIND_KEYS = {"assault": "unit_assault", "guard": "unit_guard", "heavy": "unit_heavy"}
 
 # 量级带（能量当量）
 BAND_MIN = 4.4e3
@@ -38,138 +53,93 @@ EV_GAP_MAX = 0.15
 GAMBLE_SPREAD_MIN = 1.0
 RESOURCE_SPREAD_MAX = 1.0
 
-# ---- 25 模板数值表（与设计稿同源；outcomes = [(p, {资源: 数量}), ...]) ----
-ENCOUNTERS = [
-    # 资源类 9
-    {
-        "id": "enc_flux", "flavor": "resource", "name": "能量涌流",
-        "optA": {"label": "就地收集", "outcomes": [(1.0, {"energy": 8000})]},
-        "optB": {"label": "强行汇聚", "outcomes": [(0.80, {"energy": 10600}), (0.20, {"energy": 3400})]},
-    },
-    {
-        "id": "enc_vein", "flavor": "resource", "name": "合金矿脉",
-        "optA": {"label": "标准开采", "outcomes": [(1.0, {"alloy": 4800})]},
-        "optB": {"label": "定向爆破", "outcomes": [(0.80, {"alloy": 6300}), (0.20, {"alloy": 1500})]},
-    },
-    {
-        "id": "enc_signal", "flavor": "resource", "name": "数据截获",
-        "optA": {"label": "完整破译", "outcomes": [(1.0, {"data": 900})]},
-        "optB": {"label": "抢先截取", "outcomes": [(0.50, {"data": 1450}), (0.50, {"data": 550})]},
-    },
-    {
-        "id": "enc_depot", "flavor": "resource", "name": "破损补给舱",
-        "optA": {"label": "小心回收", "outcomes": [(1.0, {"energy": 6000, "alloy": 400})]},
-        "optB": {"label": "强行拖回", "outcomes": [(0.65, {"energy": 9200, "alloy": 600}), (0.35, {"energy": 2500, "alloy": 300})]},
-    },
-    {
-        "id": "enc_thermo", "flavor": "resource", "name": "废热残舱",
-        "optA": {"label": "接入回收", "outcomes": [(1.0, {"energy": 5300})]},
-        "optB": {"label": "深挖热芯", "outcomes": [(0.85, {"energy": 6800}), (0.15, {"energy": 1500})]},
-    },
-    {
-        "id": "enc_crystal", "flavor": "resource", "name": "晶体矿簇",
-        "optA": {"label": "整块切割", "outcomes": [(1.0, {"crystal": 95})]},
-        "optB": {"label": "定向破碎", "outcomes": [(0.80, {"crystal": 125}), (0.20, {"crystal": 40})]},
-    },
-    {
-        "id": "enc_array", "flavor": "resource", "name": "废弃阵列",
-        "optA": {"label": "调取缓存", "outcomes": [(1.0, {"data": 880})]},
-        "optB": {"label": "直连主机", "outcomes": [(0.70, {"data": 1100}), (0.30, {"data": 420})]},
-    },
-    {
-        "id": "enc_hull", "flavor": "resource", "name": "沉船货舱",
-        "optA": {"label": "稳妥打捞", "outcomes": [(1.0, {"energy": 4200, "alloy": 500})]},
-        "optB": {"label": "打开暗舱", "outcomes": [(0.75, {"energy": 5900, "alloy": 700}), (0.25, {"energy": 1500, "alloy": 200})]},
-    },
-    {
-        "id": "enc_orefield", "flavor": "resource", "name": "轨道残矿",
-        "optA": {"label": "网捕回收", "outcomes": [(1.0, {"alloy": 3200, "data": 200})]},
-        "optB": {"label": "现场熔炼", "outcomes": [(0.75, {"alloy": 4000, "data": 300}), (0.25, {"alloy": 1400, "data": 80})]},
-    },
-    # 军事类 5
-    {
-        "id": "enc_salvage", "flavor": "military", "name": "残骸回收",
-        "optA": {"label": "拆解装甲", "outcomes": [(1.0, {"alloy": 2800, "data": 280})]},
-        "optB": {"label": "赌一把武器核心", "outcomes": [(0.60, {"alloy": 6400, "data": 400}), (0.40, {"alloy": -1400})]},
-    },
-    {
-        "id": "enc_recruit", "flavor": "military", "name": "流浪编队",
-        "optA": {"label": "收编入伍", "outcomes": [(1.0, {"unit_assault": 80})]},
-        "optB": {"label": "收下装备", "outcomes": [(1.0, {"energy": 4400, "alloy": 400})]},
-    },
-    {
-        "id": "enc_barracks", "flavor": "military", "name": "废弃兵营",
-        "optA": {"label": "收编残部", "outcomes": [(1.0, {"unit_guard": 85})]},
-        "optB": {"label": "变卖装备", "outcomes": [(1.0, {"energy": 4700, "alloy": 400})]},
-    },
-    {
-        "id": "enc_armory", "flavor": "military", "name": "战备仓库",
-        "optA": {"label": "清点入库", "outcomes": [(1.0, {"alloy": 2500, "data": 320})]},
-        "optB": {"label": "破拆内库", "outcomes": [(0.55, {"alloy": 5000, "data": 500}), (0.45, {})]},
-    },
-    {
-        "id": "enc_vanguard", "flavor": "military", "name": "重装残队",
-        "optA": {"label": "纳入编队", "outcomes": [(1.0, {"unit_heavy": 20})]},
-        "optB": {"label": "收下补给", "outcomes": [(1.0, {"energy": 4300, "alloy": 500})]},
-    },
-    # 探索类 3
-    {
-        "id": "enc_beacon", "flavor": "explore", "name": "未知信标",
-        "optA": {"label": "解码数据核心", "outcomes": [(1.0, {"data": 90, "dark": 1})]},
-        "optB": {"label": "抽出能源核心", "outcomes": [(0.85, {"energy": 9600}), (0.15, {"energy": 2000})]},
-    },
-    {
-        "id": "enc_echo", "flavor": "explore", "name": "深空回响",
-        "optA": {"label": "追踪信号源", "outcomes": [(1.0, {"data": 120, "dark": 1})]},
-        "optB": {"label": "同步解析", "outcomes": [(0.85, {"energy": 9000}), (0.15, {"energy": 1800})]},
-    },
-    {
-        "id": "enc_outpost", "flavor": "explore", "name": "静默观测站",
-        "optA": {"label": "拆解储能", "outcomes": [(1.0, {"data": 100, "dark": 1})]},
-        "optB": {"label": "整站回收", "outcomes": [(0.85, {"energy": 8200}), (0.15, {"energy": 3200})]},
-    },
-    # 赌注类 8
-    {
-        "id": "enc_well", "flavor": "gamble", "name": "暗物质捕获井",
-        "optA": {"label": "安全回收", "outcomes": [(1.0, {"energy": 7000})]},
-        "optB": {"label": "强行重启", "outcomes": [(0.35, {"energy": 22000}), (0.65, {})]},
-    },
-    {
-        "id": "enc_core", "flavor": "gamble", "name": "曲率核心",
-        "optA": {"label": "稳妥切割", "outcomes": [(1.0, {"alloy": 4400})]},
-        "optB": {"label": "冒险引爆", "outcomes": [(0.50, {"alloy": 9600}), (0.25, {"alloy": 2000}), (0.25, {"alloy": -1300})]},
-    },
-    {
-        "id": "enc_wager", "flavor": "gamble", "name": "深空赌局",
-        "optA": {"label": "收下货物", "outcomes": [(1.0, {"energy": 4400, "alloy": 400})]},
-        "optB": {"label": "接受赌局", "outcomes": [(0.40, {"energy": 12000}), (0.60, {})]},
-    },
-    {
-        "id": "enc_gravity", "flavor": "gamble", "name": "引力井",
-        "optA": {"label": "稳妥绕采", "outcomes": [(1.0, {"alloy": 7200})]},
-        "optB": {"label": "冒险下潜", "outcomes": [(0.35, {"alloy": 20500}), (0.65, {})]},
-    },
-    {
-        "id": "enc_fission", "flavor": "gamble", "name": "裂变弹芯",
-        "optA": {"label": "谨慎拆除", "outcomes": [(1.0, {"energy": 4800})]},
-        "optB": {"label": "尝试激活", "outcomes": [(0.45, {"energy": 10000}), (0.55, {})]},
-    },
-    {
-        "id": "enc_matrix", "flavor": "gamble", "name": "晶体母矿",
-        "optA": {"label": "稳妥提取", "outcomes": [(1.0, {"crystal": 140})]},
-        "optB": {"label": "超载开采", "outcomes": [(0.35, {"crystal": 330}), (0.65, {"crystal": 30})]},
-    },
-    {
-        "id": "enc_storm", "flavor": "gamble", "name": "离子风暴",
-        "optA": {"label": "稳妥穿越", "outcomes": [(1.0, {"energy": 4600, "alloy": 400})]},
-        "optB": {"label": "风暴采集", "outcomes": [(0.45, {"energy": 11500}), (0.55, {})]},
-    },
-    {
-        "id": "enc_chips", "flavor": "gamble", "name": "加密芯片",
-        "optA": {"label": "稳妥破解", "outcomes": [(1.0, {"data": 760})]},
-        "optB": {"label": "超频读取", "outcomes": [(0.30, {"data": 2300}), (0.70, {"data": 200})]},
-    },
-]
+
+# ---- 仓库真值提取（v127 同路：平衡块 + 正则字段解析） ----
+
+def brace_block(text: str, i: int) -> str:
+    """i 指向 '{'，返回含两端花括号的平衡块。"""
+    depth = 0
+    for k in range(i, len(text)):
+        if text[k] == "{":
+            depth += 1
+        elif text[k] == "}":
+            depth -= 1
+            if depth == 0:
+                return text[i : k + 1]
+    raise AssertionError("大括号不平衡")
+
+
+def bracket_block(text: str, i: int) -> str:
+    """i 指向 '['，返回含两端方括号的平衡块。"""
+    depth = 0
+    for k in range(i, len(text)):
+        if text[k] == "[":
+            depth += 1
+        elif text[k] == "]":
+            depth -= 1
+            if depth == 0:
+                return text[i : k + 1]
+    raise AssertionError("方括号不平衡")
+
+
+def num(v: str):
+    """整数值收 int，非整数保留 float（供断言 4 的非负整数检查挂红）。"""
+    f = float(v)
+    return int(f) if f == int(f) else f
+
+
+def parse_chances(opt_block: str) -> list:
+    """chances 数组 → [(p, {折算键: 数量})]；units + unitKind 并入折算键。"""
+    m = re.search(r"chances:\s*\[", opt_block)
+    assert m, "chances 锚点未命中"
+    arr = bracket_block(opt_block, m.end() - 1)
+    out = []
+    for c in re.finditer(r"\{\s*p:\s*(-?[\d.]+)\s*,\s*rewards:", arr):
+        p = float(c.group(1))
+        rb = brace_block(arr, arr.index("{", c.end() - 1))
+        rew = {}
+        for kv in re.finditer(r"(energy|crystal|alloy|data|dark|units):\s*(-?[\d.]+)", rb):
+            k, v = kv.group(1), num(kv.group(2))
+            if k == "units":
+                km = re.search(r"unitKind:\s*'(\w+)'", rb)
+                kind = km.group(1) if km else "assault"
+                assert kind in UNIT_KIND_KEYS, f"未知 unitKind: {kind}"
+                k = UNIT_KIND_KEYS[kind]
+            rew[k] = v
+        out.append((p, rew))
+    return out
+
+
+def load_labels() -> dict:
+    """zh-CN 遭遇语言包 → {完整键: 文案}（核验表选项标签列用）。"""
+    text = ENCOUNTERS_LOCALE.read_text(encoding="utf-8")
+    return dict(re.findall(r"'(content\.encounters\.[^']+)':\s*'([^']*)'", text))
+
+
+def load_encounters() -> list:
+    """src/data/encounters.ts → 事件表（id/flavor/两选项标签与结果分布）。"""
+    text = ENCOUNTERS_TS.read_text(encoding="utf-8")
+    labels = load_labels()
+    events = []
+    for m in re.finditer(r"id:\s*'(enc_\w+)'", text):
+        eid = m.group(1)
+        # id 是事件对象首键：向前回扫最近的 '{' 即对象开括号
+        block = brace_block(text, text.rindex("{", 0, m.start()))
+        fm = re.search(r"flavor:\s*'(\w+)'", block)
+        assert fm, f"{eid}: flavor 锚点未命中"
+        enc = {"id": eid, "flavor": fm.group(1)}
+        for opt in ("optA", "optB"):
+            om = re.search(rf"\b{opt}:\s*\{{", block)
+            assert om, f"{eid}: {opt} 锚点未命中"
+            enc[opt] = {
+                "label": labels.get(f"content.encounters.{eid}.{opt}", f"{eid}.{opt}"),
+                "outcomes": parse_chances(brace_block(block, om.end() - 1)),
+            }
+        events.append(enc)
+    return events
+
+
+ENCOUNTERS = load_encounters()
 
 
 def ev(outcomes):
