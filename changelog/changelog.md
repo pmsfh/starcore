@@ -86,7 +86,8 @@
 
 ### 验证
 
-- `corepack pnpm check` 全绿：58 个测试文件 797 个用例，lint/format 零输出。
+- `corepack pnpm check` 全绿：58 个测试文件 797 个用例，
+  lint/format 零输出。
 - `node tools/check-docs.mjs --strict`：0 项告警。
 - 产物体积 222.9 / 256 KiB。
 - 版本：package.json 1.68.0 → 1.69.0
