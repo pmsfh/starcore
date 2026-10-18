@@ -3,8 +3,9 @@
  * BattleResultModal.vue：战斗结果弹窗（从 BattleView 拆出）。
  *
  * 胜败标题、战利品（含遗物掉落）、损失与战报日志；弹窗交互结果经
- * stay / confirm 事件交回父层（遮罩点击与按钮同语义：胜利留在原地、
- * 失败确认返回）。类名与文案保持不变。
+ * stay / confirm 事件交回父层（遮罩点击与按钮同语义：stay 关弹窗停留原
+ * 地；confirm 胜局返回星图、败局仅关弹窗停留原战斗页）。类名与文案保持
+ * 不变。
  */
 import { t } from '@/i18n'
 import { computed } from 'vue'

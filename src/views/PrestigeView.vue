@@ -340,11 +340,18 @@ function cancelTranscend() {
   flex-direction: column;
   gap: var(--space-2);
 }
-/* 桌面端宽屏：双列网格，利用横向空间（v1.68），买断树 / 无限树两处容器同规则 */
+/* 桌面端宽屏：双列网格，利用横向空间（v1.68），买断树 / 无限树两处容器同规则；
+   gap 隐式继承容器纵向布局的 --space-2（grid 与 column flex 同读 gap） */
 @media (min-width: 1024px) {
   .tree-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  /* 孤卡与奇数末卡跨列（v1.70）：预置兜底，当前两树节点数均为偶数、零视觉
+     变化；未来增节点不再出现右列留白，与星图 / 档案馆跨列策略对齐 */
+  .tree-grid > .tree-node:only-child,
+  .tree-grid > .tree-node:last-child:nth-child(odd) {
+    grid-column: span 2;
   }
 }
 .tree-node {

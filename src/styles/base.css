@@ -24,6 +24,7 @@ body {
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
   min-height: 100vh;
+  min-height: 100dvh; /* 移动浏览器动态视口：地址栏收展不裁切（100vh 为回退，与 AppShell / SideNav 双写一致） */
 }
 button {
   font-family: inherit;

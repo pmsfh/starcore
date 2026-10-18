@@ -126,7 +126,7 @@ onUnmounted(() => {
   -webkit-backdrop-filter: blur(12px);
   border-top: 1px solid var(--color-border-line);
   padding: var(--space-2) var(--space-1);
-  padding-bottom: calc(var(--space-2) + env(safe-area-inset-bottom));
+  padding-bottom: calc(var(--space-2) + env(safe-area-inset-bottom, 0px));
 }
 .tab {
   flex: 1;

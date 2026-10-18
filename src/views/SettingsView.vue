@@ -98,7 +98,8 @@ function choose(code: string) {
   gap: var(--space-4);
 }
 /* 桌面端宽屏：存档与语言两分组在 720 阅读宽内并置（v1.68），
-   内容区不加宽；页题与副题跨双列，两组各占一列 */
+   内容区不加宽；页题与副题跨双列，两组各占一列；
+   gap 隐式继承容器纵向布局的 --space-4（grid 与 column flex 同读 gap） */
 @media (min-width: 1024px) {
   .settings-view {
     display: grid;

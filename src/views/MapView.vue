@@ -355,7 +355,8 @@ const weeklyBossTestid = computed(() => {
   flex-direction: column;
   gap: var(--space-2);
 }
-/* 桌面端宽屏：双列网格，利用横向空间（v1.68），与科技 / 成就 / 档案馆同构 */
+/* 桌面端宽屏：双列网格，利用横向空间（v1.68），与科技 / 成就 / 档案馆同构；
+   gap 隐式继承容器纵向布局的 --space-2（grid 与 column flex 同读 gap） */
 @media (min-width: 1024px) {
   .node-list,
   .stronghold-list {
@@ -367,6 +368,19 @@ const weeklyBossTestid = computed(() => {
   .node-list > .node-card:only-child,
   .stronghold-list > .stronghold-card:only-child {
     grid-column: span 2;
+  }
+  /* 奇数末卡跨列（v1.70）：奇数总数的末卡独占左列、右列整格留白（如 19
+     据点态），同跨双列兜底；偶数总数不受影响 */
+  .node-list > .node-card:last-child:nth-child(odd),
+  .stronghold-list > .stronghold-card:last-child:nth-child(odd) {
+    grid-column: span 2;
+  }
+  /* 跨列卡描述行限宽 68ch（v1.70，对齐档案馆 v1.60 先例）：文本行不
+     拉满全宽，保持阅读节奏；.n-desc 在 ExploreNodeCard 内部，scoped 规则
+     须经 :deep() 穿透才能命中 */
+  .node-list > .node-card:only-child :deep(.n-desc),
+  .node-list > .node-card:last-child:nth-child(odd) :deep(.n-desc) {
+    max-width: 68ch;
   }
 }
 .stronghold-card {
