@@ -34,7 +34,7 @@ export default {
     'Came and went without a sound; the picket nets never once recorded its wake',
   'content.weeklyBoss.lore.silencer.8.name': 'Recurrent Flagship',
   'content.weeklyBoss.lore.silencer.8.origin':
-    'Matched, line for line, a sinking record a century old; the registry filed it under "recurrence"',
+    'Matched, line for line, a sinking record a century old; the Imperial registry filed it under "recurrence"',
   // Raider family (broodnest line: Court-grade threats, the tribute system’s defaulters)
   'content.weeklyBoss.lore.raider.1.name': 'Pretender Court',
   'content.weeklyBoss.lore.raider.1.origin':

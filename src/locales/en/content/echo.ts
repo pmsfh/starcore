@@ -86,7 +86,7 @@ export default {
   'content.echo.echo_15.name': 'The New Gatekeepers',
   'content.echo.echo_15.text':
     'The records on the inner side show that new Gatekeepers have taken their post on the outer side. The StarCore civilization took over the Gatekeepers’ position, just as the Forerunners once did.',
-  'content.echo.echo_15.note': 'Keepers change; the post at the gate has never stood empty.',
+  'content.echo.echo_15.note': 'Gatekeepers change; the post at the gate has never stood empty.',
 
   'content.echo.echo_16.name': 'Watchtower, Reopened',
   'content.echo.echo_16.text':
@@ -134,7 +134,7 @@ export default {
 
   'content.echo.echo_24.name': 'Whales, New Course',
   'content.echo.echo_24.text':
-    'The whales’ migration has changed: they still skirt that reach of space, but the arc of the detour now lingers a little toward the beacon.',
+    'The white whales’ migration has changed: they still skirt that reach of space, but the arc of the detour now lingers a little toward the beacon.',
   'content.echo.echo_24.note': 'As if checking the lamp phrase — or paying respects.',
 
   'content.echo.echo_25.name': 'Answers Outnumber Questions',
@@ -144,7 +144,7 @@ export default {
 
   'content.echo.echo_26.name': 'The Archive Opens',
   'content.echo.echo_26.text':
-    'The archive outside has gained a new section, collecting the dispatches sent back from beyond the gate. The new Keepers tend it, as part of their watch.',
+    'The archive outside has gained a new section, collecting the dispatches sent back from beyond the gate. The new Gatekeepers tend it, as part of their watch.',
   'content.echo.echo_26.note': 'They say the archive lamps flicker once each time an echo arrives.',
 
   'content.echo.echo_27.name': 'Transmission Restarts',
