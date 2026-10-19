@@ -2,9 +2,11 @@
  * ArchiveView.test.ts：档案馆视图组件测试（v1.18）
  *
  * 重点测试：
- * 1. 页面渲染（标题 + 星图档案/敌方档案两区块与计数）
+ * 1. 页面渲染（标题 + 星图档案/回响/敌方档案三区块与计数）
  * 2. 星图档案：已完成节点显示剧情文案，未完成显示锁定占位不剧透
- * 3. 敌方档案：未遭遇显示未知敌影；交战收录后显示名称与属性；
+ * 3. 回响：未全宇宙探索完毕显示留白提示不剧透；完毕后 30 条按三段
+ *    小节渲染（门后回响·终局后日谈）
+ * 4. 敌方档案：未遭遇显示未知敌影；交战收录后显示名称与属性；
  *    同名聚合口径
  *
  * @vitest-environment jsdom
@@ -15,6 +17,8 @@ import { vueRouterMock, focusTrapMock, mountView, useViewTestHooks } from '@/tes
 import ArchiveView from './ArchiveView.vue'
 import { exploredNodes } from '@/tests/fixtures'
 import { STRONGHOLDS } from '@/data/pve'
+import { EXPLORE_NODES } from '@/data/explore'
+import { ECHO_ENTRIES } from '@/data/echo'
 import { useArchiveStore } from '@/stores/archive'
 import { useGameStore } from '@/stores/game'
 
@@ -58,6 +62,51 @@ describe('ArchiveView — 渲染', () => {
     expect(unlocked).toBeTruthy()
     expect(unlocked!.text()).toContain('扫描器在轨道残骸带中发现了掠夺者的踪迹')
     expect(wrapper.text()).toContain('已留档 1 / 34')
+  })
+})
+
+describe('ArchiveView — 回响', () => {
+  useViewTestHooks()
+
+  it('锁定态：分组标题可见、留白提示、条目零渲染不剧透', () => {
+    const wrapper = mountView(ArchiveView)
+
+    expect(wrapper.find('[data-testid="archive-echo-group"]').exists()).toBe(true)
+    expect(wrapper.text()).toContain('回响')
+    // 锁定态不显示计数（仅解锁与未解锁两态，避免误读为逐条收集）
+    expect(wrapper.find('[data-testid="archive-echo-group"] .count-lead').exists()).toBe(false)
+    expect(wrapper.find('[data-testid="archive-echo-locked"]').exists()).toBe(true)
+    expect(wrapper.text()).toContain('门还很安静')
+    // 条目零渲染：首条名不出现
+    expect(wrapper.findAll('[data-testid="archive-echo-card"]').length).toBe(0)
+    expect(wrapper.text()).not.toContain(ECHO_ENTRIES[0].name)
+  })
+
+  it('解锁态：全宇宙探索完毕后 30 条按三段小节渲染、计数 30/30', async () => {
+    exploredNodes(...EXPLORE_NODES.map((n) => n.id))
+    const wrapper = mountView(ArchiveView)
+    await wrapper.vm.$nextTick()
+
+    expect(wrapper.text()).toContain('已回响 30 / 30')
+    expect(wrapper.findAll('[data-testid="archive-echo-card"]').length).toBe(30)
+    // 三段小节名齐备
+    for (const seg of ['迎接', '见闻', '余韵']) {
+      expect(wrapper.text()).toContain(seg)
+    }
+    // 首末条目可见
+    expect(wrapper.text()).toContain(ECHO_ENTRIES[0].name)
+    expect(wrapper.text()).toContain(ECHO_ENTRIES[29].name)
+    expect(wrapper.text()).toContain(ECHO_ENTRIES[29].note)
+  })
+
+  it('差一节点未完成仍锁定（34/34 全毕口径）', async () => {
+    const all = EXPLORE_NODES.map((n) => n.id)
+    exploredNodes(...all.slice(0, all.length - 1))
+    const wrapper = mountView(ArchiveView)
+    await wrapper.vm.$nextTick()
+
+    expect(wrapper.find('[data-testid="archive-echo-group"] .count-lead').exists()).toBe(false)
+    expect(wrapper.findAll('[data-testid="archive-echo-card"]').length).toBe(0)
   })
 })
 

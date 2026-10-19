@@ -56,6 +56,7 @@ watch(() => game.exploration.layerCeremonyQueue[0], showNext, { immediate: true 
     @close="dismiss"
   >
     <p class="finale-salute">{{ t('home.hero.finalSalute') }}</p>
+    <p class="finale-echo">{{ t('map.allDoneEcho') }}</p>
   </CeremonyOverlay>
   <transition v-else name="layer-banner">
     <div
@@ -77,6 +78,10 @@ watch(() => game.exploration.layerCeremonyQueue[0], showNext, { immediate: true 
   line-height: 1.8;
   color: var(--color-t-primary);
   max-width: 300px;
+}
+.finale-echo {
+  font-size: var(--text-xs);
+  color: var(--color-t-tertiary);
 }
 
 .layer-banner {

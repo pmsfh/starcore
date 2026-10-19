@@ -15,4 +15,12 @@ export default {
   'archive.unknownEnemy': 'Unknown Contact',
   'archive.unknownEnemyDesc': 'Not yet encountered. Records update after battle.',
   'archive.loreCount': 'Logged {seen} / {total}',
+  'archive.echoSection': 'Echoes',
+  'archive.echoHint':
+    'Records sent back from beyond the gate; they arrive when the road has been walked to its end.',
+  'archive.echoCount': 'Echoed {seen} / {total}',
+  'archive.echoLocked': 'The gate is still quiet.',
+  'archive.echoSegmentWelcome': 'The Welcome',
+  'archive.echoSegmentSights': 'The Sights',
+  'archive.echoSegmentAfterglow': 'The Afterglow',
 }

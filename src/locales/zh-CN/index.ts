@@ -43,6 +43,7 @@ import unitsContent from './content/units.ts'
 import weeklyBossContent from './content/weeklyBoss.ts'
 import encountersContent from './content/encounters.ts'
 import dispatchContent from './content/dispatch.ts'
+import echoContent from './content/echo.ts'
 
 export default {
   ...achievements,
@@ -82,4 +83,5 @@ export default {
   ...weeklyBossContent,
   ...encountersContent,
   ...dispatchContent,
+  ...echoContent,
 }

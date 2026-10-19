@@ -2,10 +2,13 @@
 /**
  * ArchiveView.vue：档案馆（v1.18 可玩内容扩展方案 1）
  *
- * 两大区块：
+ * 三大区块：
  * - 星图档案：34 节点按星层分组回读 story.ts 剧情文案（v1.08 迁出后
  *   首次接线）。已完成节点显示剧情，未完成显示锁定态不剧透；
  *   「已完成」并入当前轮探索进度（转生后随本轮重新点亮）
+ * - 回响：门后回响见闻（门后回响·终局后日谈），全宇宙探索完毕
+ *   （当前轮 34/34）后解锁；解锁判读实时计算无持久化，转生后随
+ *   本轮重新上锁（与星图档案同口径）
  * - 敌方档案：56 种敌方单位图鉴（按显示名聚合），交战即收录
  *   （胜负都算），未遇显示未知敌影占位
  */
@@ -16,6 +19,7 @@ import { ENEMY_KIND_BUCKETS } from '@/data/pve'
 import { EXPLORE_NODES, LAYER_INFO, type StarLayer } from '@/data/explore'
 import { STRONGHOLDS, STRONGHOLD_TYPES } from '@/data/pve'
 import { NODE_STORIES } from '@/data/story'
+import { ECHO_ENTRIES, ECHO_SEGMENTS } from '@/data/echo'
 import Icon from '@/components/ui/Icon.vue'
 
 /** 据点四类 id（与 pve.ts 内部 StrongholdType 同源） */
@@ -53,6 +57,12 @@ const storyGroups = computed(() =>
 )
 
 const seenStories = computed(() => storyRows.value.filter((r) => r.completed).length)
+
+// 回响：解锁 = 当前轮全宇宙探索完毕（与星图档案、首页贺词同口径逐
+// 节点判读，转生后随本轮重新上锁）
+const echoUnlocked = computed(
+  () => EXPLORE_NODES.every((n) => game.exploration.isCompleted(n.id)) && ECHO_ENTRIES.length > 0
+)
 
 // 敌方档案：按据点类型分组的图鉴卡（按显示名聚合，完成 = 该名下任一条目已遭遇），
 interface EnemyCard {
@@ -151,6 +161,38 @@ function cardEnemy(card: EnemyCard) {
           </div>
         </div>
       </div>
+    </section>
+
+    <!-- 回响（门后回响见闻，全宇宙探索完毕后解锁） -->
+    <section class="section" data-testid="archive-echo-group">
+      <h3 class="section-title with-icon">
+        <Icon class="s-icon" name="i-relic-silence" />
+        {{ t('archive.echoSection') }}
+        <span v-if="echoUnlocked" class="count-lead font-mono">
+          {{ t('archive.echoCount', { seen: ECHO_ENTRIES.length, total: ECHO_ENTRIES.length }) }}
+        </span>
+      </h3>
+      <p class="section-hint">{{ t('archive.echoHint') }}</p>
+      <p v-if="!echoUnlocked" class="echo-locked locked-text" data-testid="archive-echo-locked">
+        {{ t('archive.echoLocked') }}
+      </p>
+      <template v-else>
+        <div v-for="seg in ECHO_SEGMENTS" :key="seg.id" class="echo-segment">
+          <h4 class="echo-seg-name">{{ seg.name }}</h4>
+          <div class="echo-grid">
+            <article
+              v-for="e in ECHO_ENTRIES.slice(seg.start, seg.end)"
+              :key="e.id"
+              class="echo-card"
+              data-testid="archive-echo-card"
+            >
+              <h5 class="echo-name font-display">{{ e.name }}</h5>
+              <p class="echo-text">{{ e.text }}</p>
+              <p class="echo-note font-mono">{{ e.note }}</p>
+            </article>
+          </div>
+        </div>
+      </template>
     </section>
 
     <!-- 敌方档案 -->
@@ -300,6 +342,57 @@ function cardEnemy(card: EnemyCard) {
 }
 .locked-text {
   color: var(--color-locked);
+}
+
+/* 回响 */
+.echo-locked {
+  font-size: var(--text-sm);
+  padding: var(--space-3) 0;
+}
+.echo-segment {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+.echo-seg-name {
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--color-layer-void);
+}
+.echo-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+/* 桌面端宽屏：双列网格（沿星图档案 v1.37 模式） */
+@media (min-width: 1024px) {
+  .echo-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+.echo-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-line);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+}
+.echo-name {
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--color-layer-void);
+}
+.echo-text {
+  font-size: var(--text-xs);
+  color: var(--color-t-secondary);
+  line-height: 1.6;
+  margin-top: var(--space-1);
+}
+.echo-note {
+  font-size: var(--text-xs);
+  color: var(--color-t-tertiary);
+  margin-top: var(--space-1);
 }
 
 /* 敌方档案 */

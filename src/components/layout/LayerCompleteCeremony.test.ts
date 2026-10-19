@@ -82,7 +82,7 @@ describe('LayerCompleteCeremony 层完成仪式', () => {
     expect(game.exploration.layerCeremonyQueue).toEqual([])
   })
 
-  it('深空层改播终局全屏仪式（贺词 + 点击关闭）', async () => {
+  it('深空层改播终局全屏仪式（贺词 + 点题句 + 点击关闭）', async () => {
     const game = useGameStore()
     const wrapper = mountView(LayerCompleteCeremony)
 
@@ -94,10 +94,25 @@ describe('LayerCompleteCeremony 层完成仪式', () => {
     expect(overlay.exists()).toBe(true)
     expect(overlay.text()).toContain('全宇宙已探索完毕')
     expect(overlay.text()).toContain('星核文明接过守门者的位置')
+    // 终局点题句（门后回响）：仅终局仪式可见
+    expect(overlay.text()).toContain('门后传来第一声回响')
 
     await overlay.trigger('click')
     await wrapper.vm.$nextTick()
     expect(wrapper.find('.ceremony-overlay').exists()).toBe(false)
     expect(game.exploration.layerCeremonyQueue).toEqual([])
+  })
+
+  it('普通层横幅不含终局点题句', async () => {
+    const game = useGameStore()
+    const wrapper = mountView(LayerCompleteCeremony)
+
+    game.exploration.layerCeremonyQueue.push('galaxy')
+    await wrapper.vm.$nextTick()
+
+    const banner = wrapper.find('.layer-banner')
+    expect(banner.exists()).toBe(true)
+    expect(wrapper.find('.ceremony-overlay').exists()).toBe(false)
+    expect(banner.text()).not.toContain('门后传来第一声回响')
   })
 })

@@ -59,7 +59,7 @@ console.log('== A. 全新档档案馆渲染 ==');
   check('锁定占位文案', (await page.locator('.st-story').first().textContent()).includes('尚未踏足'));
   const enemyCards = page.locator('[data-testid="archive-enemy-card"]');
   check(`敌方档案 56 种聚合卡（实际 ${await enemyCards.count()}）`, (await enemyCards.count()) === 56);
-  check('收录计数 0/56', norm(await page.locator('.count-lead').nth(1).textContent()).includes('0/56'));
+  check('收录计数 0/56', norm(await page.locator('.section:has(.type-group) .count-lead').textContent()).includes('0/56'));
   check('未遭遇显示未知敌影', (await enemyCards.first().textContent()).includes('未知敌影'));
   // 桌面侧栏 + 移动更多面板入口
   check('桌面侧栏含档案馆导航', (await page.locator('.side-nav .nav-item', { hasText: '档案馆' }).count()) === 1);
@@ -108,7 +108,7 @@ console.log('== C. 遭遇记录档图鉴收录 ==');
 {
   const save = makeSave({ archive: { enemies: ['raider_1#0', 'beast_1#0'] } });
   const { page } = await newPage(browser, save);
-  check('收录计数 2/56', norm(await page.locator('.count-lead').nth(1).textContent()).includes('2/56'));
+  check('收录计数 2/56', norm(await page.locator('.section:has(.type-group) .count-lead').textContent()).includes('2/56'));
   const seenCards = page.locator('.enemy-card.seen');
   check(`已收录卡 2 张（实际 ${await seenCards.count()}）`, (await seenCards.count()) === 2);
   const firstSeen = seenCards.first();
@@ -154,7 +154,7 @@ console.log('== D. 战斗接线图鉴收录 ==');
   // SPA 导航到档案馆（勿 goto：goto 重触发 initScript 覆盖注入档）
   await page.locator('.side-nav .nav-item', { hasText: '档案馆' }).click();
   await page.waitForTimeout(800);
-  check('交战后图鉴收录该据点全部敌方', norm(await page.locator('.count-lead').nth(1).textContent()).includes('1/56'));
+  check('交战后图鉴收录该据点全部敌方', norm(await page.locator('.section:has(.type-group) .count-lead').textContent()).includes('1/56'));
   check('无 console error', errors.filter((e) => !e.includes('favicon')).length === 0);
   await ctx.close();
 }
@@ -165,7 +165,7 @@ console.log('== E. 旧档兼容 ==');
   const save = makeSave(); // 无 archive 字段
   const { page, errors } = await newPage(browser, save);
   check('旧档正常进档案馆页不判废', (await page.locator('.archive-view').count()) === 1);
-  check('旧档图鉴 0/56 向前收集', norm(await page.locator('.count-lead').nth(1).textContent()).includes('0/56'));
+  check('旧档图鉴 0/56 向前收集', norm(await page.locator('.section:has(.type-group) .count-lead').textContent()).includes('0/56'));
   check('无 console error', errors.filter((e) => !e.includes('favicon')).length === 0);
   await page.context().close();
 }

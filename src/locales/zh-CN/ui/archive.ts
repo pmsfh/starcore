@@ -16,4 +16,11 @@ export default {
   'archive.unknownEnemy': '未知敌影',
   'archive.unknownEnemyDesc': '尚未遭遇。出击后自动收录。',
   'archive.loreCount': '已留档 {seen} / {total}',
+  'archive.echoSection': '回响',
+  'archive.echoHint': '门侧传回的见闻，航路走完之日才会传来。',
+  'archive.echoCount': '已回响 {seen} / {total}',
+  'archive.echoLocked': '门还很安静。',
+  'archive.echoSegmentWelcome': '迎接',
+  'archive.echoSegmentSights': '见闻',
+  'archive.echoSegmentAfterglow': '余韵',
 }
