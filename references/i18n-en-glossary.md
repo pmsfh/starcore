@@ -104,13 +104,33 @@
 | 永不熄灭的炉 | 各掠夺者王庭的进贡由帝庭裁决舰队收束执行，目标是银心之「炉」，炉的真身未揭示 | `content.pve.raider_11.desc`、`content.story.node_galaxy_hub` | 未回收 | 帝庭与炉篇章 |
 | 驱赶者之谜 | 噬星鲲群迁徙绕开特定空域，「像在听从某种驱赶」，驱赶者未现身 | `content.pve.beast_7.desc`、`content.explore.node_galaxy_range.*`、`content.story.node_galaxy_range` | 未回收 | 巨兽生态志篇章 |
 | 主脑之后 | 沉默者主脑（应答源实体）给出坐标：信号最初源头在银河之外；其上/其后的存在未揭示 | `content.explore.node_galaxy_heart.*`、`content.story.node_galaxy_heart` | 未回收 | 门后回响篇章 |
-| 先驱者下落 | 先驱者自虚空边缘出航离开本星系；虚空航标灯语「航向未变」仍为白鲸群亮着 | `content.explore.node_void_beacon.*`、`content.story.node_void_beacon`、`content.story.node_void_gate` | 未回收 | 门后回响篇章 |
+| 先驱者下落 | 先驱者自虚空边缘出航离开本星系；虚空航标灯语「航向未变」仍为白鲸群亮着 | `content.explore.node_void_beacon.*`、`content.story.node_void_beacon`、`content.story.node_void_gate`、`content.echo.*` | 已回收（门后回响篇章，见闻收束，谜底随门总纲框架保持留白） | 门后回响篇章 |
 | 门后文明 | 信号源头是门：先驱者穿门而入，沉默者世代守门，门后回响自称「接收者已就绪」 | `content.story.node_void_origin`、`content.story.node_cluster_hollow`、`content.explore.node_void_veil.*` | 未回收 | 门后回响篇章（与七扇死门共用总纲） |
 
-> 本节只立台账、不写解；后续篇章落笔前先对照本节。
+> 本节只立台账、不写解；后续篇章落笔前先对照本节。门后回响篇章的档案馆回响分组已落地：仅记录先驱者航路见闻，主脑之后与门后文明两条谜面未揭。
 
 ### ④ 成就与叙事定稿口径（v1.66 豁免登记）
 
 - **建造成就命名双风格并存**：奠基者 / 建筑宗师（人物式）与百塔耸立 / 千机互联（景象式）交错为既有序列风格，认可保留，不改名。
 - **成就类别后缀六三并存**：九类中六类带「里程碑 / Milestones」（battle / build / dark / energy / explore / tech），三类不带（relic / time / transcend）；后缀无功能价值，认可保留、不补齐。
 - **「沉默者回响」三名同源**：终局据点名、敌方单位名与遗物套装名（Silent… 系 / Echo of the Silent Ones）一词三义，系门后文明伏笔的有意呼应，改名冻结。
+
+### ⑤ 门总纲（v1.72 立节）
+
+> 门相关既定事实与边界，七扇死门篇章与门后回响篇章共用。本节只立框架不预写解：七门逐门的应答态与静默态定稿权归七扇死门篇章，门后侧的展开边界归门后回响篇章的后续内容；两篇章落笔前先对本节勾稽。
+
+**同源关系（既定）**
+
+- 冻结之门（虚空原点）与星臂回廊尽头的七扇死门为同款巨门（`content.story.node_arm_threshold`）；信号的源头不是信标，是门，先驱者穿门而入，沉默者世代守门（`content.story.node_void_origin`）。
+- 七门中仅一扇门的应答源仍在工作，未指明何扇；七门应答源在银心汇成中继链（`content.story.node_arm_threshold`）。
+
+**门后文明边界（既定，不越界）**
+
+- 守门者是沉默者世代传承的身份（`content.story.node_cluster_silence`，另见 §七② 称谓分级）。
+- 门后侧的直接发言仅有两句引语：环状结构问答「开始回归。接收者已就绪」（`content.story.node_cluster_hollow`）；穿门应答「接收者已抵达。欢迎回家」（`content.story.node_void_origin`）。
+- 沉默者主脑为应答源实体，其给出的坐标指向银河之外（`content.story.node_galaxy_heart`）；主脑之上与其后的存在未揭示，留待后续篇章。
+
+**回响档案域（v1.72 落地）**
+
+- 档案馆回响分组收录门侧见闻三十条，键三件套 name / text / note（`content.echo.echo_01` 至 `content.echo.echo_30`），解锁条件为当前轮全宇宙探索完毕，转生后随本轮重新上锁。
+- 回响分组当前只收先驱者线见闻：白鲸灯语「航向未变」的余韵收束于 `content.echo.echo_21`；主脑之后与门后文明两条谜面保持未揭。
