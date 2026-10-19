@@ -59,9 +59,12 @@ const storyGroups = computed(() =>
 const seenStories = computed(() => storyRows.value.filter((r) => r.completed).length)
 
 // 回响：解锁 = 当前轮全宇宙探索完毕（与星图档案、首页贺词同口径逐
-// 节点判读，转生后随本轮重新上锁）
+// 节点判读，空节点表按未解锁处理，转生后随本轮重新上锁）
 const echoUnlocked = computed(
-  () => EXPLORE_NODES.every((n) => game.exploration.isCompleted(n.id)) && ECHO_ENTRIES.length > 0
+  () =>
+    EXPLORE_NODES.length > 0 &&
+    EXPLORE_NODES.every((n) => game.exploration.isCompleted(n.id)) &&
+    ECHO_ENTRIES.length > 0
 )
 
 // 敌方档案：按据点类型分组的图鉴卡（按显示名聚合，完成 = 该名下任一条目已遭遇），
