@@ -118,7 +118,7 @@ console.log('== C. 遭遇记录档图鉴收录 ==');
 }
 
 // D. 战斗接线：真实点击出征收录图鉴
-// C2. 生态注：已收录异星巨兽卡渲染注区、未收录不渲染（vn 异星巨兽生态志）
+// C2. 生态注：已收录异星巨兽卡渲染注区、未收录不渲染（v1.73 异星巨兽生态志）
 console.log('== C2. 异星巨兽生态注 ==');
 {
   const { page: pageN } = await newPage(browser, makeSave({ archive: { enemies: ['beast_7#4'] } }));

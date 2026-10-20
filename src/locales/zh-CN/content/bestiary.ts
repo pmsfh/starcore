@@ -1,5 +1,5 @@
 /**
- * bestiary：中文内容文案（vn 异星巨兽生态志）
+ * bestiary：中文内容文案（v1.73 异星巨兽生态志）
  *
  * 简体中文为基线语言；新增文案直接在此维护，并跑缺键扫描守卫。
  * 异星巨兽敌方档案卡生态注：迁徙 / 食性 / 栖地三维，十种配注。
@@ -42,8 +42,4 @@ export default {
   'content.bestiary.white_king.mig': '巡游于鲸群外围警戒位，绕行空域时最贴近边界',
   'content.bestiary.white_king.feed': '与鲸群共食，警戒位使其进食总是最晚',
   'content.bestiary.white_king.hab': '无固定位置，鲸群在哪它就在外围哪个方位',
-  // 虚空白鲸（幼鲸免注；此为成鲸代表）
-  'content.bestiary.white_whale.mig': '鲸歌可传数光年，歌声的余韵里带着灯语的节拍',
-  'content.bestiary.white_whale.feed': '群体滤食，进食队列整齐如仪仗',
-  'content.bestiary.white_whale.hab': '随鲸群活动，夜面休憩时会朝航标方向侧卧',
 }

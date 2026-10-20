@@ -7,7 +7,7 @@
  * 3. 回响：未全宇宙探索完毕显示留白提示不剧透；完毕后 30 条按三段
  *    小节渲染（门后回响·终局后日谈）
  * 4. 敌方档案：未遭遇显示未知敌影；交战收录后显示名称与属性；
- *    同名聚合口径；生态注仅已收录异星巨兽卡渲染（vn 异星巨兽生态志）
+ *    同名聚合口径；生态注仅已收录异星巨兽卡渲染（v1.73 异星巨兽生态志）
  *
  * @vitest-environment jsdom
  */
@@ -131,6 +131,18 @@ describe('ArchiveView — 生态注', () => {
     expect(notes[0]!.text()).toContain('绕行弧')
     expect(notes[0]!.text()).toContain('星尘')
     expect(notes[0]!.text()).toContain('盘面')
+  })
+
+  it('非代表条目先收录同显示名注仍渲染（晶云母兽跨据点）', async () => {
+    // 晶云母兽注挂 beast_5#0；先收录 beast_6#0（同显示名的其他据点条目）
+    const archive = useArchiveStore()
+    archive.hydrate({ enemies: ['beast_6#0'] })
+    const wrapper = mountView(ArchiveView)
+    await wrapper.vm.$nextTick()
+
+    const notes = wrapper.findAll('[data-testid="archive-beast-note"]')
+    expect(notes.length).toBe(1)
+    expect(notes[0]!.text()).toContain('晶尘云')
   })
 
   it('已收录非异星巨兽卡无注区', async () => {

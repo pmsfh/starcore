@@ -1,5 +1,5 @@
 /**
- * encounters.ts：随机遭遇事件定义（v1.26 可玩内容扩展方案 8；v1.58 扩容；vn 势力叙事扩容至 47）
+ * encounters.ts：随机遭遇事件定义（v1.26 可玩内容扩展方案 8；v1.58 扩容；v1.73 势力叙事扩容至 47）
  *
  * 在线挂机时的低频决策点：每个事件恰两个选项（稳收益 vs 风险赌注），
  * 玩家不处理则过期消失。设计红线：
@@ -56,7 +56,7 @@ export const ENCOUNTER_EXPIRE_MS = 60_000
 /**
  * 事件池：47 模板，四类风味，资源类 15 / 军事类 8 / 探索类 11 / 风险赌注类 13。
  * 数值与核验表同源；文案经语言包 content.encounters 域取词。
- * vn 势力叙事扩容：王庭商队 6 / 帝庭巡检 5 / 先驱遗存 6 / 白鲸灯语 5（22 模板）。
+ * v1.73 势力叙事扩容：王庭商队 6 / 帝庭巡检 5 / 先驱遗存 7 / 白鲸灯语 4（22 模板）。
  */
 export const ENCOUNTERS: EncounterDef[] = [
   // 资源类 9：B 选项「稳中略好」，低方差
@@ -480,7 +480,7 @@ export const ENCOUNTERS: EncounterDef[] = [
       ],
     },
   },
-  // vn 势力叙事：王庭商队（资源 4 + 赌注 2）
+  // v1.73 势力叙事：王庭商队（资源 4 + 赌注 2）
   {
     id: 'enc_tribute_convoy',
     flavor: 'resource',
@@ -585,7 +585,7 @@ export const ENCOUNTERS: EncounterDef[] = [
       ],
     },
   },
-  // vn 势力叙事：帝庭巡检（资源 2 + 军事 3）
+  // v1.73 势力叙事：帝庭巡检（资源 2 + 军事 3）
   {
     id: 'enc_imperial_audit',
     flavor: 'resource',
@@ -671,7 +671,7 @@ export const ENCOUNTERS: EncounterDef[] = [
       ],
     },
   },
-  // vn 势力叙事：先驱遗存（探索 6）
+  // v1.73 势力叙事：先驱遗存（探索 6 + 赌注 1）
   {
     id: 'enc_relay_echo',
     flavor: 'explore',
@@ -774,7 +774,25 @@ export const ENCOUNTERS: EncounterDef[] = [
       ],
     },
   },
-  // vn 势力叙事：白鲸灯语（探索 2 + 赌注 3）
+  {
+    id: 'enc_pioneer_wreck',
+    flavor: 'gamble',
+    name: t('content.encounters.enc_pioneer_wreck.name'),
+    desc: t('content.encounters.enc_pioneer_wreck.desc'),
+    optA: {
+      label: t('content.encounters.enc_pioneer_wreck.optA'),
+      chances: [{ p: 1, rewards: { data: 760 } }],
+    },
+    optB: {
+      label: t('content.encounters.enc_pioneer_wreck.optB'),
+      chances: [
+        { p: 0.5, rewards: { units: 32, unitKind: 'heavy' } },
+        { p: 0.25, rewards: { data: 870 } },
+        { p: 0.25, rewards: { alloy: -900 } },
+      ],
+    },
+  },
+  // v1.73 势力叙事：白鲸灯语（探索 2 + 赌注 2）
   {
     id: 'enc_whale_song',
     flavor: 'explore',
@@ -840,24 +858,6 @@ export const ENCOUNTERS: EncounterDef[] = [
       chances: [
         { p: 0.5, rewards: { alloy: 10300 } },
         { p: 0.5, rewards: { alloy: 70 } },
-      ],
-    },
-  },
-  {
-    id: 'enc_pioneer_wreck',
-    flavor: 'gamble',
-    name: t('content.encounters.enc_pioneer_wreck.name'),
-    desc: t('content.encounters.enc_pioneer_wreck.desc'),
-    optA: {
-      label: t('content.encounters.enc_pioneer_wreck.optA'),
-      chances: [{ p: 1, rewards: { data: 760 } }],
-    },
-    optB: {
-      label: t('content.encounters.enc_pioneer_wreck.optB'),
-      chances: [
-        { p: 0.5, rewards: { units: 32, unitKind: 'heavy' } },
-        { p: 0.25, rewards: { data: 870 } },
-        { p: 0.25, rewards: { alloy: -900 } },
       ],
     },
   },

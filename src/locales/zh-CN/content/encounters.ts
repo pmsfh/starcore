@@ -3,7 +3,7 @@
  *
  * 简体中文为基线语言；新增文案直接在此维护，并跑缺键扫描守卫。
  * 数值口径见数据表与 EV 核验表，此处仅玩家可见文案。
- * vn 扩容势力叙事：王庭商队 / 帝庭巡检 / 先驱遗存 / 白鲸灯语四组。
+ * v1.73 扩容势力叙事：王庭商队 / 帝庭巡检 / 先驱遗存 / 白鲸灯语四组。
  */
 export default {
   'content.encounters.enc_flux.name': '能量涌流',
@@ -106,7 +106,7 @@ export default {
   'content.encounters.enc_chips.desc': '一批加密芯片散落在废弃货架上',
   'content.encounters.enc_chips.optA': '稳妥破解',
   'content.encounters.enc_chips.optB': '超频读取',
-  // vn 遭遇扩容势力叙事：王庭商队 / 帝庭巡检 / 先驱遗存 / 白鲸灯语四组
+  // v1.73 遭遇扩容势力叙事：王庭商队 / 帝庭巡检 / 先驱遗存 / 白鲸灯语四组
   'content.encounters.enc_tribute_convoy.name': '贡道商队',
   'content.encounters.enc_tribute_convoy.desc': '一支王庭商队沿贡道而行，护卫舰位有空缺',
   'content.encounters.enc_tribute_convoy.optA': '收护航费',

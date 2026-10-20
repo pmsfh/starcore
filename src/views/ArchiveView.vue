@@ -11,7 +11,7 @@
  *   本轮重新上锁（与星图档案同口径）
  * - 敌方档案：56 种敌方单位图鉴（按显示名聚合），交战即收录
  *   （胜负都算），未遇显示未知敌影占位；异星巨兽卡已收录态带
- *   生态注（迁徙 / 食性 / 栖地，vn 异星巨兽生态志，随收录显示）
+ *   生态注（迁徙 / 食性 / 栖地，v1.73 异星巨兽生态志，随收录显示）
  */
 import { t } from '@/i18n'
 import { computed } from 'vue'
@@ -21,7 +21,7 @@ import { EXPLORE_NODES, LAYER_INFO, type StarLayer } from '@/data/explore'
 import { STRONGHOLDS, STRONGHOLD_TYPES } from '@/data/pve'
 import { NODE_STORIES } from '@/data/story'
 import { ECHO_ENTRIES, ECHO_SEGMENTS } from '@/data/echo'
-import { getBestiaryNote, type BestiaryNote } from '@/data/bestiary'
+import { getBestiaryNoteForEntries, type BestiaryNote } from '@/data/bestiary'
 import Icon from '@/components/ui/Icon.vue'
 
 /** 据点四类 id（与 pve.ts 内部 StrongholdType 同源） */
@@ -104,7 +104,7 @@ const enemyCards = computed<EnemyCard[]>(() => {
       complete: entries.every((e) => e.seen),
       representativeIndex: Number((seenEntry ?? entries[0]).key.split('#')[1]),
       representativeStronghold: (seenEntry ?? entries[0]).key.split('#')[0],
-      note: getBestiaryNote((seenEntry ?? entries[0]).key),
+      note: getBestiaryNoteForEntries(bucket.entries.map((e) => e.key)),
     })
   }
   return cards

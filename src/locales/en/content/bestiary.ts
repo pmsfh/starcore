@@ -67,11 +67,4 @@ export default {
     'Feeds with the pod; the watch position makes him always the last to eat',
   'content.bestiary.white_king.hab':
     'No fixed place — wherever the pod drifts, he holds its outer ring',
-  // White Whale
-  'content.bestiary.white_whale.mig':
-    'Whale song carries for light-years, the lamp phrase beating in its afterglow',
-  'content.bestiary.white_whale.feed':
-    'Feeds in formation, the filter line ordered as a ceremonial array',
-  'content.bestiary.white_whale.hab':
-    'Moves with the pod; at rest on the night side it lies flank toward the beacon',
 }

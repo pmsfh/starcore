@@ -50,7 +50,7 @@ function optionSpread(opt: EncounterOption): number {
 }
 
 describe('encounters 事件池结构', () => {
-  it('25 模板、id 唯一、四类风味分布 9/5/3/8', () => {
+  it('47 模板、id 唯一、四类风味分布 15/8/11/13', () => {
     expect(ENCOUNTERS).toHaveLength(47)
     expect(new Set(ENCOUNTERS.map((e) => e.id)).size).toBe(47)
     const flavors = ENCOUNTERS.reduce<Record<string, number>>((acc, e) => {

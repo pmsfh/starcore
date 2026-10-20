@@ -111,7 +111,7 @@ export default {
     'A batch of encrypted chips is scattered across abandoned racks',
   'content.encounters.enc_chips.optA': 'Decrypt it all',
   'content.encounters.enc_chips.optB': 'Overclock it',
-  // vn faction-themed expansion: Caravans / Audits / Remnants / Whale Lanterns
+  // v1.73 faction-themed expansion: Caravans / Audits / Remnants / Whale Lanterns
   'content.encounters.enc_tribute_convoy.name': 'Tribute Convoy',
   'content.encounters.enc_tribute_convoy.desc':
     'A Court convoy rides the tribute lane with escort berths open',
