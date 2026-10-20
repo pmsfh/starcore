@@ -79,7 +79,7 @@ starcore/
 ├─ src/
 │  ├─ components/   45 components (including 8 icon sub-components), grouped as ui / layout / home / relics / build / army / battle / map / settings
 │  ├─ composables/  13 composables (breakpoints, Toast, action queue, onboarding, particles, …)
-│  ├─ data/         16 data tables (buildings, tech, exploration, strongholds, relics, achievements, expeditions, weekly boss, encounters, dispatch, units, formation doctrines, navigation, story, background stars, gate echoes)
+│  ├─ data/         17 data tables (buildings, tech, exploration, strongholds, relics, achievements, expeditions, weekly boss, encounters, dispatch, units, formation doctrines, navigation, story, background stars, gate echoes, alien behemoth notes)
 │  ├─ i18n/         i18n facade (message lookup and locale detection)
 │  ├─ lib/          19 core modules (decimal math, formatting, effect system, offline gains, random, integrity signatures, integer clamping, save pipeline under save/, batch and cost helpers, …)
 │  ├─ locales/      locale bundles (zh-CN baseline + en English, split by domain under ui/ and content/)
@@ -104,8 +104,8 @@ starcore/
 
 ## Quality
 
-- **Unit / component tests**: Vitest + @vue/test-utils + jsdom; 59 test files,
-  813 cases
+- **Unit / component tests**: Vitest + @vue/test-utils + jsdom; 60 test files,
+  825 cases
 - **Types & conventions**: vue-tsc type checking in the build; ESLint and
   Prettier pass with zero output
 - **Count conservation**: `scripts/check-conservation.mjs` validates document
