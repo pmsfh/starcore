@@ -1,5 +1,5 @@
 /**
- * encounters.ts：随机遭遇事件定义（v1.26 可玩内容扩展方案 8；v1.58 扩容至 25 模板）
+ * encounters.ts：随机遭遇事件定义（v1.26 可玩内容扩展方案 8；v1.58 扩容；vn 势力叙事扩容至 47）
  *
  * 在线挂机时的低频决策点：每个事件恰两个选项（稳收益 vs 风险赌注），
  * 玩家不处理则过期消失。设计红线：
@@ -8,7 +8,7 @@
  * - 纯增量：不碰战斗公式；存档为可选字段零迁移（store 侧见 src/stores/encounters.ts）
  * - 随机即时事件用 Math.random（无需确定性重放；fnv1a/mulberry32 保留给周期刷新类）
  *
- * 数值口径：25 模板全部经 EV 核验表程序化断言（每事件两选项期望差 ≤15%、
+ * 数值口径：47 模板全部经 EV 核验表程序化断言（每事件两选项期望差 ≤15%、
  * 赌注类高方差 / 资源类低方差、量级带内），调整数值前先改核验表再同步此处。
  */
 
@@ -54,8 +54,9 @@ export const ENCOUNTER_INTERVAL_MAX = 900
 export const ENCOUNTER_EXPIRE_MS = 60_000
 
 /**
- * 事件池：25 模板，四类风味，资源类 9 / 军事类 5 / 探索类 3 / 风险赌注类 8。
+ * 事件池：47 模板，四类风味，资源类 15 / 军事类 8 / 探索类 11 / 风险赌注类 13。
  * 数值与核验表同源；文案经语言包 content.encounters 域取词。
+ * vn 势力叙事扩容：王庭商队 6 / 帝庭巡检 5 / 先驱遗存 6 / 白鲸灯语 5（22 模板）。
  */
 export const ENCOUNTERS: EncounterDef[] = [
   // 资源类 9：B 选项「稳中略好」，低方差
@@ -476,6 +477,387 @@ export const ENCOUNTERS: EncounterDef[] = [
       chances: [
         { p: 0.3, rewards: { data: 2300 } },
         { p: 0.7, rewards: { data: 200 } },
+      ],
+    },
+  },
+  // vn 势力叙事：王庭商队（资源 4 + 赌注 2）
+  {
+    id: 'enc_tribute_convoy',
+    flavor: 'resource',
+    name: t('content.encounters.enc_tribute_convoy.name'),
+    desc: t('content.encounters.enc_tribute_convoy.desc'),
+    optA: {
+      label: t('content.encounters.enc_tribute_convoy.optA'),
+      chances: [{ p: 1, rewards: { energy: 7500 } }],
+    },
+    optB: {
+      label: t('content.encounters.enc_tribute_convoy.optB'),
+      chances: [
+        { p: 0.8, rewards: { energy: 9800 } },
+        { p: 0.2, rewards: { energy: 2900 } },
+      ],
+    },
+  },
+  {
+    id: 'enc_caravan_market',
+    flavor: 'resource',
+    name: t('content.encounters.enc_caravan_market.name'),
+    desc: t('content.encounters.enc_caravan_market.desc'),
+    optA: {
+      label: t('content.encounters.enc_caravan_market.optA'),
+      chances: [{ p: 1, rewards: { crystal: 110 } }],
+    },
+    optB: {
+      label: t('content.encounters.enc_caravan_market.optB'),
+      chances: [
+        { p: 0.75, rewards: { crystal: 150 } },
+        { p: 0.25, rewards: { crystal: 45 } },
+      ],
+    },
+  },
+  {
+    id: 'enc_toll_gate',
+    flavor: 'resource',
+    name: t('content.encounters.enc_toll_gate.name'),
+    desc: t('content.encounters.enc_toll_gate.desc'),
+    optA: {
+      label: t('content.encounters.enc_toll_gate.optA'),
+      chances: [{ p: 1, rewards: { alloy: 5200 } }],
+    },
+    optB: {
+      label: t('content.encounters.enc_toll_gate.optB'),
+      chances: [
+        { p: 0.8, rewards: { alloy: 6800 } },
+        { p: 0.2, rewards: { alloy: 1700 } },
+      ],
+    },
+  },
+  {
+    id: 'enc_tribute_ledger',
+    flavor: 'resource',
+    name: t('content.encounters.enc_tribute_ledger.name'),
+    desc: t('content.encounters.enc_tribute_ledger.desc'),
+    optA: {
+      label: t('content.encounters.enc_tribute_ledger.optA'),
+      chances: [{ p: 1, rewards: { data: 820 } }],
+    },
+    optB: {
+      label: t('content.encounters.enc_tribute_ledger.optB'),
+      chances: [
+        { p: 0.5, rewards: { data: 1300 } },
+        { p: 0.5, rewards: { data: 500 } },
+      ],
+    },
+  },
+  {
+    id: 'enc_smuggle_hold',
+    flavor: 'gamble',
+    name: t('content.encounters.enc_smuggle_hold.name'),
+    desc: t('content.encounters.enc_smuggle_hold.desc'),
+    optA: {
+      label: t('content.encounters.enc_smuggle_hold.optA'),
+      chances: [{ p: 1, rewards: { energy: 7000 } }],
+    },
+    optB: {
+      label: t('content.encounters.enc_smuggle_hold.optB'),
+      chances: [
+        { p: 0.5, rewards: { crystal: 260 } },
+        { p: 0.3, rewards: { energy: 2500 } },
+        { p: 0.2, rewards: { alloy: -1400 } },
+      ],
+    },
+  },
+  {
+    id: 'enc_exile_fleet',
+    flavor: 'gamble',
+    name: t('content.encounters.enc_exile_fleet.name'),
+    desc: t('content.encounters.enc_exile_fleet.desc'),
+    optA: {
+      label: t('content.encounters.enc_exile_fleet.optA'),
+      chances: [{ p: 1, rewards: { units: 85, unitKind: 'guard' } }],
+    },
+    optB: {
+      label: t('content.encounters.enc_exile_fleet.optB'),
+      chances: [
+        { p: 0.6, rewards: { units: 130, unitKind: 'guard' } },
+        { p: 0.25, rewards: { energy: 2500 } },
+        { p: 0.15, rewards: { units: 5, unitKind: 'guard' } },
+      ],
+    },
+  },
+  // vn 势力叙事：帝庭巡检（资源 2 + 军事 3）
+  {
+    id: 'enc_imperial_audit',
+    flavor: 'resource',
+    name: t('content.encounters.enc_imperial_audit.name'),
+    desc: t('content.encounters.enc_imperial_audit.desc'),
+    optA: {
+      label: t('content.encounters.enc_imperial_audit.optA'),
+      chances: [{ p: 1, rewards: { energy: 7800 } }],
+    },
+    optB: {
+      label: t('content.encounters.enc_imperial_audit.optB'),
+      chances: [
+        { p: 0.8, rewards: { energy: 10200 } },
+        { p: 0.2, rewards: { energy: 3200 } },
+      ],
+    },
+  },
+  {
+    id: 'enc_arbiter_salvage',
+    flavor: 'resource',
+    name: t('content.encounters.enc_arbiter_salvage.name'),
+    desc: t('content.encounters.enc_arbiter_salvage.desc'),
+    optA: {
+      label: t('content.encounters.enc_arbiter_salvage.optA'),
+      chances: [{ p: 1, rewards: { data: 860 } }],
+    },
+    optB: {
+      label: t('content.encounters.enc_arbiter_salvage.optB'),
+      chances: [
+        { p: 0.5, rewards: { data: 1400 } },
+        { p: 0.5, rewards: { data: 520 } },
+      ],
+    },
+  },
+  {
+    id: 'enc_tribute_escort',
+    flavor: 'military',
+    name: t('content.encounters.enc_tribute_escort.name'),
+    desc: t('content.encounters.enc_tribute_escort.desc'),
+    optA: {
+      label: t('content.encounters.enc_tribute_escort.optA'),
+      chances: [{ p: 1, rewards: { units: 110, unitKind: 'assault' } }],
+    },
+    optB: {
+      label: t('content.encounters.enc_tribute_escort.optB'),
+      chances: [
+        { p: 0.7, rewards: { units: 160, unitKind: 'assault' } },
+        { p: 0.3, rewards: { units: 55, unitKind: 'assault' } },
+      ],
+    },
+  },
+  {
+    id: 'enc_ceremonial_guard',
+    flavor: 'military',
+    name: t('content.encounters.enc_ceremonial_guard.name'),
+    desc: t('content.encounters.enc_ceremonial_guard.desc'),
+    optA: {
+      label: t('content.encounters.enc_ceremonial_guard.optA'),
+      chances: [{ p: 1, rewards: { units: 110, unitKind: 'guard' } }],
+    },
+    optB: {
+      label: t('content.encounters.enc_ceremonial_guard.optB'),
+      chances: [
+        { p: 0.7, rewards: { units: 155, unitKind: 'guard' } },
+        { p: 0.3, rewards: { units: 25, unitKind: 'guard' } },
+      ],
+    },
+  },
+  {
+    id: 'enc_court_parade',
+    flavor: 'military',
+    name: t('content.encounters.enc_court_parade.name'),
+    desc: t('content.encounters.enc_court_parade.desc'),
+    optA: {
+      label: t('content.encounters.enc_court_parade.optA'),
+      chances: [{ p: 1, rewards: { units: 27, unitKind: 'heavy' } }],
+    },
+    optB: {
+      label: t('content.encounters.enc_court_parade.optB'),
+      chances: [
+        { p: 0.5, rewards: { units: 48, unitKind: 'heavy' } },
+        { p: 0.5, rewards: { units: 12, unitKind: 'heavy' } },
+      ],
+    },
+  },
+  // vn 势力叙事：先驱遗存（探索 6）
+  {
+    id: 'enc_relay_echo',
+    flavor: 'explore',
+    name: t('content.encounters.enc_relay_echo.name'),
+    desc: t('content.encounters.enc_relay_echo.desc'),
+    optA: {
+      label: t('content.encounters.enc_relay_echo.optA'),
+      chances: [{ p: 1, rewards: { data: 780 } }],
+    },
+    optB: {
+      label: t('content.encounters.enc_relay_echo.optB'),
+      chances: [
+        { p: 0.8, rewards: { data: 990 } },
+        { p: 0.2, rewards: { data: 300 } },
+      ],
+    },
+  },
+  {
+    id: 'enc_watchtower_beam',
+    flavor: 'explore',
+    name: t('content.encounters.enc_watchtower_beam.name'),
+    desc: t('content.encounters.enc_watchtower_beam.desc'),
+    optA: {
+      label: t('content.encounters.enc_watchtower_beam.optA'),
+      chances: [{ p: 1, rewards: { energy: 7400 } }],
+    },
+    optB: {
+      label: t('content.encounters.enc_watchtower_beam.optB'),
+      chances: [
+        { p: 0.75, rewards: { energy: 9500 } },
+        { p: 0.25, rewards: { energy: 2600 } },
+      ],
+    },
+  },
+  {
+    id: 'enc_abandoned_probe',
+    flavor: 'explore',
+    name: t('content.encounters.enc_abandoned_probe.name'),
+    desc: t('content.encounters.enc_abandoned_probe.desc'),
+    optA: {
+      label: t('content.encounters.enc_abandoned_probe.optA'),
+      chances: [{ p: 1, rewards: { crystal: 100 } }],
+    },
+    optB: {
+      label: t('content.encounters.enc_abandoned_probe.optB'),
+      chances: [
+        { p: 0.8, rewards: { crystal: 135 } },
+        { p: 0.2, rewards: { crystal: 40 } },
+      ],
+    },
+  },
+  {
+    id: 'enc_legacy_cache',
+    flavor: 'explore',
+    name: t('content.encounters.enc_legacy_cache.name'),
+    desc: t('content.encounters.enc_legacy_cache.desc'),
+    optA: {
+      label: t('content.encounters.enc_legacy_cache.optA'),
+      chances: [{ p: 1, rewards: { alloy: 5000 } }],
+    },
+    optB: {
+      label: t('content.encounters.enc_legacy_cache.optB'),
+      chances: [
+        { p: 0.75, rewards: { alloy: 6400 } },
+        { p: 0.25, rewards: { alloy: 3800 } },
+      ],
+    },
+  },
+  {
+    id: 'enc_signal_garden',
+    flavor: 'explore',
+    name: t('content.encounters.enc_signal_garden.name'),
+    desc: t('content.encounters.enc_signal_garden.desc'),
+    optA: {
+      label: t('content.encounters.enc_signal_garden.optA'),
+      chances: [{ p: 1, rewards: { data: 800 } }],
+    },
+    optB: {
+      label: t('content.encounters.enc_signal_garden.optB'),
+      chances: [
+        { p: 0.8, rewards: { data: 1050 } },
+        { p: 0.2, rewards: { data: 350 } },
+      ],
+    },
+  },
+  {
+    id: 'enc_derelict_beacon',
+    flavor: 'explore',
+    name: t('content.encounters.enc_derelict_beacon.name'),
+    desc: t('content.encounters.enc_derelict_beacon.desc'),
+    optA: {
+      label: t('content.encounters.enc_derelict_beacon.optA'),
+      chances: [{ p: 1, rewards: { energy: 7600 } }],
+    },
+    optB: {
+      label: t('content.encounters.enc_derelict_beacon.optB'),
+      chances: [
+        { p: 0.7, rewards: { energy: 10000 } },
+        { p: 0.3, rewards: { energy: 3300 } },
+      ],
+    },
+  },
+  // vn 势力叙事：白鲸灯语（探索 2 + 赌注 3）
+  {
+    id: 'enc_whale_song',
+    flavor: 'explore',
+    name: t('content.encounters.enc_whale_song.name'),
+    desc: t('content.encounters.enc_whale_song.desc'),
+    optA: {
+      label: t('content.encounters.enc_whale_song.optA'),
+      chances: [{ p: 1, rewards: { data: 840 } }],
+    },
+    optB: {
+      label: t('content.encounters.enc_whale_song.optB'),
+      chances: [
+        { p: 0.8, rewards: { data: 1080 } },
+        { p: 0.2, rewards: { data: 320 } },
+      ],
+    },
+  },
+  {
+    id: 'enc_beacon_supply',
+    flavor: 'explore',
+    name: t('content.encounters.enc_beacon_supply.name'),
+    desc: t('content.encounters.enc_beacon_supply.desc'),
+    optA: {
+      label: t('content.encounters.enc_beacon_supply.optA'),
+      chances: [{ p: 1, rewards: { energy: 7900 } }],
+    },
+    optB: {
+      label: t('content.encounters.enc_beacon_supply.optB'),
+      chances: [
+        { p: 0.75, rewards: { energy: 10300 } },
+        { p: 0.25, rewards: { energy: 3100 } },
+      ],
+    },
+  },
+  {
+    id: 'enc_whale_pod',
+    flavor: 'gamble',
+    name: t('content.encounters.enc_whale_pod.name'),
+    desc: t('content.encounters.enc_whale_pod.desc'),
+    optA: {
+      label: t('content.encounters.enc_whale_pod.optA'),
+      chances: [{ p: 1, rewards: { energy: 6900 } }],
+    },
+    optB: {
+      label: t('content.encounters.enc_whale_pod.optB'),
+      chances: [
+        { p: 0.5, rewards: { crystal: 260 } },
+        { p: 0.5, rewards: { energy: 1500 } },
+      ],
+    },
+  },
+  {
+    id: 'enc_lantern_drift',
+    flavor: 'gamble',
+    name: t('content.encounters.enc_lantern_drift.name'),
+    desc: t('content.encounters.enc_lantern_drift.desc'),
+    optA: {
+      label: t('content.encounters.enc_lantern_drift.optA'),
+      chances: [{ p: 1, rewards: { alloy: 4800 } }],
+    },
+    optB: {
+      label: t('content.encounters.enc_lantern_drift.optB'),
+      chances: [
+        { p: 0.5, rewards: { alloy: 10300 } },
+        { p: 0.5, rewards: { alloy: 70 } },
+      ],
+    },
+  },
+  {
+    id: 'enc_pioneer_wreck',
+    flavor: 'gamble',
+    name: t('content.encounters.enc_pioneer_wreck.name'),
+    desc: t('content.encounters.enc_pioneer_wreck.desc'),
+    optA: {
+      label: t('content.encounters.enc_pioneer_wreck.optA'),
+      chances: [{ p: 1, rewards: { data: 760 } }],
+    },
+    optB: {
+      label: t('content.encounters.enc_pioneer_wreck.optB'),
+      chances: [
+        { p: 0.5, rewards: { units: 32, unitKind: 'heavy' } },
+        { p: 0.25, rewards: { data: 870 } },
+        { p: 0.25, rewards: { alloy: -900 } },
       ],
     },
   },

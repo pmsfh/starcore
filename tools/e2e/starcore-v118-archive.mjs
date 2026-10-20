@@ -118,6 +118,20 @@ console.log('== C. 遭遇记录档图鉴收录 ==');
 }
 
 // D. 战斗接线：真实点击出征收录图鉴
+// C2. 生态注：已收录异星巨兽卡渲染注区、未收录不渲染（vn 异星巨兽生态志）
+console.log('== C2. 异星巨兽生态注 ==');
+{
+  const { page: pageN } = await newPage(browser, makeSave({ archive: { enemies: ['beast_7#4'] } }));
+  const notes = pageN.locator('[data-testid="archive-beast-note"]');
+  const nCount = await notes.count();
+  check('已收录异星巨兽卡渲染生态注', nCount === 1);
+  const nText = nCount ? await notes.first().textContent() : '';
+  check('生态注含迁徙维度', nText.includes('绕行弧'));
+  check('生态注含食性与栖地', nText.includes('星尘') && nText.includes('盘面'));
+  check('未收录巨兽卡不渲染注区', (await pageN.locator('[data-testid="archive-enemy-card"]:has-text("未知敌影") [data-testid="archive-beast-note"]').count()) === 0);
+  await pageN.context().close();
+}
+
 console.log('== D. 战斗接线图鉴收录 ==');
 {
   // 档：完成 node_orbit（解锁 raider_1）+ 带兵编队，打 raider_1

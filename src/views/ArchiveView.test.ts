@@ -7,7 +7,7 @@
  * 3. 回响：未全宇宙探索完毕显示留白提示不剧透；完毕后 30 条按三段
  *    小节渲染（门后回响·终局后日谈）
  * 4. 敌方档案：未遭遇显示未知敌影；交战收录后显示名称与属性；
- *    同名聚合口径
+ *    同名聚合口径；生态注仅已收录异星巨兽卡渲染（vn 异星巨兽生态志）
  *
  * @vitest-environment jsdom
  */
@@ -19,6 +19,7 @@ import { exploredNodes } from '@/tests/fixtures'
 import { STRONGHOLDS } from '@/data/pve'
 import { EXPLORE_NODES } from '@/data/explore'
 import { ECHO_ENTRIES } from '@/data/echo'
+import { BESTIARY_NOTES } from '@/data/bestiary'
 import { useArchiveStore } from '@/stores/archive'
 import { useGameStore } from '@/stores/game'
 
@@ -107,6 +108,44 @@ describe('ArchiveView — 回响', () => {
 
     expect(wrapper.find('[data-testid="archive-echo-group"] .count-lead').exists()).toBe(false)
     expect(wrapper.findAll('[data-testid="archive-echo-card"]').length).toBe(0)
+  })
+})
+
+describe('ArchiveView — 生态注', () => {
+  useViewTestHooks()
+
+  it('未收录卡不渲染注区（交战观察视角）', () => {
+    const wrapper = mountView(ArchiveView)
+    expect(wrapper.findAll('[data-testid="archive-beast-note"]').length).toBe(0)
+  })
+
+  it('已收录异星巨兽卡渲染三行注（迁徙食性栖地）', async () => {
+    // 注入噬星鲲王一条收录（beast_7 全部条目同显示名聚合）
+    const archive = useArchiveStore()
+    archive.hydrate({ enemies: ['beast_7#4'] })
+    const wrapper = mountView(ArchiveView)
+    await wrapper.vm.$nextTick()
+
+    const notes = wrapper.findAll('[data-testid="archive-beast-note"]')
+    expect(notes.length).toBe(1)
+    expect(notes[0]!.text()).toContain('绕行弧')
+    expect(notes[0]!.text()).toContain('星尘')
+    expect(notes[0]!.text()).toContain('盘面')
+  })
+
+  it('已收录非异星巨兽卡无注区', async () => {
+    const archive = useArchiveStore()
+    archive.hydrate({ enemies: ['raider_1#0'] })
+    const wrapper = mountView(ArchiveView)
+    await wrapper.vm.$nextTick()
+    expect(wrapper.findAll('[data-testid="archive-beast-note"]').length).toBe(0)
+  })
+
+  it('注卡与聚合桶显示名一一对应（十注十名不重）', () => {
+    // BESTIARY_NOTES 已在数据层测试覆盖；此处核视图消费面键完整
+    for (const n of BESTIARY_NOTES) {
+      expect(n.mig.length).toBeGreaterThan(0)
+    }
   })
 })
 

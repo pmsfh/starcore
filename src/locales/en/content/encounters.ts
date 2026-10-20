@@ -111,4 +111,115 @@ export default {
     'A batch of encrypted chips is scattered across abandoned racks',
   'content.encounters.enc_chips.optA': 'Decrypt it all',
   'content.encounters.enc_chips.optB': 'Overclock it',
+  // vn faction-themed expansion: Caravans / Audits / Remnants / Whale Lanterns
+  'content.encounters.enc_tribute_convoy.name': 'Tribute Convoy',
+  'content.encounters.enc_tribute_convoy.desc':
+    'A Court convoy rides the tribute lane with escort berths open',
+  'content.encounters.enc_tribute_convoy.optA': 'Collect escort fee',
+  'content.encounters.enc_tribute_convoy.optB': 'Ride along as escort',
+  'content.encounters.enc_caravan_market.name': 'Caravan Market',
+  'content.encounters.enc_caravan_market.desc':
+    'The caravan opens its holds; crystal clusters and ore, plainly priced',
+  'content.encounters.enc_caravan_market.optA': 'Buy at list price',
+  'content.encounters.enc_caravan_market.optB': 'Bid for the lot',
+  'content.encounters.enc_toll_gate.name': 'Marker Toll',
+  'content.encounters.enc_toll_gate.desc':
+    'A Court toll station sits by the boundary marker; pay for a fast lane',
+  'content.encounters.enc_toll_gate.optA': 'Pay the toll',
+  'content.encounters.enc_toll_gate.optB': 'Take the side lane',
+  'content.encounters.enc_tribute_ledger.name': 'Tribute Ledger',
+  'content.encounters.enc_tribute_ledger.desc':
+    'A ledger clerk unrolls the tribute roll and asks passing fleets to file a copy',
+  'content.encounters.enc_tribute_ledger.optA': 'File an excerpt',
+  'content.encounters.enc_tribute_ledger.optB': 'Copy the sealed pages too',
+  'content.encounters.enc_smuggle_hold.name': 'Smuggler Hold',
+  'content.encounters.enc_smuggle_hold.desc':
+    'Unlisted crates hide in the caravan’s lower hold, seams glowing',
+  'content.encounters.enc_smuggle_hold.optA': 'Report at the toll',
+  'content.encounters.enc_smuggle_hold.optB': 'Buy the black crates',
+  'content.encounters.enc_exile_fleet.name': 'Exiled Squadron',
+  'content.encounters.enc_exile_fleet.desc':
+    'A struck-off Court squadron asks for passage, hulls worn thin',
+  'content.encounters.enc_exile_fleet.optA': 'Inspect and let pass',
+  'content.encounters.enc_exile_fleet.optB': 'Take the whole crew in',
+  'content.encounters.enc_imperial_audit.name': 'Tribute Audit',
+  'content.encounters.enc_imperial_audit.desc':
+    'An Imperial audit ship is tallying the Courts’ tribute manifests',
+  'content.encounters.enc_imperial_audit.optA': 'Help with the tally',
+  'content.encounters.enc_imperial_audit.optB': 'Claim the audit fee',
+  'content.encounters.enc_arbiter_salvage.name': 'Arbiter Wake',
+  'content.encounters.enc_arbiter_salvage.desc':
+    'Scraps of verification records drift along the arbiter fleet’s wake',
+  'content.encounters.enc_arbiter_salvage.optA': 'Copy the records',
+  'content.encounters.enc_arbiter_salvage.optB': 'Trail the wake for more',
+  'content.encounters.enc_tribute_escort.name': 'Tribute Escort',
+  'content.encounters.enc_tribute_escort.desc':
+    'A full assault detail stands by for escort duty along the tribute lane',
+  'content.encounters.enc_tribute_escort.optA': 'Take the posted shift',
+  'content.encounters.enc_tribute_escort.optB': 'Take the whole detail',
+  'content.encounters.enc_ceremonial_guard.name': 'Ceremonial Rotation',
+  'content.encounters.enc_ceremonial_guard.desc':
+    'The Imperial honor rotation arrives, recruiting temporary guards',
+  'content.encounters.enc_ceremonial_guard.optA': 'Sign up one round',
+  'content.encounters.enc_ceremonial_guard.optB': 'Take the full term',
+  'content.encounters.enc_court_parade.name': 'Audit Review',
+  'content.encounters.enc_court_parade.desc':
+    'The Imperial review array is hiring heavy ceremonial guards',
+  'content.encounters.enc_court_parade.optA': 'Send an honor guard',
+  'content.encounters.enc_court_parade.optB': 'Join the array',
+  'content.encounters.enc_relay_echo.name': 'Relay Echo',
+  'content.encounters.enc_relay_echo.desc':
+    'A relay-chain afterbeat sweeps the array, rhythm steady',
+  'content.encounters.enc_relay_echo.optA': 'Log in silence',
+  'content.encounters.enc_relay_echo.optB': 'Trace against the beat',
+  'content.encounters.enc_watchtower_beam.name': 'Watchtower Beam',
+  'content.encounters.enc_watchtower_beam.desc':
+    'A remnant watchtower beams outward into deep space, sweeping the lane',
+  'content.encounters.enc_watchtower_beam.optA': 'Hold and receive',
+  'content.encounters.enc_watchtower_beam.optB': 'Follow the beam to fix position',
+  'content.encounters.enc_abandoned_probe.name': 'Abandoned Probe',
+  'content.encounters.enc_abandoned_probe.desc':
+    'A Forerunner probe drifts beside the lane, crystal sampling bay intact',
+  'content.encounters.enc_abandoned_probe.optA': 'Recover the sampling bay',
+  'content.encounters.enc_abandoned_probe.optB': 'Tow the whole probe',
+  'content.encounters.enc_legacy_cache.name': 'Remnant Cache',
+  'content.encounters.enc_legacy_cache.desc':
+    'A remnant cache rests in the gravel belt, hatch ajar',
+  'content.encounters.enc_legacy_cache.optA': 'Open and inventory',
+  'content.encounters.enc_legacy_cache.optB': 'Haul the whole cache',
+  'content.encounters.enc_signal_garden.name': 'Signal Garden',
+  'content.encounters.enc_signal_garden.desc':
+    'Remnant beacons flicker across the gravel belt like a garden in bloom',
+  'content.encounters.enc_signal_garden.optA': 'Log them one by one',
+  'content.encounters.enc_signal_garden.optB': 'Stay and decipher',
+  'content.encounters.enc_derelict_beacon.name': 'Derelict Beacon',
+  'content.encounters.enc_derelict_beacon.desc':
+    'The beacon tower holds most of its charge; the nameplate at its base is worn smooth',
+  'content.encounters.enc_derelict_beacon.optA': 'Draw the spare charge',
+  'content.encounters.enc_derelict_beacon.optB': 'Take over upkeep',
+  'content.encounters.enc_whale_song.name': 'Whale Chorus',
+  'content.encounters.enc_whale_song.desc':
+    'The white whales’ song washes over the array, every band a long note',
+  'content.encounters.enc_whale_song.optA': 'Record the full band',
+  'content.encounters.enc_whale_song.optB': 'Dive along the long note',
+  'content.encounters.enc_beacon_supply.name': 'Beacon Depot',
+  'content.encounters.enc_beacon_supply.desc':
+    'The depot float beside the beacon serves travelers, prices fair',
+  'content.encounters.enc_beacon_supply.optA': 'Buy at posted prices',
+  'content.encounters.enc_beacon_supply.optB': 'Buy out the stock',
+  'content.encounters.enc_whale_pod.name': 'Whale Calves',
+  'content.encounters.enc_whale_pod.desc':
+    'A small pod of whale calves circles the hull, shedding specks of scale-light',
+  'content.encounters.enc_whale_pod.optA': 'Slow down and yield',
+  'content.encounters.enc_whale_pod.optB': 'Net the scale crystals',
+  'content.encounters.enc_lantern_drift.name': 'Lantern Bottle',
+  'content.encounters.enc_lantern_drift.desc':
+    'A lantern bottle drifts alongside, its letter still glowing',
+  'content.encounters.enc_lantern_drift.optA': 'Read and release',
+  'content.encounters.enc_lantern_drift.optB': 'Crack it for the core',
+  'content.encounters.enc_pioneer_wreck.name': 'Forerunner Derelict',
+  'content.encounters.enc_pioneer_wreck.desc':
+    'A Forerunner derelict lies moored in the reef dark, crest still legible',
+  'content.encounters.enc_pioneer_wreck.optA': 'Register and salvage',
+  'content.encounters.enc_pioneer_wreck.optB': 'Strip the engine bay',
 }

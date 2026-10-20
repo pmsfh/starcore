@@ -10,7 +10,8 @@
  *   （当前轮 34/34）后解锁；解锁判读实时计算无持久化，转生后随
  *   本轮重新上锁（与星图档案同口径）
  * - 敌方档案：56 种敌方单位图鉴（按显示名聚合），交战即收录
- *   （胜负都算），未遇显示未知敌影占位
+ *   （胜负都算），未遇显示未知敌影占位；异星巨兽卡已收录态带
+ *   生态注（迁徙 / 食性 / 栖地，vn 异星巨兽生态志，随收录显示）
  */
 import { t } from '@/i18n'
 import { computed } from 'vue'
@@ -20,6 +21,7 @@ import { EXPLORE_NODES, LAYER_INFO, type StarLayer } from '@/data/explore'
 import { STRONGHOLDS, STRONGHOLD_TYPES } from '@/data/pve'
 import { NODE_STORIES } from '@/data/story'
 import { ECHO_ENTRIES, ECHO_SEGMENTS } from '@/data/echo'
+import { getBestiaryNote, type BestiaryNote } from '@/data/bestiary'
 import Icon from '@/components/ui/Icon.vue'
 
 /** 据点四类 id（与 pve.ts 内部 StrongholdType 同源） */
@@ -78,6 +80,8 @@ interface EnemyCard {
   /** 代表条目（首个已遭遇者；未遭遇时为该名首条） */
   representativeIndex: number
   representativeStronghold: string
+  /** 生态注（仅异星巨兽部分物种配注；代表键语言无关，显示名运行时取） */
+  note?: BestiaryNote
 }
 
 const typeOrder: StrongholdType[] = ['raider', 'beast', 'ruin', 'silencer']
@@ -100,6 +104,7 @@ const enemyCards = computed<EnemyCard[]>(() => {
       complete: entries.every((e) => e.seen),
       representativeIndex: Number((seenEntry ?? entries[0]).key.split('#')[1]),
       representativeStronghold: (seenEntry ?? entries[0]).key.split('#')[0],
+      note: getBestiaryNote((seenEntry ?? entries[0]).key),
     })
   }
   return cards
@@ -233,6 +238,11 @@ function cardEnemy(card: EnemyCard) {
                 <span>HP {{ cardEnemy(card)!.hp }}</span>
               </div>
               <div v-else class="e-stats locked-text">{{ t('archive.unknownEnemyDesc') }}</div>
+              <div v-if="card.seen && card.note" class="e-note" data-testid="archive-beast-note">
+                <p>{{ card.note.mig }}</p>
+                <p>{{ card.note.feed }}</p>
+                <p>{{ card.note.hab }}</p>
+              </div>
             </div>
           </div>
         </div>
@@ -457,5 +467,17 @@ function cardEnemy(card: EnemyCard) {
   font-size: var(--text-xs);
   color: var(--color-t-secondary);
   margin-top: var(--space-1);
+}
+/* 生态注区：仅已收录异星巨兽卡出现；三行允许折行，两端一致 */
+.e-note {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin-top: var(--space-2);
+  padding-top: var(--space-2);
+  border-top: 1px dashed var(--color-border-line);
+  font-size: var(--text-xs);
+  color: var(--color-t-tertiary);
+  line-height: 1.5;
 }
 </style>

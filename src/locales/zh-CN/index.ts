@@ -44,6 +44,7 @@ import weeklyBossContent from './content/weeklyBoss.ts'
 import encountersContent from './content/encounters.ts'
 import dispatchContent from './content/dispatch.ts'
 import echoContent from './content/echo.ts'
+import bestiaryContent from './content/bestiary.ts'
 
 export default {
   ...achievements,
@@ -84,4 +85,5 @@ export default {
   ...encountersContent,
   ...dispatchContent,
   ...echoContent,
+  ...bestiaryContent,
 }

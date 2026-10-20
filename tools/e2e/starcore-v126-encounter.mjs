@@ -400,6 +400,42 @@ console.log('== G. 扩容事件 ==');
   await ctx4.close();
 }
 
+// H. 势力叙事新模板渲染与结算（vn 扩容：王庭商队 + 先驱遗存各一）
+console.log('== H. 势力叙事新模板（渲染 / 选项结算 / 转生清空） ==');
+{
+  const stubCtx = async (b) => {
+    const ctx = await b.newContext();
+    return ctx;
+  };
+  const ctxH1 = await stubCtx(browser);
+  const pageH1 = await ctxH1.newPage();
+  await ctxH1.addInitScript(injectSave, savePayload(makeSeed({ encounters: { nextTriggerAt: Date.now() + 600000, pendingEventId: 'enc_tribute_convoy', pendingAt: Date.now() } })));
+  await pageH1.goto(BASE + '/', { waitUntil: 'domcontentloaded' });
+  await v('H1 王庭商队模板渲染（贡道商队）', async () => {
+    const card = pageH1.locator('[data-testid="encounter-card"]');
+    await card.waitFor({ state: 'visible', timeout: 8000 });
+    const text = await card.textContent();
+    if (!text.includes('贡道商队')) throw new Error('新模板名未渲染: ' + text.slice(0, 60));
+    if (!text.includes('护航费')) throw new Error('选项标签未渲染');
+  });
+  await ctxH1.close();
+
+  const ctxH2 = await stubCtx(browser);
+  const pageH2 = await ctxH2.newPage();
+  await ctxH2.addInitScript(injectSave, savePayload(makeSeed({ encounters: { nextTriggerAt: Date.now() + 600000, pendingEventId: 'enc_relay_echo', pendingAt: Date.now() } })));
+  await pageH2.goto(BASE + '/', { waitUntil: 'domcontentloaded' });
+  await v('H2 先驱遗存模板结算（中继链残响，A 选项数据入账）', async () => {
+    const card = pageH2.locator('[data-testid="encounter-card"]');
+    await card.waitFor({ state: 'visible', timeout: 8000 });
+    await pageH2.click('[data-testid="encounter-opt-A"]');
+    await card.waitFor({ state: 'detached', timeout: 5000 });
+    await pageH2.waitForTimeout(600);
+    const toast = (await pageH2.textContent('.toast')).trim();
+    if (!toast.includes('数据')) throw new Error('回执未含数据结算: ' + toast);
+  });
+  await ctxH2.close();
+}
+
 // 末行总校并入 pwlib 计数器：finish 退出码与脚本结果一致
 check(`总校（${pass} ✓ / ${fail} ✗）`, fail === 0);
 await finish(browser);
