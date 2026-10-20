@@ -2,7 +2,7 @@
  * bestiary: English locale messages (translated from the zh-CN baseline)
  *
  * Ecological notes for the Alien Behemoth cards: migration / feeding /
- * habitat, one line each, ten species annotated.
+ * habitat, one line each, nine species annotated.
  */
 export default {
   // Star-Devouring Kun King

@@ -1,7 +1,7 @@
 /**
  * bestiary.test.ts：异星巨兽生态志数据测试（v1.73 异星巨兽生态志）
  *
- * 覆盖：条目池结构（十种配注、稳定键形式合法且在聚合桶代表集内）、
+ * 覆盖：条目池结构（九种配注、稳定键形式合法且在聚合桶代表集内）、
  * 三键非空含 CJK（取词失败可被捕获）、语言包完整性（zh 基线与 en
  * 镜像键面一致且非空）、驱赶者意象条目存在（鲲王与晶云母兽）。
  */
@@ -20,7 +20,7 @@ const ALL_KEYS = new Set<string>(
 )
 
 describe('bestiary 条目池结构', () => {
-  it('共十种配注，三键非空且含中文', () => {
+  it('共九种配注，三键非空且含中文', () => {
     expect(BESTIARY_NOTES).toHaveLength(9)
     for (const n of BESTIARY_NOTES) {
       expect(n.key.length).toBeGreaterThan(0)
