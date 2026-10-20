@@ -210,7 +210,7 @@ export const ECHO_ENTRIES: readonly EchoEntry[] = [
   },
 ]
 
-/** 回响分段：迎接 / 见闻 / 余韵（三段各十条，按序覆盖全部条目） */
+/** 回响分段：迎接 / 见闻 / 余韵（三段各 10 条，按序覆盖全部条目） */
 export const ECHO_SEGMENTS: readonly EchoSegment[] = [
   { id: 'welcome', name: t('archive.echoSegmentWelcome'), start: 0, end: 10 },
   { id: 'sights', name: t('archive.echoSegmentSights'), start: 10, end: 20 },

@@ -2,7 +2,7 @@
  * echo.test.ts：门后回响条目数据测试（门后回响·终局后日谈）
  *
  * 覆盖：条目池结构（30 条有序、id 补零保序、三键非空含 CJK）、
- * 分段划分（三段各十条、按序覆盖全部条目且不重叠、段名非空）、
+ * 分段划分（三段各 10 条、按序覆盖全部条目且不重叠、段名非空）、
  * 语言包完整性（zh 基线 30 × 3 键齐全；en 镜像键面一致且非空）。
  */
 import { describe, it, expect } from 'vitest'
@@ -42,7 +42,7 @@ describe('echo 条目池结构', () => {
 })
 
 describe('echo 分段划分', () => {
-  it('三段（迎接 / 见闻 / 余韵），每段十条，起止与条目池对齐', () => {
+  it('三段（迎接 / 见闻 / 余韵），每段 10 条，起止与条目池对齐', () => {
     expect(ECHO_SEGMENTS).toHaveLength(3)
     expect(ECHO_SEGMENTS.map((s) => s.name)).toEqual(['迎接', '见闻', '余韵'])
     expect(ECHO_SEGMENTS[0]).toMatchObject({ start: 0, end: 10 })

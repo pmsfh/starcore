@@ -132,5 +132,5 @@
 
 **回响档案域（v1.72 落地）**
 
-- 档案馆回响分组收录门侧见闻三十条，键三件套 name / text / note（`content.echo.echo_01` 至 `content.echo.echo_30`），解锁条件为当前轮全宇宙探索完毕，转生后随本轮重新上锁。
+- 档案馆回响分组收录门侧见闻 30 条，键三件套 name / text / note（`content.echo.echo_01` 至 `content.echo.echo_30`），解锁条件为当前轮全宇宙探索完毕，转生后随本轮重新上锁。
 - 回响分组当前只收先驱者线见闻：白鲸灯语「航向未变」的余韵收束于 `content.echo.echo_21`；主脑之后与门后文明两条谜面保持未揭。
