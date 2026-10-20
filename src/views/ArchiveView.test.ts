@@ -153,7 +153,7 @@ describe('ArchiveView — 生态注', () => {
     expect(wrapper.findAll('[data-testid="archive-beast-note"]').length).toBe(0)
   })
 
-  it('注卡与聚合桶显示名一一对应（十注十名不重）', () => {
+  it('注卡与聚合桶显示名一一对应（9 注 9 名不重）', () => {
     // BESTIARY_NOTES 已在数据层测试覆盖；此处核视图消费面键完整
     for (const n of BESTIARY_NOTES) {
       expect(n.mig.length).toBeGreaterThan(0)
