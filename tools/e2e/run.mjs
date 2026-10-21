@@ -68,6 +68,7 @@ const SUITE = [
   'starcore-v155-ceremony.mjs',
   'starcore-v156-battle-replay.mjs',
   'starcore-v172-echo.mjs',
+  'starcore-v174-gates.mjs',
   'starcore-boot-screen.mjs',
 ]
 
@@ -100,6 +101,7 @@ const REMOTE = [
   'starcore-v155-ceremony.mjs',
   'starcore-v156-battle-replay.mjs',
   'starcore-v172-echo.mjs',
+  'starcore-v174-gates.mjs',
   'starcore-boot-screen.mjs',
 ]
 

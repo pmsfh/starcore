@@ -23,4 +23,9 @@ export default {
   'archive.echoSegmentWelcome': 'The Welcome',
   'archive.echoSegmentSights': 'The Sights',
   'archive.echoSegmentAfterglow': 'The Afterglow',
+  'archive.gateSection': 'Seven Gates',
+  'archive.gateHint':
+    'Observation files of the seven colossal gates at the arm’s end, seen in the look-back once the answering gate has been crossed.',
+  'archive.gateCount': 'Reviewed {seen} / {total} gates',
+  'archive.gateLocked': 'The answering gate has not yet been crossed.',
 }

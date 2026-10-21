@@ -23,4 +23,8 @@ export default {
   'archive.echoSegmentWelcome': '迎接',
   'archive.echoSegmentSights': '见闻',
   'archive.echoSegmentAfterglow': '余韵',
+  'archive.gateSection': '七门',
+  'archive.gateHint': '星臂尽头七扇巨门的观察留档，穿过应答的门扉后回望可见。',
+  'archive.gateCount': '已回望 {seen} / {total} 门',
+  'archive.gateLocked': '还没有穿过应答的门扉。',
 }

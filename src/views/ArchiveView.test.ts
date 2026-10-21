@@ -2,11 +2,14 @@
  * ArchiveView.test.ts：档案馆视图组件测试（v1.18）
  *
  * 重点测试：
- * 1. 页面渲染（标题 + 星图档案/回响/敌方档案三区块与计数）
+ * 1. 页面渲染（标题 + 星图档案/七门/回响/敌方档案四区块与计数）
  * 2. 星图档案：已完成节点显示剧情文案，未完成显示锁定占位不剧透
- * 3. 回响：未全宇宙探索完毕显示留白提示不剧透；完毕后 30 条按三段
+ * 3. 七门：未完成银河之门显示留白提示不剧透；完成后 21 条按七门
+ *    小节渲染（星臂尽头巨门回望）；门扉回廊完成仍锁定（解锁挂银
+ *    河之门，保穿门前悬念）
+ * 4. 回响：未全宇宙探索完毕显示留白提示不剧透；完毕后 30 条按三段
  *    小节渲染（门后回响·终局后日谈）
- * 4. 敌方档案：未遭遇显示未知敌影；交战收录后显示名称与属性；
+ * 5. 敌方档案：未遭遇显示未知敌影；交战收录后显示名称与属性；
  *    同名聚合口径；生态注仅已收录异星巨兽卡渲染（v1.73 异星巨兽生态志）
  *
  * @vitest-environment jsdom
@@ -18,6 +21,7 @@ import ArchiveView from './ArchiveView.vue'
 import { exploredNodes } from '@/tests/fixtures'
 import { STRONGHOLDS } from '@/data/pve'
 import { EXPLORE_NODES } from '@/data/explore'
+import { GATE_DOORS } from '@/data/gate'
 import { ECHO_ENTRIES } from '@/data/echo'
 import { BESTIARY_NOTES } from '@/data/bestiary'
 import { useArchiveStore } from '@/stores/archive'
@@ -63,6 +67,52 @@ describe('ArchiveView — 渲染', () => {
     expect(unlocked).toBeTruthy()
     expect(unlocked!.text()).toContain('扫描器在轨道残骸带中发现了掠夺者的踪迹')
     expect(wrapper.text()).toContain('已留档 1 / 34')
+  })
+})
+
+describe('ArchiveView — 七门', () => {
+  useViewTestHooks()
+
+  it('锁定态：分组标题可见、留白提示、条目零渲染不剧透', () => {
+    const wrapper = mountView(ArchiveView)
+
+    expect(wrapper.find('[data-testid="archive-gate-group"]').exists()).toBe(true)
+    expect(wrapper.text()).toContain('七门')
+    // 锁定态不显示计数（仅解锁与未解锁两态，避免误读为逐条收集）
+    expect(wrapper.find('[data-testid="archive-gate-group"] .count-lead').exists()).toBe(false)
+    expect(wrapper.find('[data-testid="archive-gate-locked"]').exists()).toBe(true)
+    expect(wrapper.text()).toContain('还没有穿过应答的门扉')
+    // 条目零渲染：首门名与首条名均不出现
+    expect(wrapper.findAll('[data-testid="archive-gate-card"]').length).toBe(0)
+    expect(wrapper.text()).not.toContain(GATE_DOORS[0].name)
+    expect(wrapper.text()).not.toContain(GATE_DOORS[0].entries[0].name)
+  })
+
+  it('门扉回廊完成仍锁定（解锁挂银河之门，保穿门前悬念）', async () => {
+    exploredNodes('node_arm_threshold')
+    const wrapper = mountView(ArchiveView)
+    await wrapper.vm.$nextTick()
+
+    expect(wrapper.find('[data-testid="archive-gate-locked"]').exists()).toBe(true)
+    expect(wrapper.findAll('[data-testid="archive-gate-card"]').length).toBe(0)
+  })
+
+  it('解锁态：银河之门完成后 21 条按七门小节渲染、门名段头齐备、计数 7/7', async () => {
+    exploredNodes('node_galaxy_gate')
+    const wrapper = mountView(ArchiveView)
+    await wrapper.vm.$nextTick()
+
+    expect(wrapper.text()).toContain('已回望 7 / 7 门')
+    expect(wrapper.findAll('[data-testid="archive-gate-card"]').length).toBe(21)
+    // 七门门名段头齐备（含压轴的磨痕门）
+    for (const door of GATE_DOORS) {
+      expect(wrapper.text()).toContain(door.name)
+    }
+    expect(wrapper.text()).toContain('磨痕门')
+    // 首门首条与应答门末条可见（正文与中继链侧注）
+    expect(wrapper.text()).toContain(GATE_DOORS[0].entries[0].name)
+    expect(wrapper.text()).toContain(GATE_DOORS[6].entries[2].name)
+    expect(wrapper.text()).toContain(GATE_DOORS[6].entries[2].note)
   })
 })
 

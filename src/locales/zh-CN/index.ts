@@ -45,6 +45,7 @@ import encountersContent from './content/encounters.ts'
 import dispatchContent from './content/dispatch.ts'
 import echoContent from './content/echo.ts'
 import bestiaryContent from './content/bestiary.ts'
+import gateContent from './content/gate.ts'
 
 export default {
   ...achievements,
@@ -86,4 +87,5 @@ export default {
   ...dispatchContent,
   ...echoContent,
   ...bestiaryContent,
+  ...gateContent,
 }

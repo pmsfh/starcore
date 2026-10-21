@@ -2,10 +2,14 @@
 /**
  * ArchiveView.vue：档案馆（v1.18 可玩内容扩展方案 1）
  *
- * 三大区块：
+ * 四大区块：
  * - 星图档案：34 节点按星层分组回读 story.ts 剧情文案（v1.08 迁出后
  *   首次接线）。已完成节点显示剧情，未完成显示锁定态不剧透；
  *   「已完成」并入当前轮探索进度（转生后随本轮重新点亮）
+ * - 七门：星臂尽头七扇巨门的观察留档（七门 · 回望），完成银河之
+ *   门探索节点（当前轮）后解锁；解锁判读实时计算无持久化，转生
+ *   后随本轮重新上锁（与星图档案同口径）。前六门为静默门，第七
+ *   门磨痕门为仍在应答的门
  * - 回响：门后回响见闻（门后回响·终局后日谈），全宇宙探索完毕
  *   （当前轮 34/34）后解锁；解锁判读实时计算无持久化，转生后随
  *   本轮重新上锁（与星图档案同口径）
@@ -20,6 +24,7 @@ import { ENEMY_KIND_BUCKETS } from '@/data/pve'
 import { EXPLORE_NODES, LAYER_INFO, type StarLayer } from '@/data/explore'
 import { STRONGHOLDS, STRONGHOLD_TYPES } from '@/data/pve'
 import { NODE_STORIES } from '@/data/story'
+import { GATE_DOORS } from '@/data/gate'
 import { ECHO_ENTRIES, ECHO_SEGMENTS } from '@/data/echo'
 import { getBestiaryNoteForEntries, type BestiaryNote } from '@/data/bestiary'
 import Icon from '@/components/ui/Icon.vue'
@@ -59,6 +64,12 @@ const storyGroups = computed(() =>
 )
 
 const seenStories = computed(() => storyRows.value.filter((r) => r.completed).length)
+
+// 七门：解锁 = 完成银河之门探索节点（当前轮；越过应答门扉后的回望
+// 视角，判读即算，空门表按未解锁处理，转生后随本轮重新上锁）
+const gateUnlocked = computed(
+  () => GATE_DOORS.length > 0 && game.exploration.isCompleted('node_galaxy_gate')
+)
 
 // 回响：解锁 = 当前轮全宇宙探索完毕（与星图档案、首页贺词同口径逐
 // 节点判读，空节点表按未解锁处理，转生后随本轮重新上锁）
@@ -169,6 +180,38 @@ function cardEnemy(card: EnemyCard) {
           </div>
         </div>
       </div>
+    </section>
+
+    <!-- 七门（星臂尽头巨门观察留档，完成银河之门后解锁） -->
+    <section class="section" data-testid="archive-gate-group">
+      <h3 class="section-title with-icon">
+        <Icon class="s-icon" name="i-relic-explore" />
+        {{ t('archive.gateSection') }}
+        <span v-if="gateUnlocked" class="count-lead font-mono">
+          {{ t('archive.gateCount', { seen: GATE_DOORS.length, total: GATE_DOORS.length }) }}
+        </span>
+      </h3>
+      <p class="section-hint">{{ t('archive.gateHint') }}</p>
+      <p v-if="!gateUnlocked" class="gate-locked locked-text" data-testid="archive-gate-locked">
+        {{ t('archive.gateLocked') }}
+      </p>
+      <template v-else>
+        <div v-for="door in GATE_DOORS" :key="door.id" class="gate-door">
+          <h4 class="gate-door-name">{{ door.name }}</h4>
+          <div class="gate-grid">
+            <article
+              v-for="entry in door.entries"
+              :key="entry.id"
+              class="gate-card"
+              data-testid="archive-gate-card"
+            >
+              <h5 class="gate-name">{{ entry.name }}</h5>
+              <p class="gate-text">{{ entry.text }}</p>
+              <p class="gate-note">{{ entry.note }}</p>
+            </article>
+          </div>
+        </div>
+      </template>
     </section>
 
     <!-- 回响（门后回响见闻，全宇宙探索完毕后解锁） -->
@@ -355,6 +398,57 @@ function cardEnemy(card: EnemyCard) {
 }
 .locked-text {
   color: var(--color-locked);
+}
+
+/* 七门 */
+.gate-locked {
+  font-size: var(--text-sm);
+  padding: var(--space-3) 0;
+}
+.gate-door {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+.gate-door-name {
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--color-layer-void);
+}
+.gate-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+/* 桌面端宽屏：双列网格（沿星图档案 v1.37 模式） */
+@media (min-width: 1024px) {
+  .gate-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+.gate-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-line);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+}
+.gate-name {
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--color-layer-void);
+}
+.gate-text {
+  font-size: var(--text-xs);
+  color: var(--color-t-secondary);
+  line-height: 1.6;
+  margin-top: var(--space-1);
+}
+.gate-note {
+  font-size: var(--text-xs);
+  color: var(--color-t-tertiary);
+  margin-top: var(--space-1);
 }
 
 /* 回响 */
