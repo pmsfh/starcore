@@ -96,11 +96,11 @@
 | 掠夺者顶层 | 帝庭 | Imperial Court | 银河帝庭（Galactic Imperial Court）；「帝庭裁决舰队」为其武装 |
 | 门后文明 | 沉默者 | the Silent Ones | 守门者是其世代传承的身份（`content.story.node_cluster_silence`） |
 
-### ③ 未回收伏笔台账（六条）
+### ③ 未回收伏笔台账（四条）
 
 | 伏笔 | 要点 | 锚点键 | 状态 | 允许回收篇章 |
 |---|---|---|---|---|
-| 七扇死门 | 星臂尽头七扇与冻结之门同款巨门，仅一扇应答源仍在工作；七门应答源在银心汇成中继链 | `content.story.node_arm_threshold`、`content.story.node_galaxy_gate`、`content.explore.node_arm_threshold.*` | 未回收 | 七扇死门篇章（与门后回响共用总纲） |
+| 七扇死门 | 星臂尽头七扇与冻结之门同款巨门，仅一扇应答源仍在工作，应答门定稿为磨痕门；七门应答源汇成的链指向银心 | `content.story.node_arm_threshold`、`content.story.node_galaxy_gate`、`content.explore.node_arm_threshold.*`、`content.gate.*` | 已回收（七门篇章，观察留档告一段落，门后侧仍留白） | 七扇死门篇章（与门后回响共用总纲） |
 | 永不熄灭的炉 | 各掠夺者王庭的进贡由帝庭裁决舰队收束执行，目标是银心之「炉」，炉的真身未揭示 | `content.pve.raider_11.desc`、`content.story.node_galaxy_hub` | 未回收 | 帝庭与炉篇章 |
 | 驱赶者之谜 | 噬星鲲群迁徙绕开特定空域，「像在听从某种驱赶」，驱赶者未现身 | `content.pve.beast_7.desc`、`content.explore.node_galaxy_range.*`、`content.story.node_galaxy_range` | 未回收 | 巨兽生态志篇章 |
 | 主脑之后 | 沉默者主脑（应答源实体）给出坐标：信号最初源头在银河之外；其上/其后的存在未揭示 | `content.explore.node_galaxy_heart.*`、`content.story.node_galaxy_heart` | 未回收 | 门后回响篇章 |
@@ -122,7 +122,7 @@
 **同源关系（既定）**
 
 - 冻结之门（虚空原点）与星臂回廊尽头的七扇死门为同款巨门（`content.story.node_arm_threshold`）；信号的源头不是信标，是门，先驱者穿门而入，沉默者世代守门（`content.story.node_void_origin`）。
-- 七门中仅一扇门的应答源仍在工作，未指明何扇；七门应答源在银心汇成中继链（`content.story.node_arm_threshold`）。
+- 七门中仅一扇门的应答源仍在工作，七门档案定稿为磨痕门（`content.story.node_arm_threshold`、`content.gate.door_07`）；七门应答源汇成一条仍在发讯的链，笔直指向银心（`content.story.node_galaxy_gate`）。
 
 **门后文明边界（既定，不越界）**
 
@@ -134,3 +134,9 @@
 
 - 档案馆回响分组收录门侧见闻 30 条，键三件套 name / text / note（`content.echo.echo_01` 至 `content.echo.echo_30`），解锁条件为当前轮全宇宙探索完毕，转生后随本轮重新上锁。
 - 回响分组当前只收先驱者线见闻：白鲸灯语「航向未变」的余韵收束于 `content.echo.echo_21`；主脑之后与门后文明两条谜面保持未揭。
+
+**死门档案域（v1.74 落地）**
+
+- 档案馆七门分组收录星臂尽头 7 扇巨门的观察留档：七门门名键（`content.gate.door_01` 至 `content.gate.door_07`）与每门三条留档（`content.gate.gate_01` 至 `content.gate.gate_21`，name / text / note，note 为中继链侧注），解锁条件为完成银河之门节点（当前轮），转生后随本轮重新上锁。
+- 逐门定稿：前六门为静默门（轮纹门、鳞面门、釉面门、悬索门、拱梁门、钟腔门），第七门磨痕门为仍在应答的门；玩家穿越的门即磨痕门，留档含穿行航迹认领。
+- 静默门机制：中继链为古代既成链路（七门应答源汇成于远古），静默门的应答源仍在链上但不再应答，只剩载波余韵；「仍在工作」指有应答输出。链是结构、应答是状态。
