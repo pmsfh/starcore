@@ -57,6 +57,7 @@
 | 据点驻扎产出 | Garrison production | |
 | 星图档案 | Star Atlas Records | |
 | 敌方档案 | Hostile Records | |
+| 帝庭档案 | Imperial Court Archive | 档案馆分组（贡道、核验与裁决观察留档）；与帝庭威胁名录（Imperial threat ledger）分域不互串 |
 | 掠夺者营地 | Raider Camps | 据点类型（四类之一） |
 | 异星巨兽 | Alien Behemoths | 据点类型 |
 | 古代遗迹 | Ancient Ruins | 据点类型 |
@@ -101,13 +102,13 @@
 | 伏笔 | 要点 | 锚点键 | 状态 | 允许回收篇章 |
 |---|---|---|---|---|
 | 七扇死门 | 星臂尽头七扇与冻结之门同款巨门，仅一扇应答源仍在工作，应答门定稿为磨痕门；七门应答源汇成的链指向银心 | `content.story.node_arm_threshold`、`content.story.node_galaxy_gate`、`content.explore.node_arm_threshold.*`、`content.gate.*` | 已回收（七门篇章，观察留档告一段落，门后侧仍留白） | 七扇死门篇章（与门后回响共用总纲） |
-| 永不熄灭的炉 | 各掠夺者王庭的进贡由帝庭裁决舰队收束执行，目标是银心之「炉」，炉的真身未揭示 | `content.pve.raider_11.desc`、`content.story.node_galaxy_hub` | 未回收 | 帝庭与炉篇章 |
+| 永不熄灭的炉 | 各掠夺者王庭的进贡由帝庭裁决舰队收束执行，目标是银心之「炉」，炉的真身未揭示 | `content.pve.raider_11.desc`、`content.story.node_galaxy_hub`、`content.imperial.*` | 未回收（帝庭档案观察级铺陈，v1.75） | 帝庭与炉篇章 |
 | 驱赶者之谜 | 噬星鲲群迁徙绕开特定空域，「像在听从某种驱赶」，驱赶者未现身 | `content.pve.beast_7.desc`、`content.explore.node_galaxy_range.*`、`content.story.node_galaxy_range` | 未回收 | 巨兽生态志篇章 |
 | 主脑之后 | 沉默者主脑（应答源实体）给出坐标：信号最初源头在银河之外；其上/其后的存在未揭示 | `content.explore.node_galaxy_heart.*`、`content.story.node_galaxy_heart` | 未回收 | 门后回响篇章 |
 | 先驱者下落 | 先驱者自虚空边缘出航离开本星系；虚空航标灯语「航向未变」仍为白鲸群亮着 | `content.explore.node_void_beacon.*`、`content.story.node_void_beacon`、`content.story.node_void_gate`、`content.echo.*` | 已回收（门后回响篇章，见闻告一段落，谜底随门总纲框架保持留白） | 门后回响篇章 |
 | 门后文明 | 信号源头是门：先驱者穿门而入，沉默者世代守门，门后回响自称「接收者已就绪」 | `content.story.node_void_origin`、`content.story.node_cluster_hollow`、`content.explore.node_void_veil.*` | 未回收 | 门后回响篇章（与七扇死门共用总纲） |
 
-> 本节只立台账、不写解；后续篇章落笔前先对照本节。门后回响篇章的档案馆回响分组已落地：仅记录先驱者航路见闻，主脑之后与门后文明两条谜面未揭。
+> 本节只立台账、不写解；后续篇章落笔前先对照本节。门后回响篇章的档案馆回响分组已落地：仅记录先驱者航路见闻，主脑之后与门后文明两条谜面未揭。帝庭与炉篇章的档案馆帝庭档案分组已落地（v1.75）：五节 × 3 条观察留档（节名键 `content.imperial.section_01` 至 `section_05`，留档 `content.imperial.imp_01` 至 `imp_15`，note 为帝庭档案批注），解锁挂银河枢纽节点；炉音节只收信仰与传闻，炉在全部条目中仅作进贡终点与信仰符号，真身未揭示，不与门后文明及主脑侧勾连。
 
 ### ④ 成就与叙事定稿口径（v1.66 豁免登记）
 
