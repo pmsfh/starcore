@@ -16,13 +16,13 @@ export default {
 
   'content.imperial.imp_01.name': 'Lanes as Firewood',
   'content.imperial.imp_01.text':
-    'On the hub’s star charts, every lane toward the galactic core carried the tribute mark. The Court pilots said the lanes were not roads but firewood — tribute stacked fleet by fleet, to be burned for the furnace.',
+    'On the Disc Hub’s star charts, every lane toward the galactic core carried the tribute mark. The Court pilots said the lanes were not roads but firewood — tribute stacked fleet by fleet, to be burned for the furnace.',
   'content.imperial.imp_01.note':
     'Registry note: lane marks verified; this season’s beacons unchanged.',
 
   'content.imperial.imp_02.name': 'Lanes That Give Way',
   'content.imperial.imp_02.text':
-    'The starwhale pod migrated with the gravitational tides, and the tribute lanes rerouted wherever it passed. The reroute requests were always granted at once — the audit fleet saw no point in arguing with a pod.',
+    'The Starwhale pod migrated with the gravitational tides, and the tribute lanes rerouted wherever it passed. The reroute requests were always granted at once — the audit fleet saw no point in arguing with a pod.',
   'content.imperial.imp_02.note':
     'Registry note: 17 reroutes this season, all tide-born; late penalties waived.',
 
@@ -43,7 +43,7 @@ export default {
 
   'content.imperial.imp_05.name': 'The Weight of a Copy',
   'content.imperial.imp_05.text':
-    'The ledger clerk asked passing fleets to file a copy, and every copy was made twice — one for the Court, one for the Imperial registry. Tribute under seal was copied neither time; sealed pages traveled by sealed hold.',
+    'The ledger clerk asked passing fleets to file a copy, and every copy was made twice — one for the Court, one for the Imperial Court registry. Tribute under seal was copied neither time; sealed pages traveled by sealed hold.',
   'content.imperial.imp_05.note':
     'Registry note: copy count verified; sealed pages not on the rolls.',
 
@@ -58,13 +58,13 @@ export default {
 
   'content.imperial.imp_07.name': 'The Punctual Watch',
   'content.imperial.imp_07.text':
-    'The Court’s ceremonial squadrons arrived on the quarter, never off by more than a breath. They took no part in the inspection; they only formed up — ceremony asks but one thing, that no one be late.',
+    'The Imperial Court’s ceremonial squadrons arrived on the quarter, never off by more than a breath. They took no part in the inspection; they only formed up — ceremony asks but one thing, that no one be late.',
   'content.imperial.imp_07.note':
     'Registry note: watch rosters match the port logs; no late arrivals on file.',
 
   'content.imperial.imp_08.name': 'The Borrowed Parade',
   'content.imperial.imp_08.text':
-    'Before a fleet review, the Court would borrow heavy squadrons from passing fleets to fill the parade. The loan slips were dated for return upon the review’s end, and the borrowed gun covers were never unbuttoned.',
+    'Before a fleet review, the Imperial Court would borrow heavy squadrons from passing fleets to fill the parade. The loan slips were dated for return upon the review’s end, and the borrowed gun covers were never unbuttoned.',
   'content.imperial.imp_08.note':
     'Registry note: parade loans are all on file; unsealing the covers takes another writ.',
 
@@ -111,7 +111,7 @@ export default {
 
   'content.imperial.imp_15.name': 'Never-Extinguishing',
   'content.imperial.imp_15.text':
-    'The words “never extinguishing” came from the oldest of the Courts’ tribute rolls. The clerk who wrote them never saw the furnace, only the fire of the lanes — a tribute road that had burned for billions of years earned the phrase.',
+    'The words "never extinguishing" came from the oldest of the Courts’ tribute rolls. The clerk who wrote them never saw the furnace, only the fire of the lanes — a tribute road that had burned for billions of years earned the phrase.',
   'content.imperial.imp_15.note':
     'Registry note: source verifiable, wording doubtful; retained as written.',
 }

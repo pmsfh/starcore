@@ -25,7 +25,7 @@ import { EXPLORE_NODES, LAYER_INFO, type StarLayer } from '@/data/explore'
 import { STRONGHOLDS, STRONGHOLD_TYPES } from '@/data/pve'
 import { NODE_STORIES } from '@/data/story'
 import { GATE_DOORS } from '@/data/gate'
-import { IMPERIAL_SECTIONS } from '@/data/imperial'
+import { IMPERIAL_SECTIONS, IMPERIAL_ENTRY_COUNT } from '@/data/imperial'
 import { ECHO_ENTRIES, ECHO_SEGMENTS } from '@/data/echo'
 import { getBestiaryNoteForEntries, type BestiaryNote } from '@/data/bestiary'
 import Icon from '@/components/ui/Icon.vue'
@@ -72,7 +72,7 @@ const gateUnlocked = computed(
   () => GATE_DOORS.length > 0 && game.exploration.isCompleted('node_galaxy_gate')
 )
 
-// 帝庭档案：解锁 = 完成银河枢纽探索节点（当前轮；贡道走到进贡终点
+// 帝庭档案：解锁 = 完成银盘枢纽探索节点（当前轮；贡道走到进贡终点
 // 后的观察视角，判读即算，空节表按未解锁处理，转生后随本轮重新
 // 上锁，与七门及回响的解锁口径错开）
 const imperialUnlocked = computed(
@@ -222,17 +222,14 @@ function cardEnemy(card: EnemyCard) {
       </template>
     </section>
 
-    <!-- 帝庭档案（贡道核验仪卫裁决炉音观察留档，完成银河枢纽后解锁） -->
+    <!-- 帝庭档案（贡道核验仪卫裁决炉音观察留档，完成银盘枢纽后解锁） -->
     <section class="section" data-testid="archive-imperial-group">
       <h3 class="section-title with-icon">
         <Icon class="s-icon" name="i-tech-prestige" />
         {{ t('archive.imperialSection') }}
         <span v-if="imperialUnlocked" class="count-lead font-mono">
           {{
-            t('archive.imperialCount', {
-              seen: IMPERIAL_SECTIONS.length,
-              total: IMPERIAL_SECTIONS.length,
-            })
+            t('archive.imperialCount', { seen: IMPERIAL_ENTRY_COUNT, total: IMPERIAL_ENTRY_COUNT })
           }}
         </span>
       </h3>

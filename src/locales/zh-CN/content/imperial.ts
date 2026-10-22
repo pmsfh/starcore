@@ -13,7 +13,7 @@ export default {
 
   'content.imperial.imp_01.name': '当柴的航道',
   'content.imperial.imp_01.text':
-    '银河枢纽的星图上，每条通往银心的航道都标着进贡记号。王庭的领航员说，航道不是路，是柴——一船一船的贡物码过去，烧给炉火。',
+    '银盘枢纽的星图上，每条通往银心的航道都标着进贡记号。王庭的领航员说，航道不是路，是柴——一船一船的贡物码过去，烧给炉火。',
   'content.imperial.imp_01.note': '档批：贡道记号核验无误，本季航标照旧。',
 
   'content.imperial.imp_02.name': '让路的贡道',

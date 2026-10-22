@@ -30,7 +30,7 @@ export default {
   'archive.gateLocked': 'The answering gate has not yet been crossed.',
   'archive.imperialSection': 'Imperial Court Archive',
   'archive.imperialHint':
-    'Observation files of the tribute lanes, audits and verdicts, seen once the hub has been reached.',
-  'archive.imperialCount': 'Filed {seen} / {total} sections',
+    'Observation files of the tribute lanes, audits and verdicts, seen once the Disc Hub has been explored.',
+  'archive.imperialCount': 'Filed {seen} / {total} entries',
   'archive.imperialLocked': 'The lanes are not yet walked to their end.',
 }

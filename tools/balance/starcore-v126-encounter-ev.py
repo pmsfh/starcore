@@ -3,7 +3,7 @@
 """
 starcore-v126-encounter-ev.py — 随机遭遇事件 EV 核验表
 
-对 47 个事件模板做程序化断言：
+对 49 个事件模板做程序化断言：
   1. 每事件两选项 EV 差 <= 15%（以 max(EV_A, EV_B) 为基）
   2. 能量当量落 [4.4e3, 1.2e5] 量级带（「顺路的糖」口径，对照签到 2e4-1e5）
   3. 每选项概率分布归一（Σp = 1）
@@ -26,6 +26,7 @@ starcore-v126-encounter-ev.py — 随机遭遇事件 EV 核验表
   - 2026-09-24 v1：初版 10 模板定稿核验。
   - 2026-10-12 v1.58：扩容 15 模板（10 → 25）；新增晶体、护卫兵、重装兵折算口径。
   - vn：势力叙事扩容 22 模板（25 → 47）；王庭商队 / 帝庭巡检 / 先驱遗存 / 白鲸灯语。
+  - 2026-10-22 v1.75：帝庭档案入口扩容 2 模板（47 → 49）；留档巡访 / 炉边传闻，资源类 15 → 17。
   - 2026-10-18：改读活数据——数值与概率改从 src/data/encounters.ts 提取，
     收编兵员 units + unitKind 并入折算键，选项标签取 zh-CN 语言包。
 """
@@ -205,13 +206,13 @@ def main():
         rows.append((eid, flavor, enc["optA"]["label"], ev_a, enc["optB"]["label"], ev_b, gap, ratio_b))
 
     # 风味分布
-    expect = {"resource": 15, "military": 8, "explore": 11, "gamble": 13}
+    expect = {"resource": 17, "military": 8, "explore": 11, "gamble": 13}
     if flavor_count != expect:
         failures.append(f"风味分布 {flavor_count} != 预期 {expect}")
-    if len(ENCOUNTERS) != 47:
-        failures.append(f"模板数 {len(ENCOUNTERS)} != 47")
+    if len(ENCOUNTERS) != 49:
+        failures.append(f"模板数 {len(ENCOUNTERS)} != 49")
     ids = [e["id"] for e in ENCOUNTERS]
-    if len(set(ids)) != 47:
+    if len(set(ids)) != 49:
         failures.append("模板 id 有重复")
 
     # ---- 核验表输出 ----

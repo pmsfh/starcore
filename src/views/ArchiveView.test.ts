@@ -129,14 +129,14 @@ describe('ArchiveView — 帝庭档案', () => {
     expect(wrapper.find('[data-testid="archive-imperial-group"] .count-lead').exists()).toBe(false)
     expect(wrapper.find('[data-testid="archive-imperial-locked"]').exists()).toBe(true)
     expect(wrapper.text()).toContain('还没走到航道的尽头')
-    // 条目零渲染：首条名不出现；炉音节名压轴不泄漏（hint 摘要含
-    // 贡道核验裁决三节名属上游指定副题，不在此列）
+    // 条目零渲染：首条名不出现；炉音节名压轴不泄漏（分组提示
+    // 摘要含贡道、核验、裁决三节名，不在此列）
     expect(wrapper.findAll('[data-testid="archive-imperial-card"]').length).toBe(0)
     expect(wrapper.text()).not.toContain(IMPERIAL_SECTIONS[0].entries[0].name)
     expect(wrapper.text()).not.toContain(IMPERIAL_SECTIONS[4].name)
   })
 
-  it('银河之门完成仍锁定（解锁挂银河枢纽，与七门口径错开）', async () => {
+  it('银河之门完成仍锁定（解锁挂银盘枢纽，与七门口径错开）', async () => {
     exploredNodes('node_galaxy_gate')
     const wrapper = mountView(ArchiveView)
     await wrapper.vm.$nextTick()
@@ -145,12 +145,12 @@ describe('ArchiveView — 帝庭档案', () => {
     expect(wrapper.findAll('[data-testid="archive-imperial-card"]').length).toBe(0)
   })
 
-  it('解锁态：银河枢纽完成后 15 条按五节渲染、节名段头齐备、计数 5/5', async () => {
+  it('解锁态：银盘枢纽完成后 15 条按五节渲染、节名段头齐备、计数 15/15', async () => {
     exploredNodes('node_galaxy_hub')
     const wrapper = mountView(ArchiveView)
     await wrapper.vm.$nextTick()
 
-    expect(wrapper.text()).toContain('已归档 5 / 5 节')
+    expect(wrapper.text()).toContain('已归档 15 / 15 条')
     expect(wrapper.findAll('[data-testid="archive-imperial-card"]').length).toBe(15)
     // 五节节名段头齐备（含压轴的炉音）
     for (const sec of IMPERIAL_SECTIONS) {

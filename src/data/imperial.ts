@@ -4,7 +4,7 @@
  * 5 节，每节 1 条节名 + 3 条观察留档（name / text / note，
  * note = 帝庭档案批注）；五节依次为贡道、核验、仪卫、裁决、炉音，
  * 炉音节只收信仰与传闻，不写炉的实体。档案馆帝庭档案分组在完成
- * 银河枢纽探索节点后解锁展示，转生后随本轮重新上锁（判读即算，
+ * 银盘枢纽探索节点后解锁展示，转生后随本轮重新上锁（判读即算，
  * 无持久化字段）。取词沿数据实体字段口径：模块加载时逐键字面量
  * 取词，UI 读字段不做动态键拼接（语言切换为整页刷新，既有先例
  * 成立）。
@@ -150,3 +150,6 @@ export const IMPERIAL_SECTIONS: readonly ImperialSection[] = [
     ],
   },
 ]
+
+/** 帝庭档案留档条目总数（计数展示用，5 节 × 3 条 = 15 条） */
+export const IMPERIAL_ENTRY_COUNT = IMPERIAL_SECTIONS.reduce((n, s) => n + s.entries.length, 0)
