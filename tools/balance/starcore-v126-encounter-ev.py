@@ -221,7 +221,7 @@ def main():
     for eid, flavor, la, eva, lb, evb, gap, rb in rows:
         print(f"{eid:<10}{flavor:<9}{la:<8}{eva:>7.0f}  {lb:<10}{evb:>7.0f}  {gap:>5.1%}  {rb:>8.2f}")
     print("-" * 78)
-    print(f"模板数 47（{flavor_count}）；折算率 {RATE}")
+    print(f"模板数 49（{flavor_count}）；折算率 {RATE}")
     print(f"量级带 [{BAND_MIN:.0f}, {BAND_MAX:.0f}]；EV 差上限 {EV_GAP_MAX:.0%}")
     if failures:
         print(f"\nFAIL {len(failures)} 项：")
