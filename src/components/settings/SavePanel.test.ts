@@ -8,6 +8,7 @@
  */
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { flushPromises, type VueWrapper } from '@vue/test-utils'
+import { nextTick } from 'vue'
 import { mountView, useViewTestHooks, focusTrapMock } from '@/tests/view-mount'
 import { resetProviderSingletons } from '@/tests/reset-providers'
 import { t } from '@/i18n'
@@ -130,6 +131,19 @@ describe('SavePanel 存档管理', () => {
     await flushPromises()
 
     expect(wrapper.find('.save-msg').text()).toBe(t('save.saved'))
+  })
+
+  it('玩家名跟随界面语言：默认名取当前语言，自定义名原样显示', async () => {
+    const game = useGameStore()
+    const wrapper = mountView(SavePanel)
+
+    game.player.name = '指挥官'
+    await nextTick()
+    expect(wrapper.find('.save-meta').text()).toContain(t('game.commander'))
+
+    game.player.name = '缥缈随风还'
+    await nextTick()
+    expect(wrapper.find('.save-meta').text()).toContain('缥缈随风还')
   })
 
   it('清除存档两段确认后重置游戏状态', async () => {

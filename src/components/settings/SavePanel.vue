@@ -6,13 +6,17 @@
  * 弹窗。文案、类名与交互保持不变；剪贴板复制带回退以兼容非安全上下文。
  */
 import { t } from '@/i18n'
-import { ref } from 'vue'
+import { displayCommanderName } from '@/i18n/commander-name'
+import { computed, ref } from 'vue'
 import { useGameStore } from '@/stores/game'
 import ConfirmModal from '@/components/ui/ConfirmModal.vue'
 import { useToast } from '@/composables/useToast'
 import { useTimeout } from '@/composables/useTimeout'
 
 const game = useGameStore()
+
+/** 存档名是开档时的语言快照：默认名跟随当前界面语言，自定义名原样显示 */
+const commanderName = computed(() => displayCommanderName(game.player.name, t('game.commander')))
 
 const importCode = ref('')
 const importMsg = useToast()
@@ -125,7 +129,7 @@ function cancelHardReset() {
   <!-- 存档管理 -->
   <div class="save-section">
     <h3 class="section-title">{{ t('save.panelTitle') }}</h3>
-    <p class="save-meta">{{ game.player.name }} · {{ t('save.localTitle') }}</p>
+    <p class="save-meta">{{ commanderName }} · {{ t('save.localTitle') }}</p>
     <div class="save-actions">
       <button class="btn-secondary sm" @click="doExport">{{ t('save.export') }}</button>
       <button class="btn-secondary sm" @click="manualSave">{{ t('save.manualSave') }}</button>
