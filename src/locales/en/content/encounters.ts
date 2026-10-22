@@ -167,6 +167,17 @@ export default {
     'The Imperial review array is hiring heavy ceremonial guards',
   'content.encounters.enc_court_parade.optA': 'Send an honor guard',
   'content.encounters.enc_court_parade.optB': 'Join the array',
+  // v1.75 Imperial archive entry: registry visit / furnace tales
+  'content.encounters.enc_registry_visit.name': 'Registry Visit',
+  'content.encounters.enc_registry_visit.desc':
+    'A registry clerk rides the inspection fleet, collecting notes from along the tribute lanes',
+  'content.encounters.enc_registry_visit.optA': 'File a note',
+  'content.encounters.enc_registry_visit.optB': 'Ask where copies go',
+  'content.encounters.enc_furnace_tale.name': 'Furnace Tales',
+  'content.encounters.enc_furnace_tale.desc':
+    'The escort officer, tally done, holds his audience for tales of the furnace echo',
+  'content.encounters.enc_furnace_tale.optA': 'Stay for the ending',
+  'content.encounters.enc_furnace_tale.optB': 'Mark it in the margin',
   'content.encounters.enc_relay_echo.name': 'Relay Echo',
   'content.encounters.enc_relay_echo.desc':
     'A relay-chain afterbeat sweeps the array, rhythm steady',

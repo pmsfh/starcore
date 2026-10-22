@@ -1,7 +1,7 @@
 /**
  * encounters.test.ts：随机遭遇事件数据表测试（v1.26 可玩内容扩展方案 8）
  *
- * 覆盖：事件池结构契约（47 模板恰两选项、概率归一、数值形态、风味分布）、
+ * 覆盖：事件池结构契约（49 模板恰两选项、概率归一、数值形态、风味分布）、
  * EV 核验锚点（两选项期望差 ≤15%、赌注类高方差 / 资源类低方差、量级带）、
  * 结果掷取（rollOutcome 通道注入、全分布可达）、间隔窗口边界。
  */
@@ -50,14 +50,14 @@ function optionSpread(opt: EncounterOption): number {
 }
 
 describe('encounters 事件池结构', () => {
-  it('47 模板、id 唯一、四类风味分布 15/8/11/13', () => {
-    expect(ENCOUNTERS).toHaveLength(47)
-    expect(new Set(ENCOUNTERS.map((e) => e.id)).size).toBe(47)
+  it('49 模板、id 唯一、四类风味分布 17/8/11/13', () => {
+    expect(ENCOUNTERS).toHaveLength(49)
+    expect(new Set(ENCOUNTERS.map((e) => e.id)).size).toBe(49)
     const flavors = ENCOUNTERS.reduce<Record<string, number>>((acc, e) => {
       acc[e.flavor] = (acc[e.flavor] ?? 0) + 1
       return acc
     }, {})
-    expect(flavors).toEqual({ resource: 15, military: 8, explore: 11, gamble: 13 })
+    expect(flavors).toEqual({ resource: 17, military: 8, explore: 11, gamble: 13 })
   })
 
   it('每事件恰两选项、每选项概率归一、结果数值形态合法', () => {

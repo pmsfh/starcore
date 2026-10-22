@@ -27,4 +27,8 @@ export default {
   'archive.gateHint': '星臂尽头七扇巨门的观察留档，穿过应答的门扉后回望可见。',
   'archive.gateCount': '已回望 {seen} / {total} 门',
   'archive.gateLocked': '还没有穿过应答的门扉。',
+  'archive.imperialSection': '帝庭档案',
+  'archive.imperialHint': '贡道、核验与裁决观察留档，抵达银河枢纽后可见。',
+  'archive.imperialCount': '已归档 {seen} / {total} 节',
+  'archive.imperialLocked': '还没走到航道的尽头。',
 }

@@ -28,4 +28,9 @@ export default {
     'Observation files of the seven colossal gates at the arm’s end, seen in the look-back once the answering gate has been crossed.',
   'archive.gateCount': 'Reviewed {seen} / {total} gates',
   'archive.gateLocked': 'The answering gate has not yet been crossed.',
+  'archive.imperialSection': 'Imperial Court Archive',
+  'archive.imperialHint':
+    'Observation files of the tribute lanes, audits and verdicts, seen once the hub has been reached.',
+  'archive.imperialCount': 'Filed {seen} / {total} sections',
+  'archive.imperialLocked': 'The lanes are not yet walked to their end.',
 }

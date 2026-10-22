@@ -25,6 +25,7 @@ import { EXPLORE_NODES, LAYER_INFO, type StarLayer } from '@/data/explore'
 import { STRONGHOLDS, STRONGHOLD_TYPES } from '@/data/pve'
 import { NODE_STORIES } from '@/data/story'
 import { GATE_DOORS } from '@/data/gate'
+import { IMPERIAL_SECTIONS } from '@/data/imperial'
 import { ECHO_ENTRIES, ECHO_SEGMENTS } from '@/data/echo'
 import { getBestiaryNoteForEntries, type BestiaryNote } from '@/data/bestiary'
 import Icon from '@/components/ui/Icon.vue'
@@ -69,6 +70,13 @@ const seenStories = computed(() => storyRows.value.filter((r) => r.completed).le
 // 视角，判读即算，空门表按未解锁处理，转生后随本轮重新上锁）
 const gateUnlocked = computed(
   () => GATE_DOORS.length > 0 && game.exploration.isCompleted('node_galaxy_gate')
+)
+
+// 帝庭档案：解锁 = 完成银河枢纽探索节点（当前轮；贡道走到进贡终点
+// 后的观察视角，判读即算，空节表按未解锁处理，转生后随本轮重新
+// 上锁，与七门及回响的解锁口径错开）
+const imperialUnlocked = computed(
+  () => IMPERIAL_SECTIONS.length > 0 && game.exploration.isCompleted('node_galaxy_hub')
 )
 
 // 回响：解锁 = 当前轮全宇宙探索完毕（与星图档案、首页贺词同口径逐
@@ -204,6 +212,47 @@ function cardEnemy(card: EnemyCard) {
               :key="entry.id"
               class="gate-card"
               data-testid="archive-gate-card"
+            >
+              <h5 class="gate-name">{{ entry.name }}</h5>
+              <p class="gate-text">{{ entry.text }}</p>
+              <p class="gate-note">{{ entry.note }}</p>
+            </article>
+          </div>
+        </div>
+      </template>
+    </section>
+
+    <!-- 帝庭档案（贡道核验仪卫裁决炉音观察留档，完成银河枢纽后解锁） -->
+    <section class="section" data-testid="archive-imperial-group">
+      <h3 class="section-title with-icon">
+        <Icon class="s-icon" name="i-tech-prestige" />
+        {{ t('archive.imperialSection') }}
+        <span v-if="imperialUnlocked" class="count-lead font-mono">
+          {{
+            t('archive.imperialCount', {
+              seen: IMPERIAL_SECTIONS.length,
+              total: IMPERIAL_SECTIONS.length,
+            })
+          }}
+        </span>
+      </h3>
+      <p class="section-hint">{{ t('archive.imperialHint') }}</p>
+      <p
+        v-if="!imperialUnlocked"
+        class="gate-locked locked-text"
+        data-testid="archive-imperial-locked"
+      >
+        {{ t('archive.imperialLocked') }}
+      </p>
+      <template v-else>
+        <div v-for="sec in IMPERIAL_SECTIONS" :key="sec.id" class="gate-door">
+          <h4 class="gate-door-name">{{ sec.name }}</h4>
+          <div class="gate-grid">
+            <article
+              v-for="entry in sec.entries"
+              :key="entry.id"
+              class="gate-card"
+              data-testid="archive-imperial-card"
             >
               <h5 class="gate-name">{{ entry.name }}</h5>
               <p class="gate-text">{{ entry.text }}</p>

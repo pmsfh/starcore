@@ -671,6 +671,41 @@ export const ENCOUNTERS: EncounterDef[] = [
       ],
     },
   },
+  // v1.75 帝庭档案入口（资源 2）：留档巡访 / 炉边传闻
+  {
+    id: 'enc_registry_visit',
+    flavor: 'resource',
+    name: t('content.encounters.enc_registry_visit.name'),
+    desc: t('content.encounters.enc_registry_visit.desc'),
+    optA: {
+      label: t('content.encounters.enc_registry_visit.optA'),
+      chances: [{ p: 1, rewards: { data: 880 } }],
+    },
+    optB: {
+      label: t('content.encounters.enc_registry_visit.optB'),
+      chances: [
+        { p: 0.75, rewards: { data: 1240 } },
+        { p: 0.25, rewards: { data: 340 } },
+      ],
+    },
+  },
+  {
+    id: 'enc_furnace_tale',
+    flavor: 'resource',
+    name: t('content.encounters.enc_furnace_tale.name'),
+    desc: t('content.encounters.enc_furnace_tale.desc'),
+    optA: {
+      label: t('content.encounters.enc_furnace_tale.optA'),
+      chances: [{ p: 1, rewards: { energy: 8200 } }],
+    },
+    optB: {
+      label: t('content.encounters.enc_furnace_tale.optB'),
+      chances: [
+        { p: 0.8, rewards: { energy: 10800 } },
+        { p: 0.2, rewards: { energy: 3000 } },
+      ],
+    },
+  },
   // v1.73 势力叙事：先驱遗存（探索 6 + 赌注 1）
   {
     id: 'enc_relay_echo',

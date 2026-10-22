@@ -22,6 +22,7 @@ import { exploredNodes } from '@/tests/fixtures'
 import { STRONGHOLDS } from '@/data/pve'
 import { EXPLORE_NODES } from '@/data/explore'
 import { GATE_DOORS } from '@/data/gate'
+import { IMPERIAL_SECTIONS } from '@/data/imperial'
 import { ECHO_ENTRIES } from '@/data/echo'
 import { BESTIARY_NOTES } from '@/data/bestiary'
 import { useArchiveStore } from '@/stores/archive'
@@ -113,6 +114,53 @@ describe('ArchiveView — 七门', () => {
     expect(wrapper.text()).toContain(GATE_DOORS[0].entries[0].name)
     expect(wrapper.text()).toContain(GATE_DOORS[6].entries[2].name)
     expect(wrapper.text()).toContain(GATE_DOORS[6].entries[2].note)
+  })
+})
+
+describe('ArchiveView — 帝庭档案', () => {
+  useViewTestHooks()
+
+  it('锁定态：分组标题可见、留白提示、条目零渲染不剧透', () => {
+    const wrapper = mountView(ArchiveView)
+
+    expect(wrapper.find('[data-testid="archive-imperial-group"]').exists()).toBe(true)
+    expect(wrapper.text()).toContain('帝庭档案')
+    // 锁定态不显示计数（仅解锁与未解锁两态，避免误读为逐条收集）
+    expect(wrapper.find('[data-testid="archive-imperial-group"] .count-lead').exists()).toBe(false)
+    expect(wrapper.find('[data-testid="archive-imperial-locked"]').exists()).toBe(true)
+    expect(wrapper.text()).toContain('还没走到航道的尽头')
+    // 条目零渲染：首条名不出现；炉音节名压轴不泄漏（hint 摘要含
+    // 贡道核验裁决三节名属上游指定副题，不在此列）
+    expect(wrapper.findAll('[data-testid="archive-imperial-card"]').length).toBe(0)
+    expect(wrapper.text()).not.toContain(IMPERIAL_SECTIONS[0].entries[0].name)
+    expect(wrapper.text()).not.toContain(IMPERIAL_SECTIONS[4].name)
+  })
+
+  it('银河之门完成仍锁定（解锁挂银河枢纽，与七门口径错开）', async () => {
+    exploredNodes('node_galaxy_gate')
+    const wrapper = mountView(ArchiveView)
+    await wrapper.vm.$nextTick()
+
+    expect(wrapper.find('[data-testid="archive-imperial-locked"]').exists()).toBe(true)
+    expect(wrapper.findAll('[data-testid="archive-imperial-card"]').length).toBe(0)
+  })
+
+  it('解锁态：银河枢纽完成后 15 条按五节渲染、节名段头齐备、计数 5/5', async () => {
+    exploredNodes('node_galaxy_hub')
+    const wrapper = mountView(ArchiveView)
+    await wrapper.vm.$nextTick()
+
+    expect(wrapper.text()).toContain('已归档 5 / 5 节')
+    expect(wrapper.findAll('[data-testid="archive-imperial-card"]').length).toBe(15)
+    // 五节节名段头齐备（含压轴的炉音）
+    for (const sec of IMPERIAL_SECTIONS) {
+      expect(wrapper.text()).toContain(sec.name)
+    }
+    expect(wrapper.text()).toContain('炉音')
+    // 首节首条与炉音末条可见（正文与帝庭档案批注）
+    expect(wrapper.text()).toContain(IMPERIAL_SECTIONS[0].entries[0].name)
+    expect(wrapper.text()).toContain(IMPERIAL_SECTIONS[4].entries[2].name)
+    expect(wrapper.text()).toContain(IMPERIAL_SECTIONS[4].entries[2].note)
   })
 })
 

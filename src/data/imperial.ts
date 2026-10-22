@@ -1,0 +1,152 @@
+/**
+ * imperial.ts：帝庭档案数据（帝庭 · 贡道核验仪卫裁决炉音观察留档）
+ *
+ * 5 节，每节 1 条节名 + 3 条观察留档（name / text / note，
+ * note = 帝庭档案批注）；五节依次为贡道、核验、仪卫、裁决、炉音，
+ * 炉音节只收信仰与传闻，不写炉的实体。档案馆帝庭档案分组在完成
+ * 银河枢纽探索节点后解锁展示，转生后随本轮重新上锁（判读即算，
+ * 无持久化字段）。取词沿数据实体字段口径：模块加载时逐键字面量
+ * 取词，UI 读字段不做动态键拼接（语言切换为整页刷新，既有先例
+ * 成立）。
+ */
+
+import { t } from '@/i18n'
+
+/** 帝庭留档条目（name = 条目名，text = 观察正文，note = 帝庭档案批注） */
+export interface ImperialEntry {
+  id: string
+  name: string
+  text: string
+  note: string
+}
+
+/** 帝庭档案之节（节名做段头，每节恰含三条留档） */
+export interface ImperialSection {
+  id: string
+  name: string
+  entries: readonly ImperialEntry[]
+}
+
+/** 帝庭档案（有序：贡道、核验、仪卫、裁决在前，炉音压轴） */
+export const IMPERIAL_SECTIONS: readonly ImperialSection[] = [
+  {
+    id: 'section_01',
+    name: t('content.imperial.section_01'),
+    entries: [
+      {
+        id: 'imp_01',
+        name: t('content.imperial.imp_01.name'),
+        text: t('content.imperial.imp_01.text'),
+        note: t('content.imperial.imp_01.note'),
+      },
+      {
+        id: 'imp_02',
+        name: t('content.imperial.imp_02.name'),
+        text: t('content.imperial.imp_02.text'),
+        note: t('content.imperial.imp_02.note'),
+      },
+      {
+        id: 'imp_03',
+        name: t('content.imperial.imp_03.name'),
+        text: t('content.imperial.imp_03.text'),
+        note: t('content.imperial.imp_03.note'),
+      },
+    ],
+  },
+  {
+    id: 'section_02',
+    name: t('content.imperial.section_02'),
+    entries: [
+      {
+        id: 'imp_04',
+        name: t('content.imperial.imp_04.name'),
+        text: t('content.imperial.imp_04.text'),
+        note: t('content.imperial.imp_04.note'),
+      },
+      {
+        id: 'imp_05',
+        name: t('content.imperial.imp_05.name'),
+        text: t('content.imperial.imp_05.text'),
+        note: t('content.imperial.imp_05.note'),
+      },
+      {
+        id: 'imp_06',
+        name: t('content.imperial.imp_06.name'),
+        text: t('content.imperial.imp_06.text'),
+        note: t('content.imperial.imp_06.note'),
+      },
+    ],
+  },
+  {
+    id: 'section_03',
+    name: t('content.imperial.section_03'),
+    entries: [
+      {
+        id: 'imp_07',
+        name: t('content.imperial.imp_07.name'),
+        text: t('content.imperial.imp_07.text'),
+        note: t('content.imperial.imp_07.note'),
+      },
+      {
+        id: 'imp_08',
+        name: t('content.imperial.imp_08.name'),
+        text: t('content.imperial.imp_08.text'),
+        note: t('content.imperial.imp_08.note'),
+      },
+      {
+        id: 'imp_09',
+        name: t('content.imperial.imp_09.name'),
+        text: t('content.imperial.imp_09.text'),
+        note: t('content.imperial.imp_09.note'),
+      },
+    ],
+  },
+  {
+    id: 'section_04',
+    name: t('content.imperial.section_04'),
+    entries: [
+      {
+        id: 'imp_10',
+        name: t('content.imperial.imp_10.name'),
+        text: t('content.imperial.imp_10.text'),
+        note: t('content.imperial.imp_10.note'),
+      },
+      {
+        id: 'imp_11',
+        name: t('content.imperial.imp_11.name'),
+        text: t('content.imperial.imp_11.text'),
+        note: t('content.imperial.imp_11.note'),
+      },
+      {
+        id: 'imp_12',
+        name: t('content.imperial.imp_12.name'),
+        text: t('content.imperial.imp_12.text'),
+        note: t('content.imperial.imp_12.note'),
+      },
+    ],
+  },
+  {
+    id: 'section_05',
+    name: t('content.imperial.section_05'),
+    entries: [
+      {
+        id: 'imp_13',
+        name: t('content.imperial.imp_13.name'),
+        text: t('content.imperial.imp_13.text'),
+        note: t('content.imperial.imp_13.note'),
+      },
+      {
+        id: 'imp_14',
+        name: t('content.imperial.imp_14.name'),
+        text: t('content.imperial.imp_14.text'),
+        note: t('content.imperial.imp_14.note'),
+      },
+      {
+        id: 'imp_15',
+        name: t('content.imperial.imp_15.name'),
+        text: t('content.imperial.imp_15.text'),
+        note: t('content.imperial.imp_15.note'),
+      },
+    ],
+  },
+]
