@@ -42,34 +42,36 @@ const { displayActions, hasActions } = useActionQueue()
         :class="item.status"
         :style="{ '--c': item.color }"
       >
-        <button class="action-btn" @click="router.push(item.path)">
-          <!-- in-progress: 纯色图标 -->
-          <Icon
-            v-if="item.status === 'in-progress'"
-            class="action-icon"
-            :name="item.icon"
-            size="md"
+        <div class="action-clip">
+          <button class="action-btn" @click="router.push(item.path)">
+            <!-- in-progress: 纯色图标 -->
+            <Icon
+              v-if="item.status === 'in-progress'"
+              class="action-icon"
+              :name="item.icon"
+              size="md"
+            />
+            <!-- actionable: 色块 + 图标 -->
+            <div v-else class="action-icon-block">
+              <Icon :name="item.icon" size="lg" />
+            </div>
+            <div class="action-info">
+              <span class="action-label">{{ item.label }}</span>
+              <span v-if="item.status === 'in-progress'" class="action-detail">{{
+                item.detail
+              }}</span>
+              <span v-else class="action-desc">{{ item.detail }}</span>
+            </div>
+            <Icon class="action-arrow" name="i-ui-arrow-right" size="sm" />
+          </button>
+          <!-- 进度条（仅 in-progress） -->
+          <ProgressBar
+            v-if="item.status === 'in-progress' && item.progress !== undefined"
+            class="action-progress"
+            fill-class="action-progress-bar"
+            :pct="item.progress * 100"
           />
-          <!-- actionable: 色块 + 图标 -->
-          <div v-else class="action-icon-block">
-            <Icon :name="item.icon" size="lg" />
-          </div>
-          <div class="action-info">
-            <span class="action-label">{{ item.label }}</span>
-            <span v-if="item.status === 'in-progress'" class="action-detail">{{
-              item.detail
-            }}</span>
-            <span v-else class="action-desc">{{ item.detail }}</span>
-          </div>
-          <Icon class="action-arrow" name="i-ui-arrow-right" size="sm" />
-        </button>
-        <!-- 进度条（仅 in-progress） -->
-        <ProgressBar
-          v-if="item.status === 'in-progress' && item.progress !== undefined"
-          class="action-progress"
-          fill-class="action-progress-bar"
-          :pct="item.progress * 100"
-        />
+        </div>
       </li>
     </ul>
     <div v-if="!hasActions" class="action-empty empty-state">
@@ -96,7 +98,6 @@ const { displayActions, hasActions } = useActionQueue()
 .action-item {
   width: 100%;
   position: relative;
-  overflow: hidden;
 }
 .action-btn {
   display: flex;
@@ -108,15 +109,32 @@ const { displayActions, hasActions } = useActionQueue()
   position: relative;
 }
 
-/* 进行中（in-progress）， */
+/* 裁剪层（v1.78）：按钮与底部进度条按卡片圆角裁切；
+   由 li 下移至此层，li 保留外发光绘制面 */
+.action-clip {
+  position: relative;
+  border-radius: inherit;
+  overflow: hidden;
+}
+
+/* 进行中（in-progress）：光晕静态挂伪元素，动画只驱动 opacity（合成器友好） */
 .action-item.in-progress {
   background: var(--color-surface);
   border: 1px solid var(--color-border-line);
   border-left: 3px solid var(--c);
   border-radius: var(--radius-md);
   position: relative;
-  overflow: hidden;
+}
+.action-item.in-progress::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: 0 0 12px 2px color-mix(in srgb, var(--c) 15%, transparent);
+  opacity: 0;
   animation: actionPulse var(--duration-ambient) ease-in-out infinite;
+  will-change: opacity;
+  pointer-events: none;
 }
 .action-item.in-progress .action-icon {
   color: var(--c);

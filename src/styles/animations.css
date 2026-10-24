@@ -31,6 +31,26 @@
       inset 0 0 30px color-mix(in srgb, var(--color-flash) 30%, transparent);
   }
 }
+/* brandPulse / brandGlow（v1.78）：侧栏品牌徽标拆两层，
+   本体只做 transform，光晕挂伪元素由 opacity 驱动（合成器友好） */
+@keyframes brandPulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+}
+@keyframes brandGlow {
+  0%,
+  100% {
+    opacity: 0.67;
+  }
+  50% {
+    opacity: 1;
+  }
+}
 @keyframes twinkle {
   0%,
   100% {
@@ -60,13 +80,14 @@
     transform: translateY(0);
   }
 }
+/* actionPulse（v1.78）：光晕改为伪元素静态阴影，关键帧只驱动 opacity */
 @keyframes actionPulse {
   0%,
   100% {
-    box-shadow: 0 0 0 0 color-mix(in srgb, var(--c, var(--color-core)) 20%, transparent);
+    opacity: 0;
   }
   50% {
-    box-shadow: 0 0 12px 2px color-mix(in srgb, var(--c, var(--color-core)) 15%, transparent);
+    opacity: 1;
   }
 }
 /* 交互反馈游戏化 keyframes */

@@ -143,6 +143,7 @@ function toggleCollapsed() {
   flex-shrink: 0;
 }
 .brand-mark {
+  position: relative;
   width: 28px;
   height: 28px;
   border-radius: 50%;
@@ -153,8 +154,22 @@ function toggleCollapsed() {
     var(--color-core-deep) 70%,
     transparent 100%
   );
-  box-shadow: var(--glow-2);
-  animation: corePulse 3s ease-in-out infinite;
+  animation: brandPulse 3s ease-in-out infinite;
+  will-change: transform;
+}
+/* 光晕层（v1.78）：静态双层阴影 + opacity 呼吸，绘制值与 corePulse 峰值一致 */
+.brand-mark::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  box-shadow:
+    0 0 60px color-mix(in srgb, var(--color-core) 60%, transparent),
+    inset 0 0 30px color-mix(in srgb, var(--color-flash) 30%, transparent);
+  opacity: 0.67;
+  animation: brandGlow 3s ease-in-out infinite;
+  will-change: opacity;
+  pointer-events: none;
 }
 .brand-name {
   font-size: var(--text-sm);
