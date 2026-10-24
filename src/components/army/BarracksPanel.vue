@@ -278,7 +278,7 @@ const unitRows = computed(() =>
 .unit-card:not(.locked):hover {
   transform: translateY(-2px);
   border-color: var(--color-border-glow);
-  box-shadow: var(--elevation-2);
+  box-shadow: var(--elevation-2), var(--glow-inset);
 }
 .unit-card:not(.locked):active {
   transform: translateY(0) scale(0.98);

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import { t } from '@/i18n'
 /**
  * EndlessDepthPanel.vue：无尽远征深度选择面板（从 BattleView 拆出）。
@@ -6,7 +7,7 @@ import { t } from '@/i18n'
  * 深度状态由父层持有（跟随前沿 / 手动钳制的调度在调用方），
  * 本组件仅渲染「− / 深度 / ＋」与前沿徽标，类名与 data-testid 不变。
  */
-defineProps<{
+const props = defineProps<{
   /** 当前选择深度 */
   depth: number
   /** 可选深度上限（父层已按 MAX_ENDLESS_DEPTH 钳制的前沿值；常量见 src/data/endless.ts） */
@@ -14,10 +15,17 @@ defineProps<{
 }>()
 
 const emit = defineEmits<{ step: [delta: number] }>()
+
+/** 等离子渐染浓度（v1.77）：2% / 层，封顶 10% */
+const depthTint = computed(() => `${Math.min(props.depth * 2, 10)}%`)
 </script>
 
 <template>
-  <div class="endless-depth" data-testid="endless-depth-panel">
+  <div
+    class="endless-depth"
+    data-testid="endless-depth-panel"
+    :style="{ '--depth-tint': depthTint }"
+  >
     <h3 class="section-title">{{ t('battle.depthTitle') }}</h3>
     <div class="depth-controls">
       <button
@@ -48,9 +56,13 @@ const emit = defineEmits<{ step: [delta: number] }>()
 </template>
 
 <style scoped>
-/* 无尽远征深度选择（v0.60）， */
+/* 无尽远征深度选择（v0.60）；深度渐染（v1.77）：plasma 浓度随深度线性加深，封顶 10% */
 .endless-depth {
-  background: var(--color-surface);
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--color-plasma) var(--depth-tint, 2%), var(--color-surface)) 0%,
+    var(--color-surface) 70%
+  );
   border: 1px solid color-mix(in srgb, var(--color-plasma) 45%, transparent);
   border-radius: var(--radius-lg);
   padding: var(--space-3);

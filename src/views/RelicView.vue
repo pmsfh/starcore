@@ -371,7 +371,7 @@ function onEnhanceFail(msg: string) {
 }
 .relic-card:not(.material-disabled):hover {
   transform: translateY(-2px);
-  box-shadow: var(--elevation-2);
+  box-shadow: var(--elevation-2), var(--glow-inset);
 }
 .relic-card:not(.material-disabled):active {
   transform: translateY(0) scale(0.98);

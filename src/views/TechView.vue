@@ -209,7 +209,7 @@ function tryResearch(id: string) {
 .tech-card:not(.locked):not(.completed):hover {
   transform: translateY(-2px);
   border-color: var(--color-border-glow);
-  box-shadow: var(--elevation-2);
+  box-shadow: var(--elevation-2), var(--glow-inset);
 }
 .tech-card:not(.locked):not(.completed):active {
   transform: translateY(0) scale(0.98); /* 卡片按压回弹 */

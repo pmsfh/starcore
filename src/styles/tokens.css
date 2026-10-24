@@ -105,6 +105,12 @@
   --glow-2: 0 0 16px color-mix(in srgb, var(--c, var(--color-core)) 30%, transparent);
   --glow-3: 0 0 40px color-mix(in srgb, var(--c, var(--color-core)) 20%, transparent);
 
+  /* 内发光（v1.77 入库）：列表卡 hover 主色内晕（18px · 5%）与 1px 内描边（10%）；
+     色彩经 --c 注入，缺省主色；静态发光，不做位移动画 */
+  --glow-inset:
+    inset 0 0 18px color-mix(in srgb, var(--c, var(--color-core)) 5%, transparent),
+    inset 0 0 0 1px color-mix(in srgb, var(--c, var(--color-core)) 10%, transparent);
+
   /* 状态色 */
   --color-locked: #6387ab; /* 灰蓝提亮版，锁定态专用；vs surface 4.88:1 / vs void 5.36:1（WCAG AA ≥4.5，v0.83） */
 
