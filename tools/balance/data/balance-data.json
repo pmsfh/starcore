@@ -1,0 +1,6192 @@
+{
+  "schema": 1,
+  "units": [
+    {
+      "id": "assault",
+      "attack": 12,
+      "defense": 5,
+      "hp": 60,
+      "counters": [
+        "guard",
+        "psionic"
+      ],
+      "counterMult": 1.5
+    },
+    {
+      "id": "guard",
+      "attack": 8,
+      "defense": 12,
+      "hp": 120,
+      "counters": [
+        "heavy"
+      ],
+      "counterMult": 1.5
+    },
+    {
+      "id": "heavy",
+      "attack": 20,
+      "defense": 12,
+      "hp": 200,
+      "counters": [
+        "assault"
+      ],
+      "counterMult": 1.5
+    },
+    {
+      "id": "psionic",
+      "attack": 35,
+      "defense": 8,
+      "hp": 150,
+      "counters": [
+        "heavy"
+      ],
+      "counterMult": 2
+    }
+  ],
+  "traits": [
+    {
+      "id": "balanced",
+      "atkMult": 1,
+      "hpMult": 1,
+      "counterBonus": 0,
+      "garrisonMult": 1
+    },
+    {
+      "id": "assault_doctrine",
+      "atkMult": 1.12,
+      "hpMult": 1,
+      "counterBonus": 0,
+      "garrisonMult": 1
+    },
+    {
+      "id": "bastion_doctrine",
+      "atkMult": 1,
+      "hpMult": 1.15,
+      "counterBonus": 0,
+      "garrisonMult": 1
+    },
+    {
+      "id": "counter_doctrine",
+      "atkMult": 1,
+      "hpMult": 1,
+      "counterBonus": 0.25,
+      "garrisonMult": 1
+    },
+    {
+      "id": "logistics_doctrine",
+      "atkMult": 1,
+      "hpMult": 1,
+      "counterBonus": 0,
+      "garrisonMult": 1.2
+    }
+  ],
+  "tech": [
+    {
+      "id": "fusion_tech",
+      "branch": "energy",
+      "tier": 1,
+      "cost": {
+        "data": 30,
+        "energy": 200
+      },
+      "effects": [
+        {
+          "type": "unlock",
+          "target": "fusion_reactor",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "energy_eff_1",
+      "branch": "energy",
+      "tier": 2,
+      "cost": {
+        "data": 80,
+        "energy": 500
+      },
+      "requires": [
+        "fusion_tech"
+      ],
+      "effects": [
+        {
+          "type": "production_mult",
+          "target": "energy",
+          "value": 1.2
+        }
+      ]
+    },
+    {
+      "id": "core_mining",
+      "branch": "energy",
+      "tier": 3,
+      "cost": {
+        "data": 300,
+        "energy": 3000
+      },
+      "requires": [
+        "energy_eff_1"
+      ],
+      "effects": [
+        {
+          "type": "unlock",
+          "target": "core_extractor",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "energy_eff_2",
+      "branch": "energy",
+      "tier": 4,
+      "cost": {
+        "data": 1200,
+        "energy": 15000
+      },
+      "requires": [
+        "core_mining"
+      ],
+      "effects": [
+        {
+          "type": "production_mult",
+          "target": "energy",
+          "value": 1.3
+        }
+      ]
+    },
+    {
+      "id": "dyson_theory",
+      "branch": "energy",
+      "tier": 5,
+      "cost": {
+        "data": 5000,
+        "energy": 80000,
+        "alloy": 2000
+      },
+      "requires": [
+        "energy_eff_2"
+      ],
+      "effects": [
+        {
+          "type": "unlock",
+          "target": "dyson_swarm",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "crystal_eff_1",
+      "branch": "crystallography",
+      "tier": 2,
+      "cost": {
+        "data": 100,
+        "energy": 500
+      },
+      "requires": [
+        "crystal_growth"
+      ],
+      "effects": [
+        {
+          "type": "production_mult",
+          "target": "crystal",
+          "value": 1.3
+        }
+      ]
+    },
+    {
+      "id": "refine_tech",
+      "branch": "materials",
+      "tier": 1,
+      "cost": {
+        "data": 50,
+        "energy": 300
+      },
+      "effects": [
+        {
+          "type": "unlock",
+          "target": "refinery",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "alloy_eff_1",
+      "branch": "materials",
+      "tier": 2,
+      "cost": {
+        "data": 150,
+        "energy": 800
+      },
+      "requires": [
+        "refine_tech"
+      ],
+      "effects": [
+        {
+          "type": "production_mult",
+          "target": "alloy",
+          "value": 1.25
+        }
+      ]
+    },
+    {
+      "id": "nano_forge_tech",
+      "branch": "materials",
+      "tier": 2,
+      "cost": {
+        "data": 120,
+        "energy": 600,
+        "crystal": 80
+      },
+      "requires": [
+        "refine_tech"
+      ],
+      "effects": [
+        {
+          "type": "unlock",
+          "target": "nano_forge",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "ion_casting",
+      "branch": "materials",
+      "tier": 3,
+      "cost": {
+        "data": 800,
+        "energy": 6000,
+        "alloy": 200
+      },
+      "requires": [
+        "nano_forge_tech",
+        "alloy_eff_1"
+      ],
+      "effects": [
+        {
+          "type": "unlock",
+          "target": "ion_casting_plant",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "alloy_eff_2",
+      "branch": "materials",
+      "tier": 4,
+      "cost": {
+        "data": 2500,
+        "energy": 20000,
+        "alloy": 300
+      },
+      "requires": [
+        "ion_casting"
+      ],
+      "effects": [
+        {
+          "type": "production_mult",
+          "target": "alloy",
+          "value": 1.4
+        }
+      ]
+    },
+    {
+      "id": "stellar_forge_theory",
+      "branch": "materials",
+      "tier": 5,
+      "cost": {
+        "data": 8000,
+        "energy": 120000,
+        "alloy": 5000,
+        "dark": 20
+      },
+      "requires": [
+        "alloy_eff_2",
+        "ion_casting"
+      ],
+      "effects": [
+        {
+          "type": "unlock",
+          "target": "stellar_forge",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "quantum_tech",
+      "branch": "computing",
+      "tier": 1,
+      "cost": {
+        "data": 200,
+        "energy": 2000,
+        "alloy": 50
+      },
+      "effects": [
+        {
+          "type": "unlock",
+          "target": "quantum_lab",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "data_eff_1",
+      "branch": "computing",
+      "tier": 2,
+      "cost": {
+        "data": 400,
+        "energy": 3000
+      },
+      "requires": [
+        "quantum_tech"
+      ],
+      "effects": [
+        {
+          "type": "production_mult",
+          "target": "data",
+          "value": 1.3
+        }
+      ]
+    },
+    {
+      "id": "neural_arch",
+      "branch": "computing",
+      "tier": 3,
+      "cost": {
+        "data": 1000,
+        "energy": 8000,
+        "crystal": 500
+      },
+      "requires": [
+        "data_eff_1"
+      ],
+      "effects": [
+        {
+          "type": "unlock",
+          "target": "neural_hub",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "research_speed",
+      "branch": "computing",
+      "tier": 3,
+      "cost": {
+        "data": 1000,
+        "energy": 8000
+      },
+      "requires": [
+        "data_eff_1"
+      ],
+      "effects": [
+        {
+          "type": "cost_mult",
+          "target": "tech",
+          "value": 0.85
+        }
+      ]
+    },
+    {
+      "id": "data_eff_2",
+      "branch": "computing",
+      "tier": 4,
+      "cost": {
+        "data": 3000,
+        "energy": 25000,
+        "alloy": 400
+      },
+      "requires": [
+        "neural_arch"
+      ],
+      "effects": [
+        {
+          "type": "production_mult",
+          "target": "data",
+          "value": 1.5
+        }
+      ]
+    },
+    {
+      "id": "holographic_computing",
+      "branch": "computing",
+      "tier": 5,
+      "cost": {
+        "data": 10000,
+        "energy": 150000,
+        "alloy": 3000,
+        "dark": 15
+      },
+      "requires": [
+        "data_eff_2"
+      ],
+      "effects": [
+        {
+          "type": "unlock",
+          "target": "holographic_core",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "military_basic",
+      "branch": "military",
+      "tier": 1,
+      "cost": {
+        "data": 150,
+        "energy": 1000,
+        "alloy": 50
+      },
+      "effects": [
+        {
+          "type": "unlock",
+          "target": "barracks",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "weapon_upg",
+      "branch": "military",
+      "tier": 2,
+      "cost": {
+        "data": 500,
+        "energy": 3000,
+        "alloy": 200
+      },
+      "requires": [
+        "military_basic"
+      ],
+      "effects": [
+        {
+          "type": "combat_mult",
+          "target": "attack",
+          "value": 1.2
+        }
+      ]
+    },
+    {
+      "id": "armor_upg",
+      "branch": "military",
+      "tier": 2,
+      "cost": {
+        "data": 500,
+        "energy": 3000,
+        "alloy": 200
+      },
+      "requires": [
+        "military_basic"
+      ],
+      "effects": [
+        {
+          "type": "combat_mult",
+          "target": "defense",
+          "value": 1.2
+        }
+      ]
+    },
+    {
+      "id": "adv_units",
+      "branch": "military",
+      "tier": 3,
+      "cost": {
+        "data": 1500,
+        "energy": 10000,
+        "alloy": 500,
+        "dark": 5
+      },
+      "requires": [
+        "weapon_upg",
+        "armor_upg"
+      ],
+      "effects": [
+        {
+          "type": "unlock",
+          "target": "advanced_units",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "parallel_training_1",
+      "branch": "military",
+      "tier": 3,
+      "cost": {
+        "data": 800,
+        "energy": 6000,
+        "alloy": 300
+      },
+      "requires": [
+        "military_basic"
+      ],
+      "effects": [
+        {
+          "type": "training_slot",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "parallel_training_2",
+      "branch": "military",
+      "tier": 4,
+      "cost": {
+        "data": 2500,
+        "energy": 20000,
+        "alloy": 500
+      },
+      "requires": [
+        "parallel_training_1"
+      ],
+      "effects": [
+        {
+          "type": "training_slot",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "crystal_growth",
+      "branch": "crystallography",
+      "tier": 1,
+      "cost": {
+        "data": 60,
+        "energy": 400
+      },
+      "requires": [
+        "refine_tech"
+      ],
+      "effects": [
+        {
+          "type": "unlock",
+          "target": "crystal_nursery",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "deep_crystal_mining",
+      "branch": "crystallography",
+      "tier": 3,
+      "cost": {
+        "data": 500,
+        "energy": 4000,
+        "crystal": 200
+      },
+      "requires": [
+        "crystal_eff_1"
+      ],
+      "effects": [
+        {
+          "type": "unlock",
+          "target": "deep_crystal_drill",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "crystal_eff_2",
+      "branch": "crystallography",
+      "tier": 4,
+      "cost": {
+        "data": 1500,
+        "energy": 18000,
+        "crystal": 500
+      },
+      "requires": [
+        "deep_crystal_mining"
+      ],
+      "effects": [
+        {
+          "type": "production_mult",
+          "target": "crystal",
+          "value": 1.4
+        }
+      ]
+    },
+    {
+      "id": "silicon_ring_theory",
+      "branch": "crystallography",
+      "tier": 5,
+      "cost": {
+        "data": 6000,
+        "energy": 100000,
+        "crystal": 3000,
+        "alloy": 1500
+      },
+      "requires": [
+        "crystal_eff_2"
+      ],
+      "effects": [
+        {
+          "type": "unlock",
+          "target": "silicon_ring",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "explore_basic",
+      "branch": "exploration",
+      "tier": 1,
+      "cost": {
+        "data": 100,
+        "energy": 800
+      },
+      "effects": []
+    },
+    {
+      "id": "explore_range_1",
+      "branch": "exploration",
+      "tier": 2,
+      "cost": {
+        "data": 400,
+        "energy": 4000
+      },
+      "requires": [
+        "explore_basic"
+      ],
+      "effects": [
+        {
+          "type": "explore_mult",
+          "value": 1.3
+        }
+      ]
+    },
+    {
+      "id": "explore_range_2",
+      "branch": "exploration",
+      "tier": 3,
+      "cost": {
+        "data": 2000,
+        "energy": 15000,
+        "alloy": 300
+      },
+      "requires": [
+        "explore_range_1"
+      ],
+      "effects": [
+        {
+          "type": "explore_mult",
+          "value": 1.5
+        }
+      ]
+    },
+    {
+      "id": "dark_detection",
+      "branch": "dark",
+      "tier": 1,
+      "cost": {
+        "data": 80,
+        "energy": 600
+      },
+      "requires": [
+        "refine_tech"
+      ],
+      "effects": [
+        {
+          "type": "unlock",
+          "target": "dark_detector",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "dark_matter_theory",
+      "branch": "dark",
+      "tier": 2,
+      "cost": {
+        "data": 800,
+        "energy": 6000,
+        "alloy": 500
+      },
+      "requires": [
+        "alloy_eff_1"
+      ],
+      "effects": [
+        {
+          "type": "unlock",
+          "target": "dark_matter_lab",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "dark_capture",
+      "branch": "dark",
+      "tier": 3,
+      "cost": {
+        "data": 3000,
+        "energy": 30000,
+        "dark": 20
+      },
+      "requires": [
+        "dark_matter_theory"
+      ],
+      "effects": [
+        {
+          "type": "unlock",
+          "target": "dark_capture_station",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "dark_eff_1",
+      "branch": "dark",
+      "tier": 4,
+      "cost": {
+        "data": 2500,
+        "energy": 20000,
+        "dark": 10
+      },
+      "requires": [
+        "dark_matter_theory"
+      ],
+      "effects": [
+        {
+          "type": "production_mult",
+          "target": "dark",
+          "value": 1.4
+        }
+      ]
+    },
+    {
+      "id": "dark_singularity_well_theory",
+      "branch": "dark",
+      "tier": 5,
+      "cost": {
+        "data": 10000,
+        "energy": 150000,
+        "dark": 50,
+        "alloy": 5000
+      },
+      "requires": [
+        "dark_capture",
+        "dark_eff_1"
+      ],
+      "effects": [
+        {
+          "type": "unlock",
+          "target": "dark_singularity_well",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "singularity_theory",
+      "branch": "singularity",
+      "tier": 1,
+      "cost": {
+        "data": 5000,
+        "energy": 50000,
+        "dark": 10
+      },
+      "requires": [
+        "dyson_theory",
+        "dark_matter_theory"
+      ],
+      "effects": []
+    },
+    {
+      "id": "prestige_boost",
+      "branch": "singularity",
+      "tier": 2,
+      "cost": {
+        "data": 20000,
+        "energy": 200000,
+        "dark": 30
+      },
+      "requires": [
+        "singularity_theory"
+      ],
+      "effects": [
+        {
+          "type": "prestige_mult",
+          "value": 1.5
+        }
+      ]
+    },
+    {
+      "id": "offline_enhance",
+      "branch": "singularity",
+      "tier": 2,
+      "cost": {
+        "data": 10000,
+        "energy": 100000
+      },
+      "requires": [
+        "singularity_theory"
+      ],
+      "effects": [
+        {
+          "type": "offline_bonus",
+          "value": 1.2
+        }
+      ]
+    },
+    {
+      "id": "stellar_charting",
+      "branch": "exploration",
+      "tier": 4,
+      "cost": {
+        "data": 8000,
+        "energy": 60000,
+        "alloy": 1500
+      },
+      "requires": [
+        "explore_range_2"
+      ],
+      "effects": [
+        {
+          "type": "explore_mult",
+          "value": 1.4
+        }
+      ]
+    },
+    {
+      "id": "wormhole_stabilization",
+      "branch": "exploration",
+      "tier": 5,
+      "cost": {
+        "data": 20000,
+        "energy": 200000,
+        "dark": 30
+      },
+      "requires": [
+        "stellar_charting"
+      ],
+      "effects": [
+        {
+          "type": "explore_mult",
+          "value": 1.5
+        }
+      ]
+    },
+    {
+      "id": "fleet_logistics",
+      "branch": "military",
+      "tier": 5,
+      "cost": {
+        "data": 6000,
+        "energy": 50000,
+        "alloy": 2000,
+        "dark": 10
+      },
+      "requires": [
+        "adv_units"
+      ],
+      "effects": [
+        {
+          "type": "combat_mult",
+          "target": "attack",
+          "value": 1.3
+        },
+        {
+          "type": "combat_mult",
+          "target": "defense",
+          "value": 1.3
+        }
+      ]
+    },
+    {
+      "id": "dark_resonance",
+      "branch": "dark",
+      "tier": 5,
+      "cost": {
+        "data": 15000,
+        "energy": 120000,
+        "dark": 80
+      },
+      "requires": [
+        "dark_singularity_well_theory"
+      ],
+      "effects": [
+        {
+          "type": "production_mult",
+          "target": "dark",
+          "value": 1.5
+        }
+      ]
+    },
+    {
+      "id": "starcluster_charting",
+      "branch": "exploration",
+      "tier": 6,
+      "cost": {
+        "data": 100000,
+        "energy": 2000000,
+        "dark": 150
+      },
+      "requires": [
+        "wormhole_stabilization"
+      ],
+      "effects": [
+        {
+          "type": "explore_mult",
+          "value": 1.3
+        }
+      ]
+    },
+    {
+      "id": "flagship_doctrine",
+      "branch": "military",
+      "tier": 6,
+      "cost": {
+        "data": 60000,
+        "energy": 1500000,
+        "alloy": 50000,
+        "dark": 120
+      },
+      "requires": [
+        "fleet_logistics"
+      ],
+      "effects": [
+        {
+          "type": "combat_mult",
+          "target": "attack",
+          "value": 1.25
+        },
+        {
+          "type": "combat_mult",
+          "target": "defense",
+          "value": 1.25
+        }
+      ]
+    },
+    {
+      "id": "dark_amplifier",
+      "branch": "dark",
+      "tier": 6,
+      "cost": {
+        "data": 80000,
+        "energy": 3000000,
+        "dark": 300
+      },
+      "requires": [
+        "dark_resonance"
+      ],
+      "effects": [
+        {
+          "type": "production_mult",
+          "target": "dark",
+          "value": 1.3
+        }
+      ]
+    },
+    {
+      "id": "precursor_memory",
+      "branch": "computing",
+      "tier": 6,
+      "cost": {
+        "data": 150000,
+        "energy": 2500000,
+        "dark": 200
+      },
+      "requires": [
+        "singularity_theory"
+      ],
+      "effects": [
+        {
+          "type": "production_mult",
+          "target": "data",
+          "value": 1.4
+        }
+      ]
+    },
+    {
+      "id": "arm_navigation",
+      "branch": "exploration",
+      "tier": 7,
+      "cost": {
+        "data": 1000000,
+        "energy": 4000000,
+        "dark": 250
+      },
+      "requires": [
+        "starcluster_charting"
+      ],
+      "effects": [
+        {
+          "type": "explore_mult",
+          "value": 1.3
+        }
+      ]
+    },
+    {
+      "id": "armada_tactics",
+      "branch": "military",
+      "tier": 7,
+      "cost": {
+        "data": 80000,
+        "energy": 3000000,
+        "alloy": 150000,
+        "dark": 220
+      },
+      "requires": [
+        "flagship_doctrine"
+      ],
+      "effects": [
+        {
+          "type": "combat_mult",
+          "target": "attack",
+          "value": 1.25
+        },
+        {
+          "type": "combat_mult",
+          "target": "defense",
+          "value": 1.25
+        }
+      ]
+    },
+    {
+      "id": "dark_harvester",
+      "branch": "dark",
+      "tier": 7,
+      "cost": {
+        "data": 1200000,
+        "energy": 6000000,
+        "dark": 400
+      },
+      "requires": [
+        "dark_amplifier"
+      ],
+      "effects": [
+        {
+          "type": "production_mult",
+          "target": "dark",
+          "value": 1.3
+        }
+      ]
+    },
+    {
+      "id": "neural_archive",
+      "branch": "computing",
+      "tier": 7,
+      "cost": {
+        "data": 1800000,
+        "energy": 5000000,
+        "dark": 280
+      },
+      "requires": [
+        "precursor_memory"
+      ],
+      "effects": [
+        {
+          "type": "production_mult",
+          "target": "data",
+          "value": 1.4
+        }
+      ]
+    },
+    {
+      "id": "galaxy_charting",
+      "branch": "exploration",
+      "tier": 8,
+      "cost": {
+        "data": 20000000,
+        "energy": 100000000,
+        "dark": 550
+      },
+      "requires": [
+        "arm_navigation"
+      ],
+      "effects": [
+        {
+          "type": "explore_mult",
+          "value": 1.3
+        }
+      ]
+    },
+    {
+      "id": "galaxy_command",
+      "branch": "military",
+      "tier": 8,
+      "cost": {
+        "data": 1600000,
+        "energy": 75000000,
+        "alloy": 3500000,
+        "dark": 480
+      },
+      "requires": [
+        "armada_tactics"
+      ],
+      "effects": [
+        {
+          "type": "combat_mult",
+          "target": "attack",
+          "value": 1.25
+        },
+        {
+          "type": "combat_mult",
+          "target": "defense",
+          "value": 1.25
+        }
+      ]
+    },
+    {
+      "id": "dark_web",
+      "branch": "dark",
+      "tier": 8,
+      "cost": {
+        "data": 25000000,
+        "energy": 150000000,
+        "dark": 900
+      },
+      "requires": [
+        "dark_harvester"
+      ],
+      "effects": [
+        {
+          "type": "production_mult",
+          "target": "dark",
+          "value": 1.3
+        }
+      ]
+    },
+    {
+      "id": "galaxy_archive",
+      "branch": "computing",
+      "tier": 8,
+      "cost": {
+        "data": 40000000,
+        "energy": 120000000,
+        "dark": 600
+      },
+      "requires": [
+        "neural_archive"
+      ],
+      "effects": [
+        {
+          "type": "production_mult",
+          "target": "data",
+          "value": 1.4
+        }
+      ]
+    },
+    {
+      "id": "void_charting",
+      "branch": "exploration",
+      "tier": 9,
+      "cost": {
+        "data": 50000000,
+        "energy": 250000000,
+        "dark": 1400
+      },
+      "requires": [
+        "galaxy_charting"
+      ],
+      "effects": [
+        {
+          "type": "explore_mult",
+          "value": 1.3
+        }
+      ]
+    },
+    {
+      "id": "void_command",
+      "branch": "military",
+      "tier": 9,
+      "cost": {
+        "data": 4000000,
+        "energy": 190000000,
+        "alloy": 8750000,
+        "dark": 1200
+      },
+      "requires": [
+        "galaxy_command"
+      ],
+      "effects": [
+        {
+          "type": "combat_mult",
+          "target": "attack",
+          "value": 1.25
+        },
+        {
+          "type": "combat_mult",
+          "target": "defense",
+          "value": 1.25
+        }
+      ]
+    },
+    {
+      "id": "dark_veil",
+      "branch": "dark",
+      "tier": 9,
+      "cost": {
+        "data": 62500000,
+        "energy": 375000000,
+        "dark": 2250
+      },
+      "requires": [
+        "dark_web"
+      ],
+      "effects": [
+        {
+          "type": "production_mult",
+          "target": "dark",
+          "value": 1.3
+        }
+      ]
+    },
+    {
+      "id": "void_archive",
+      "branch": "computing",
+      "tier": 9,
+      "cost": {
+        "data": 100000000,
+        "energy": 300000000,
+        "dark": 1500
+      },
+      "requires": [
+        "galaxy_archive"
+      ],
+      "effects": [
+        {
+          "type": "production_mult",
+          "target": "data",
+          "value": 1.4
+        }
+      ]
+    }
+  ],
+  "pve": {
+    "strongholds": [
+      {
+        "id": "raider_1",
+        "name": "小型掠夺者营地",
+        "type": "raider",
+        "tier": 1,
+        "requires": "node_orbit",
+        "enemies": [
+          {
+            "unitId": "raider_grunt",
+            "attack": 6,
+            "defense": 3,
+            "hp": 40,
+            "count": 5,
+            "counteredBy": [
+              "assault"
+            ]
+          }
+        ],
+        "rewards": {
+          "energy": 500,
+          "alloy": 50,
+          "data": 20,
+          "relicChance": 0.1
+        },
+        "idle": {
+          "energy": 2,
+          "alloy": 0.2
+        }
+      },
+      {
+        "id": "raider_2",
+        "name": "掠夺者据点",
+        "type": "raider",
+        "tier": 2,
+        "requires": "node_inner",
+        "enemies": [
+          {
+            "unitId": "raider_grunt",
+            "attack": 10,
+            "defense": 5,
+            "hp": 60,
+            "count": 8,
+            "counteredBy": [
+              "assault"
+            ]
+          },
+          {
+            "unitId": "raider_gun",
+            "attack": 15,
+            "defense": 4,
+            "hp": 50,
+            "count": 4,
+            "counteredBy": [
+              "guard",
+              "psionic"
+            ]
+          }
+        ],
+        "rewards": {
+          "energy": 3000,
+          "alloy": 200,
+          "data": 100,
+          "relicChance": 0.15
+        },
+        "idle": {
+          "energy": 10,
+          "alloy": 1,
+          "data": 0.5
+        }
+      },
+      {
+        "id": "raider_3",
+        "name": "掠夺者要塞",
+        "type": "raider",
+        "tier": 3,
+        "requires": "node_outer",
+        "enemies": [
+          {
+            "unitId": "raider_gun",
+            "attack": 25,
+            "defense": 8,
+            "hp": 100,
+            "count": 10,
+            "counteredBy": [
+              "guard",
+              "psionic"
+            ]
+          },
+          {
+            "unitId": "raider_tank",
+            "attack": 40,
+            "defense": 20,
+            "hp": 300,
+            "count": 3,
+            "counteredBy": [
+              "heavy"
+            ]
+          }
+        ],
+        "rewards": {
+          "energy": 20000,
+          "alloy": 1000,
+          "data": 500,
+          "dark": 2,
+          "relicChance": 0.25,
+          "relicRarityBias": 0.3
+        },
+        "idle": {
+          "energy": 50,
+          "alloy": 5,
+          "data": 3
+        }
+      },
+      {
+        "id": "beast_1",
+        "name": "晶体蛛群",
+        "type": "beast",
+        "tier": 1,
+        "requires": "node_inner",
+        "enemies": [
+          {
+            "unitId": "crystal_spider",
+            "attack": 8,
+            "defense": 2,
+            "hp": 30,
+            "count": 12,
+            "counteredBy": [
+              "assault"
+            ]
+          }
+        ],
+        "rewards": {
+          "crystal": 500,
+          "energy": 300,
+          "relicChance": 0.12
+        },
+        "idle": {
+          "energy": 3,
+          "alloy": 0.3
+        }
+      },
+      {
+        "id": "beast_2",
+        "name": "虚空巨兽",
+        "type": "beast",
+        "tier": 3,
+        "requires": "node_deep",
+        "enemies": [
+          {
+            "unitId": "void_beast",
+            "attack": 80,
+            "defense": 30,
+            "hp": 5000,
+            "count": 1,
+            "counteredBy": [
+              "guard",
+              "psionic"
+            ]
+          }
+        ],
+        "rewards": {
+          "energy": 50000,
+          "alloy": 2000,
+          "data": 1000,
+          "dark": 10,
+          "relicChance": 0.4,
+          "relicRarityBias": 0.5
+        },
+        "idle": {
+          "energy": 100,
+          "alloy": 10,
+          "data": 8,
+          "dark": 0.5
+        }
+      },
+      {
+        "id": "ruin_1",
+        "name": "先驱者遗迹",
+        "type": "ruin",
+        "tier": 2,
+        "requires": "node_outer",
+        "enemies": [
+          {
+            "unitId": "ancient_drone",
+            "attack": 18,
+            "defense": 10,
+            "hp": 80,
+            "count": 6,
+            "counteredBy": [
+              "heavy"
+            ]
+          }
+        ],
+        "rewards": {
+          "data": 500,
+          "energy": 2000,
+          "alloy": 300,
+          "relicChance": 0.3,
+          "relicRarityBias": 0.4
+        },
+        "idle": {
+          "data": 5,
+          "energy": 15,
+          "alloy": 2
+        }
+      },
+      {
+        "id": "ruin_2",
+        "name": "奇点圣殿",
+        "type": "ruin",
+        "tier": 4,
+        "requires": "node_deep",
+        "enemies": [
+          {
+            "unitId": "temple_guardian",
+            "attack": 120,
+            "defense": 80,
+            "hp": 8000,
+            "count": 2,
+            "counteredBy": [
+              "guard",
+              "psionic"
+            ]
+          },
+          {
+            "unitId": "ancient_drone",
+            "attack": 40,
+            "defense": 20,
+            "hp": 200,
+            "count": 10,
+            "counteredBy": [
+              "heavy"
+            ]
+          }
+        ],
+        "rewards": {
+          "energy": 200000,
+          "alloy": 5000,
+          "data": 5000,
+          "dark": 30,
+          "relicChance": 0.6,
+          "relicRarityBias": 0.8
+        },
+        "idle": {
+          "energy": 300,
+          "alloy": 30,
+          "data": 20,
+          "dark": 1
+        }
+      },
+      {
+        "id": "silencer_1",
+        "name": "沉默者前哨站",
+        "type": "silencer",
+        "tier": 4,
+        "requires": "node_deep",
+        "enemies": [
+          {
+            "unitId": "silencer_scout",
+            "attack": 100,
+            "defense": 50,
+            "hp": 1500,
+            "count": 5,
+            "counteredBy": [
+              "assault"
+            ]
+          },
+          {
+            "unitId": "silencer_elite",
+            "attack": 200,
+            "defense": 100,
+            "hp": 4000,
+            "count": 2,
+            "counteredBy": [
+              "heavy"
+            ]
+          }
+        ],
+        "rewards": {
+          "energy": 500000,
+          "alloy": 10000,
+          "data": 10000,
+          "dark": 50,
+          "relicChance": 0.8,
+          "relicRarityBias": 1
+        },
+        "idle": {
+          "energy": 500,
+          "alloy": 50,
+          "data": 40,
+          "dark": 2
+        }
+      },
+      {
+        "id": "raider_4",
+        "name": "掠夺者星际舰队",
+        "type": "raider",
+        "tier": 5,
+        "requires": "node_stellar_gate",
+        "enemies": [
+          {
+            "unitId": "raider_gun",
+            "attack": 50,
+            "defense": 16,
+            "hp": 200,
+            "count": 12,
+            "counteredBy": [
+              "guard",
+              "psionic"
+            ]
+          },
+          {
+            "unitId": "raider_tank",
+            "attack": 80,
+            "defense": 40,
+            "hp": 600,
+            "count": 4,
+            "counteredBy": [
+              "heavy"
+            ]
+          }
+        ],
+        "rewards": {
+          "energy": 2000000,
+          "alloy": 20000,
+          "data": 10000,
+          "dark": 8,
+          "relicChance": 0.5,
+          "relicRarityBias": 0.9
+        },
+        "idle": {
+          "energy": 800,
+          "alloy": 80,
+          "data": 60,
+          "dark": 0.8
+        }
+      },
+      {
+        "id": "beast_3",
+        "name": "晶背巨兽群",
+        "type": "beast",
+        "tier": 4,
+        "requires": "node_stellar_mine",
+        "enemies": [
+          {
+            "unitId": "crystal_back_beast",
+            "attack": 40,
+            "defense": 12,
+            "hp": 300,
+            "count": 20,
+            "counteredBy": [
+              "assault"
+            ]
+          }
+        ],
+        "rewards": {
+          "crystal": 20000,
+          "energy": 1000000,
+          "relicChance": 0.45
+        },
+        "idle": {
+          "energy": 600,
+          "alloy": 60
+        }
+      },
+      {
+        "id": "ruin_3",
+        "name": "先驱星系档案馆",
+        "type": "ruin",
+        "tier": 4,
+        "requires": "node_stellar_forge",
+        "enemies": [
+          {
+            "unitId": "ancient_drone",
+            "attack": 36,
+            "defense": 20,
+            "hp": 160,
+            "count": 16,
+            "counteredBy": [
+              "heavy"
+            ]
+          }
+        ],
+        "rewards": {
+          "data": 150000,
+          "energy": 800000,
+          "relicChance": 0.5,
+          "relicRarityBias": 0.7
+        },
+        "idle": {
+          "data": 90,
+          "energy": 400
+        }
+      },
+      {
+        "id": "silencer_2",
+        "name": "沉默者殖民舰",
+        "type": "silencer",
+        "tier": 4,
+        "requires": "node_stellar_dead",
+        "enemies": [
+          {
+            "unitId": "silencer_scout",
+            "attack": 200,
+            "defense": 100,
+            "hp": 3000,
+            "count": 8,
+            "counteredBy": [
+              "assault"
+            ]
+          },
+          {
+            "unitId": "silencer_elite",
+            "attack": 400,
+            "defense": 200,
+            "hp": 8000,
+            "count": 3,
+            "counteredBy": [
+              "heavy"
+            ]
+          }
+        ],
+        "rewards": {
+          "energy": 1200000,
+          "data": 20000,
+          "dark": 60,
+          "relicChance": 0.7,
+          "relicRarityBias": 0.9
+        },
+        "idle": {
+          "energy": 1000,
+          "data": 100,
+          "dark": 2.5
+        }
+      },
+      {
+        "id": "raider_5",
+        "name": "掠夺者母巢",
+        "type": "raider",
+        "tier": 5,
+        "requires": "node_stellar_core",
+        "enemies": [
+          {
+            "unitId": "raider_grunt",
+            "attack": 60,
+            "defense": 30,
+            "hp": 400,
+            "count": 30,
+            "counteredBy": [
+              "assault"
+            ]
+          },
+          {
+            "unitId": "raider_tank",
+            "attack": 120,
+            "defense": 60,
+            "hp": 1000,
+            "count": 6,
+            "counteredBy": [
+              "heavy"
+            ]
+          }
+        ],
+        "rewards": {
+          "energy": 5000000,
+          "alloy": 50000,
+          "dark": 12,
+          "relicChance": 0.55
+        },
+        "idle": {
+          "energy": 2000,
+          "alloy": 150,
+          "dark": 1.2
+        }
+      },
+      {
+        "id": "beast_4",
+        "name": "虚空巨兽母体",
+        "type": "beast",
+        "tier": 5,
+        "requires": "node_stellar_core",
+        "enemies": [
+          {
+            "unitId": "void_matriarch",
+            "attack": 500,
+            "defense": 150,
+            "hp": 20000,
+            "count": 1,
+            "counteredBy": [
+              "guard",
+              "psionic"
+            ]
+          },
+          {
+            "unitId": "void_hatchling",
+            "attack": 90,
+            "defense": 30,
+            "hp": 500,
+            "count": 12,
+            "counteredBy": [
+              "assault"
+            ]
+          }
+        ],
+        "rewards": {
+          "energy": 3000000,
+          "crystal": 50000,
+          "dark": 15,
+          "relicChance": 0.6,
+          "relicRarityBias": 1
+        },
+        "idle": {
+          "energy": 1500,
+          "alloy": 120,
+          "dark": 1.5
+        }
+      },
+      {
+        "id": "ruin_4",
+        "name": "奇点方舟",
+        "type": "ruin",
+        "tier": 5,
+        "requires": "node_stellar_edge",
+        "enemies": [
+          {
+            "unitId": "temple_guardian",
+            "attack": 300,
+            "defense": 200,
+            "hp": 16000,
+            "count": 4,
+            "counteredBy": [
+              "guard",
+              "psionic"
+            ]
+          },
+          {
+            "unitId": "ancient_drone",
+            "attack": 80,
+            "defense": 40,
+            "hp": 400,
+            "count": 20,
+            "counteredBy": [
+              "heavy"
+            ]
+          }
+        ],
+        "rewards": {
+          "data": 800000,
+          "energy": 5000000,
+          "dark": 25,
+          "relicChance": 0.75,
+          "relicRarityBias": 1
+        },
+        "idle": {
+          "data": 250,
+          "energy": 2000,
+          "dark": 2
+        }
+      },
+      {
+        "id": "silencer_3",
+        "name": "沉默者旗舰",
+        "type": "silencer",
+        "tier": 5,
+        "requires": "node_stellar_edge",
+        "enemies": [
+          {
+            "unitId": "silencer_flagship",
+            "attack": 1200,
+            "defense": 400,
+            "hp": 50000,
+            "count": 1,
+            "counteredBy": [
+              "guard",
+              "psionic"
+            ]
+          },
+          {
+            "unitId": "silencer_elite",
+            "attack": 500,
+            "defense": 250,
+            "hp": 10000,
+            "count": 6,
+            "counteredBy": [
+              "heavy"
+            ]
+          }
+        ],
+        "rewards": {
+          "energy": 20000000,
+          "crystal": 100000,
+          "alloy": 100000,
+          "data": 100000,
+          "dark": 100,
+          "relicChance": 0.9,
+          "relicRarityBias": 1
+        },
+        "idle": {
+          "energy": 5000,
+          "alloy": 300,
+          "data": 400,
+          "dark": 4
+        }
+      },
+      {
+        "id": "raider_6",
+        "name": "星团劫掠舰队",
+        "type": "raider",
+        "tier": 6,
+        "requires": "node_cluster_gate",
+        "enemies": [
+          {
+            "unitId": "raider_pirate",
+            "attack": 120,
+            "defense": 60,
+            "hp": 800,
+            "count": 60,
+            "counteredBy": [
+              "assault"
+            ]
+          },
+          {
+            "unitId": "raider_marauder",
+            "attack": 240,
+            "defense": 120,
+            "hp": 2400,
+            "count": 30,
+            "counteredBy": [
+              "heavy"
+            ]
+          },
+          {
+            "unitId": "raider_warden",
+            "attack": 300,
+            "defense": 180,
+            "hp": 8000,
+            "count": 8,
+            "counteredBy": [
+              "guard",
+              "psionic"
+            ]
+          }
+        ],
+        "rewards": {
+          "energy": 8000000,
+          "alloy": 80000,
+          "dark": 15,
+          "relicChance": 0.6
+        },
+        "idle": {
+          "energy": 3500,
+          "alloy": 200,
+          "dark": 2
+        }
+      },
+      {
+        "id": "beast_5",
+        "name": "晶云织网兽",
+        "type": "beast",
+        "tier": 6,
+        "requires": "node_cluster_swarm",
+        "enemies": [
+          {
+            "unitId": "crystal_matriarch",
+            "attack": 1000,
+            "defense": 350,
+            "hp": 80000,
+            "count": 1,
+            "counteredBy": [
+              "guard",
+              "psionic"
+            ]
+          },
+          {
+            "unitId": "crystal_weaver",
+            "attack": 250,
+            "defense": 100,
+            "hp": 3000,
+            "count": 24,
+            "counteredBy": [
+              "assault"
+            ]
+          },
+          {
+            "unitId": "crystal_spawn",
+            "attack": 150,
+            "defense": 60,
+            "hp": 1500,
+            "count": 48,
+            "counteredBy": [
+              "heavy"
+            ]
+          },
+          {
+            "unitId": "crystal_lurker",
+            "attack": 200,
+            "defense": 90,
+            "hp": 2500,
+            "count": 24,
+            "counteredBy": [
+              "assault"
+            ]
+          }
+        ],
+        "rewards": {
+          "energy": 5000000,
+          "crystal": 150000,
+          "dark": 20,
+          "relicChance": 0.65,
+          "relicRarityBias": 1
+        },
+        "idle": {
+          "energy": 4000,
+          "alloy": 250,
+          "dark": 2.5
+        }
+      },
+      {
+        "id": "ruin_5",
+        "name": "先驱者信标",
+        "type": "ruin",
+        "tier": 6,
+        "requires": "node_cluster_ruin",
+        "enemies": [
+          {
+            "unitId": "archon_core",
+            "attack": 900,
+            "defense": 600,
+            "hp": 120000,
+            "count": 1,
+            "counteredBy": [
+              "guard",
+              "psionic"
+            ]
+          },
+          {
+            "unitId": "beacon_sentinel",
+            "attack": 450,
+            "defense": 320,
+            "hp": 30000,
+            "count": 4,
+            "counteredBy": [
+              "heavy"
+            ]
+          },
+          {
+            "unitId": "precursor_warden",
+            "attack": 300,
+            "defense": 180,
+            "hp": 9000,
+            "count": 14,
+            "counteredBy": [
+              "assault"
+            ]
+          },
+          {
+            "unitId": "ruin_drone",
+            "attack": 150,
+            "defense": 80,
+            "hp": 1500,
+            "count": 16,
+            "counteredBy": [
+              "heavy"
+            ]
+          }
+        ],
+        "rewards": {
+          "energy": 6000000,
+          "data": 1200000,
+          "dark": 30,
+          "relicChance": 0.8,
+          "relicRarityBias": 1
+        },
+        "idle": {
+          "energy": 4500,
+          "data": 400,
+          "dark": 3
+        }
+      },
+      {
+        "id": "raider_7",
+        "name": "母巢星团舰群",
+        "type": "raider",
+        "tier": 6,
+        "requires": "node_cluster_heart",
+        "enemies": [
+          {
+            "unitId": "hive_tyrant",
+            "attack": 1500,
+            "defense": 900,
+            "hp": 180000,
+            "count": 1,
+            "counteredBy": [
+              "guard",
+              "psionic"
+            ]
+          },
+          {
+            "unitId": "brood_carrier",
+            "attack": 700,
+            "defense": 450,
+            "hp": 60000,
+            "count": 2,
+            "counteredBy": [
+              "heavy"
+            ]
+          },
+          {
+            "unitId": "raider_elite_flt",
+            "attack": 350,
+            "defense": 200,
+            "hp": 2500,
+            "count": 40,
+            "counteredBy": [
+              "assault"
+            ]
+          },
+          {
+            "unitId": "hive_scout",
+            "attack": 180,
+            "defense": 90,
+            "hp": 1000,
+            "count": 50,
+            "counteredBy": [
+              "assault"
+            ]
+          }
+        ],
+        "rewards": {
+          "energy": 8000000,
+          "alloy": 500000,
+          "dark": 20,
+          "relicChance": 0.65
+        },
+        "idle": {
+          "energy": 6000,
+          "alloy": 400,
+          "dark": 5
+        }
+      },
+      {
+        "id": "silencer_4",
+        "name": "沉默者母港",
+        "type": "silencer",
+        "tier": 6,
+        "requires": "node_cluster_silence",
+        "enemies": [
+          {
+            "unitId": "motherport_bastion",
+            "attack": 2000,
+            "defense": 700,
+            "hp": 300000,
+            "count": 1,
+            "counteredBy": [
+              "guard",
+              "psionic"
+            ]
+          },
+          {
+            "unitId": "silencer_sentinel",
+            "attack": 800,
+            "defense": 400,
+            "hp": 40000,
+            "count": 4,
+            "counteredBy": [
+              "heavy"
+            ]
+          },
+          {
+            "unitId": "silencer_warden",
+            "attack": 500,
+            "defense": 300,
+            "hp": 20000,
+            "count": 6,
+            "counteredBy": [
+              "assault"
+            ]
+          }
+        ],
+        "rewards": {
+          "energy": 40000000,
+          "crystal": 200000,
+          "alloy": 200000,
+          "data": 300000,
+          "dark": 150,
+          "relicChance": 0.9,
+          "relicRarityBias": 1
+        },
+        "idle": {
+          "energy": 10000,
+          "alloy": 600,
+          "data": 800,
+          "dark": 8
+        }
+      },
+      {
+        "id": "raider_8",
+        "name": "臂缘劫掠王庭",
+        "type": "raider",
+        "tier": 7,
+        "requires": "node_arm_gate",
+        "enemies": [
+          {
+            "unitId": "raider_pirate",
+            "attack": 120,
+            "defense": 60,
+            "hp": 800,
+            "count": 200,
+            "counteredBy": [
+              "assault"
+            ]
+          },
+          {
+            "unitId": "raider_marauder",
+            "attack": 240,
+            "defense": 120,
+            "hp": 2400,
+            "count": 80,
+            "counteredBy": [
+              "heavy"
+            ]
+          },
+          {
+            "unitId": "raider_warden",
+            "attack": 300,
+            "defense": 180,
+            "hp": 8000,
+            "count": 20,
+            "counteredBy": [
+              "guard",
+              "psionic"
+            ]
+          },
+          {
+            "unitId": "raider_dreadnought",
+            "attack": 2400,
+            "defense": 1400,
+            "hp": 60000,
+            "count": 3,
+            "counteredBy": [
+              "guard",
+              "psionic"
+            ]
+          }
+        ],
+        "rewards": {
+          "energy": 20000000,
+          "alloy": 200000,
+          "dark": 25,
+          "relicChance": 0.65
+        },
+        "idle": {
+          "energy": 12000,
+          "alloy": 500,
+          "dark": 3
+        }
+      },
+      {
+        "id": "beast_6",
+        "name": "摇篮噬星兽",
+        "type": "beast",
+        "tier": 7,
+        "requires": "node_arm_cradle",
+        "enemies": [
+          {
+            "unitId": "crystal_matriarch",
+            "attack": 1000,
+            "defense": 350,
+            "hp": 80000,
+            "count": 3,
+            "counteredBy": [
+              "guard",
+              "psionic"
+            ]
+          },
+          {
+            "unitId": "crystal_weaver",
+            "attack": 250,
+            "defense": 100,
+            "hp": 3000,
+            "count": 50,
+            "counteredBy": [
+              "assault"
+            ]
+          },
+          {
+            "unitId": "crystal_spawn",
+            "attack": 150,
+            "defense": 60,
+            "hp": 1500,
+            "count": 90,
+            "counteredBy": [
+              "heavy"
+            ]
+          },
+          {
+            "unitId": "void_leviathan",
+            "attack": 2500,
+            "defense": 900,
+            "hp": 400000,
+            "count": 1,
+            "counteredBy": [
+              "guard",
+              "psionic"
+            ]
+          }
+        ],
+        "rewards": {
+          "energy": 15000000,
+          "crystal": 400000,
+          "dark": 30,
+          "relicChance": 0.7,
+          "relicRarityBias": 1
+        },
+        "idle": {
+          "energy": 13000,
+          "alloy": 600,
+          "dark": 3
+        }
+      },
+      {
+        "id": "ruin_6",
+        "name": "先驱者长堤",
+        "type": "ruin",
+        "tier": 7,
+        "requires": "node_arm_grave",
+        "enemies": [
+          {
+            "unitId": "archon_core",
+            "attack": 900,
+            "defense": 600,
+            "hp": 120000,
+            "count": 5,
+            "counteredBy": [
+              "guard",
+              "psionic"
+            ]
+          },
+          {
+            "unitId": "beacon_sentinel",
+            "attack": 450,
+            "defense": 320,
+            "hp": 30000,
+            "count": 20,
+            "counteredBy": [
+              "heavy"
+            ]
+          },
+          {
+            "unitId": "precursor_warden",
+            "attack": 300,
+            "defense": 180,
+            "hp": 9000,
+            "count": 60,
+            "counteredBy": [
+              "assault"
+            ]
+          },
+          {
+            "unitId": "ruin_drone",
+            "attack": 150,
+            "defense": 80,
+            "hp": 1500,
+            "count": 120,
+            "counteredBy": [
+              "heavy"
+            ]
+          }
+        ],
+        "rewards": {
+          "energy": 20000000,
+          "data": 4000000,
+          "dark": 40,
+          "relicChance": 0.85,
+          "relicRarityBias": 1
+        },
+        "idle": {
+          "energy": 14000,
+          "data": 1200,
+          "dark": 3.5
+        }
+      },
+      {
+        "id": "raider_9",
+        "name": "王庭舰队本队",
+        "type": "raider",
+        "tier": 7,
+        "requires": "node_arm_spine",
+        "enemies": [
+          {
+            "unitId": "hive_tyrant",
+            "attack": 1500,
+            "defense": 900,
+            "hp": 180000,
+            "count": 3,
+            "counteredBy": [
+              "guard",
+              "psionic"
+            ]
+          },
+          {
+            "unitId": "brood_carrier",
+            "attack": 700,
+            "defense": 450,
+            "hp": 60000,
+            "count": 8,
+            "counteredBy": [
+              "heavy"
+            ]
+          },
+          {
+            "unitId": "raider_elite_flt",
+            "attack": 350,
+            "defense": 200,
+            "hp": 2500,
+            "count": 120,
+            "counteredBy": [
+              "assault"
+            ]
+          },
+          {
+            "unitId": "hive_scout",
+            "attack": 180,
+            "defense": 90,
+            "hp": 1000,
+            "count": 150,
+            "counteredBy": [
+              "assault"
+            ]
+          },
+          {
+            "unitId": "raider_warden",
+            "attack": 300,
+            "defense": 180,
+            "hp": 8000,
+            "count": 20,
+            "counteredBy": [
+              "guard",
+              "psionic"
+            ]
+          }
+        ],
+        "rewards": {
+          "energy": 30000000,
+          "alloy": 1500000,
+          "dark": 35,
+          "relicChance": 0.7
+        },
+        "idle": {
+          "energy": 18000,
+          "alloy": 800,
+          "dark": 5
+        }
+      },
+      {
+        "id": "silencer_5",
+        "name": "沉默者王座",
+        "type": "silencer",
+        "tier": 7,
+        "requires": "node_arm_threshold",
+        "enemies": [
+          {
+            "unitId": "silencer_sovereign",
+            "attack": 3500,
+            "defense": 1200,
+            "hp": 3000000,
+            "count": 1,
+            "counteredBy": [
+              "guard",
+              "psionic"
+            ]
+          },
+          {
+            "unitId": "motherport_bastion",
+            "attack": 2000,
+            "defense": 700,
+            "hp": 300000,
+            "count": 1,
+            "counteredBy": [
+              "guard",
+              "psionic"
+            ]
+          },
+          {
+            "unitId": "silencer_sentinel",
+            "attack": 800,
+            "defense": 400,
+            "hp": 40000,
+            "count": 10,
+            "counteredBy": [
+              "heavy"
+            ]
+          },
+          {
+            "unitId": "silencer_warden",
+            "attack": 500,
+            "defense": 300,
+            "hp": 20000,
+            "count": 16,
+            "counteredBy": [
+              "assault"
+            ]
+          }
+        ],
+        "rewards": {
+          "energy": 150000000,
+          "crystal": 800000,
+          "alloy": 800000,
+          "data": 2000000,
+          "dark": 300,
+          "relicChance": 0.95,
+          "relicRarityBias": 1
+        },
+        "idle": {
+          "energy": 30000,
+          "alloy": 1500,
+          "data": 2500,
+          "dark": 12
+        }
+      },
+      {
+        "id": "raider_10",
+        "name": "银河帝庭",
+        "type": "raider",
+        "tier": 8,
+        "requires": "node_galaxy_gate",
+        "enemies": [
+          {
+            "unitId": "raider_pirate",
+            "attack": 120,
+            "defense": 60,
+            "hp": 800,
+            "count": 800,
+            "counteredBy": [
+              "assault"
+            ]
+          },
+          {
+            "unitId": "raider_marauder",
+            "attack": 240,
+            "defense": 120,
+            "hp": 2400,
+            "count": 400,
+            "counteredBy": [
+              "heavy"
+            ]
+          },
+          {
+            "unitId": "raider_warden",
+            "attack": 300,
+            "defense": 180,
+            "hp": 8000,
+            "count": 80,
+            "counteredBy": [
+              "guard",
+              "psionic"
+            ]
+          },
+          {
+            "unitId": "raider_dreadnought",
+            "attack": 2400,
+            "defense": 1400,
+            "hp": 60000,
+            "count": 20,
+            "counteredBy": [
+              "guard",
+              "psionic"
+            ]
+          },
+          {
+            "unitId": "hive_tyrant",
+            "attack": 1500,
+            "defense": 900,
+            "hp": 180000,
+            "count": 3,
+            "counteredBy": [
+              "guard",
+              "psionic"
+            ]
+          }
+        ],
+        "rewards": {
+          "energy": 50000000,
+          "alloy": 500000,
+          "dark": 60,
+          "relicChance": 0.7
+        },
+        "idle": {
+          "energy": 24000,
+          "alloy": 1000,
+          "dark": 6
+        }
+      },
+      {
+        "id": "beast_7",
+        "name": "噬星鲲群",
+        "type": "beast",
+        "tier": 8,
+        "requires": "node_galaxy_range",
+        "enemies": [
+          {
+            "unitId": "crystal_matriarch",
+            "attack": 1000,
+            "defense": 350,
+            "hp": 80000,
+            "count": 5,
+            "counteredBy": [
+              "guard",
+              "psionic"
+            ]
+          },
+          {
+            "unitId": "crystal_weaver",
+            "attack": 250,
+            "defense": 100,
+            "hp": 3000,
+            "count": 100,
+            "counteredBy": [
+              "assault"
+            ]
+          },
+          {
+            "unitId": "crystal_spawn",
+            "attack": 150,
+            "defense": 60,
+            "hp": 1500,
+            "count": 200,
+            "counteredBy": [
+              "heavy"
+            ]
+          },
+          {
+            "unitId": "void_leviathan",
+            "attack": 2500,
+            "defense": 900,
+            "hp": 400000,
+            "count": 3,
+            "counteredBy": [
+              "guard",
+              "psionic"
+            ]
+          },
+          {
+            "unitId": "star_whale_king",
+            "attack": 3200,
+            "defense": 1200,
+            "hp": 700000,
+            "count": 6,
+            "counteredBy": [
+              "guard",
+              "psionic"
+            ]
+          }
+        ],
+        "rewards": {
+          "energy": 40000000,
+          "crystal": 1000000,
+          "dark": 75,
+          "relicChance": 0.75,
+          "relicRarityBias": 1
+        },
+        "idle": {
+          "energy": 26000,
+          "alloy": 1200,
+          "dark": 6.5
+        }
+      },
+      {
+        "id": "ruin_7",
+        "name": "先驱者万神殿",
+        "type": "ruin",
+        "tier": 8,
+        "requires": "node_galaxy_archive",
+        "enemies": [
+          {
+            "unitId": "pantheon_core",
+            "attack": 1200,
+            "defense": 800,
+            "hp": 250000,
+            "count": 20,
+            "counteredBy": [
+              "guard",
+              "psionic"
+            ]
+          },
+          {
+            "unitId": "archon_core",
+            "attack": 900,
+            "defense": 600,
+            "hp": 120000,
+            "count": 10,
+            "counteredBy": [
+              "guard",
+              "psionic"
+            ]
+          },
+          {
+            "unitId": "beacon_sentinel",
+            "attack": 450,
+            "defense": 320,
+            "hp": 30000,
+            "count": 40,
+            "counteredBy": [
+              "heavy"
+            ]
+          },
+          {
+            "unitId": "precursor_warden",
+            "attack": 300,
+            "defense": 180,
+            "hp": 9000,
+            "count": 120,
+            "counteredBy": [
+              "assault"
+            ]
+          },
+          {
+            "unitId": "ruin_drone",
+            "attack": 150,
+            "defense": 80,
+            "hp": 1500,
+            "count": 250,
+            "counteredBy": [
+              "heavy"
+            ]
+          }
+        ],
+        "rewards": {
+          "energy": 50000000,
+          "data": 10000000,
+          "dark": 100,
+          "relicChance": 0.9,
+          "relicRarityBias": 1
+        },
+        "idle": {
+          "energy": 28000,
+          "data": 2400,
+          "dark": 7
+        }
+      },
+      {
+        "id": "raider_11",
+        "name": "帝庭裁决舰队",
+        "type": "raider",
+        "tier": 8,
+        "requires": "node_galaxy_hub",
+        "enemies": [
+          {
+            "unitId": "raider_emperor",
+            "attack": 2200,
+            "defense": 1300,
+            "hp": 350000,
+            "count": 13,
+            "counteredBy": [
+              "guard",
+              "psionic"
+            ]
+          },
+          {
+            "unitId": "hive_tyrant",
+            "attack": 1500,
+            "defense": 900,
+            "hp": 180000,
+            "count": 8,
+            "counteredBy": [
+              "guard",
+              "psionic"
+            ]
+          },
+          {
+            "unitId": "brood_carrier",
+            "attack": 700,
+            "defense": 450,
+            "hp": 60000,
+            "count": 14,
+            "counteredBy": [
+              "heavy"
+            ]
+          },
+          {
+            "unitId": "raider_elite_flt",
+            "attack": 350,
+            "defense": 200,
+            "hp": 2500,
+            "count": 250,
+            "counteredBy": [
+              "assault"
+            ]
+          },
+          {
+            "unitId": "raider_dreadnought",
+            "attack": 2400,
+            "defense": 1400,
+            "hp": 60000,
+            "count": 24,
+            "counteredBy": [
+              "guard",
+              "psionic"
+            ]
+          }
+        ],
+        "rewards": {
+          "energy": 75000000,
+          "alloy": 4000000,
+          "dark": 85,
+          "relicChance": 0.75
+        },
+        "idle": {
+          "energy": 36000,
+          "alloy": 1600,
+          "dark": 10
+        }
+      },
+      {
+        "id": "silencer_6",
+        "name": "沉默者主脑",
+        "type": "silencer",
+        "tier": 8,
+        "requires": "node_galaxy_heart",
+        "enemies": [
+          {
+            "unitId": "silencer_mainbrain",
+            "attack": 4500,
+            "defense": 1600,
+            "hp": 7000000,
+            "count": 1,
+            "counteredBy": [
+              "guard",
+              "psionic"
+            ]
+          },
+          {
+            "unitId": "silencer_sovereign",
+            "attack": 3500,
+            "defense": 1200,
+            "hp": 3000000,
+            "count": 1,
+            "counteredBy": [
+              "guard",
+              "psionic"
+            ]
+          },
+          {
+            "unitId": "motherport_bastion",
+            "attack": 2000,
+            "defense": 700,
+            "hp": 300000,
+            "count": 2,
+            "counteredBy": [
+              "guard",
+              "psionic"
+            ]
+          },
+          {
+            "unitId": "silencer_sentinel",
+            "attack": 800,
+            "defense": 400,
+            "hp": 40000,
+            "count": 12,
+            "counteredBy": [
+              "heavy"
+            ]
+          },
+          {
+            "unitId": "silencer_warden",
+            "attack": 500,
+            "defense": 300,
+            "hp": 20000,
+            "count": 20,
+            "counteredBy": [
+              "assault"
+            ]
+          }
+        ],
+        "rewards": {
+          "energy": 400000000,
+          "crystal": 2000000,
+          "alloy": 2000000,
+          "data": 5000000,
+          "dark": 600,
+          "relicChance": 0.95,
+          "relicRarityBias": 1
+        },
+        "idle": {
+          "energy": 60000,
+          "alloy": 3000,
+          "data": 5000,
+          "dark": 24
+        }
+      },
+      {
+        "id": "raider_12",
+        "name": "虚空掠夺者旗舰",
+        "type": "raider",
+        "tier": 9,
+        "requires": "node_void_gate",
+        "enemies": [
+          {
+            "unitId": "raider_phantom",
+            "attack": 299,
+            "defense": 149,
+            "hp": 2176,
+            "count": 900,
+            "counteredBy": [
+              "assault"
+            ]
+          },
+          {
+            "unitId": "raider_cruiser",
+            "attack": 612,
+            "defense": 299,
+            "hp": 6528,
+            "count": 400,
+            "counteredBy": [
+              "heavy"
+            ]
+          },
+          {
+            "unitId": "raider_sentinel",
+            "attack": 762,
+            "defense": 462,
+            "hp": 21760,
+            "count": 80,
+            "counteredBy": [
+              "guard",
+              "psionic"
+            ]
+          },
+          {
+            "unitId": "raider_dreadnought",
+            "attack": 3264,
+            "defense": 1904,
+            "hp": 81600,
+            "count": 30,
+            "counteredBy": [
+              "guard",
+              "psionic"
+            ]
+          },
+          {
+            "unitId": "hive_tyrant",
+            "attack": 2040,
+            "defense": 1224,
+            "hp": 244800,
+            "count": 5,
+            "counteredBy": [
+              "guard",
+              "psionic"
+            ]
+          }
+        ],
+        "rewards": {
+          "energy": 120000000,
+          "alloy": 1250000,
+          "dark": 150,
+          "relicChance": 0.7,
+          "relicRarityBias": 1
+        },
+        "idle": {
+          "energy": 60000,
+          "alloy": 2500,
+          "dark": 15
+        }
+      },
+      {
+        "id": "beast_8",
+        "name": "虚空白鲸群",
+        "type": "beast",
+        "tier": 9,
+        "requires": "node_void_beacon",
+        "enemies": [
+          {
+            "unitId": "void_matriarch",
+            "attack": 1900,
+            "defense": 700,
+            "hp": 150000,
+            "count": 5,
+            "counteredBy": [
+              "guard",
+              "psionic"
+            ]
+          },
+          {
+            "unitId": "void_weaver",
+            "attack": 480,
+            "defense": 190,
+            "hp": 5800,
+            "count": 100,
+            "counteredBy": [
+              "assault"
+            ]
+          },
+          {
+            "unitId": "void_spawn",
+            "attack": 280,
+            "defense": 110,
+            "hp": 2900,
+            "count": 200,
+            "counteredBy": [
+              "heavy"
+            ]
+          },
+          {
+            "unitId": "void_leviathan",
+            "attack": 2500,
+            "defense": 900,
+            "hp": 400000,
+            "count": 4,
+            "counteredBy": [
+              "guard",
+              "psionic"
+            ]
+          },
+          {
+            "unitId": "star_whale_king",
+            "attack": 6000,
+            "defense": 2300,
+            "hp": 1350000,
+            "count": 7,
+            "counteredBy": [
+              "guard",
+              "psionic"
+            ]
+          }
+        ],
+        "rewards": {
+          "energy": 100000000,
+          "crystal": 2500000,
+          "dark": 190,
+          "relicChance": 0.75,
+          "relicRarityBias": 1
+        },
+        "idle": {
+          "energy": 65000,
+          "alloy": 3000,
+          "dark": 16
+        }
+      },
+      {
+        "id": "ruin_8",
+        "name": "先驱者归航港",
+        "type": "ruin",
+        "tier": 9,
+        "requires": "node_void_watch",
+        "enemies": [
+          {
+            "unitId": "pantheon_core",
+            "attack": 2300,
+            "defense": 1550,
+            "hp": 480000,
+            "count": 20,
+            "counteredBy": [
+              "guard",
+              "psionic"
+            ]
+          },
+          {
+            "unitId": "archon_core",
+            "attack": 1750,
+            "defense": 1150,
+            "hp": 230000,
+            "count": 12,
+            "counteredBy": [
+              "guard",
+              "psionic"
+            ]
+          },
+          {
+            "unitId": "beacon_sentinel",
+            "attack": 870,
+            "defense": 620,
+            "hp": 58000,
+            "count": 45,
+            "counteredBy": [
+              "heavy"
+            ]
+          },
+          {
+            "unitId": "precursor_warden",
+            "attack": 580,
+            "defense": 350,
+            "hp": 17500,
+            "count": 130,
+            "counteredBy": [
+              "assault"
+            ]
+          },
+          {
+            "unitId": "ruin_drone",
+            "attack": 290,
+            "defense": 155,
+            "hp": 2900,
+            "count": 260,
+            "counteredBy": [
+              "heavy"
+            ]
+          },
+          {
+            "unitId": "void_drone_king",
+            "attack": 3100,
+            "defense": 1500,
+            "hp": 420000,
+            "count": 3,
+            "counteredBy": [
+              "guard",
+              "psionic"
+            ]
+          }
+        ],
+        "rewards": {
+          "energy": 125000000,
+          "data": 25000000,
+          "dark": 250,
+          "relicChance": 0.9,
+          "relicRarityBias": 1
+        },
+        "idle": {
+          "energy": 70000,
+          "data": 6000,
+          "dark": 18
+        }
+      },
+      {
+        "id": "raider_13",
+        "name": "虚空裁决军团",
+        "type": "raider",
+        "tier": 9,
+        "requires": "node_void_hub",
+        "enemies": [
+          {
+            "unitId": "raider_emperor",
+            "attack": 4400,
+            "defense": 2600,
+            "hp": 680000,
+            "count": 14,
+            "counteredBy": [
+              "guard",
+              "psionic"
+            ]
+          },
+          {
+            "unitId": "hive_tyrant",
+            "attack": 1500,
+            "defense": 900,
+            "hp": 180000,
+            "count": 10,
+            "counteredBy": [
+              "guard",
+              "psionic"
+            ]
+          },
+          {
+            "unitId": "brood_carrier",
+            "attack": 700,
+            "defense": 450,
+            "hp": 60000,
+            "count": 18,
+            "counteredBy": [
+              "heavy"
+            ]
+          },
+          {
+            "unitId": "raider_elite_flt",
+            "attack": 350,
+            "defense": 200,
+            "hp": 2500,
+            "count": 300,
+            "counteredBy": [
+              "assault"
+            ]
+          },
+          {
+            "unitId": "raider_dreadnought",
+            "attack": 2400,
+            "defense": 1400,
+            "hp": 60000,
+            "count": 32,
+            "counteredBy": [
+              "guard",
+              "psionic"
+            ]
+          }
+        ],
+        "rewards": {
+          "energy": 190000000,
+          "alloy": 10000000,
+          "dark": 210,
+          "relicChance": 0.75,
+          "relicRarityBias": 1
+        },
+        "idle": {
+          "energy": 90000,
+          "alloy": 4000,
+          "dark": 25
+        }
+      },
+      {
+        "id": "silencer_7",
+        "name": "沉默者回响",
+        "type": "silencer",
+        "tier": 9,
+        "requires": "node_void_origin",
+        "enemies": [
+          {
+            "unitId": "silencer_echo",
+            "attack": 9000,
+            "defense": 3100,
+            "hp": 23000000,
+            "count": 1,
+            "counteredBy": [
+              "guard",
+              "psionic"
+            ]
+          },
+          {
+            "unitId": "silencer_warden_lord",
+            "attack": 6500,
+            "defense": 2300,
+            "hp": 7500000,
+            "count": 1,
+            "counteredBy": [
+              "guard",
+              "psionic"
+            ]
+          },
+          {
+            "unitId": "void_bastion",
+            "attack": 3700,
+            "defense": 1400,
+            "hp": 580000,
+            "count": 2,
+            "counteredBy": [
+              "guard",
+              "psionic"
+            ]
+          },
+          {
+            "unitId": "silencer_sentinel",
+            "attack": 1550,
+            "defense": 770,
+            "hp": 77000,
+            "count": 9,
+            "counteredBy": [
+              "heavy"
+            ]
+          },
+          {
+            "unitId": "silencer_warden",
+            "attack": 970,
+            "defense": 580,
+            "hp": 38500,
+            "count": 14,
+            "counteredBy": [
+              "assault"
+            ]
+          }
+        ],
+        "rewards": {
+          "energy": 1000000000,
+          "crystal": 5000000,
+          "alloy": 5000000,
+          "data": 12500000,
+          "dark": 1500,
+          "relicChance": 0.95,
+          "relicRarityBias": 1
+        },
+        "idle": {
+          "energy": 150000,
+          "alloy": 7500,
+          "data": 12500,
+          "dark": 60
+        }
+      }
+    ]
+  },
+  "endless": {
+    "enemyGrowth": 1.25,
+    "rewardGrowth": 1.35,
+    "maxDepth": 999,
+    "milestoneStep": 10,
+    "templateIds": [
+      "silencer_3",
+      "raider_5",
+      "beast_4",
+      "ruin_4"
+    ],
+    "templateNormalize": {
+      "silencer_3": 1,
+      "raider_5": 5.330578512396694,
+      "beast_4": 4.13314346742613,
+      "ruin_4": 1.5196335078534031
+    }
+  },
+  "encounters": [
+    {
+      "id": "enc_flux",
+      "flavor": "resource",
+      "optA": {
+        "label": "就地收集",
+        "chances": [
+          {
+            "p": 1,
+            "rewards": {
+              "energy": 8000
+            }
+          }
+        ]
+      },
+      "optB": {
+        "label": "强行汇聚",
+        "chances": [
+          {
+            "p": 0.8,
+            "rewards": {
+              "energy": 10600
+            }
+          },
+          {
+            "p": 0.2,
+            "rewards": {
+              "energy": 3400
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "enc_vein",
+      "flavor": "resource",
+      "optA": {
+        "label": "标准开采",
+        "chances": [
+          {
+            "p": 1,
+            "rewards": {
+              "alloy": 4800
+            }
+          }
+        ]
+      },
+      "optB": {
+        "label": "定向爆破",
+        "chances": [
+          {
+            "p": 0.8,
+            "rewards": {
+              "alloy": 6300
+            }
+          },
+          {
+            "p": 0.2,
+            "rewards": {
+              "alloy": 1500
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "enc_signal",
+      "flavor": "resource",
+      "optA": {
+        "label": "完整破译",
+        "chances": [
+          {
+            "p": 1,
+            "rewards": {
+              "data": 900
+            }
+          }
+        ]
+      },
+      "optB": {
+        "label": "抢先截取",
+        "chances": [
+          {
+            "p": 0.5,
+            "rewards": {
+              "data": 1450
+            }
+          },
+          {
+            "p": 0.5,
+            "rewards": {
+              "data": 550
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "enc_depot",
+      "flavor": "resource",
+      "optA": {
+        "label": "小心回收",
+        "chances": [
+          {
+            "p": 1,
+            "rewards": {
+              "energy": 6000,
+              "alloy": 400
+            }
+          }
+        ]
+      },
+      "optB": {
+        "label": "强行拖回",
+        "chances": [
+          {
+            "p": 0.65,
+            "rewards": {
+              "energy": 9200,
+              "alloy": 600
+            }
+          },
+          {
+            "p": 0.35,
+            "rewards": {
+              "energy": 2500,
+              "alloy": 300
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "enc_thermo",
+      "flavor": "resource",
+      "optA": {
+        "label": "接入回收",
+        "chances": [
+          {
+            "p": 1,
+            "rewards": {
+              "energy": 5300
+            }
+          }
+        ]
+      },
+      "optB": {
+        "label": "深挖热芯",
+        "chances": [
+          {
+            "p": 0.85,
+            "rewards": {
+              "energy": 6800
+            }
+          },
+          {
+            "p": 0.15,
+            "rewards": {
+              "energy": 1500
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "enc_crystal",
+      "flavor": "resource",
+      "optA": {
+        "label": "整块切割",
+        "chances": [
+          {
+            "p": 1,
+            "rewards": {
+              "crystal": 95
+            }
+          }
+        ]
+      },
+      "optB": {
+        "label": "定向破碎",
+        "chances": [
+          {
+            "p": 0.8,
+            "rewards": {
+              "crystal": 125
+            }
+          },
+          {
+            "p": 0.2,
+            "rewards": {
+              "crystal": 40
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "enc_array",
+      "flavor": "resource",
+      "optA": {
+        "label": "调取缓存",
+        "chances": [
+          {
+            "p": 1,
+            "rewards": {
+              "data": 880
+            }
+          }
+        ]
+      },
+      "optB": {
+        "label": "直连主机",
+        "chances": [
+          {
+            "p": 0.7,
+            "rewards": {
+              "data": 1100
+            }
+          },
+          {
+            "p": 0.3,
+            "rewards": {
+              "data": 420
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "enc_hull",
+      "flavor": "resource",
+      "optA": {
+        "label": "稳妥打捞",
+        "chances": [
+          {
+            "p": 1,
+            "rewards": {
+              "energy": 4200,
+              "alloy": 500
+            }
+          }
+        ]
+      },
+      "optB": {
+        "label": "打开暗舱",
+        "chances": [
+          {
+            "p": 0.75,
+            "rewards": {
+              "energy": 5900,
+              "alloy": 700
+            }
+          },
+          {
+            "p": 0.25,
+            "rewards": {
+              "energy": 1500,
+              "alloy": 200
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "enc_orefield",
+      "flavor": "resource",
+      "optA": {
+        "label": "网捕回收",
+        "chances": [
+          {
+            "p": 1,
+            "rewards": {
+              "alloy": 3200,
+              "data": 200
+            }
+          }
+        ]
+      },
+      "optB": {
+        "label": "现场熔炼",
+        "chances": [
+          {
+            "p": 0.75,
+            "rewards": {
+              "alloy": 4000,
+              "data": 300
+            }
+          },
+          {
+            "p": 0.25,
+            "rewards": {
+              "alloy": 1400,
+              "data": 80
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "enc_salvage",
+      "flavor": "military",
+      "optA": {
+        "label": "拆解装甲",
+        "chances": [
+          {
+            "p": 1,
+            "rewards": {
+              "alloy": 2800,
+              "data": 280
+            }
+          }
+        ]
+      },
+      "optB": {
+        "label": "赌一把武器核心",
+        "chances": [
+          {
+            "p": 0.6,
+            "rewards": {
+              "alloy": 6400,
+              "data": 400
+            }
+          },
+          {
+            "p": 0.4,
+            "rewards": {
+              "alloy": -1400
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "enc_recruit",
+      "flavor": "military",
+      "optA": {
+        "label": "收编入伍",
+        "chances": [
+          {
+            "p": 1,
+            "rewards": {
+              "units": 80
+            }
+          }
+        ]
+      },
+      "optB": {
+        "label": "收下装备",
+        "chances": [
+          {
+            "p": 1,
+            "rewards": {
+              "energy": 4400,
+              "alloy": 400
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "enc_barracks",
+      "flavor": "military",
+      "optA": {
+        "label": "收编残部",
+        "chances": [
+          {
+            "p": 1,
+            "rewards": {
+              "units": 85,
+              "unitKind": "guard"
+            }
+          }
+        ]
+      },
+      "optB": {
+        "label": "变卖装备",
+        "chances": [
+          {
+            "p": 1,
+            "rewards": {
+              "energy": 4700,
+              "alloy": 400
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "enc_armory",
+      "flavor": "military",
+      "optA": {
+        "label": "清点入库",
+        "chances": [
+          {
+            "p": 1,
+            "rewards": {
+              "alloy": 2500,
+              "data": 320
+            }
+          }
+        ]
+      },
+      "optB": {
+        "label": "破拆内库",
+        "chances": [
+          {
+            "p": 0.55,
+            "rewards": {
+              "alloy": 5000,
+              "data": 500
+            }
+          },
+          {
+            "p": 0.45,
+            "rewards": {}
+          }
+        ]
+      }
+    },
+    {
+      "id": "enc_vanguard",
+      "flavor": "military",
+      "optA": {
+        "label": "纳入编队",
+        "chances": [
+          {
+            "p": 1,
+            "rewards": {
+              "units": 20,
+              "unitKind": "heavy"
+            }
+          }
+        ]
+      },
+      "optB": {
+        "label": "收下补给",
+        "chances": [
+          {
+            "p": 1,
+            "rewards": {
+              "energy": 4300,
+              "alloy": 500
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "enc_beacon",
+      "flavor": "explore",
+      "optA": {
+        "label": "解码数据核心",
+        "chances": [
+          {
+            "p": 1,
+            "rewards": {
+              "data": 90,
+              "dark": 1
+            }
+          }
+        ]
+      },
+      "optB": {
+        "label": "抽出能源核心",
+        "chances": [
+          {
+            "p": 0.85,
+            "rewards": {
+              "energy": 9600
+            }
+          },
+          {
+            "p": 0.15,
+            "rewards": {
+              "energy": 2000
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "enc_echo",
+      "flavor": "explore",
+      "optA": {
+        "label": "追踪信号源",
+        "chances": [
+          {
+            "p": 1,
+            "rewards": {
+              "data": 120,
+              "dark": 1
+            }
+          }
+        ]
+      },
+      "optB": {
+        "label": "同步解析",
+        "chances": [
+          {
+            "p": 0.85,
+            "rewards": {
+              "energy": 9000
+            }
+          },
+          {
+            "p": 0.15,
+            "rewards": {
+              "energy": 1800
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "enc_outpost",
+      "flavor": "explore",
+      "optA": {
+        "label": "拆解储能",
+        "chances": [
+          {
+            "p": 1,
+            "rewards": {
+              "data": 100,
+              "dark": 1
+            }
+          }
+        ]
+      },
+      "optB": {
+        "label": "整站回收",
+        "chances": [
+          {
+            "p": 0.85,
+            "rewards": {
+              "energy": 8200
+            }
+          },
+          {
+            "p": 0.15,
+            "rewards": {
+              "energy": 3200
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "enc_well",
+      "flavor": "gamble",
+      "optA": {
+        "label": "安全回收",
+        "chances": [
+          {
+            "p": 1,
+            "rewards": {
+              "energy": 7000
+            }
+          }
+        ]
+      },
+      "optB": {
+        "label": "强行重启",
+        "chances": [
+          {
+            "p": 0.35,
+            "rewards": {
+              "energy": 22000
+            }
+          },
+          {
+            "p": 0.65,
+            "rewards": {}
+          }
+        ]
+      }
+    },
+    {
+      "id": "enc_core",
+      "flavor": "gamble",
+      "optA": {
+        "label": "稳妥切割",
+        "chances": [
+          {
+            "p": 1,
+            "rewards": {
+              "alloy": 4400
+            }
+          }
+        ]
+      },
+      "optB": {
+        "label": "冒险引爆",
+        "chances": [
+          {
+            "p": 0.5,
+            "rewards": {
+              "alloy": 9600
+            }
+          },
+          {
+            "p": 0.25,
+            "rewards": {
+              "alloy": 2000
+            }
+          },
+          {
+            "p": 0.25,
+            "rewards": {
+              "alloy": -1300
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "enc_wager",
+      "flavor": "gamble",
+      "optA": {
+        "label": "收下货物",
+        "chances": [
+          {
+            "p": 1,
+            "rewards": {
+              "energy": 4400,
+              "alloy": 400
+            }
+          }
+        ]
+      },
+      "optB": {
+        "label": "接受赌局",
+        "chances": [
+          {
+            "p": 0.4,
+            "rewards": {
+              "energy": 12000
+            }
+          },
+          {
+            "p": 0.6,
+            "rewards": {}
+          }
+        ]
+      }
+    },
+    {
+      "id": "enc_gravity",
+      "flavor": "gamble",
+      "optA": {
+        "label": "稳妥绕采",
+        "chances": [
+          {
+            "p": 1,
+            "rewards": {
+              "alloy": 7200
+            }
+          }
+        ]
+      },
+      "optB": {
+        "label": "冒险下潜",
+        "chances": [
+          {
+            "p": 0.35,
+            "rewards": {
+              "alloy": 20500
+            }
+          },
+          {
+            "p": 0.65,
+            "rewards": {}
+          }
+        ]
+      }
+    },
+    {
+      "id": "enc_fission",
+      "flavor": "gamble",
+      "optA": {
+        "label": "谨慎拆除",
+        "chances": [
+          {
+            "p": 1,
+            "rewards": {
+              "energy": 4800
+            }
+          }
+        ]
+      },
+      "optB": {
+        "label": "尝试激活",
+        "chances": [
+          {
+            "p": 0.45,
+            "rewards": {
+              "energy": 10000
+            }
+          },
+          {
+            "p": 0.55,
+            "rewards": {}
+          }
+        ]
+      }
+    },
+    {
+      "id": "enc_matrix",
+      "flavor": "gamble",
+      "optA": {
+        "label": "稳妥提取",
+        "chances": [
+          {
+            "p": 1,
+            "rewards": {
+              "crystal": 140
+            }
+          }
+        ]
+      },
+      "optB": {
+        "label": "超载开采",
+        "chances": [
+          {
+            "p": 0.35,
+            "rewards": {
+              "crystal": 330
+            }
+          },
+          {
+            "p": 0.65,
+            "rewards": {
+              "crystal": 30
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "enc_storm",
+      "flavor": "gamble",
+      "optA": {
+        "label": "稳妥穿越",
+        "chances": [
+          {
+            "p": 1,
+            "rewards": {
+              "energy": 4600,
+              "alloy": 400
+            }
+          }
+        ]
+      },
+      "optB": {
+        "label": "风暴采集",
+        "chances": [
+          {
+            "p": 0.45,
+            "rewards": {
+              "energy": 11500
+            }
+          },
+          {
+            "p": 0.55,
+            "rewards": {}
+          }
+        ]
+      }
+    },
+    {
+      "id": "enc_chips",
+      "flavor": "gamble",
+      "optA": {
+        "label": "稳妥破解",
+        "chances": [
+          {
+            "p": 1,
+            "rewards": {
+              "data": 760
+            }
+          }
+        ]
+      },
+      "optB": {
+        "label": "超频读取",
+        "chances": [
+          {
+            "p": 0.3,
+            "rewards": {
+              "data": 2300
+            }
+          },
+          {
+            "p": 0.7,
+            "rewards": {
+              "data": 200
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "enc_tribute_convoy",
+      "flavor": "resource",
+      "optA": {
+        "label": "收护航费",
+        "chances": [
+          {
+            "p": 1,
+            "rewards": {
+              "energy": 7500
+            }
+          }
+        ]
+      },
+      "optB": {
+        "label": "随行护送",
+        "chances": [
+          {
+            "p": 0.8,
+            "rewards": {
+              "energy": 9800
+            }
+          },
+          {
+            "p": 0.2,
+            "rewards": {
+              "energy": 2900
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "enc_caravan_market",
+      "flavor": "resource",
+      "optA": {
+        "label": "按价采买",
+        "chances": [
+          {
+            "p": 1,
+            "rewards": {
+              "crystal": 110
+            }
+          }
+        ]
+      },
+      "optB": {
+        "label": "竞价扫货",
+        "chances": [
+          {
+            "p": 0.75,
+            "rewards": {
+              "crystal": 150
+            }
+          },
+          {
+            "p": 0.25,
+            "rewards": {
+              "crystal": 45
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "enc_toll_gate",
+      "flavor": "resource",
+      "optA": {
+        "label": "缴税通行",
+        "chances": [
+          {
+            "p": 1,
+            "rewards": {
+              "alloy": 5200
+            }
+          }
+        ]
+      },
+      "optB": {
+        "label": "绕行支路",
+        "chances": [
+          {
+            "p": 0.8,
+            "rewards": {
+              "alloy": 6800
+            }
+          },
+          {
+            "p": 0.2,
+            "rewards": {
+              "alloy": 1700
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "enc_tribute_ledger",
+      "flavor": "resource",
+      "optA": {
+        "label": "誊本留档",
+        "chances": [
+          {
+            "p": 1,
+            "rewards": {
+              "data": 820
+            }
+          }
+        ]
+      },
+      "optB": {
+        "label": "连密档一起抄",
+        "chances": [
+          {
+            "p": 0.5,
+            "rewards": {
+              "data": 1300
+            }
+          },
+          {
+            "p": 0.5,
+            "rewards": {
+              "data": 500
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "enc_smuggle_hold",
+      "flavor": "gamble",
+      "optA": {
+        "label": "向税卡检举",
+        "chances": [
+          {
+            "p": 1,
+            "rewards": {
+              "energy": 7000
+            }
+          }
+        ]
+      },
+      "optB": {
+        "label": "低价收下黑货",
+        "chances": [
+          {
+            "p": 0.5,
+            "rewards": {
+              "crystal": 260
+            }
+          },
+          {
+            "p": 0.3,
+            "rewards": {
+              "energy": 2500
+            }
+          },
+          {
+            "p": 0.2,
+            "rewards": {
+              "alloy": -1400
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "enc_exile_fleet",
+      "flavor": "gamble",
+      "optA": {
+        "label": "查验后放行",
+        "chances": [
+          {
+            "p": 1,
+            "rewards": {
+              "units": 85,
+              "unitKind": "guard"
+            }
+          }
+        ]
+      },
+      "optB": {
+        "label": "收留整队",
+        "chances": [
+          {
+            "p": 0.6,
+            "rewards": {
+              "units": 130,
+              "unitKind": "guard"
+            }
+          },
+          {
+            "p": 0.25,
+            "rewards": {
+              "energy": 2500
+            }
+          },
+          {
+            "p": 0.15,
+            "rewards": {
+              "units": 5,
+              "unitKind": "guard"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "enc_imperial_audit",
+      "flavor": "resource",
+      "optA": {
+        "label": "协助清点",
+        "chances": [
+          {
+            "p": 1,
+            "rewards": {
+              "energy": 7800
+            }
+          }
+        ]
+      },
+      "optB": {
+        "label": "领取协验酬金",
+        "chances": [
+          {
+            "p": 0.8,
+            "rewards": {
+              "energy": 10200
+            }
+          },
+          {
+            "p": 0.2,
+            "rewards": {
+              "energy": 3200
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "enc_arbiter_salvage",
+      "flavor": "resource",
+      "optA": {
+        "label": "抄录残档",
+        "chances": [
+          {
+            "p": 1,
+            "rewards": {
+              "data": 860
+            }
+          }
+        ]
+      },
+      "optB": {
+        "label": "追踪航迹拾遗",
+        "chances": [
+          {
+            "p": 0.5,
+            "rewards": {
+              "data": 1400
+            }
+          },
+          {
+            "p": 0.5,
+            "rewards": {
+              "data": 520
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "enc_tribute_escort",
+      "flavor": "military",
+      "optA": {
+        "label": "按单领队",
+        "chances": [
+          {
+            "p": 1,
+            "rewards": {
+              "units": 110,
+              "unitKind": "assault"
+            }
+          }
+        ]
+      },
+      "optB": {
+        "label": "整队接收",
+        "chances": [
+          {
+            "p": 0.7,
+            "rewards": {
+              "units": 160,
+              "unitKind": "assault"
+            }
+          },
+          {
+            "p": 0.3,
+            "rewards": {
+              "units": 55,
+              "unitKind": "assault"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "enc_ceremonial_guard",
+      "flavor": "military",
+      "optA": {
+        "label": "应募一轮",
+        "chances": [
+          {
+            "p": 1,
+            "rewards": {
+              "units": 110,
+              "unitKind": "guard"
+            }
+          }
+        ]
+      },
+      "optB": {
+        "label": "接下整期",
+        "chances": [
+          {
+            "p": 0.7,
+            "rewards": {
+              "units": 155,
+              "unitKind": "guard"
+            }
+          },
+          {
+            "p": 0.3,
+            "rewards": {
+              "units": 25,
+              "unitKind": "guard"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "enc_court_parade",
+      "flavor": "military",
+      "optA": {
+        "label": "派出仪仗",
+        "chances": [
+          {
+            "p": 1,
+            "rewards": {
+              "units": 27,
+              "unitKind": "heavy"
+            }
+          }
+        ]
+      },
+      "optB": {
+        "label": "编入阵列",
+        "chances": [
+          {
+            "p": 0.5,
+            "rewards": {
+              "units": 48,
+              "unitKind": "heavy"
+            }
+          },
+          {
+            "p": 0.5,
+            "rewards": {
+              "units": 12,
+              "unitKind": "heavy"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "enc_registry_visit",
+      "flavor": "resource",
+      "optA": {
+        "label": "誊一份见闻",
+        "chances": [
+          {
+            "p": 1,
+            "rewards": {
+              "data": 880
+            }
+          }
+        ]
+      },
+      "optB": {
+        "label": "问誊本去处",
+        "chances": [
+          {
+            "p": 0.75,
+            "rewards": {
+              "data": 1240
+            }
+          },
+          {
+            "p": 0.25,
+            "rewards": {
+              "data": 340
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "enc_furnace_tale",
+      "flavor": "resource",
+      "optA": {
+        "label": "听完再走",
+        "chances": [
+          {
+            "p": 1,
+            "rewards": {
+              "energy": 8200
+            }
+          }
+        ]
+      },
+      "optB": {
+        "label": "记进贡册备注",
+        "chances": [
+          {
+            "p": 0.8,
+            "rewards": {
+              "energy": 10800
+            }
+          },
+          {
+            "p": 0.2,
+            "rewards": {
+              "energy": 3000
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "enc_relay_echo",
+      "flavor": "explore",
+      "optA": {
+        "label": "静默记档",
+        "chances": [
+          {
+            "p": 1,
+            "rewards": {
+              "data": 780
+            }
+          }
+        ]
+      },
+      "optB": {
+        "label": "逆着节拍追踪",
+        "chances": [
+          {
+            "p": 0.8,
+            "rewards": {
+              "data": 990
+            }
+          },
+          {
+            "p": 0.2,
+            "rewards": {
+              "data": 300
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "enc_watchtower_beam",
+      "flavor": "explore",
+      "optA": {
+        "label": "停机接收",
+        "chances": [
+          {
+            "p": 1,
+            "rewards": {
+              "energy": 7400
+            }
+          }
+        ]
+      },
+      "optB": {
+        "label": "跟随波束校位",
+        "chances": [
+          {
+            "p": 0.75,
+            "rewards": {
+              "energy": 9500
+            }
+          },
+          {
+            "p": 0.25,
+            "rewards": {
+              "energy": 2600
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "enc_abandoned_probe",
+      "flavor": "explore",
+      "optA": {
+        "label": "回收采样舱",
+        "chances": [
+          {
+            "p": 1,
+            "rewards": {
+              "crystal": 100
+            }
+          }
+        ]
+      },
+      "optB": {
+        "label": "整枚拖走",
+        "chances": [
+          {
+            "p": 0.8,
+            "rewards": {
+              "crystal": 135
+            }
+          },
+          {
+            "p": 0.2,
+            "rewards": {
+              "crystal": 40
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "enc_legacy_cache",
+      "flavor": "explore",
+      "optA": {
+        "label": "开舱清点",
+        "chances": [
+          {
+            "p": 1,
+            "rewards": {
+              "alloy": 5000
+            }
+          }
+        ]
+      },
+      "optB": {
+        "label": "整体吊运",
+        "chances": [
+          {
+            "p": 0.75,
+            "rewards": {
+              "alloy": 6400
+            }
+          },
+          {
+            "p": 0.25,
+            "rewards": {
+              "alloy": 3800
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "enc_signal_garden",
+      "flavor": "explore",
+      "optA": {
+        "label": "逐一记录",
+        "chances": [
+          {
+            "p": 1,
+            "rewards": {
+              "data": 800
+            }
+          }
+        ]
+      },
+      "optB": {
+        "label": "驻留破译",
+        "chances": [
+          {
+            "p": 0.8,
+            "rewards": {
+              "data": 1050
+            }
+          },
+          {
+            "p": 0.2,
+            "rewards": {
+              "data": 350
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "enc_derelict_beacon",
+      "flavor": "explore",
+      "optA": {
+        "label": "抽取余能",
+        "chances": [
+          {
+            "p": 1,
+            "rewards": {
+              "energy": 7600
+            }
+          }
+        ]
+      },
+      "optB": {
+        "label": "接管维护",
+        "chances": [
+          {
+            "p": 0.7,
+            "rewards": {
+              "energy": 10000
+            }
+          },
+          {
+            "p": 0.3,
+            "rewards": {
+              "energy": 3300
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "enc_pioneer_wreck",
+      "flavor": "gamble",
+      "optA": {
+        "label": "登记后回收",
+        "chances": [
+          {
+            "p": 1,
+            "rewards": {
+              "data": 760
+            }
+          }
+        ]
+      },
+      "optB": {
+        "label": "拆解引擎舱",
+        "chances": [
+          {
+            "p": 0.5,
+            "rewards": {
+              "units": 32,
+              "unitKind": "heavy"
+            }
+          },
+          {
+            "p": 0.25,
+            "rewards": {
+              "data": 870
+            }
+          },
+          {
+            "p": 0.25,
+            "rewards": {
+              "alloy": -900
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "enc_whale_song",
+      "flavor": "explore",
+      "optA": {
+        "label": "全频记录",
+        "chances": [
+          {
+            "p": 1,
+            "rewards": {
+              "data": 840
+            }
+          }
+        ]
+      },
+      "optB": {
+        "label": "跟随长调潜航",
+        "chances": [
+          {
+            "p": 0.8,
+            "rewards": {
+              "data": 1080
+            }
+          },
+          {
+            "p": 0.2,
+            "rewards": {
+              "data": 320
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "enc_beacon_supply",
+      "flavor": "explore",
+      "optA": {
+        "label": "按价补给",
+        "chances": [
+          {
+            "p": 1,
+            "rewards": {
+              "energy": 7900
+            }
+          }
+        ]
+      },
+      "optB": {
+        "label": "包圆余货",
+        "chances": [
+          {
+            "p": 0.75,
+            "rewards": {
+              "energy": 10300
+            }
+          },
+          {
+            "p": 0.25,
+            "rewards": {
+              "energy": 3100
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "enc_whale_pod",
+      "flavor": "gamble",
+      "optA": {
+        "label": "减速避让",
+        "chances": [
+          {
+            "p": 1,
+            "rewards": {
+              "energy": 6900
+            }
+          }
+        ]
+      },
+      "optB": {
+        "label": "撒网收集鳞晶",
+        "chances": [
+          {
+            "p": 0.5,
+            "rewards": {
+              "crystal": 260
+            }
+          },
+          {
+            "p": 0.5,
+            "rewards": {
+              "energy": 1500
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "enc_lantern_drift",
+      "flavor": "gamble",
+      "optA": {
+        "label": "读信后放行",
+        "chances": [
+          {
+            "p": 1,
+            "rewards": {
+              "alloy": 4800
+            }
+          }
+        ]
+      },
+      "optB": {
+        "label": "拆瓶取芯",
+        "chances": [
+          {
+            "p": 0.5,
+            "rewards": {
+              "alloy": 10300
+            }
+          },
+          {
+            "p": 0.5,
+            "rewards": {
+              "alloy": 70
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "dispatch": {
+    "tiers": [
+      {
+        "hours": 4,
+        "weight": 1
+      },
+      {
+        "hours": 8,
+        "weight": 2.2
+      },
+      {
+        "hours": 12,
+        "weight": 3.6
+      },
+      {
+        "hours": 24,
+        "weight": 8
+      }
+    ],
+    "rewardGrowth": 1.35,
+    "baseRewards": {
+      "energy": 20000000,
+      "crystal": 100000,
+      "alloy": 100000,
+      "data": 100000,
+      "dark": 100
+    }
+  },
+  "relics": {
+    "maxLevel": 20,
+    "enhanceGain": {
+      "production_mult": 0.04,
+      "combat_mult": 0.04,
+      "explore_mult": 0.04,
+      "offline_bonus": 0.04,
+      "prestige_mult": 0.01,
+      "cost_mult": 0.01
+    },
+    "rarityWeights": {
+      "common": 100,
+      "rare": 35,
+      "epic": 10,
+      "legendary": 2
+    },
+    "pool": [
+      {
+        "id": "r_energy_1",
+        "rarity": "common",
+        "effects": [
+          {
+            "type": "production_mult",
+            "target": "energy",
+            "value": 1.05
+          }
+        ]
+      },
+      {
+        "id": "r_alloy_1",
+        "rarity": "common",
+        "effects": [
+          {
+            "type": "production_mult",
+            "target": "alloy",
+            "value": 1.05
+          }
+        ]
+      },
+      {
+        "id": "r_data_1",
+        "rarity": "common",
+        "effects": [
+          {
+            "type": "production_mult",
+            "target": "data",
+            "value": 1.05
+          }
+        ]
+      },
+      {
+        "id": "r_crystal_1",
+        "rarity": "common",
+        "effects": [
+          {
+            "type": "production_mult",
+            "target": "crystal",
+            "value": 1.05
+          }
+        ]
+      },
+      {
+        "id": "r_dark_1",
+        "rarity": "common",
+        "effects": [
+          {
+            "type": "production_mult",
+            "target": "dark",
+            "value": 1.05
+          }
+        ]
+      },
+      {
+        "id": "r_combat_1",
+        "rarity": "common",
+        "effects": [
+          {
+            "type": "combat_mult",
+            "target": "attack",
+            "value": 1.05
+          }
+        ]
+      },
+      {
+        "id": "r_energy_2",
+        "rarity": "rare",
+        "effects": [
+          {
+            "type": "production_mult",
+            "target": "energy",
+            "value": 1.15
+          }
+        ]
+      },
+      {
+        "id": "r_alloy_2",
+        "rarity": "rare",
+        "effects": [
+          {
+            "type": "production_mult",
+            "target": "alloy",
+            "value": 1.15
+          }
+        ]
+      },
+      {
+        "id": "r_crystal_2",
+        "rarity": "rare",
+        "effects": [
+          {
+            "type": "production_mult",
+            "target": "crystal",
+            "value": 1.15
+          }
+        ]
+      },
+      {
+        "id": "r_dark_2",
+        "rarity": "rare",
+        "effects": [
+          {
+            "type": "production_mult",
+            "target": "dark",
+            "value": 1.15
+          }
+        ]
+      },
+      {
+        "id": "r_combat_2",
+        "rarity": "rare",
+        "effects": [
+          {
+            "type": "combat_mult",
+            "target": "defense",
+            "value": 1.15
+          }
+        ]
+      },
+      {
+        "id": "r_explore_1",
+        "rarity": "rare",
+        "effects": [
+          {
+            "type": "explore_mult",
+            "value": 1.2
+          }
+        ]
+      },
+      {
+        "id": "r_offline_1",
+        "rarity": "rare",
+        "effects": [
+          {
+            "type": "offline_bonus",
+            "value": 1.1
+          }
+        ]
+      },
+      {
+        "id": "r_energy_3",
+        "rarity": "epic",
+        "effects": [
+          {
+            "type": "production_mult",
+            "target": "energy",
+            "value": 1.4
+          }
+        ]
+      },
+      {
+        "id": "r_data_3",
+        "rarity": "epic",
+        "effects": [
+          {
+            "type": "production_mult",
+            "target": "data",
+            "value": 1.4
+          },
+          {
+            "type": "cost_mult",
+            "target": "tech",
+            "value": 0.9
+          }
+        ]
+      },
+      {
+        "id": "r_dark_3",
+        "rarity": "epic",
+        "effects": [
+          {
+            "type": "production_mult",
+            "target": "dark",
+            "value": 1.4
+          }
+        ]
+      },
+      {
+        "id": "r_combat_3",
+        "rarity": "epic",
+        "effects": [
+          {
+            "type": "combat_mult",
+            "target": "attack",
+            "value": 1.3
+          },
+          {
+            "type": "combat_mult",
+            "target": "defense",
+            "value": 1.2
+          }
+        ]
+      },
+      {
+        "id": "r_prestige_1",
+        "rarity": "epic",
+        "effects": [
+          {
+            "type": "prestige_mult",
+            "value": 1.5
+          }
+        ]
+      },
+      {
+        "id": "r_omega",
+        "rarity": "legendary",
+        "effects": [
+          {
+            "type": "production_mult",
+            "target": "energy",
+            "value": 1.5
+          },
+          {
+            "type": "production_mult",
+            "target": "alloy",
+            "value": 1.5
+          },
+          {
+            "type": "production_mult",
+            "target": "data",
+            "value": 1.5
+          },
+          {
+            "type": "combat_mult",
+            "target": "attack",
+            "value": 1.4
+          }
+        ]
+      },
+      {
+        "id": "r_silence",
+        "rarity": "legendary",
+        "effects": [
+          {
+            "type": "production_mult",
+            "target": "all",
+            "value": 1.3
+          },
+          {
+            "type": "prestige_mult",
+            "value": 2
+          }
+        ]
+      }
+    ],
+    "sets": [
+      {
+        "id": "raiders",
+        "memberIds": [
+          "r_energy_1",
+          "r_alloy_1",
+          "r_combat_1",
+          "r_combat_2"
+        ],
+        "partial": {
+          "type": "combat_mult",
+          "target": "attack",
+          "value": 1.05
+        },
+        "full": {
+          "type": "combat_mult",
+          "target": "attack",
+          "value": 1.1
+        }
+      },
+      {
+        "id": "beast",
+        "memberIds": [
+          "r_energy_2",
+          "r_crystal_2",
+          "r_energy_3"
+        ],
+        "partial": {
+          "type": "production_mult",
+          "target": "energy",
+          "value": 1.06
+        },
+        "full": {
+          "type": "production_mult",
+          "target": "energy",
+          "value": 1.12
+        }
+      },
+      {
+        "id": "ruin",
+        "memberIds": [
+          "r_data_1",
+          "r_crystal_1",
+          "r_alloy_2",
+          "r_explore_1",
+          "r_offline_1",
+          "r_data_3",
+          "r_prestige_1"
+        ],
+        "partial": {
+          "type": "production_mult",
+          "target": "data",
+          "value": 1.06
+        },
+        "full": {
+          "type": "production_mult",
+          "target": "data",
+          "value": 1.12
+        }
+      },
+      {
+        "id": "silencer",
+        "memberIds": [
+          "r_dark_1",
+          "r_dark_2",
+          "r_dark_3",
+          "r_combat_3",
+          "r_omega",
+          "r_silence"
+        ],
+        "partial": {
+          "type": "production_mult",
+          "target": "dark",
+          "value": 1.06
+        },
+        "full": {
+          "type": "production_mult",
+          "target": "dark",
+          "value": 1.12
+        }
+      }
+    ]
+  },
+  "achievements": [
+    {
+      "id": "ach_energy_1",
+      "category": "energy",
+      "metric": "energy",
+      "threshold": 100000,
+      "effects": [
+        {
+          "type": "production_mult",
+          "target": "all",
+          "value": 1.01
+        }
+      ]
+    },
+    {
+      "id": "ach_energy_2",
+      "category": "energy",
+      "metric": "energy",
+      "threshold": 10000000,
+      "effects": [
+        {
+          "type": "production_mult",
+          "target": "all",
+          "value": 1.02
+        }
+      ]
+    },
+    {
+      "id": "ach_energy_3",
+      "category": "energy",
+      "metric": "energy",
+      "threshold": 1000000000,
+      "effects": [
+        {
+          "type": "production_mult",
+          "target": "all",
+          "value": 1.03
+        }
+      ]
+    },
+    {
+      "id": "ach_energy_4",
+      "category": "energy",
+      "metric": "energy",
+      "threshold": 1000000000000,
+      "effects": [
+        {
+          "type": "production_mult",
+          "target": "all",
+          "value": 1.05
+        }
+      ]
+    },
+    {
+      "id": "ach_dark_1",
+      "category": "dark",
+      "metric": "dark",
+      "threshold": 1000,
+      "effects": [
+        {
+          "type": "production_mult",
+          "target": "all",
+          "value": 1.01
+        }
+      ]
+    },
+    {
+      "id": "ach_dark_2",
+      "category": "dark",
+      "metric": "dark",
+      "threshold": 100000,
+      "effects": [
+        {
+          "type": "production_mult",
+          "target": "all",
+          "value": 1.02
+        }
+      ]
+    },
+    {
+      "id": "ach_dark_3",
+      "category": "dark",
+      "metric": "dark",
+      "threshold": 10000000,
+      "effects": [
+        {
+          "type": "production_mult",
+          "target": "all",
+          "value": 1.03
+        }
+      ]
+    },
+    {
+      "id": "ach_build_1",
+      "category": "build",
+      "metric": "upgrades",
+      "threshold": 50,
+      "effects": [
+        {
+          "type": "production_mult",
+          "target": "all",
+          "value": 1.01
+        }
+      ]
+    },
+    {
+      "id": "ach_build_2",
+      "category": "build",
+      "metric": "upgrades",
+      "threshold": 200,
+      "effects": [
+        {
+          "type": "production_mult",
+          "target": "all",
+          "value": 1.02
+        }
+      ]
+    },
+    {
+      "id": "ach_build_3",
+      "category": "build",
+      "metric": "upgrades",
+      "threshold": 500,
+      "effects": [
+        {
+          "type": "production_mult",
+          "target": "all",
+          "value": 1.02
+        }
+      ]
+    },
+    {
+      "id": "ach_build_4",
+      "category": "build",
+      "metric": "maxBuildingLevel",
+      "threshold": 50,
+      "effects": [
+        {
+          "type": "production_mult",
+          "target": "all",
+          "value": 1.03
+        }
+      ]
+    },
+    {
+      "id": "ach_tech_1",
+      "category": "tech",
+      "metric": "researches",
+      "threshold": 10,
+      "effects": [
+        {
+          "type": "production_mult",
+          "target": "all",
+          "value": 1.01
+        }
+      ]
+    },
+    {
+      "id": "ach_tech_2",
+      "category": "tech",
+      "metric": "researches",
+      "threshold": 25,
+      "effects": [
+        {
+          "type": "production_mult",
+          "target": "all",
+          "value": 1.02
+        }
+      ]
+    },
+    {
+      "id": "ach_tech_3",
+      "category": "tech",
+      "metric": "researches",
+      "threshold": 59,
+      "effects": [
+        {
+          "type": "production_mult",
+          "target": "all",
+          "value": 1.03
+        }
+      ]
+    },
+    {
+      "id": "ach_explore_1",
+      "category": "explore",
+      "metric": "explores",
+      "threshold": 4,
+      "effects": [
+        {
+          "type": "explore_mult",
+          "value": 1.1
+        }
+      ]
+    },
+    {
+      "id": "ach_explore_2",
+      "category": "explore",
+      "metric": "explores",
+      "threshold": 12,
+      "effects": [
+        {
+          "type": "explore_mult",
+          "value": 1.1
+        }
+      ]
+    },
+    {
+      "id": "ach_explore_3",
+      "category": "explore",
+      "metric": "explores",
+      "threshold": 40,
+      "effects": [
+        {
+          "type": "explore_mult",
+          "value": 1.15
+        }
+      ]
+    },
+    {
+      "id": "ach_explore_4",
+      "category": "explore",
+      "metric": "explores",
+      "threshold": 60,
+      "effects": [
+        {
+          "type": "explore_mult",
+          "value": 1.05
+        }
+      ]
+    },
+    {
+      "id": "ach_explore_5",
+      "category": "explore",
+      "metric": "explores",
+      "threshold": 80,
+      "effects": [
+        {
+          "type": "explore_mult",
+          "value": 1.05
+        }
+      ]
+    },
+    {
+      "id": "ach_explore_6",
+      "category": "explore",
+      "metric": "explores",
+      "threshold": 100,
+      "effects": [
+        {
+          "type": "explore_mult",
+          "value": 1.05
+        }
+      ]
+    },
+    {
+      "id": "ach_explore_7",
+      "category": "explore",
+      "metric": "explores",
+      "threshold": 120,
+      "effects": [
+        {
+          "type": "explore_mult",
+          "value": 1.05
+        }
+      ]
+    },
+    {
+      "id": "ach_battle_1",
+      "category": "battle",
+      "metric": "battles",
+      "threshold": 8,
+      "effects": [
+        {
+          "type": "combat_mult",
+          "target": "attack",
+          "value": 1.05
+        },
+        {
+          "type": "combat_mult",
+          "target": "defense",
+          "value": 1.05
+        }
+      ]
+    },
+    {
+      "id": "ach_battle_2",
+      "category": "battle",
+      "metric": "battles",
+      "threshold": 24,
+      "effects": [
+        {
+          "type": "combat_mult",
+          "target": "attack",
+          "value": 1.08
+        },
+        {
+          "type": "combat_mult",
+          "target": "defense",
+          "value": 1.08
+        }
+      ]
+    },
+    {
+      "id": "ach_battle_3",
+      "category": "battle",
+      "metric": "battles",
+      "threshold": 80,
+      "effects": [
+        {
+          "type": "combat_mult",
+          "target": "attack",
+          "value": 1.12
+        },
+        {
+          "type": "combat_mult",
+          "target": "defense",
+          "value": 1.12
+        }
+      ]
+    },
+    {
+      "id": "ach_battle_4",
+      "category": "battle",
+      "metric": "expeditionBest",
+      "threshold": 10,
+      "effects": [
+        {
+          "type": "combat_mult",
+          "target": "attack",
+          "value": 1.05
+        },
+        {
+          "type": "combat_mult",
+          "target": "defense",
+          "value": 1.05
+        }
+      ]
+    },
+    {
+      "id": "ach_battle_5",
+      "category": "battle",
+      "metric": "expeditionBest",
+      "threshold": 20,
+      "effects": [
+        {
+          "type": "combat_mult",
+          "target": "attack",
+          "value": 1.08
+        },
+        {
+          "type": "combat_mult",
+          "target": "defense",
+          "value": 1.08
+        }
+      ]
+    },
+    {
+      "id": "ach_battle_6",
+      "category": "battle",
+      "metric": "expeditionBest",
+      "threshold": 30,
+      "effects": [
+        {
+          "type": "combat_mult",
+          "target": "attack",
+          "value": 1.05
+        },
+        {
+          "type": "combat_mult",
+          "target": "defense",
+          "value": 1.05
+        }
+      ]
+    },
+    {
+      "id": "ach_battle_7",
+      "category": "battle",
+      "metric": "expeditionBest",
+      "threshold": 40,
+      "effects": [
+        {
+          "type": "combat_mult",
+          "target": "attack",
+          "value": 1.08
+        },
+        {
+          "type": "combat_mult",
+          "target": "defense",
+          "value": 1.08
+        }
+      ]
+    },
+    {
+      "id": "ach_battle_8",
+      "category": "battle",
+      "metric": "enemyKinds",
+      "threshold": 20,
+      "effects": [
+        {
+          "type": "combat_mult",
+          "target": "attack",
+          "value": 1.02
+        },
+        {
+          "type": "combat_mult",
+          "target": "defense",
+          "value": 1.02
+        }
+      ]
+    },
+    {
+      "id": "ach_battle_9",
+      "category": "battle",
+      "metric": "enemyKinds",
+      "threshold": 56,
+      "effects": [
+        {
+          "type": "combat_mult",
+          "target": "attack",
+          "value": 1.03
+        },
+        {
+          "type": "combat_mult",
+          "target": "defense",
+          "value": 1.03
+        }
+      ]
+    },
+    {
+      "id": "ach_relic_1",
+      "category": "relic",
+      "metric": "relicsOwned",
+      "threshold": 5,
+      "effects": [
+        {
+          "type": "combat_mult",
+          "target": "attack",
+          "value": 1.02
+        },
+        {
+          "type": "combat_mult",
+          "target": "defense",
+          "value": 1.02
+        }
+      ]
+    },
+    {
+      "id": "ach_relic_2",
+      "category": "relic",
+      "metric": "relicsOwned",
+      "threshold": 10,
+      "effects": [
+        {
+          "type": "offline_bonus",
+          "value": 1.1
+        }
+      ]
+    },
+    {
+      "id": "ach_relic_3",
+      "category": "relic",
+      "metric": "relicsOwned",
+      "threshold": 15,
+      "effects": [
+        {
+          "type": "production_mult",
+          "target": "all",
+          "value": 1.03
+        }
+      ]
+    },
+    {
+      "id": "ach_relic_4",
+      "category": "relic",
+      "metric": "relicKinds",
+      "threshold": 20,
+      "effects": [
+        {
+          "type": "prestige_mult",
+          "value": 1.1
+        }
+      ]
+    },
+    {
+      "id": "ach_relic_5",
+      "category": "relic",
+      "metric": "synths",
+      "threshold": 1,
+      "effects": [
+        {
+          "type": "production_mult",
+          "target": "all",
+          "value": 1.01
+        }
+      ]
+    },
+    {
+      "id": "ach_relic_6",
+      "category": "relic",
+      "metric": "synths",
+      "threshold": 5,
+      "effects": [
+        {
+          "type": "production_mult",
+          "target": "all",
+          "value": 1.02
+        }
+      ]
+    },
+    {
+      "id": "ach_relic_7",
+      "category": "relic",
+      "metric": "synths",
+      "threshold": 15,
+      "effects": [
+        {
+          "type": "production_mult",
+          "target": "all",
+          "value": 1.03
+        }
+      ]
+    },
+    {
+      "id": "ach_relic_8",
+      "category": "relic",
+      "metric": "enhanceLevels",
+      "threshold": 10,
+      "effects": [
+        {
+          "type": "production_mult",
+          "target": "all",
+          "value": 1.01
+        }
+      ]
+    },
+    {
+      "id": "ach_relic_9",
+      "category": "relic",
+      "metric": "enhanceLevels",
+      "threshold": 50,
+      "effects": [
+        {
+          "type": "production_mult",
+          "target": "all",
+          "value": 1.02
+        }
+      ]
+    },
+    {
+      "id": "ach_relic_10",
+      "category": "relic",
+      "metric": "enhanceLevels",
+      "threshold": 150,
+      "effects": [
+        {
+          "type": "production_mult",
+          "target": "all",
+          "value": 1.03
+        }
+      ]
+    },
+    {
+      "id": "ach_relic_11",
+      "category": "relic",
+      "metric": "activeFullSets",
+      "threshold": 1,
+      "effects": [
+        {
+          "type": "offline_bonus",
+          "value": 1.1
+        }
+      ]
+    },
+    {
+      "id": "ach_relic_12",
+      "category": "relic",
+      "metric": "activeFullSets",
+      "threshold": 4,
+      "effects": [
+        {
+          "type": "production_mult",
+          "target": "all",
+          "value": 1.03
+        }
+      ]
+    },
+    {
+      "id": "ach_transcend_1",
+      "category": "transcend",
+      "metric": "transcends",
+      "threshold": 1,
+      "effects": [
+        {
+          "type": "offline_bonus",
+          "value": 1.1
+        }
+      ]
+    },
+    {
+      "id": "ach_transcend_2",
+      "category": "transcend",
+      "metric": "transcends",
+      "threshold": 3,
+      "effects": [
+        {
+          "type": "production_mult",
+          "target": "all",
+          "value": 1.02
+        }
+      ]
+    },
+    {
+      "id": "ach_transcend_3",
+      "category": "transcend",
+      "metric": "transcends",
+      "threshold": 5,
+      "effects": [
+        {
+          "type": "offline_bonus",
+          "value": 1.1
+        }
+      ]
+    },
+    {
+      "id": "ach_transcend_4",
+      "category": "transcend",
+      "metric": "transcends",
+      "threshold": 10,
+      "effects": [
+        {
+          "type": "production_mult",
+          "target": "all",
+          "value": 1.03
+        }
+      ]
+    },
+    {
+      "id": "ach_time_1",
+      "category": "time",
+      "metric": "playtime",
+      "threshold": 3600,
+      "effects": [
+        {
+          "type": "production_mult",
+          "target": "all",
+          "value": 1.01
+        }
+      ]
+    },
+    {
+      "id": "ach_time_2",
+      "category": "time",
+      "metric": "playtime",
+      "threshold": 36000,
+      "effects": [
+        {
+          "type": "offline_bonus",
+          "value": 1.1
+        }
+      ]
+    },
+    {
+      "id": "ach_time_3",
+      "category": "time",
+      "metric": "playtime",
+      "threshold": 180000,
+      "effects": [
+        {
+          "type": "production_mult",
+          "target": "all",
+          "value": 1.02
+        }
+      ]
+    }
+  ],
+  "buildings": [
+    {
+      "id": "solar_collector",
+      "sector": "energy",
+      "tier": 1,
+      "costGrowth": 1.18,
+      "baseCost": {
+        "energy": 10
+      },
+      "produces": {
+        "energy": 0.5
+      }
+    },
+    {
+      "id": "fusion_reactor",
+      "sector": "energy",
+      "tier": 2,
+      "costGrowth": 1.15,
+      "baseCost": {
+        "energy": 200,
+        "crystal": 50
+      },
+      "produces": {
+        "energy": 4
+      },
+      "requires": "fusion_tech"
+    },
+    {
+      "id": "core_extractor",
+      "sector": "energy",
+      "tier": 3,
+      "costGrowth": 1.13,
+      "baseCost": {
+        "energy": 5000,
+        "crystal": 800
+      },
+      "produces": {
+        "energy": 35
+      },
+      "requires": "core_mining"
+    },
+    {
+      "id": "dyson_swarm",
+      "sector": "energy",
+      "tier": 4,
+      "costGrowth": 1.1,
+      "baseCost": {
+        "energy": 50000,
+        "crystal": 10000,
+        "alloy": 1000
+      },
+      "produces": {
+        "energy": 300
+      },
+      "requires": "dyson_theory"
+    },
+    {
+      "id": "crystal_mine",
+      "sector": "crystal",
+      "tier": 1,
+      "costGrowth": 1.18,
+      "baseCost": {
+        "energy": 30
+      },
+      "produces": {
+        "crystal": 0.3
+      }
+    },
+    {
+      "id": "crystal_nursery",
+      "sector": "crystal",
+      "tier": 2,
+      "costGrowth": 1.15,
+      "baseCost": {
+        "energy": 250,
+        "crystal": 50
+      },
+      "produces": {
+        "crystal": 0.9
+      },
+      "requires": "crystal_growth"
+    },
+    {
+      "id": "deep_crystal_drill",
+      "sector": "crystal",
+      "tier": 3,
+      "costGrowth": 1.13,
+      "baseCost": {
+        "energy": 5000,
+        "crystal": 1000
+      },
+      "produces": {
+        "crystal": 2
+      },
+      "requires": "deep_crystal_mining"
+    },
+    {
+      "id": "silicon_ring",
+      "sector": "crystal",
+      "tier": 4,
+      "costGrowth": 1.1,
+      "baseCost": {
+        "energy": 50000,
+        "crystal": 10000,
+        "alloy": 1000
+      },
+      "produces": {
+        "crystal": 15
+      },
+      "requires": "silicon_ring_theory"
+    },
+    {
+      "id": "refinery",
+      "sector": "alloy",
+      "tier": 1,
+      "costGrowth": 1.18,
+      "baseCost": {
+        "energy": 300,
+        "crystal": 60
+      },
+      "produces": {
+        "alloy": 0.15
+      },
+      "requires": "refine_tech"
+    },
+    {
+      "id": "nano_forge",
+      "sector": "alloy",
+      "tier": 2,
+      "costGrowth": 1.15,
+      "baseCost": {
+        "energy": 2000,
+        "crystal": 400,
+        "alloy": 60
+      },
+      "produces": {
+        "alloy": 0.3
+      },
+      "requires": "nano_forge_tech"
+    },
+    {
+      "id": "ion_casting_plant",
+      "sector": "alloy",
+      "tier": 3,
+      "costGrowth": 1.13,
+      "baseCost": {
+        "energy": 30000,
+        "crystal": 5000,
+        "alloy": 1200
+      },
+      "produces": {
+        "alloy": 1.2
+      },
+      "requires": "ion_casting"
+    },
+    {
+      "id": "stellar_forge",
+      "sector": "alloy",
+      "tier": 4,
+      "costGrowth": 1.1,
+      "baseCost": {
+        "energy": 250000,
+        "crystal": 50000,
+        "alloy": 8000,
+        "dark": 10
+      },
+      "produces": {
+        "alloy": 5
+      },
+      "requires": "stellar_forge_theory"
+    },
+    {
+      "id": "dark_detector",
+      "sector": "dark",
+      "tier": 1,
+      "costGrowth": 1.18,
+      "baseCost": {
+        "energy": 2000,
+        "crystal": 300,
+        "alloy": 50
+      },
+      "produces": {
+        "dark": 0.005
+      },
+      "requires": "dark_detection"
+    },
+    {
+      "id": "dark_matter_lab",
+      "sector": "dark",
+      "tier": 2,
+      "costGrowth": 1.15,
+      "baseCost": {
+        "energy": 8000,
+        "alloy": 200
+      },
+      "produces": {
+        "dark": 0.02
+      },
+      "requires": "dark_matter_theory"
+    },
+    {
+      "id": "dark_capture_station",
+      "sector": "dark",
+      "tier": 3,
+      "costGrowth": 1.13,
+      "baseCost": {
+        "energy": 80000,
+        "alloy": 5000,
+        "dark": 20
+      },
+      "produces": {
+        "dark": 0.06
+      },
+      "requires": "dark_capture"
+    },
+    {
+      "id": "dark_singularity_well",
+      "sector": "dark",
+      "tier": 4,
+      "costGrowth": 1.1,
+      "baseCost": {
+        "energy": 800000,
+        "alloy": 30000,
+        "dark": 200,
+        "crystal": 5000
+      },
+      "produces": {
+        "dark": 0.25
+      },
+      "requires": "dark_singularity_well_theory"
+    },
+    {
+      "id": "data_center",
+      "sector": "data",
+      "tier": 1,
+      "costGrowth": 1.18,
+      "baseCost": {
+        "energy": 100,
+        "crystal": 20
+      },
+      "produces": {
+        "data": 0.2
+      }
+    },
+    {
+      "id": "quantum_lab",
+      "sector": "data",
+      "tier": 2,
+      "costGrowth": 1.15,
+      "baseCost": {
+        "energy": 5000,
+        "alloy": 100,
+        "data": 50
+      },
+      "produces": {
+        "data": 1.5
+      },
+      "requires": "quantum_tech"
+    },
+    {
+      "id": "neural_hub",
+      "sector": "data",
+      "tier": 3,
+      "costGrowth": 1.13,
+      "baseCost": {
+        "energy": 40000,
+        "crystal": 8000,
+        "data": 500
+      },
+      "produces": {
+        "data": 3
+      },
+      "requires": "neural_arch"
+    },
+    {
+      "id": "holographic_core",
+      "sector": "data",
+      "tier": 4,
+      "costGrowth": 1.1,
+      "baseCost": {
+        "energy": 300000,
+        "alloy": 8000,
+        "data": 5000,
+        "dark": 15
+      },
+      "produces": {
+        "data": 10
+      },
+      "requires": "holographic_computing"
+    }
+  ],
+  "offline": {
+    "capSeconds": 86400
+  }
+}
