@@ -39,10 +39,16 @@ python3 tools/balance/starcore-v127-dispatch-ev.py    # 派遣远征 EV 核验�
 python3 tools/balance/starcore-v123-trait-calib.py    # 编队特性校准模拟
 ```
 
+- 数据统一经导出器生成的快照 `tools/balance/data/balance-data.json`
+  （生成命令 `corepack pnpm balance:export`，新鲜度校验 `corepack pnpm balance:export:check`
+  已挂 check 链尾：改数据表后须重新导出，否则 check 挂红）；
+- 六枚脚本不再解析 TS 源码：公共加载与断言底座见 `tools/balance/lib/balance_data.py`，
+  各脚本判据、输出列与退出码不变；
 - `starcore-v092-battle-sim.py`：战斗解析忠实移植，各模拟脚本的共享底座；
 - `starcore-v120-milestone-calib.py` / `starcore-v123-trait-calib.py` / `starcore-v124-boss-calib.py`：数值校准模拟；
+  v123 的特性面有意排除 `logistics_doctrine`（经济面特性不进战斗模拟，脚本内断言其战斗三字段保持中性）；
 - `starcore-v126-encounter-ev.py` / `starcore-v127-dispatch-ev.py`：EV 核验表（断言式，退出码即结论）；
-- 多数脚本运行时直接读取仓库内数据源（`src/data/*.ts`）复算，改数值后先过核验表再同步数据表。
+- 改数值后先重新导出快照（`corepack pnpm balance:export`），再过核验表。
 - CI 口径（v1.67 起）：`.github/workflows/check.yml` 的 `balance` 独立 job 依序运行
   v126 / v127 两枚 EV 核验表；`command -v python3` 守卫承担可选依赖语义，缺
   python3 时显式打印跳过说明、不硬失败（同 diagnose 的 Python 可选先例）。
