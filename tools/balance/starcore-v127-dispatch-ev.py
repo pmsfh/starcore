@@ -13,13 +13,13 @@ starcore-v127-dispatch-ev.py — 派遣远征 EV 核验表
   5. 层间与档间 EV 比例：档间 EV 比 == 权重比；层间 EV 比 == 1.35（奖励轴同源）
   6. 后勤特性乘区：logistics_doctrine ×1.2 后置作用，缺省 1.0
   7. 折算率与仓库真值对账：silencer_3 基础包 / 晶体比价中值 / REWARD_GROWTH /
-     OFFLINE_CAP 全部从仓库源码程序化提取（脚本不自带可能漂移的数值）
+     OFFLINE_CAP 全部经 balance-data.json（脚本不自带可能漂移的数值）
 
 折算率（能量当量，设计声明非市场价）：
   1 合金   = 1 能量   ；依据：v1.26 口径（重装兵训练成本比价）
   1 数据   = 6 能量   ；依据：v1.26 口径（60 合金 : 10 数据）
   1 暗物质 = 8000 能量；依据：v1.26 口径（据点奖励带中值）
-  1 晶体   = 55 能量  ；依据：据点奖励表 energy:crystal 12 组实值中值（本脚本运行时提取）
+  1 晶体   = 55 能量  ；依据：据点奖励表 energy:crystal 12 组实值中值（经 balance-data.json）
 
 相对标尺（报告项，非断言）：4h 派遣 EV == 前沿单场合成据点资源包（同公式）；
 24h 派遣在 best≈10 后越过 silencer_3 驻扎日收益（交叉点运行时算出）。
@@ -28,14 +28,12 @@ starcore-v127-dispatch-ev.py — 派遣远征 EV 核验表
   - 2026-09-25 v1：初版 4 档定稿核验。
 """
 
-import re
+import os
 import statistics
-from pathlib import Path
+import sys
 
-REPO = Path(__file__).resolve().parents[2]
-PVE = REPO / "src/data/pve.ts"
-ENDLESS = REPO / "src/data/endless.ts"
-OFFLINE = REPO / "src/lib/offline-gains.ts"
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from lib import balance_data as bd
 
 # 折算率（能量当量）：v1.26 定稿口径 + 晶体（运行时对账）
 RATE = {"energy": 1, "crystal": 55, "alloy": 1, "data": 6, "dark": 8000}
@@ -47,57 +45,30 @@ LOGISTICS_MULT = 1.2  # 决策点 5：后勤特性作用派遣收益
 ANCHOR_BESTS = [1, 10, 25, 35]  # 报告标尺：刚解锁 / 里程碑档1 / 档B带 / 档C带
 
 
-# ---- 仓库真值提取 ----
-
-def block_after(text: str, start_pat: str, flags: int = 0) -> str:
-    """取 start_pat 之后第一个平衡大括号块。"""
-    i = re.search(start_pat, text, flags)
-    assert i, f"锚点未命中: {start_pat}"
-    j = text.index("{", i.end())
-    depth = 0
-    for k in range(j, len(text)):
-        if text[k] == "{":
-            depth += 1
-        elif text[k] == "}":
-            depth -= 1
-            if depth == 0:
-                return text[j : k + 1]
-    raise AssertionError("大括号不平衡")
-
-
-def kv(block: str) -> dict:
-    return {m.group(1): float(m.group(2)) for m in re.finditer(r"(\w+):\s*([\d.]+)", block)}
-
+# ---- 仓库真值：经 balance-data.json（pve/endless/offline 快照） ----
 
 def extract_repo_truths():
-    pve = PVE.read_text(encoding="utf-8")
-    endless = ENDLESS.read_text(encoding="utf-8")
-    offline = OFFLINE.read_text(encoding="utf-8")
+    pve = bd.table('pve')['strongholds']
+    by_id = {s['id']: s for s in pve}
+    base = by_id.get('silencer_3')
+    bd.require(base is not None, 'silencer_3 据点缺失（pve 域）')
+    base_rewards = {k: float(v) for k, v in base['rewards'].items() if isinstance(v, (int, float))}
+    base_idle = {k: float(v) for k, v in base['idle'].items() if isinstance(v, (int, float))}
 
-    base = kv(block_after(pve, r"id:\s*'silencer_3'"))
-    # rewards 子块内的五资源（rewards 与 idle 都在大括号块里，取 rewards: 后的子块）
-    base_rewards = kv(block_after(pve, r"id:\s*'silencer_3'.*?rewards:", re.DOTALL))
-    base_idle = kv(block_after(pve, r"id:\s*'silencer_3'.*?idle:", re.DOTALL))
-
-    # 全据点 energy:crystal 比价样本（rewards 块内两者齐备者）
+    # 全据点 energy:crystal 比价样本（rewards 内两者齐备者）
     ratios = []
-    for m in re.finditer(r"rewards:\s*\{", pve):
-        blk = block_after(pve[m.start() :], r"rewards:")
-        d = kv(blk)
-        if d.get("energy") and d.get("crystal"):
-            ratios.append(d["energy"] / d["crystal"])
+    for s in pve:
+        r = s.get('rewards') or {}
+        if r.get('energy') and r.get('crystal'):
+            ratios.append(r['energy'] / r['crystal'])
 
-    growth = float(re.search(r"REWARD_GROWTH = ([\d.]+)", endless).group(1))
-    cap = float(re.search(r"OFFLINE_CAP = (\d+)\s*\*\s*(\d+)", offline).group(1)) * float(
-        re.search(r"OFFLINE_CAP = (\d+)\s*\*\s*(\d+)", offline).group(2)
-    )
     return {
         "base_rewards": base_rewards,
         "base_idle": base_idle,
         "ratios": ratios,
-        "growth": growth,
-        "cap": cap,
-        "base_block_keys": set(base.keys()) >= {"rewards", "idle"},
+        "growth": float(bd.table('endless')['rewardGrowth']),
+        "cap": float(bd.table('offline')['capSeconds']),
+        "base_block_keys": {"rewards", "idle"} <= set(base.keys()),
     }
 
 

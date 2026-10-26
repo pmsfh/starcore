@@ -38,12 +38,32 @@ spec = importlib.util.spec_from_file_location(
 v092 = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(v092)
 
-# ---------- 特性定义（暂定值） ----------
+# ---------- 特性定义（数值经 balance-data.json） ----------
+# none 为对照哨兵（无特性 = 中性数值）；logistics_doctrine 为经济面特性，
+# 不进战斗模拟（脚本头注口径），故不在表中
+from lib import balance_data as bd
+
+_jt = {t['id']: t for t in bd.table('traits')}
+bd.require(all(k in _jt for k in ('assault_doctrine', 'bastion_doctrine', 'counter_doctrine')),
+           '战斗特性缺失（traits 域）')
+
+# logistics_doctrine 有意不进战斗模拟（经济面特性）；
+# 其战斗三字段保持中性，非中性时断言挂红
+_logi = _jt.get('logistics_doctrine')
+bd.require(_logi is not None, 'logistics_doctrine 缺失（traits 域）')
+bd.require(
+    _logi['atkMult'] == 1 and _logi['hpMult'] == 1 and _logi['counterBonus'] == 0,
+    'logistics_doctrine 战斗三字段非中性（atkMult/hpMult/counterBonus）')
+
+def _tr(tid):
+    t = _jt[tid]
+    return dict(atk=t['atkMult'], hp=t['hpMult'], counterBonus=t['counterBonus'])
+
 TRAITS = {
     'none':        dict(atk=1.0,  hp=1.0,  counterBonus=0.0),
-    'assault_doctrine': dict(atk=1.12, hp=1.0,  counterBonus=0.0),
-    'bastion_doctrine': dict(atk=1.0,  hp=1.15, counterBonus=0.0),
-    'counter_doctrine': dict(atk=1.0,  hp=1.0,  counterBonus=0.25),
+    'assault_doctrine': _tr('assault_doctrine'),
+    'bastion_doctrine': _tr('bastion_doctrine'),
+    'counter_doctrine': _tr('counter_doctrine'),
 }
 
 def resolve_battle_trait(formation, stronghold, atk_mult, def_mult, seed, trait):
@@ -113,41 +133,14 @@ def resolve_battle_trait(formation, stronghold, atk_mult, def_mult, seed, trait)
             return False, round_, 1.0
     return False, round_, sum(p['initCount'] - p['count'] for p in players) / init_total
 
-# ---------- 远征模板（endless.ts 忠实移植） ----------
-# 4 模板据点敌方编成：运行时从 src/data/pve.ts 派生（可复现，不依赖外部缓存）
-import re
-from pathlib import Path
-
-_PVE_TS = Path(__file__).resolve().parents[2] / 'src/data/pve.ts'
-
-
-def _extract_strongholds():
-    src = open(_PVE_TS, encoding='utf-8').read()
-    out = {}
-    for m in re.finditer(r"id: '([a-z0-9_]+)'", src):
-        sid = m.group(1)
-        em = re.search(r"enemies: \[(.*?)\]\s*,\s*\n\s*rewards:", src[m.start():], re.S)
-        if not em:
-            continue
-        enemies = []
-        for um in re.finditer(
-                r"attack: ([0-9.]+),\s*\n\s*defense: ([0-9.]+),\s*\n\s*hp: ([0-9.]+),"
-                r"\s*\n\s*count: ([0-9.]+)(?:,\s*\n\s*counteredBy: \[([^\]]*)\])?",
-                em.group(1)):
-            cb = re.findall(r"'([a-z]+)'", um.group(5)) if um.group(5) else []
-            enemies.append(dict(attack=float(um.group(1)), defense=float(um.group(2)),
-                                hp=float(um.group(3)), count=int(um.group(4)),
-                                counteredBy=cb))
-        out[sid] = enemies
-    return out
-
-
-_ALL = _extract_strongholds()
-assert all(k in _ALL for k in ('silencer_3', 'raider_5', 'beast_4', 'ruin_4')), '据点模板提取失败'
+# ---------- 远征模板（数值经 balance-data.json：pve.ts 快照） ----------
+_ALL = {s['id']: s['enemies'] for s in bd.table('pve')['strongholds']}
+bd.require(all(k in _ALL for k in ('silencer_3', 'raider_5', 'beast_4', 'ruin_4')),
+           '据点模板缺失（pve 域）')
 _TPL = {k: _ALL[k] for k in ('silencer_3', 'raider_5', 'beast_4', 'ruin_4')}
 
 TEMPLATE_IDS = ['silencer_3', 'raider_5', 'beast_4', 'ruin_4']
-ENEMY_GROWTH = 1.25
+ENEMY_GROWTH = bd.table('endless')['enemyGrowth']
 
 def endless_stronghold(depth):
     """endless.ts endlessEnemies 忠实移植：D1 = 最强模板 × 0.5，

@@ -24,31 +24,15 @@ spec = importlib.util.spec_from_file_location(
 sim = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(sim)
 
-# ---------- 远征模板（自 pve.ts 原值移植，与 endless.ts TEMPLATE_IDS 一致） ----------
-def sh(enemies):
-    return dict(enemies=enemies)
+# ---------- 远征模板（数值经 balance-data.json：pve.ts 快照） ----------
+from lib import balance_data as bd
 
-TEMPLATES = {
-    'silencer_3': sh([
-        dict(unitId='silencer_flagship', name='沉默者旗舰', attack=1200, defense=400, hp=50000, count=1, counteredBy=['guard', 'psionic']),
-        dict(unitId='silencer_elite', name='沉默者精锐', attack=500, defense=250, hp=10000, count=6, counteredBy=['heavy']),
-    ]),
-    'raider_5': sh([
-        dict(unitId='raider_hunter', name='掠夺者猎舰', attack=480, defense=220, hp=9000, count=10, counteredBy=['guard', 'psionic']),
-        dict(unitId='raider_marauder', name='掠夺者劫掠舰', attack=300, defense=150, hp=4500, count=20, counteredBy=['heavy']),
-        dict(unitId='raider_warlord', name='掠夺者军阀', attack=900, defense=400, hp=22000, count=2, counteredBy=['guard', 'psionic']),
-    ]),
-    'beast_4': sh([
-        dict(unitId='beast_behemoth', name='虚空巨兽', attack=650, defense=280, hp=30000, count=3, counteredBy=['guard', 'psionic']),
-        dict(unitId='beast_swarm', name='虫群飞翼', attack=180, defense=90, hp=1500, count=40, counteredBy=['assault']),
-    ]),
-    'ruin_4': sh([
-        dict(unitId='ruin_sentinel', name='遗迹守卫', attack=520, defense=380, hp=14000, count=6, counteredBy=['heavy']),
-        dict(unitId='ruin_colossus', name='遗迹巨像', attack=1100, defense=520, hp=36000, count=2, counteredBy=['guard', 'psionic']),
-    ]),
-}
+_TEMPLATE_IDS = ('silencer_3', 'raider_5', 'beast_4', 'ruin_4')
+_SH = {s['id']: s for s in bd.table('pve')['strongholds']}
+bd.require(all(tid in _SH for tid in _TEMPLATE_IDS), '远征模板据点缺失（pve 域）')
+TEMPLATES = {tid: dict(enemies=[dict(e) for e in _SH[tid]['enemies']]) for tid in _TEMPLATE_IDS}
 TEMPLATE_IDS = ['silencer_3', 'raider_5', 'beast_4', 'ruin_4']
-ENEMY_GROWTH = 1.25
+ENEMY_GROWTH = bd.table('endless')['enemyGrowth']
 BASE_POWER = sim.power(TEMPLATES['silencer_3'])
 NORMALIZE = {tid: BASE_POWER / sim.power(TEMPLATES[tid]) for tid in TEMPLATE_IDS}
 
@@ -59,10 +43,10 @@ def endless_enemies(depth):
     out = []
     for e in TEMPLATES[tid]['enemies']:
         r = lambda v: round(v * scale)
-        out.append(dict(unitId=e['unitId'], name=e['name'], attack=r(e['attack']),
+        out.append(dict(unitId=e['unitId'], attack=r(e['attack']),
                         defense=r(e['defense']), hp=r(e['hp']), count=e['count'],
-                        counteredBy=e['counteredBy']))
-    return sh(out)
+                        counteredBy=list(e['counteredBy'])))
+    return dict(enemies=out)
 
 SEEDS = [0x1234 + i * 7919 for i in range(8)]
 

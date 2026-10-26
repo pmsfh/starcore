@@ -2,8 +2,8 @@
 """
 starcore-v124-boss-calib.py — 每周强敌（周 Boss）数值校准模拟（v6 定稿轮）
 
-整模块 import v092 sim 复用（v120/v123 同款先例）。模板直接解析 src/data/pve.ts
-派生（可复现，与 endless TEMPLATE_NORMALIZE 同公式），不依赖 /tmp 缓存。
+整模块 import v092 sim 复用（v120/v123 同款先例）。模板数据经 balance-data.json
+（pve.ts 快照），归一化系数与 endless TEMPLATE_NORMALIZE 同公式。
 
 设计口径演进（本校准六轮记录）：
   v1 暂定 bossDepth = max(6, floor(best×0.85))，证伪：×0.85 落在
@@ -33,7 +33,6 @@ starcore-v124-boss-calib.py — 每周强敌（周 Boss）数值校准模拟（v
 """
 import math
 import os
-import re
 import sys
 
 import importlib.util
@@ -44,39 +43,15 @@ spec = importlib.util.spec_from_file_location(
 v092 = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(v092)
 
-from pathlib import Path
-REPO = Path(__file__).resolve().parents[2]
-PVE_TS = REPO / 'src/data/pve.ts'
+# ---------- 模板数据：经 balance-data.json（pve.ts 快照），不再解析源码 ----------
+from lib import balance_data as bd
 
-# ---------- 模板提取：解析 pve.ts 派生各据点敌方编成（可复现） ----------
-
-def extract_strongholds():
-    src = open(PVE_TS, encoding='utf-8').read()
-    out = {}
-    for m in re.finditer(r"id: '([a-z0-9_]+)'", src):
-        sid = m.group(1)
-        em = re.search(r"enemies: \[(.*?)\]\s*,\s*\n\s*rewards:", src[m.start():], re.S)
-        if not em:
-            continue
-        enemies = []
-        for um in re.finditer(
-                r"attack: ([0-9.]+),\s*\n\s*defense: ([0-9.]+),\s*\n\s*hp: ([0-9.]+),"
-                r"\s*\n\s*count: ([0-9.]+)(?:,\s*\n\s*counteredBy: \[([^\]]*)\])?",
-                em.group(1)):
-            cb = []
-            if um.group(5):
-                cb = re.findall(r"'([a-z]+)'", um.group(5))
-            enemies.append(dict(
-                attack=float(um.group(1)), defense=float(um.group(2)),
-                hp=float(um.group(3)), count=int(um.group(4)), counteredBy=cb))
-        out[sid] = enemies
-    return out
-
-PVE = extract_strongholds()
-assert 'silencer_3' in PVE and 'silencer_4' in PVE, '模板提取失败'
+PVE = {s['id']: s['enemies'] for s in bd.table('pve')['strongholds']}
+bd.require('silencer_3' in PVE and 'silencer_4' in PVE, '模板据点提取失败')
 
 ENDLESS_TEMPLATES = ['silencer_3', 'raider_5', 'beast_4', 'ruin_4']
-ENEMY_GROWTH = 1.25
+bd.require(all(tid in PVE for tid in ENDLESS_TEMPLATES), '远征模板据点缺失')
+ENEMY_GROWTH = bd.table('endless')['enemyGrowth']
 BOSS_FLOOR = 6
 
 # v4 轮实测三档墙位差的结构分量定标（卡墙玩家 best ≈ 墙位）

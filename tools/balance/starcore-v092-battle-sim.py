@@ -54,13 +54,14 @@ def make_rng(seed: int):
         return ((t ^ (t >> 14)) & M32) / 4294967296
     return rng
 
-# ---------- 玩家兵种（units.ts） ----------
-UNITS = {
-    'assault': dict(attack=12, defense=5,  hp=60,  counterMult=1.5),
-    'guard':   dict(attack=8,  defense=12, hp=120, counterMult=1.5),
-    'heavy':   dict(attack=20, defense=12, hp=200, counterMult=1.5),
-    'psionic': dict(attack=35, defense=8,  hp=150, counterMult=2.0),
-}
+# ---------- 玩家兵种（units.ts，经 balance-data.json） ----------
+import os
+import sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from lib import balance_data as bd
+
+UNITS = {u['id']: u for u in bd.table('units')}
 
 # ---------- 遗物强化 ----------
 def enhance(v, gain, lv):
@@ -103,44 +104,11 @@ def formation_variant(base, variant):
     return dict(base)
 
 # ---------- 新据点敌人编成（v0.92 设计定稿，强度带 9.98e6~3.29e7） ----------
-STRONGHOLDS = {
-    'raider_12': dict(name='虚空掠夺者旗舰', enemies=[
-        dict(unitId='raider_phantom',    name='虚空快艇',     attack=299,  defense=149, hp=2176,  count=900, counteredBy=['assault']),
-        dict(unitId='raider_cruiser',    name='虚空巡洋舰',   attack=612,  defense=299, hp=6528,  count=400, counteredBy=['heavy']),
-        dict(unitId='raider_sentinel',   name='虚空哨舰',     attack=762,  defense=462, hp=21760, count=80,  counteredBy=['guard', 'psionic']),
-        dict(unitId='raider_dreadnought',name='劫掠无畏舰',   attack=3264, defense=1904,hp=81600, count=30,  counteredBy=['guard', 'psionic']),
-        dict(unitId='hive_tyrant',       name='母巢暴君',     attack=2040, defense=1224,hp=244800,count=5,   counteredBy=['guard', 'psionic']),
-    ]),
-    'beast_8': dict(name='虚空白鲸群', enemies=[
-        dict(unitId='void_matriarch',    name='虚空白鲸母兽', attack=1900, defense=700, hp=150000,count=5,   counteredBy=['guard', 'psionic']),
-        dict(unitId='void_weaver',       name='虚空织网兽',   attack=480,  defense=190, hp=5800,  count=100, counteredBy=['assault']),
-        dict(unitId='void_spawn',        name='虚空幼鲸',     attack=280,  defense=110, hp=2900,  count=200, counteredBy=['heavy']),
-        dict(unitId='void_leviathan',    name='噬星利维坦',   attack=2500, defense=900, hp=400000,count=4,   counteredBy=['guard', 'psionic']),
-        dict(unitId='star_whale_king',   name='虚空白鲸王',   attack=6000, defense=2300,hp=1350000,count=7,  counteredBy=['guard', 'psionic']),
-    ]),
-    'ruin_8': dict(name='先驱者归航港', enemies=[
-        dict(unitId='pantheon_core',     name='万神殿核心',   attack=2300, defense=1550,hp=480000,count=20,  counteredBy=['guard', 'psionic']),
-        dict(unitId='archon_core',       name='归航港核心',   attack=1750, defense=1150,hp=230000,count=12,  counteredBy=['guard', 'psionic']),
-        dict(unitId='beacon_sentinel',   name='港卫哨卫',     attack=870,  defense=620, hp=58000, count=45,  counteredBy=['heavy']),
-        dict(unitId='precursor_warden',  name='先驱守灵',     attack=580,  defense=350, hp=17500, count=130, counteredBy=['assault']),
-        dict(unitId='ruin_drone',        name='遗迹无人机',   attack=290,  defense=155, hp=2900,  count=260, counteredBy=['heavy']),
-        dict(unitId='void_drone_king',   name='虚空白蚁后',   attack=3100, defense=1500,hp=420000,count=3,   counteredBy=['guard', 'psionic']),
-    ]),
-    'raider_13': dict(name='虚空裁决军团', enemies=[
-        dict(unitId='raider_emperor',    name='虚空主宰',     attack=4400, defense=2600,hp=680000,count=14,  counteredBy=['guard', 'psionic']),
-        dict(unitId='hive_tyrant',       name='母巢暴君',     attack=1500, defense=900, hp=180000,count=10,  counteredBy=['guard', 'psionic']),
-        dict(unitId='brood_carrier',     name='育群航母',     attack=700,  defense=450, hp=60000, count=18,  counteredBy=['heavy']),
-        dict(unitId='raider_elite_flt',  name='精锐舰群',     attack=350,  defense=200, hp=2500,  count=300, counteredBy=['assault']),
-        dict(unitId='raider_dreadnought',name='劫掠无畏舰',   attack=2400, defense=1400,hp=60000, count=32,  counteredBy=['guard', 'psionic']),
-    ]),
-    'silencer_7': dict(name='沉默者回响', enemies=[
-        dict(unitId='silencer_echo',     name='沉默者回响',   attack=9000, defense=3100,hp=23000000,count=1, counteredBy=['guard', 'psionic']),
-        dict(unitId='silencer_warden_lord',name='回响君王',   attack=6500, defense=2300,hp=7500000,count=1, counteredBy=['guard', 'psionic']),
-        dict(unitId='void_bastion',      name='虚空壁垒',     attack=3700, defense=1400,hp=580000, count=2, counteredBy=['guard', 'psionic']),
-        dict(unitId='silencer_sentinel', name='守门哨卫',     attack=1550, defense=770, hp=77000,  count=9, counteredBy=['heavy']),
-        dict(unitId='silencer_warden',   name='沉默守望者',   attack=970,  defense=580, hp=38500,  count=14, counteredBy=['assault']),
-    ]),
-}
+# 数值经 balance-data.json（pve.ts 快照）；终层五座参与口径为本脚本的校准选择
+_SH = {s['id']: s for s in bd.table('pve')['strongholds']}
+_FINAL_IDS = ['raider_12', 'beast_8', 'ruin_8', 'raider_13', 'silencer_7']
+bd.require(all(sid in _SH for sid in _FINAL_IDS), '终层据点缺失: ' + ', '.join(sid for sid in _FINAL_IDS if sid not in _SH))
+STRONGHOLDS = {sid: dict(name=_SH[sid]['name'], enemies=_SH[sid]['enemies']) for sid in _FINAL_IDS}
 # ---------- resolveBattle 忠实移植 ----------
 def resolve_battle(formation: dict, stronghold: dict, atk_mult: float, def_mult: float, seed: int):
     """返回 (victory, rounds, losses_total)；战斗为瞬时结算，游戏内不扣兵，
