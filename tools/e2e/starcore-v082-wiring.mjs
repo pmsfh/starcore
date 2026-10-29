@@ -150,14 +150,33 @@ console.log('== A. 战损接线 ==');
   );
   // 驻扎已自动撤回：SPA 内导航回 raider_1（goto 会重写注入档冲掉内存态，已知坑）
   await pw.getByRole('button', { name: /返回星图/ }).click();
-  await pw.waitForTimeout(700);
+  // 固定等待在远程慢链路与连续跑批下会掉，改条件等待：卡片渲染出来再点
+  await pw
+    .waitForFunction(
+      () =>
+        [...document.querySelectorAll('button, .node-card, .stronghold-card, [class*=card]')].some((c) =>
+          c.textContent.includes('小型掠夺者营地')
+        ),
+      null,
+      { timeout: 15000 }
+    )
+    .catch(() => {});
   await pw.evaluate(() => {
     const card = [...document.querySelectorAll('button, .node-card, .stronghold-card, [class*=card]')].find(
       (c) => c.textContent.includes('小型掠夺者营地')
     );
     if (card) card.click();
   });
-  await pw.waitForTimeout(900);
+  // 条件等待：路由落到据点页且驻扎按钮组已渲染（含失败场景的兜底超时）
+  await pw
+    .waitForFunction(
+      () =>
+        location.pathname === '/battle/raider_1' &&
+        [...document.querySelectorAll('button')].some((b) => /挂机驻扎|撤回驻扎/.test(b.textContent)),
+      null,
+      { timeout: 15000 }
+    )
+    .catch(() => {});
   const backBtn = await pw.evaluate(() => {
     const btns = [...document.querySelectorAll('button')];
     const g = btns.find((b) => b.textContent.includes('挂机驻扎'));

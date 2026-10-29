@@ -44,8 +44,12 @@ ok('遮罩无 lighter 遗留类', (await page.locator('.modal-overlay.lighter').
 
 // 2. 继续按钮关闭
 await page.locator('button', { hasText: '继续' }).first().click()
-await page.waitForTimeout(600)
-ok('点继续后弹窗关闭', (await page.locator('.modal-overlay').count()) === 0)
+// 固定 600ms 在慢链路下会早于退场动画结束，改为等遮罩消失（超时再判失败）
+const closed = await page
+  .waitForFunction(() => document.querySelectorAll('.modal-overlay').length === 0, null, { timeout: 8000 })
+  .then(() => true)
+  .catch(() => false)
+ok('点继续后弹窗关闭', closed, closed ? '' : `遮罩仍有 ${await page.locator('.modal-overlay').count()} 层`)
 ok('主页内容可见', await page.evaluate(() => document.body.innerText.includes('星核')))
 
 await browser.close()
