@@ -180,7 +180,9 @@ function cardEnemy(card: EnemyCard) {
           >
             <div class="st-head">
               <span class="st-dot" :style="{ background: LAYER_INFO[row.layer].color }"></span>
-              <span class="st-name">{{ row.completed ? row.name : '???' }}</span>
+              <span class="st-name">{{
+                row.completed ? row.name : t('archive.storyLockedName')
+              }}</span>
               <Icon v-if="row.completed" class="st-check" name="i-ui-check" size="sm" />
             </div>
             <p v-if="row.completed" class="st-story">{{ row.story }}</p>

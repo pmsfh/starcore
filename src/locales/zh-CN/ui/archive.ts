@@ -10,6 +10,7 @@ export default {
   'archive.starMapSection': '星图档案',
   'archive.starMapHint': '完成探索节点后，此处的记录才会揭开。',
   'archive.storyUnread': '尚未踏足这片空域。',
+  'archive.storyLockedName': '未探明',
   'archive.bestiarySection': '敌方档案',
   'archive.bestiaryHint': '与敌方交战后自动收录（胜负都算遭遇）。',
   'archive.enemyCount': '已收录 {seen} / {total}',

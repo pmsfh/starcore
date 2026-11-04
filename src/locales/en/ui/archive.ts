@@ -9,6 +9,7 @@ export default {
   'archive.starMapSection': 'Star Atlas Records',
   'archive.starMapHint': 'Records are revealed once a node has been explored.',
   'archive.storyUnread': 'This region of space remains unvisited.',
+  'archive.storyLockedName': 'Uncharted',
   'archive.bestiarySection': 'Hostile Records',
   'archive.bestiaryHint': 'Hostiles are recorded upon engagement (win or lose).',
   'archive.enemyCount': 'Recorded {seen} / {total}',

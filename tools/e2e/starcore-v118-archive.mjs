@@ -98,7 +98,8 @@ console.log('== B. 探索进度档剧情回读 ==');
   const storyText = await unlocked.locator('.st-story').textContent();
   check('剧情文案接线（story.ts 回读）', storyText.includes('扫描器在轨道残骸带中发现了掠夺者的踪迹'));
   check('留档计数 2/34', norm(await page.locator('.count-lead').first().textContent()).includes('2/34'));
-  const locked = cards.filter({ hasText: '???' });
+  // 锁定卡片按状态类定位（不依赖占位文案）
+  const locked = page.locator('[data-testid="archive-story-card"]:not(.unlocked)');
   check(`未完成节点仍锁定（实际 ${await locked.count()}）`, (await locked.count()) === 32);
   await page.context().close();
 }

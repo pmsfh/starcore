@@ -51,7 +51,7 @@ describe('ArchiveView — 渲染', () => {
     const wrapper = mountView(ArchiveView)
     const cards = wrapper.findAll('[data-testid="archive-story-card"]')
 
-    // 全新档：全部锁定态（名称 ???，无剧情文本）
+    // 全新档：全部锁定态（名称占位「未探明」，无剧情文本）
     for (const c of cards) {
       expect(c.text()).not.toContain('扫描器')
     }
