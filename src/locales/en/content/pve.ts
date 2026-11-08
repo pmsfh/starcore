@@ -222,6 +222,7 @@ export default {
   'content.pve.silencer_7.enemy.4.name': 'Silent Watcher',
   'content.pve.silencer_7.name': 'Echo of the Silent Ones',
   'content.pve.type.beast.name': 'Alien Behemoths',
+  'content.pve.type.imperial.name': 'Imperial Court',
   'content.pve.type.raider.name': 'Raider Camps',
   'content.pve.type.ruin.name': 'Ancient Ruins',
   'content.pve.type.silencer.name': 'Silent Outposts',

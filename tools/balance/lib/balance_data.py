@@ -29,7 +29,7 @@ import os
 _HERE = os.path.dirname(os.path.abspath(__file__))
 _JSON_PATH = os.path.join(_HERE, '..', 'data', 'balance-data.json')
 
-_EXPECTED_SCHEMA = 3
+_EXPECTED_SCHEMA = 4
 
 _DATA = None
 

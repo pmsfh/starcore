@@ -15,6 +15,7 @@ import { RELIC_POOL, MAX_RELIC_LEVEL } from '@/data/relics'
 import { INFINITE_NODE_IDS, MAX_INFINITE_NODE_LEVEL } from '@/stores/transcend'
 import { ARCHIVE_ENEMY_KEYS } from '@/stores/archive'
 import { ENCOUNTER_IDS } from '@/data/encounters'
+import { IMPERIAL_STRONGHOLDS } from '@/data/imperial-strongholds'
 
 // 有效 ID 集合（用于 validateSaveData 内容范围校验），
 const BUILDING_IDS = new Set(BUILDINGS.map((b) => b.id))
@@ -23,6 +24,7 @@ const UNIT_IDS = new Set<string>(UNITS.map((u) => u.id))
 const EXPLORE_NODE_IDS = new Set(EXPLORE_NODES.map((n) => n.id))
 const STRONGHOLD_IDS = new Set(STRONGHOLDS.map((s) => s.id))
 const RELIC_IDS = new Set(RELIC_POOL.map((r) => r.id))
+const IMPERIAL_IDS = new Set(IMPERIAL_STRONGHOLDS.map((s) => s.id))
 
 /** 存档版本高于当前版本 → 返回该版本号（不静默 hydrate 未知结构），否则 null */
 export function tooNewVersion(data: unknown): number | null {
@@ -131,6 +133,46 @@ export function validateAndRepair(data: unknown): data is SaveData {
       )
       for (const fid of Object.keys(mil0.dispatches)) {
         if (!fids.has(fid)) delete mil0.dispatches[fid]
+      }
+    }
+    // imperial：条目级剥离未知据点 / 非法整备等级 / 非法巡检目标（v1.80）
+    const imp = data.imperial
+    if (_isObject(imp)) {
+      if (Array.isArray(imp.completed)) {
+        imp.completed = imp.completed.filter(
+          (id: unknown) => typeof id === 'string' && IMPERIAL_IDS.has(id)
+        )
+      }
+      if (Array.isArray(imp.everCompleted)) {
+        imp.everCompleted = imp.everCompleted.filter(
+          (id: unknown) => typeof id === 'string' && IMPERIAL_IDS.has(id)
+        )
+      }
+      if (_isObject(imp.tiers)) {
+        for (const id of Object.keys(imp.tiers)) {
+          const lv = imp.tiers[id]
+          if (
+            !IMPERIAL_IDS.has(id) ||
+            typeof lv !== 'number' ||
+            !Number.isInteger(lv) ||
+            lv < 1 ||
+            lv > 3
+          ) {
+            delete imp.tiers[id]
+          }
+        }
+      }
+      if (_isObject(imp.capturedAt)) {
+        for (const id of Object.keys(imp.capturedAt)) {
+          const at = imp.capturedAt[id]
+          if (!IMPERIAL_IDS.has(id) || !_isNonNegFinite(at)) delete imp.capturedAt[id]
+        }
+      }
+      if (_isObject(imp.audit)) {
+        const a = imp.audit
+        if (typeof a.targetId !== 'string' || !IMPERIAL_IDS.has(a.targetId)) {
+          delete imp.audit
+        }
       }
     }
   }
@@ -363,6 +405,39 @@ function validateSaveData(data: unknown): data is SaveData {
     if (!_isNonNegFinite(enc.nextTriggerAt)) return false
     if (enc.pendingEventId !== undefined && typeof enc.pendingEventId !== 'string') return false
     if (enc.pendingAt !== undefined && !_isNonNegFinite(enc.pendingAt)) return false
+  }
+  // imperial（v1.80 可选字段）：结构校验；未知据点 / 非法等级已在
+  // _validateAndRepair 条目级剥离，未知巡检目标整段删除
+  if (d.imperial !== undefined) {
+    if (!_isObject(d.imperial)) return false
+    const imp = d.imperial as Record<string, unknown>
+    if (!Array.isArray(imp.completed)) return false
+    if (!imp.completed.every((id: unknown) => typeof id === 'string')) return false
+    if (imp.everCompleted !== undefined) {
+      if (!Array.isArray(imp.everCompleted)) return false
+      if (!imp.everCompleted.every((id: unknown) => typeof id === 'string')) return false
+    }
+    if (!_isObject(imp.tiers)) return false
+    for (const lv of Object.values(imp.tiers)) {
+      if (typeof lv !== 'number' || !Number.isInteger(lv) || lv < 1 || lv > 3) return false
+    }
+    if (!_isNonNegFinite(imp.lastClaimAt)) return false
+    if (imp.capturedAt !== undefined) {
+      if (!_isObject(imp.capturedAt)) return false
+      for (const at of Object.values(imp.capturedAt)) {
+        if (!_isNonNegFinite(at)) return false
+      }
+    }
+    if (imp.bonus !== undefined && imp.bonus !== 1 && imp.bonus !== 1.1) return false
+    if (imp.audit !== undefined) {
+      if (!_isObject(imp.audit)) return false
+      const a = imp.audit as Record<string, unknown>
+      if (typeof a.week !== 'string') return false
+      if (typeof a.targetId !== 'string') return false
+      if (!_isNonNegFinite(a.deadline)) return false
+      if (!['pending', 'passed', 'failed', 'overdue'].includes(a.status as string)) return false
+      if (a.paid !== undefined && typeof a.paid !== 'boolean') return false
+    }
   }
   return true
 }

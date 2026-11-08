@@ -22,8 +22,8 @@ transcend 域真值连乘推导）：
   档 A / B / C = 可通关深空 D34 / D38 / D40，里程碑档 3 / 3 / 4；
   兵量与聚值乘数同源经 balance-data.json（v092 / v120 / 本脚本统一消费）。
 
-数据源：tools/balance/data/balance-data.json（schema:3）——
-explore / weeklyBoss / transcend / profiles 域与 units.cost 投影；
+数据源：tools/balance/data/balance-data.json（schema:4）——
+explore / weeklyBoss / transcend / profiles / imperial 域与 units.cost 投影；
 奖励公式（里程碑 / 战斗 / 周强敌 / 派遣）自 pve 基准包 +
 endless.rewardGrowth 同源重算，脚本不自带可能漂移的数值。
 """
@@ -61,6 +61,7 @@ def check(cond, msg):
 UNITS = {u['id']: u for u in bd.table('units')}
 EXPLORE = bd.table('explore')
 WEEKLY = bd.table('weeklyBoss')
+IMPERIAL = bd.table('imperial')
 TRANSCEND = bd.table('transcend')
 PVE = bd.table('pve')
 ENDLESS = bd.table('endless')
@@ -104,6 +105,22 @@ def weekly_reward(best):
     """周强敌（weekly-boss.ts weeklyBossReward 同源：前沿锚 × REWARD_MULT）。"""
     anchor = reward_at(max(WEEKLY['floor'], best + 1))
     return {k: round(v * WEEKLY['rewardMult']) for k, v in anchor.items()}
+
+
+# ---------- 帝庭据点线（v1.80，imperial 域） ----------
+IMP_ANCHOR = IMPERIAL['anchorBest']
+
+
+def imperial_rate(s, best, tier=1):
+    """单座贡赋当量/s（imperial-strongholds.ts 同源：A 档基准 × 派遣曲线 × 整备倍率）。"""
+    scale = GROWTH ** (max(1, best) - IMP_ANCHOR)
+    mult = (IMPERIAL['tier3Mult'] if tier >= 3
+            else IMPERIAL['tierMult'] if tier == 2 else 1)
+    return s['baseRate'] * scale * mult * RATE[s['resource']]
+
+
+def imperial_total(best):
+    return sum(imperial_rate(s, best) for s in IMPERIAL['strongholds'])
 
 
 def dispatch_hourly(best, hours, count=1):
@@ -185,7 +202,7 @@ AUTO_NODES = [n for n in TRANSCEND['nodes']
               if any(e['type'].startswith('auto_') for e in n['effects'])]
 
 # ---------- 输出：三口径分表 + 两汇总指标 ----------
-print('== 全系统 EV 总账（schema:3，折算：1 合金=1 / 1 数据=6 / 1 晶体=55 / 1 暗物质=8000 能量） ==')
+print('== 全系统 EV 总账（schema:4，折算：1 合金=1 / 1 数据=6 / 1 晶体=55 / 1 暗物质=8000 能量） ==')
 print(f'基准包 {MS_UNLOCK}：{BASE_RW}')
 print()
 
@@ -218,6 +235,17 @@ print(f'  离线挂机（OFFLINE_CAP {OFFLINE_CAP_S // 3600:.0f}h 封顶）：�
 print(f'  自动协议三节点（离线自动化，效果面）：{", ".join(n["id"] for n in AUTO_NODES)}')
 print()
 
+print('-- 帝庭据点线（6 座满接管，折算当量/s） --')
+for name, p in TIERS.items():
+    total = imperial_total(p['best'])
+    d3 = dispatch_hourly(p['best'], 24, 3)
+    costs = sorted(imperial_rate(s, p['best']) * 24 * 3600 for s in IMPERIAL['strongholds'])
+    print(f'  档 {name}：贡赋 {total:>10.3e}/s（{total / d3:.2%} 三路派遣）'
+          f' | 满池 {IMPERIAL["claimCapSeconds"] // 3600}h {total * IMPERIAL["claimCapSeconds"]:>10.3e}'
+          f' | 打点 {IMPERIAL["auditPayHours"]}h {total * IMPERIAL["auditPayHours"] * 3600:>10.3e}'
+          f' | 整备 2 级单座 {costs[0]:.3e}~{costs[-1]:.3e}')
+print()
+
 print('-- 汇总指标 --')
 for name, p in TIERS.items():
     steady = dispatch_hourly(p['best'], 24, 3)
@@ -237,6 +265,21 @@ for name, p in TIERS.items():
 # ---------- 断言 7：三档训练成本比例（v092 兵量带同源） ----------
 tA, tB, tC = (train_cost(TIERS[k]['units']) for k in 'ABC')
 check(tB > tA and tC > tB, '训练满编成本非随档递增')
+
+# ---------- 断言 7b：帝庭据点线锚点（v1.80） ----------
+check(len(IMPERIAL['strongholds']) == 6,
+      f'帝庭据点数 ≠ 6：{len(IMPERIAL["strongholds"])}')
+check(IMPERIAL['claimCapSeconds'] == 12 * 3600, '贡赋池上限 ≠ 12h')
+check(IMPERIAL['auditPayHours'] == 24, '巡检打点时长 ≠ 24h')
+for name, p in TIERS.items():
+    ratio = imperial_total(p['best']) / dispatch_hourly(p['best'], 24, 3)
+    check(bd.approx(ratio, IMPERIAL['tributeShare'], 0.001),
+          f'帝庭贡赋偏离 5% 锚点（档 {name}）：{ratio:.4%}')
+# 整备回收期：2 级 24h/30% = 80h；3 级 72h/39% ≈ 184.6h
+payback2 = 24 / (IMPERIAL['tierMult'] - 1)
+payback3 = 72 / (IMPERIAL['tier3Mult'] - IMPERIAL['tierMult'])
+check(79 <= payback2 <= 81, f'整备 2 级回收期异常：{payback2:.1f}h')
+check(180 <= payback3 <= 190, f'整备 3 级回收期异常：{payback3:.1f}h')
 
 # ---------- 断言 8：转生门槛结构（首档里程碑可覆盖；终局时薪下秒级可积） ----------
 for name, p in TIERS.items():
@@ -261,5 +304,5 @@ if failures:
     for f in failures:
         print('  -', f)
     raise SystemExit(1)
-print('PASS：全部断言通过（9 组：折算对账 / 27% 口径 / 周强敌倍率 / 档间比 / '
-      '派遣量级 / 训练回收带 / 递增性 / 转生门槛 / 无限曲线）')
+print('PASS：全部断言通过（10 组：折算对账 / 27% 口径 / 周强敌倍率 / 档间比 / '
+      '派遣量级 / 训练回收带 / 递增性 / 帝庭锚点 / 转生门槛 / 无限曲线）')

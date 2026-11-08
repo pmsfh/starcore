@@ -21,6 +21,8 @@ export type {
   DailySaveData,
   ArchiveSaveData,
   EncountersSaveData,
+  ImperialAuditSaveData,
+  ImperialSaveData,
   SaveData,
 } from './save/schema'
 export { writeSave, writeSaveSync, readSave, clearSave, clearAllSaves } from './save/io'

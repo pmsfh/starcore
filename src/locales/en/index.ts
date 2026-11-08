@@ -48,6 +48,7 @@ import echoContent from './content/echo.ts'
 import bestiaryContent from './content/bestiary.ts'
 import gateContent from './content/gate.ts'
 import imperialContent from './content/imperial.ts'
+import imperialStrongholdsContent from './content/imperialStrongholds.ts'
 
 export default {
   ...achievements,
@@ -91,4 +92,5 @@ export default {
   ...bestiaryContent,
   ...gateContent,
   ...imperialContent,
+  ...imperialStrongholdsContent,
 }

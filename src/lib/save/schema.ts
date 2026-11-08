@@ -59,6 +59,30 @@ export interface EncountersSaveData {
   /** 挂起时刻（ms；pendingEventId 存在时有效，超时由读取侧/tick 静默失效） */
   pendingAt?: number
 }
+/**
+ * 帝庭据点存档（v1.80 可选字段：旧档缺失视为零接管、零贡赋）。
+ * 接管与整备跨转生保留；hardReset 与导入替换走 resetAllStores 清空。
+ */
+export interface ImperialAuditSaveData {
+  week: string
+  targetId: string
+  deadline: number
+  status: 'pending' | 'passed' | 'failed' | 'overdue'
+  paid?: boolean
+}
+export interface ImperialSaveData {
+  completed: string[]
+  /** 曾接管集合（档案 / 解锁等终身判定；旧档缺失时用 completed 补齐） */
+  everCompleted?: string[]
+  /** 整备等级 id → 1..3 */
+  tiers: Record<string, number>
+  /** 接管时刻 id → ms（贡赋起算点；旧档缺失视为 lastClaimAt） */
+  capturedAt?: Record<string, number>
+  lastClaimAt: number
+  /** 巡检通过后的下周贡赋加成（1 / 1.1） */
+  bonus?: number
+  audit?: ImperialAuditSaveData
+}
 export interface ExplorationSaveData {
   progress: Record<
     string,
@@ -174,4 +198,6 @@ export interface SaveData {
   archive?: ArchiveSaveData
   /** 随机遭遇事件（v1.26 可选字段，旧档缺失视为无挂起、窗口重开） */
   encounters?: EncountersSaveData
+  /** 帝庭据点线（v1.80 可选字段，旧档缺失视为零接管） */
+  imperial?: ImperialSaveData
 }

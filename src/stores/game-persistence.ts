@@ -32,6 +32,7 @@ import type { useAchievementsStore } from './achievements'
 import type { useDailyStore } from './daily'
 import type { useArchiveStore } from './archive'
 import type { useEncountersStore } from './encounters'
+import type { useImperialStore } from './imperial'
 
 type ResourcesStore = ReturnType<typeof useResourcesStore>
 type BuildingsStore = ReturnType<typeof useBuildingsStore>
@@ -45,6 +46,7 @@ type AchievementsStore = ReturnType<typeof useAchievementsStore>
 type DailyStore = ReturnType<typeof useDailyStore>
 type ArchiveStore = ReturnType<typeof useArchiveStore>
 type EncountersStore = ReturnType<typeof useEncountersStore>
+type ImperialStore = ReturnType<typeof useImperialStore>
 
 export function createGamePersistence(deps: {
   resources: ResourcesStore
@@ -59,6 +61,7 @@ export function createGamePersistence(deps: {
   daily: DailyStore
   archive: ArchiveStore
   encounters: EncountersStore
+  imperial: ImperialStore
   totalProduction: ComputedRef<Record<string, Decimal>>
   offlineMult: ComputedRef<Decimal>
   lastSaveTime: Ref<number>
@@ -87,6 +90,7 @@ export function createGamePersistence(deps: {
     daily,
     archive,
     encounters,
+    imperial,
     totalProduction,
     offlineMult,
     lastSaveTime,
@@ -117,6 +121,7 @@ export function createGamePersistence(deps: {
       daily: daily.serialize(),
       archive: archive.serialize(),
       encounters: encounters.serialize(),
+      imperial: imperial.serialize(),
     }
   }
 
@@ -195,6 +200,7 @@ export function createGamePersistence(deps: {
     daily.hydrate(data.daily)
     archive.hydrate(data.archive)
     encounters.hydrate(data.encounters)
+    imperial.hydrate(data.imperial)
     // 终身计数快照对齐已恢复的 totals，否则首个 tick 会把整轮历史产量
     // 当作增量重复计入终身计数
     deps.alignLifetimeSnapshot()
@@ -247,6 +253,7 @@ export function createGamePersistence(deps: {
     daily.reset()
     archive.reset()
     encounters.reset()
+    imperial.reset()
   }
 
   async function doImport(code: string): Promise<{ success: boolean; message?: string }> {

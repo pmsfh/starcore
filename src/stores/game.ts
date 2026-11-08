@@ -20,6 +20,7 @@ import { useAchievementsStore } from './achievements'
 import { useDailyStore } from './daily'
 import { useArchiveStore } from './archive'
 import { useEncountersStore } from './encounters'
+import { useImperialStore } from './imperial'
 import { createGameEffects, wireGameProviders } from './game-effects'
 import { createGamePersistence } from './game-persistence'
 import { createGameRewards } from './game-rewards'
@@ -47,6 +48,7 @@ export const useGameStore = defineStore('game', () => {
   const daily = useDailyStore()
   const archive = useArchiveStore()
   const encounters = useEncountersStore()
+  const imperial = useImperialStore()
 
   // game meta state
   const lastSaveTime = ref(Date.now())
@@ -150,6 +152,7 @@ export const useGameStore = defineStore('game', () => {
     daily,
     archive,
     encounters,
+    imperial,
     totalProduction,
     offlineMult,
     lastSaveTime,
@@ -307,6 +310,10 @@ export const useGameStore = defineStore('game', () => {
     // 7. 随机遭遇事件（v1.26 方案 8）：在线限定掷骰 + 过期静默失效。
     // 挂起事件 toast 由 UI 层消费 pendingEvent 呈现，store 侧零 UI 依赖
     encounters.tick(now)
+
+    // 8. 帝庭据点线：每周巡检生成与到期停摆（v1.80 系统层，界面在 v1.81）
+    imperial.ensureAudit(daily.currentWeek, now)
+    imperial.refreshAudit(now)
   }
 
   // 自动存档
@@ -367,6 +374,34 @@ export const useGameStore = defineStore('game', () => {
     return add(base, D(combat.garrisonProduction[type] ?? 0))
   }
 
+  // 帝庭据点线门面（v1.80 系统层）：资源发放 / 扣费 / 巡检结算集中在此，
+  // imperial store 保持纯状态，不直接引用 resources / combat。
+  function claimImperialTribute(now = Date.now()): Partial<Record<ResourceType, number>> {
+    const bundle = imperial.claim(combat.expeditionBest, now)
+    for (const [res, v] of Object.entries(bundle)) {
+      if (v && v > 0) resources.gain(res as ResourceType, v)
+    }
+    return bundle
+  }
+
+  function upgradeImperialStronghold(id: string): boolean {
+    const cost = imperial.upgradeCost(id, combat.expeditionBest)
+    if (!cost) return false
+    if (!resources.spendCost(cost)) return false
+    return imperial.upgrade(id)
+  }
+
+  function payImperialAudit(): boolean {
+    const cost = imperial.auditPayCost(combat.expeditionBest)
+    if (!cost) return false
+    if (!resources.spendCost(cost)) return false
+    return imperial.markAuditPaid()
+  }
+
+  function settleImperialAudit(victory: boolean): boolean {
+    return victory ? imperial.markAuditPassed() : imperial.markAuditFailed()
+  }
+
   return {
     // sub-stores (directly accessible)
     resources,
@@ -381,6 +416,7 @@ export const useGameStore = defineStore('game', () => {
     daily,
     archive,
     encounters,
+    imperial,
     claimChallenge,
     claimMilestone,
     // meta
@@ -428,6 +464,11 @@ export const useGameStore = defineStore('game', () => {
     tryResearch,
     // 显示用实时速率（建筑 + 驻扎合并派生）
     getDisplayRate,
+    // 帝庭据点线（v1.80 系统层）
+    claimImperialTribute,
+    upgradeImperialStronghold,
+    payImperialAudit,
+    settleImperialAudit,
     // transcend
     canTranscend,
     previewTranscendGain,

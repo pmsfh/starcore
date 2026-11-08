@@ -20,6 +20,7 @@ import type { ArchiveSaveData } from '@/lib/storage'
 import { STRONGHOLDS, enemyKey, ENEMY_KIND_BUCKETS, type EnemyUnit } from '@/data/pve'
 import { ENDLESS_STRONGHOLD_ID } from '@/data/endless'
 import { WEEKLY_BOSS_ID } from '@/data/weekly-boss'
+import { isImperialStrongholdId, IMPERIAL_AUDIT_ID } from '@/data/imperial-strongholds'
 
 /**
  * 合法图鉴键全集（数据表派生，validate/hydrate 白名单同源）：
@@ -35,6 +36,8 @@ function encounter(strongholdId: string, enemies: EnemyUnit[], seen: Set<string>
   if (strongholdId === ENDLESS_STRONGHOLD_ID) return
   // 周 Boss 合成据点（id='weekly_boss'，v1.24）：同口径排除防图鉴无限膨胀
   if (strongholdId === WEEKLY_BOSS_ID) return
+  // 帝庭据点与巡检（v1.80）：独立线不入 116 键图鉴
+  if (strongholdId === IMPERIAL_AUDIT_ID || isImperialStrongholdId(strongholdId)) return
   for (let i = 0; i < enemies.length; i++) {
     seen.add(enemyKey(strongholdId, i))
   }

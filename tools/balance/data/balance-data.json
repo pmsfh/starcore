@@ -1,5 +1,5 @@
 {
-  "schema": 3,
+  "schema": 4,
   "units": [
     {
       "id": "assault",
@@ -6864,6 +6864,67 @@
       "ruin_4": 2
     },
     "rewardMult": 1.5
+  },
+  "imperial": {
+    "anchorBest": 34,
+    "tributeShare": 0.05,
+    "claimCapSeconds": 43200,
+    "tierMult": 1.3,
+    "tier3Mult": 1.69,
+    "auditWindowSeconds": 259200,
+    "auditPayHours": 24,
+    "auditBonus": 1.1,
+    "strongholds": [
+      {
+        "id": "imp_pass",
+        "resource": "energy",
+        "baseRate": 1250000,
+        "requires": "node_arm_gate",
+        "depthOffset": -3,
+        "tier": 1
+      },
+      {
+        "id": "imp_audit",
+        "resource": "data",
+        "baseRate": 208333,
+        "requires": "node_arm_spine",
+        "depthOffset": -2,
+        "tier": 2
+      },
+      {
+        "id": "imp_guard",
+        "resource": "alloy",
+        "baseRate": 1250000,
+        "requires": "node_arm_cradle",
+        "depthOffset": -1,
+        "tier": 3
+      },
+      {
+        "id": "imp_verdict",
+        "resource": "crystal",
+        "baseRate": 22727,
+        "requires": "node_galaxy_range",
+        "depthOffset": 0,
+        "tier": 4
+      },
+      {
+        "id": "imp_echo",
+        "resource": "dark",
+        "baseRate": 156.25,
+        "requires": "node_galaxy_halo",
+        "depthOffset": 0,
+        "tier": 5
+      },
+      {
+        "id": "imp_court",
+        "resource": "energy",
+        "baseRate": 1250000,
+        "requires": "node_galaxy_hub",
+        "requiresCaptured": 5,
+        "depthOffset": 1,
+        "tier": 6
+      }
+    ]
   },
   "transcend": {
     "minEnergy": 300000,

@@ -7,7 +7,7 @@
 import { t } from '@/i18n'
 import type { UnitId } from './units'
 
-type StrongholdType = 'raider' | 'beast' | 'ruin' | 'silencer'
+type StrongholdType = 'raider' | 'beast' | 'ruin' | 'silencer' | 'imperial'
 
 export interface EnemyUnit {
   unitId: string // 兵种骨架 id（数值模板）
@@ -50,6 +50,8 @@ export interface StrongholdDef {
   }
   /** 解锁条件：需要完成的探索节点 */
   requires?: string
+  /** 帝庭据点标记：胜利不写入常规 completedStrongholds（v1.80） */
+  imperial?: boolean
 }
 
 export const STRONGHOLD_TYPES: Record<
@@ -78,6 +80,13 @@ export const STRONGHOLD_TYPES: Record<
     id: 'silencer',
     name: t('content.pve.type.silencer.name'),
     color: 'var(--color-silencer)',
+    icon: 'i-stronghold-silencer',
+  },
+  imperial: {
+    id: 'imperial',
+    name: t('content.pve.type.imperial.name'),
+    color: 'var(--color-amber)',
+    // 帝庭专属图标待界面版补，系统层先复用沉默者据点图标
     icon: 'i-stronghold-silencer',
   },
 }

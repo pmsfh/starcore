@@ -193,6 +193,7 @@ export default {
   'content.pve.silencer_7.enemy.4.name': '沉默守望者',
   'content.pve.silencer_7.name': '沉默者回响',
   'content.pve.type.beast.name': '异星巨兽',
+  'content.pve.type.imperial.name': '帝庭',
   'content.pve.type.raider.name': '掠夺者营地',
   'content.pve.type.ruin.name': '古代遗迹',
   'content.pve.type.silencer.name': '沉默者前哨站',

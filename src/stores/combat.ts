@@ -396,7 +396,11 @@ export const useCombatStore = defineStore('combat', () => {
       // 其进度由 expeditionBest 独立承担，误入会导致存档校验整档失败。
       // 周 Boss 合成据点（id='weekly_boss'）同口径排除（v1.24）：
       // 战果由 daily.weeklyBoss 标记承担，双保险兜底任何来源的误入
-      if (stronghold.id !== ENDLESS_STRONGHOLD_ID && stronghold.id !== WEEKLY_BOSS_ID) {
+      if (
+        !stronghold.imperial &&
+        stronghold.id !== ENDLESS_STRONGHOLD_ID &&
+        stronghold.id !== WEEKLY_BOSS_ID
+      ) {
         completedStrongholds.value.add(stronghold.id)
       }
     }

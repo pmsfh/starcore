@@ -13,7 +13,7 @@
  * 而数据表在模块级取词。Node 环境下 locale 守卫回退基线语言 zh-CN，
  * 因此 JSON 中的文案（遭遇选项标签等）即 zh-CN 解析值。
  *
- * 输出：tools/balance/data/balance-data.json（schema:3，无时间戳——
+ * 输出：tools/balance/data/balance-data.json（schema:4，无时间戳——
  * 确定性输出保证基线对照稳定与新鲜度校验可复现）。
  *
  * schema:2（2026-10）：新增 explore / weeklyBoss /
@@ -24,6 +24,8 @@
  * schema:3（2026-10）：新增 profiles 域（三档画像：校准声明手维护区 +
  * 聚值自各域真值连乘推导），v092 / v120 / 总账脚本统一消费，消脚本
  * 侧手抄。
+ * schema:4（2026-11）：新增 imperial 域（帝庭据点线：6 座贡赋基准、
+ * 整备倍率、巡检参数），总账脚本据此断言 5% 派遣当量锚点与回收期。
  *
  * 私有常量说明（src/ 零改动边界内的三处最小提取）：
  *  - offline 的 OFFLINE_CAP（src/lib/offline-gains.ts 模块私有，非导出值），
@@ -253,6 +255,7 @@ try {
   const buildingsMod = await server.ssrLoadModule('/src/data/buildings.ts')
   const exploreMod = await server.ssrLoadModule('/src/data/explore.ts')
   const weeklyBossMod = await server.ssrLoadModule('/src/data/weekly-boss.ts')
+  const imperialMod = await server.ssrLoadModule('/src/data/imperial-strongholds.ts')
   const transcendMod = await server.ssrLoadModule('/src/stores/transcend.ts')
 
   const power = (enemies) =>
@@ -333,7 +336,7 @@ try {
 
   // ---------- 组装快照（各域显式投影，键序即字段序，保证输出确定性） ----------
   const data = {
-    schema: 3,
+    schema: 4,
     units: unitsMod.UNITS.map((u) => ({
       id: u.id,
       attack: u.attack,
@@ -457,6 +460,32 @@ try {
       templateIds: [...weeklyBossMod.WEEKLY_BOSS_TEMPLATE_IDS],
       offset: { ...weeklyBossMod.WEEKLY_BOSS_OFFSET },
       rewardMult: weeklyBossMod.WEEKLY_BOSS_REWARD_MULT,
+    },
+    // imperial（v1.80）：帝庭据点线参数。贡赋速率按 A 档基准 + 派遣曲线
+    // 缩放，脚本侧不重复声明；名称/描述剥离，仅留数值与解锁结构。
+    imperial: {
+      anchorBest: imperialMod.IMPERIAL_ANCHOR_BEST,
+      tributeShare: imperialMod.IMPERIAL_TRIBUTE_SHARE,
+      claimCapSeconds: imperialMod.IMPERIAL_CLAIM_CAP_SECONDS,
+      tierMult: imperialMod.IMPERIAL_TIER_MULT,
+      tier3Mult: imperialMod.IMPERIAL_TIER3_MULT,
+      auditWindowSeconds: imperialMod.IMPERIAL_AUDIT_WINDOW_SECONDS,
+      auditPayHours: imperialMod.IMPERIAL_AUDIT_PAY_HOURS,
+      auditBonus: imperialMod.IMPERIAL_AUDIT_BONUS,
+      strongholds: imperialMod.IMPERIAL_STRONGHOLDS.map((s) =>
+        stripText(
+          {
+            id: s.id,
+            resource: s.resource,
+            baseRate: s.baseRate,
+            requires: s.requires,
+            requiresCaptured: s.requiresCaptured,
+            depthOffset: s.depthOffset,
+            tier: s.tier,
+          },
+          `imperial.${s.id}`
+        )
+      ),
     },
     // transcend：转生树（负熵支出面 + 自动协议节点标注）。自 store 模块载入
     // DEFAULT_NODES（模块级 export const）；无限节点 maxLevel=Infinity 投影为

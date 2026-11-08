@@ -79,14 +79,14 @@ starcore/
 ├─ src/
 │  ├─ components/   45 components (including 8 icon sub-components), grouped as ui / layout / home / relics / build / army / battle / map / settings
 │  ├─ composables/  13 composables (breakpoints, Toast, action queue, onboarding, particles, …)
-│  ├─ data/         19 data tables (buildings, tech, exploration, strongholds, relics, achievements, expeditions, weekly boss, encounters, dispatch, units, formation doctrines, navigation, story, background stars, gate echoes, alien behemoth notes, seven-gate files, imperial archive files)
+│  ├─ data/         20 data tables (buildings, tech, exploration, strongholds, relics, achievements, expeditions, weekly boss, encounters, dispatch, units, formation doctrines, navigation, story, background stars, gate echoes, alien behemoth notes, seven-gate files, imperial archive files, imperial strongholds)
 │  ├─ i18n/         i18n facade (message lookup and locale detection)
 │  ├─ lib/          19 core modules (decimal math, formatting, effect system, offline gains, random, integrity signatures, integer clamping, save pipeline under save/, batch and cost helpers, …)
 │  ├─ locales/      locale bundles (zh-CN baseline + en English, split by domain under ui/ and content/)
 │  ├─ router/       route definitions
-│  ├─ stores/       13 Pinia stores (resources, buildings, research, military, combat,
+│  ├─ stores/       14 Pinia stores (resources, buildings, research, military, combat,
 │  │                exploration, relics, rebirth, achievements, daily, archive, encounters,
-│  │                game)
+│  │                imperial, game)
 │  ├─ styles/       8 style modules (tokens, base, fonts, buttons, Toast, animations, background, utilities)
 │  ├─ tests/        test harness (vitest setup and shared helpers)
 │  ├─ views/        11 views (home, build, tech, map, army, battle, relics, rebirth, achievements, archive, settings)
@@ -104,8 +104,8 @@ starcore/
 
 ## Quality
 
-- **Unit / component tests**: Vitest + @vue/test-utils + jsdom; 64 test files,
-  858 cases
+- **Unit / component tests**: Vitest + @vue/test-utils + jsdom; 68 test files,
+  898 cases
 - **Types & conventions**: vue-tsc type checking in the build; ESLint and
   Prettier pass with zero output
 - **Count conservation**: `scripts/check-conservation.mjs` validates document
