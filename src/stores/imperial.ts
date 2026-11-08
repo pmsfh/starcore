@@ -188,8 +188,11 @@ export const useImperialStore = defineStore('imperial', () => {
   }
 
   /** 打点成本：24 小时总贡赋（含逾期停摆目标，按当前整备等级计） */
-  function auditPayCost(best: number): Partial<Record<ResourceType, number>> | null {
-    if (!audit.value || !['pending', 'overdue'].includes(effectiveStatus(Date.now()) ?? '')) {
+  function auditPayCost(
+    best: number,
+    now = Date.now()
+  ): Partial<Record<ResourceType, number>> | null {
+    if (!audit.value || !['pending', 'overdue'].includes(effectiveStatus(now) ?? '')) {
       return null
     }
     const out: Partial<Record<ResourceType, number>> = {}

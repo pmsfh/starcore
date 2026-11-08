@@ -173,6 +173,19 @@ describe('imperial — 边界与防御', () => {
     expect(store.effectiveStatus(t0 + 73 * 3600 * 1000)).toBe('overdue')
   })
 
+  it('打点成本可注入 now：pending 已过期未刷新即返回非 null', () => {
+    const t0 = Date.now()
+    store.capture('imp_pass', t0)
+    store.ensureAudit('2026-W45', t0)
+    // 未调 refreshAudit，audit.status 仍为 pending，但注入的 now 已过 deadline
+    expect(store.auditPayCost(IMPERIAL_ANCHOR_BEST, t0 + 73 * 3600 * 1000)).not.toBeNull()
+    // 窗口内同样可查
+    expect(store.auditPayCost(IMPERIAL_ANCHOR_BEST, t0 + 1000)).not.toBeNull()
+    // 结算后不可再打点
+    store.markAuditPaid()
+    expect(store.auditPayCost(IMPERIAL_ANCHOR_BEST, t0 + 73 * 3600 * 1000)).toBeNull()
+  })
+
   it('逾期目标从合并速率与贡赋池中剔除', () => {
     const t0 = Date.now()
     store.capture('imp_pass', t0)

@@ -15,7 +15,7 @@ import { RELIC_POOL, MAX_RELIC_LEVEL } from '@/data/relics'
 import { INFINITE_NODE_IDS, MAX_INFINITE_NODE_LEVEL } from '@/stores/transcend'
 import { ARCHIVE_ENEMY_KEYS } from '@/stores/archive'
 import { ENCOUNTER_IDS } from '@/data/encounters'
-import { IMPERIAL_STRONGHOLDS } from '@/data/imperial-strongholds'
+import { IMPERIAL_STRONGHOLDS, IMPERIAL_AUDIT_BONUS } from '@/data/imperial-strongholds'
 
 // 有效 ID 集合（用于 validateSaveData 内容范围校验），
 const BUILDING_IDS = new Set(BUILDINGS.map((b) => b.id))
@@ -428,7 +428,8 @@ function validateSaveData(data: unknown): data is SaveData {
         if (!_isNonNegFinite(at)) return false
       }
     }
-    if (imp.bonus !== undefined && imp.bonus !== 1 && imp.bonus !== 1.1) return false
+    if (imp.bonus !== undefined && imp.bonus !== 1 && imp.bonus !== IMPERIAL_AUDIT_BONUS)
+      return false
     if (imp.audit !== undefined) {
       if (!_isObject(imp.audit)) return false
       const a = imp.audit as Record<string, unknown>
