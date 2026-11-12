@@ -50,7 +50,7 @@ export function useBattleFlow(deps: BattleFlowDeps) {
   const showGarrisonConfirm = ref(false)
 
   /**
-   * 交战据点快照（v1.81 PR #24 修复 1）：开战瞬间冻结，战报播出与结果
+   * 交战据点快照（v1.81）：开战瞬间冻结，战报播出与结果
    * 弹窗期间由展示侧优先渲染。巡检迎战结算后 audit 状态即变（实时据点
    * 计算随之 undefined），不冻结会把整页连同战报与弹窗一起卸载。
    */

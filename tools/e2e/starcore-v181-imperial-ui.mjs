@@ -116,7 +116,7 @@ async function gotoMap(browser, seed, opts = {}) {
 /** 打一场并回星图（等结果弹窗 → 确认） */
 async function fightAndBack(page) {
   await page.locator('[data-testid="battle-start"]').first().click()
-  // PR #24 修复 6：出征结算后战斗页必须仍在（巡检结算即变不得卸载整页）
+  // 出征结算后战斗页必须仍在（巡检结算即变不得卸载整页）
   if ((await page.locator('.battle-view').count()) === 0) throw new Error('战斗页被卸载')
   await page.waitForSelector('.modal, [data-testid*="result"], .result', { timeout: 20000 }).catch(() => {})
   await page.waitForTimeout(1200)
@@ -126,7 +126,7 @@ async function fightAndBack(page) {
     if (txt.includes('胜 利') || txt.includes('Victory')) break
     await page.waitForTimeout(1000)
   }
-  // 结果弹窗遮罩在场（战斗页与弹窗未被卸载，PR #24 修复 1/6）
+  // 结果弹窗遮罩在场（战斗页与弹窗未被卸载）
   if ((await page.locator('.modal-overlay').count()) === 0) throw new Error('结果弹窗缺失')
   // 弹窗内「返回星图」按钮（btn-secondary）；页头同名按钮被弹窗遮罩盖住不可点
   const confirm = page.locator('button.btn-secondary', { hasText: '返回星图' }).first()
@@ -259,7 +259,7 @@ console.log('== E. 巡检迎战 ==')
   await ctx.close()
 }
 
-// E3（PR #24 修复 1/3）：弱编队迎战必败——败局战斗页仍在 + 失守 toast 传目标据点名
+// E3：弱编队迎战必败——败局战斗页仍在 + 失守 toast 传目标据点名
 const weakSeed = makeSeed({
   imperial: capturedAll({
     audit: {
@@ -284,7 +284,7 @@ await v('E3 迎战失败：战斗页仍在且失守提示传目标据点名', as
   let toastTxt = ''
   for (let i = 0; i < 30; i++) {
     await p3.waitForTimeout(1000)
-    // toast 约 3 秒消失，逐秒抓取缓存（修复 3 断言对象是 toast 文本；
+    // toast 约 3 秒消失，逐秒抓取缓存（断言对象是 toast 文本；
     // 战斗页显示巡检舰队名属正常敌方名，不作断言）
     const t = await p3.locator('.toast').textContent().catch(() => '')
     if (t && t.includes('巡检失守')) toastTxt = t
@@ -292,9 +292,9 @@ await v('E3 迎战失败：战斗页仍在且失守提示传目标据点名', as
     if (txt.includes('失 败')) break
   }
   if (!txt.includes('失 败')) throw new Error('弱编队竟未失败')
-  // 修复 1：败局结算后战斗页不被卸载
+  // 败局结算后战斗页不被卸载
   if ((await p3.locator('.battle-view').count()) === 0) throw new Error('败局战斗页被卸载')
-  // 修复 3：toast 传目标据点名（非巡检舰队合成名、非空名）
+  // 失守提示传目标据点名（非巡检舰队合成名、非空名）
   if (!toastTxt) throw new Error('失守 toast 未捕获')
   if (toastTxt.includes('巡检舰队')) throw new Error('失守提示误用巡检舰队名: ' + toastTxt)
   if (/巡检失守，\s*停摆/.test(toastTxt)) throw new Error('失守提示缺目标名: ' + toastTxt)

@@ -181,7 +181,7 @@ const bossFlow = useBattleFlow({
   isImperial,
 })
 /**
- * 展示源（PR #24 修复 1）：交战快照优先于实时计算。巡检迎战结算后
+ * 展示源：交战快照优先于实时计算。巡检迎战结算后
  * 实时源随巡检状态转 undefined，不切换会把战报与结果弹窗一起卸载。
  * 下方各 computed 的 getter 惰性求值，引用顺序安全。
  */

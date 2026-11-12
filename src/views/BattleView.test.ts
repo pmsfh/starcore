@@ -665,7 +665,7 @@ describe('BattleView — 帝庭据点（v1.81）', () => {
     expect(wrapper.text()).toContain('本周无待迎战的巡检')
   })
 
-  it('巡检迎战结算后战斗页与结果弹窗仍在（快照保活，PR #24 修复 1）', async () => {
+  it('巡检迎战结算后战斗页与结果弹窗仍在', async () => {
     routeState.path = '/battle/imperial_audit'
     routeState.params = { id: 'imperial_audit' }
     exploredNodes('node_galaxy_hub', 'node_arm_gate')
