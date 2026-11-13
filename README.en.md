@@ -123,7 +123,7 @@ starcore/
 ├─ tools/           diagnostics (environment self-check, end-to-end and numeric)
 ├─ .github/         CI workflow (full checks on push to main)
 ├─ changelog/       version history; active file and three archives
-├─ deploy.sh        deployment script
+├─ starcore.sh      install and deployment script
 └─ project configs (vite.config.ts, vitest.config.ts, tsconfig*.json, eslint.config.js)
 ```
 
@@ -191,13 +191,12 @@ A pure static SPA. The build output goes to `dist/`. The unified script can
 publish it to a local site:
 
 ```bash
-./starcore.sh deploy --dest /var/www/example --url https://example.com
+./starcore.sh deploy --dir . --dest /var/www/example --url https://example.com
 ```
 
 `--dest` is the target directory, and `--url` injects share metadata and
 verifies the live site. Add `--sudo`, `--delete`, `--backup` and other options
-as needed; see `./starcore.sh --help`. `deploy.sh` remains as a maintainer
-wrapper.
+as needed; see `./starcore.sh --help`.
 
 ## Updating
 
@@ -206,14 +205,12 @@ When a new version is released, pull the latest code and deploy again:
 ```bash
 git pull
 corepack pnpm install   # run when dependencies have changed
-./deploy.sh             # build, sync and verify in one step
+./starcore.sh deploy --dir . --dest /var/www/example --url https://example.com
 ```
 
-- The site settings from your first deployment are reused; no
-  reconfiguration is needed for updates.
+- Pass site settings with `--dest` / `--url`, or keep them in `deploy.env`.
 - Updates do not affect game saves, which are kept locally in the browser.
-- If your site directory is not in the `/var/www/<name>` form, sync the
-  build output `dist/` to it manually; the rest of the flow is unchanged.
+- Any writable directory can be the target; add `--sudo` when needed.
 - If you prefer not to use the command line, a prebuilt archive is available
   on the [Releases](https://github.com/renlang119/starcore/releases) page:
   unzip and copy the contents of `dist/` over your site files to deploy or

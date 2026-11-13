@@ -55,6 +55,8 @@ usage() {
   --backup                发布前备份目标目录
   --check                 发布前运行完整检查
   --no-check              不运行完整检查
+  --maintainer            本项目线上发布预设：sudo、删除、完整检查、备份、
+                          root 属主与 a+rX 权限
 
 通用选项：
   --install-deps          允许自动安装缺失的系统组件
@@ -124,6 +126,15 @@ while [[ $# -gt 0 ]]; do
     --no-check) DO_CHECK=0; shift ;;
     --install-deps) DEPS_MODE="yes"; shift ;;
     --no-install-deps) DEPS_MODE="no"; shift ;;
+    --maintainer)
+      USE_SUDO=1
+      DO_DELETE=1
+      DO_CHECK=1
+      DO_BACKUP=1
+      OWNER="root:root"
+      CHMOD="a+rX"
+      shift
+      ;;
     --dry-run) DRY_RUN=1; shift ;;
     -y | --yes) YES=1; shift ;;
     --ssh)

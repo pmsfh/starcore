@@ -100,7 +100,7 @@ starcore/
 ├─ tools/           诊断工具（环境自检、端到端与数值校验）
 ├─ .github/         CI 工作流（推送 main 自动跑全量检查）
 ├─ changelog/       版本历史四档（活跃档 changelog.md 与三份历史存档）
-├─ deploy.sh        部署脚本
+├─ starcore.sh     安装与部署脚本
 └─ 工程配置（vite.config.ts、vitest.config.ts、tsconfig*.json、eslint.config.js）
 ```
 
@@ -158,12 +158,11 @@ corepack pnpm diagnose --fix  # 对可自动修复的缺件执行修复
 纯静态 SPA。构建产物在 `dist/`。统一脚本提供本机发布：
 
 ```bash
-./starcore.sh deploy --dest /var/www/example --url https://example.com
+./starcore.sh deploy --dir . --dest /var/www/example --url https://example.com
 ```
 
 `--dest` 是目标目录，`--url` 用于注入分享元数据并核验线上地址；
 `--sudo`、`--delete`、`--backup` 等按需开启，详见 `./starcore.sh --help`。
-`deploy.sh` 保留为维护者兼容入口。
 
 ## 更新
 
@@ -172,13 +171,12 @@ corepack pnpm diagnose --fix  # 对可自动修复的缺件执行修复
 ```bash
 git pull
 corepack pnpm install   # 依赖有更新时执行
-./deploy.sh             # 构建、同步并验证，一步到位
+./starcore.sh deploy --dir . --dest /var/www/example --url https://example.com
 ```
 
-- 首次部署时配置好的站点信息继续沿用，更新时无需重复配置。
+- 站点信息可用 `--dest` / `--url` 传入，也可写入 `deploy.env` 复用。
 - 更新不影响游戏存档，存档保存在浏览器本地。
-- 站点目录不是 `/var/www/<名字>` 形态时，将构建产物 `dist/` 手动同步到
-  站点目录即可，其余流程相同。
+- 发布目标可以是任意可写目录；不可写时按需加 `--sudo`。
 - 不使用命令行时，也可以从
   [Releases](https://github.com/renlang119/starcore/releases) 页面下载构建
   产物包，解压后将其中的 `dist/` 目录内容覆盖到站点目录即可完成部署或更新。
