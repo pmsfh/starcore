@@ -20,6 +20,7 @@ import type { ImperialSaveData } from '@/lib/storage'
 import type { ResourceType } from '@/data/buildings'
 import {
   IMPERIAL_AUDIT_BONUS,
+  IMPERIAL_AUDIT_GRACE_SECONDS,
   IMPERIAL_AUDIT_PAY_HOURS,
   IMPERIAL_AUDIT_STRICT_BONUS,
   IMPERIAL_AUDIT_WINDOW_SECONDS,
@@ -69,6 +70,8 @@ export const useImperialStore = defineStore('imperial', () => {
   const bonus = ref(1)
   /** 当前巡检；null = 未生成或已结算 */
   const audit = ref<ImperialAuditState | null>(null)
+  /** 转生宽限截止时刻（ms）：此前不生成新巡检（v1.82） */
+  const auditGraceUntil = ref(0)
 
   /** 已接管 id，按数据表顺序（周巡检目标选取依赖稳定顺序） */
   const occupiedIds = computed(() =>
@@ -223,12 +226,25 @@ export const useImperialStore = defineStore('imperial', () => {
     return out
   }
 
+  /** 转生宽限（v1.82）：转生后首次巡检顺延 7 天，已有待处理巡检的截止时间同步顺延
+   *  （以当前时刻与旧截止的较晚者为起点，避免逾期过久的巡检在宽限后仍然停摆） */
+  function graceAfterTranscend(now = Date.now()): void {
+    const graceMs = IMPERIAL_AUDIT_GRACE_SECONDS * 1000
+    auditGraceUntil.value = now + graceMs
+    const a = audit.value
+    if (a && (a.status === 'pending' || a.status === 'overdue')) {
+      audit.value = { ...a, status: 'pending', deadline: Math.max(a.deadline, now) + graceMs }
+    }
+  }
+
   /** 生成当周巡检：同周幂等；上一轮未处理时保持原巡检，不叠加 */
   function ensureAudit(weekKey: string, now = Date.now()): ImperialAuditState | null {
     if (!weekKey || occupiedIds.value.length === 0) {
       audit.value = null
       return null
     }
+    // 转生宽限内不生成新巡检；已有待处理巡检由 graceAfterTranscend 顺延
+    if (now < auditGraceUntil.value) return audit.value
     if (audit.value?.week === weekKey) return audit.value
     if (audit.value && (audit.value.status === 'pending' || audit.value.status === 'overdue')) {
       return audit.value
@@ -290,6 +306,7 @@ export const useImperialStore = defineStore('imperial', () => {
     lastClaimAt.value = Date.now()
     bonus.value = 1
     audit.value = null
+    auditGraceUntil.value = 0
   }
 
   function serialize(): ImperialSaveData {
@@ -301,6 +318,7 @@ export const useImperialStore = defineStore('imperial', () => {
       lastClaimAt: lastClaimAt.value,
       bonus: bonus.value,
       audit: audit.value ? { ...audit.value } : undefined,
+      auditGraceUntil: auditGraceUntil.value,
     }
   }
 
@@ -340,6 +358,12 @@ export const useImperialStore = defineStore('imperial', () => {
     if (typeof data.lastClaimAt === 'number' && Number.isFinite(data.lastClaimAt)) {
       lastClaimAt.value = Math.max(0, data.lastClaimAt)
     }
+    auditGraceUntil.value =
+      typeof data.auditGraceUntil === 'number' &&
+      Number.isFinite(data.auditGraceUntil) &&
+      data.auditGraceUntil > 0
+        ? data.auditGraceUntil
+        : 0
     // 读回白名单：标准/从严加成各自保留，其余（含旧档异常值）回落 1
     bonus.value =
       data.bonus === IMPERIAL_AUDIT_BONUS
@@ -397,6 +421,7 @@ export const useImperialStore = defineStore('imperial', () => {
     auditPayCost,
     ensureAudit,
     refreshAudit,
+    graceAfterTranscend,
     markAuditPassed,
     markAuditPaid,
     markAuditFailed,

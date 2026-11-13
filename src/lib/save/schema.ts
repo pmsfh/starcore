@@ -82,6 +82,8 @@ export interface ImperialSaveData {
   /** 巡检通过后的下周贡赋加成（1 / 1.1） */
   bonus?: number
   audit?: ImperialAuditSaveData
+  /** 转生宽限截止时刻 ms（v1.82 可选字段；旧档缺失视为 0） */
+  auditGraceUntil?: number
 }
 export interface ExplorationSaveData {
   progress: Record<

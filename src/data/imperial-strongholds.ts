@@ -29,6 +29,8 @@ export const IMPERIAL_TIER_MULT = 1.3
 export const IMPERIAL_TIER3_MULT = 1.69
 /** 巡检窗口：72 小时 */
 export const IMPERIAL_AUDIT_WINDOW_SECONDS = 72 * 3600
+/** 转生宽限：转生后首次巡检顺延 7 天（v1.82） */
+export const IMPERIAL_AUDIT_GRACE_SECONDS = 7 * 24 * 3600
 /** 打点成本：24 小时总贡赋 */
 export const IMPERIAL_AUDIT_PAY_HOURS = 24
 /** 巡检通过后下周贡赋加成 */

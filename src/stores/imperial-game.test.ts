@@ -87,4 +87,19 @@ describe('game — 帝庭据点门面', () => {
     // 失守不增胜次
     expect(game.achievements.lifetimeInt.auditWins).toBe(2)
   })
+
+  it('转生宽限（v1.82）：转生后待处理巡检顺延 7 天', () => {
+    const game = useGameStore()
+    game.imperial.reset()
+    game.resources.reset()
+    game.combat.expeditionBest = IMPERIAL_ANCHOR_BEST
+    game.imperial.capture('imp_pass')
+    const t0 = Date.now()
+    const a = game.imperial.ensureAudit('2026-W45', t0)
+    expect(a).not.toBeNull()
+    game.resources.setAmount('energy', 1e9)
+    game.resources.gain('energy', 1e9)
+    expect(game.doTranscend()).toBe(true)
+    expect(game.imperial.audit?.deadline).toBe(a!.deadline + 7 * 24 * 3600 * 1000)
+  })
 })

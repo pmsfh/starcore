@@ -316,6 +316,47 @@ describe('imperial — 存档', () => {
     expect(next.tierOf('imp_audit')).toBe(2)
   })
 
+  it('转生宽限（v1.82）：待处理巡检截止顺延 7 天，宽限内不生成新巡检', () => {
+    const t0 = Date.now()
+    const day = 24 * 3600 * 1000
+    store.capture('imp_pass', t0)
+    const a = store.ensureAudit('2026-W46', t0)
+    expect(a).not.toBeNull()
+    store.graceAfterTranscend(t0)
+    expect(store.audit?.status).toBe('pending')
+    expect(store.audit?.deadline).toBe(a!.deadline + 7 * day)
+    // 宽限内换周不生成新巡检，仍返回原巡检
+    expect(store.ensureAudit('2026-W47', t0 + day)?.week).toBe('2026-W46')
+    // 结算后且宽限结束，新周巡检恢复生成
+    expect(store.markAuditPaid()).toBe(true)
+    expect(store.ensureAudit('2026-W48', t0 + 8 * day)?.week).toBe('2026-W48')
+  })
+
+  it('转生宽限：逾期巡检按转生时刻起算顺延', () => {
+    const t0 = Date.now()
+    const day = 24 * 3600 * 1000
+    store.capture('imp_pass', t0)
+    const a = store.ensureAudit('2026-W46', t0)
+    const overdueAt = a!.deadline + 3 * day
+    store.graceAfterTranscend(overdueAt)
+    expect(store.audit?.status).toBe('pending')
+    expect(store.audit?.deadline).toBe(overdueAt + 7 * day)
+  })
+
+  it('转生宽限读回（v1.82）：合法值保留，异常值回落 0', () => {
+    const base = {
+      completed: ['imp_pass'],
+      everCompleted: ['imp_pass'],
+      tiers: {},
+      capturedAt: { imp_pass: 0 },
+      lastClaimAt: 0,
+    }
+    store.hydrate({ ...base, auditGraceUntil: 123456 })
+    expect(store.serialize().auditGraceUntil).toBe(123456)
+    store.hydrate({ ...base, auditGraceUntil: -5 as number })
+    expect(store.serialize().auditGraceUntil).toBe(0)
+  })
+
   it('reset 清空全部帝庭状态', () => {
     store.capture('imp_pass')
     store.ensureAudit('2026-W45', 1_000)

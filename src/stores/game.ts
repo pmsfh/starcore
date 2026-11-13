@@ -211,6 +211,7 @@ export const useGameStore = defineStore('game', () => {
     combat,
     exploration,
     encounters,
+    imperial,
     transcend,
     achievements,
     daily,

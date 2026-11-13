@@ -110,7 +110,7 @@ starcore/
 ## Quality
 
 - **Unit / component tests**: Vitest + @vue/test-utils + jsdom; 68 test files,
-  911 cases
+  915 cases
 - **Types & conventions**: vue-tsc type checking in the build; ESLint and
   Prettier pass with zero output
 - **Count conservation**: `scripts/check-conservation.mjs` validates document

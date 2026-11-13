@@ -17,6 +17,7 @@ import type { useTranscendStore } from './transcend'
 import type { useAchievementsStore } from './achievements'
 import type { useDailyStore } from './daily'
 import type { useEncountersStore } from './encounters'
+import type { useImperialStore } from './imperial'
 
 type ResourcesStore = ReturnType<typeof useResourcesStore>
 type BuildingsStore = ReturnType<typeof useBuildingsStore>
@@ -28,6 +29,7 @@ type TranscendStore = ReturnType<typeof useTranscendStore>
 type AchievementsStore = ReturnType<typeof useAchievementsStore>
 type DailyStore = ReturnType<typeof useDailyStore>
 type EncountersStore = ReturnType<typeof useEncountersStore>
+type ImperialStore = ReturnType<typeof useImperialStore>
 
 export interface GameTranscend {
   canTranscend: () => boolean
@@ -46,6 +48,7 @@ export function createGameTranscend(deps: {
   achievements: AchievementsStore
   daily: DailyStore
   encounters: EncountersStore
+  imperial: ImperialStore
   prestigeMult: ComputedRef<Decimal>
   collectLifetimeTotals: () => void
   alignLifetimeSnapshot: (toZero?: boolean) => void
@@ -61,6 +64,7 @@ export function createGameTranscend(deps: {
     achievements,
     daily,
     encounters,
+    imperial,
     prestigeMult,
     collectLifetimeTotals,
     alignLifetimeSnapshot,
@@ -106,6 +110,8 @@ export function createGameTranscend(deps: {
     combat.reset() // 转生清驻扎/本轮通关，远征深度跨转生保留
     exploration.reset()
     encounters.reset() // 本轮数据：挂起与冷却窗口随转生清空
+    // 帝庭巡检转生宽限：首次巡检顺延 7 天（v1.82）
+    imperial.graceAfterTranscend()
     // relics 保留
     // transcend 保留
     // 初始能量加成

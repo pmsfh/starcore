@@ -435,6 +435,9 @@ function validateSaveData(data: unknown): data is SaveData {
       imp.bonus !== IMPERIAL_AUDIT_STRICT_BONUS
     )
       return false
+    if (imp.auditGraceUntil !== undefined) {
+      if (!_isNonNegFinite(imp.auditGraceUntil)) return false
+    }
     if (imp.audit !== undefined) {
       if (!_isObject(imp.audit)) return false
       const a = imp.audit as Record<string, unknown>
