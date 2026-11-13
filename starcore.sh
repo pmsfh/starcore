@@ -33,26 +33,26 @@ usage() {
 用法：
   bash starcore.sh                      交互选择操作
   bash starcore.sh install              安装并构建
-  bash starcore.sh deploy               发布已有构建
-  bash starcore.sh up                   安装并发布
+  bash starcore.sh deploy               部署已有构建
+  bash starcore.sh up                   安装并部署
   bash starcore.sh check                只做环境检测
 
 安装选项：
   --source main|release   安装来源，默认交互选择
   --dir PATH              安装目录，默认 ./starcore
 
-发布选项：
-  --dest PATH             发布目标目录，必填或交互输入
+部署选项：
+  --dest PATH             部署目标目录，必填或交互输入
   --url URL               站点地址，提供后注入分享元数据并核验线上
   --no-url                不使用配置文件里的站点地址
   --sudo                  允许 sudo 提权
   --no-sudo               不使用 sudo
-  --owner USER:GROUP      发布后修改目录属主
-  --chmod MODE            发布后修改目录权限
+  --owner USER:GROUP      部署后修改目录属主
+  --chmod MODE            部署后修改目录权限
   --delete                同步时删除目标目录多余文件
   --no-delete             不删除目标目录多余文件
-  --backup                发布前备份目标目录
-  --check                 发布前运行完整检查
+  --backup                部署前备份目标目录
+  --check                 部署前运行完整检查
   --no-check              不运行完整检查
 
 通用选项：
@@ -66,7 +66,7 @@ usage() {
   DEPLOY_DEST / DEPLOY_URL 可作为 --dest / --url 的默认值
   配置文件：./.deploy.env 或 ~/.config/starcore/deploy.env
 
-远程发布暂未实现，将在第二阶段加入。
+远程部署暂未实现，将在第二阶段加入。
 EOF
 }
 
@@ -126,7 +126,7 @@ while [[ $# -gt 0 ]]; do
     --dry-run) DRY_RUN=1; shift ;;
     -y | --yes) YES=1; shift ;;
     --ssh)
-      die "远程发布将在第二阶段提供，当前版本只支持本机发布"
+      die "远程部署将在第二阶段提供，当前版本只支持本机部署"
       ;;
     -h | --help)
       usage
@@ -183,8 +183,8 @@ interactive_menu() {
   say "请选择操作："
   say "  1) 安装最新开发版"
   say "  2) 安装最新稳定版"
-  say "  3) 安装并发布"
-  say "  4) 仅发布已有构建"
+  say "  3) 安装并部署"
+  say "  4) 仅部署已有构建"
   say "  5) 仅做环境检测"
   local choice
   printf '输入 1-5 [2]：' >&2
@@ -209,10 +209,10 @@ interactive_menu() {
   fi
 
   if [[ "$COMMAND" == "deploy" || "$COMMAND" == "up" ]]; then
-    DEST="$(ask "发布目标目录（必填）：" "")"
-    [[ -n "$DEST" ]] || die "发布目标目录不能为空"
+    DEST="$(ask "部署目标目录（必填）：" "")"
+    [[ -n "$DEST" ]] || die "部署目标目录不能为空"
     URL="$(ask "站点地址（可留空）：" "")"
-    if ask_yes "发布前备份目标目录？[y/N]：" "n"; then DO_BACKUP=1; fi
+    if ask_yes "部署前备份目标目录？[y/N]：" "n"; then DO_BACKUP=1; fi
     if ask_yes "同步时删除目标目录多余文件？[y/N]：" "n"; then DO_DELETE=1; fi
   fi
 }
@@ -394,7 +394,7 @@ ensure_environment() {
     if [[ "$need_node" == "1" ]]; then
       say "环境检测通过：git / node $(node_version) / corepack / curl"
     else
-      say "环境检测通过：git / curl / rsync 等发布组件齐全"
+      say "环境检测通过：git / curl / rsync 等部署组件齐全"
     fi
     return 0
   fi
@@ -554,10 +554,10 @@ do_deploy() {
 
   if [[ -z "$DEST" ]]; then
     if [[ -t 0 && $YES -eq 0 ]]; then
-      DEST="$(ask "发布目标目录（必填）：" "")"
+      DEST="$(ask "部署目标目录（必填）：" "")"
     fi
   fi
-  [[ -n "$DEST" ]] || die "缺少发布目标，请用 --dest 指定"
+  [[ -n "$DEST" ]] || die "缺少部署目标，请用 --dest 指定"
 
   if [[ $DRY_RUN -eq 1 ]]; then
     ensure_environment 1 1 1 0
@@ -567,9 +567,9 @@ do_deploy() {
   fi
 
   DEST="$(realpath -m "$DEST" 2>/dev/null || printf '%s' "$DEST")"
-  [[ "$DEST" != "/" ]] || die "拒绝发布到根目录"
-  [[ "$DEST" != "$(cd "$DIR" && pwd)" ]] || die "发布目标不能是安装目录本身"
-  [[ "$DEST" != "$(cd "$DIR" && pwd)/dist" ]] || die "发布目标不能是 dist 目录本身"
+  [[ "$DEST" != "/" ]] || die "拒绝部署到根目录"
+  [[ "$DEST" != "$(cd "$DIR" && pwd)" ]] || die "部署目标不能是安装目录本身"
+  [[ "$DEST" != "$(cd "$DIR" && pwd)/dist" ]] || die "部署目标不能是 dist 目录本身"
   if [[ -n "$URL" ]] && ! validate_url "$URL"; then
     die "站点地址格式不支持，需要协议 + 域名 + 可选端口：$URL"
   fi
@@ -581,12 +581,12 @@ do_deploy() {
       say "运行完整检查 ..."
       (cd "$DIR" && run corepack pnpm check)
     else
-      warn "发布目录没有源码，跳过完整检查"
+      warn "部署目录没有源码，跳过完整检查"
     fi
   fi
 
   if [[ ! -d "$DEST" ]]; then
-    say "创建发布目录：$DEST"
+    say "创建部署目录：$DEST"
     run_admin mkdir -p "$DEST"
   fi
 
@@ -674,12 +674,12 @@ do_deploy() {
       die "线上核验未通过：HTTP ${code:-无响应}，入口 ${bundle:-未命中}"
     fi
   else
-    [[ -f "$DEST/index.html" ]] || die "发布后缺少 index.html"
+    [[ -f "$DEST/index.html" ]] || die "部署后缺少 index.html"
     say "本机核验通过：$(cd "$DEST" && pwd)，版本 ${meta:-未知}"
   fi
 
   say ""
-  say "发布完成：${DEST}"
+  say "部署完成：${DEST}"
 }
 
 # ---------- 主流程 ----------

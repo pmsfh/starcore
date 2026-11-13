@@ -47,7 +47,7 @@ growing through "Singularity Restart" rebirth cycles.
 
 ## Quick Start
 
-### Option 1: Installer script
+### Option 1: Script installation
 
 Best for a direct install or deployment without cloning by hand. Download the
 script first:
@@ -202,7 +202,7 @@ The self-check covers Node, dependencies, build output, the browser and Python p
 ## Deployment
 
 A pure static SPA. The build output goes to `dist/`. The unified script can
-publish it to a local site:
+deploy it to a local site:
 
 ```bash
 ./starcore.sh deploy --dir . --dest /var/www/example --url https://example.com

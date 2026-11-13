@@ -30,7 +30,7 @@
 
 ## 快速开始
 
-### 方式一：安装脚本
+### 方式一：脚本安装
 
 适合直接安装或部署，不必手动克隆。先下载脚本：
 
@@ -43,8 +43,8 @@ bash starcore.sh
 
 1. 安装最新开发版：`main` 分支最新提交，包含尚未发布的改动
 2. 安装最新稳定版：最新 Release 对应的 tag，同样从源码构建
-3. 安装并发布
-4. 仅发布已有构建
+3. 安装并部署
+4. 仅部署已有构建
 5. 仅做环境检测
 
 也可以直接使用命令行：
@@ -169,7 +169,7 @@ corepack pnpm diagnose --fix  # 对可自动修复的缺件执行修复
 
 ## 部署
 
-纯静态 SPA。构建产物在 `dist/`。统一脚本提供本机发布：
+纯静态 SPA。构建产物在 `dist/`。统一脚本提供本机部署：
 
 ```bash
 ./starcore.sh deploy --dir . --dest /var/www/example --url https://example.com
@@ -190,7 +190,7 @@ corepack pnpm install   # 依赖有更新时执行
 
 - 站点信息可用 `--dest` / `--url` 传入，也可写入 `deploy.env` 复用。
 - 更新不影响游戏存档，存档保存在浏览器本地。
-- 发布目标可以是任意可写目录；不可写时按需加 `--sudo`。
+- 部署目标可以是任意可写目录；不可写时按需加 `--sudo`。
 - 不使用命令行时，也可以从
   [Releases](https://github.com/renlang119/starcore/releases) 页面下载构建
   产物包，解压后将其中的 `dist/` 目录内容覆盖到站点目录即可完成部署或更新。
