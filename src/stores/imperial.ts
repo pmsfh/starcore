@@ -177,13 +177,12 @@ export const useImperialStore = defineStore('imperial', () => {
     return bundle
   }
 
-  /** 满池判定（v1.82 成就指标）：任一资源占比达 12 小时上限即视为满池 */
-  function poolFull(best: number, now = Date.now()): boolean {
-    const bundle = pool(best, now)
-    const rates = tributeTotals(best, now)
-    for (const [res, v] of Object.entries(bundle)) {
-      const rate = rates[res as ResourceType] ?? 0
-      if (rate > 0 && v >= rate * IMPERIAL_CLAIM_CAP_SECONDS) return true
+  /** 满池判定（v1.82 成就指标）：任一座距上次领取（或接管）满 12 小时即视为满池
+   *  （按各座 elapsed 判定，规避多座同资源金额聚合的浮点比较边缘） */
+  function poolFull(now = Date.now()): boolean {
+    for (const id of occupiedIds.value) {
+      const from = Math.max(lastClaimAt.value, capturedAt.value[id] ?? 0)
+      if (now - from >= IMPERIAL_CLAIM_CAP_SECONDS * 1000) return true
     }
     return false
   }

@@ -380,7 +380,7 @@ export const useGameStore = defineStore('game', () => {
   // imperial store 保持纯状态，不直接引用 resources / combat。
   function claimImperialTribute(now = Date.now()): Partial<Record<ResourceType, number>> {
     // 满池判定在领取前（领取即清池）；成就只计满池领取（防连点刷数）
-    const wasFull = imperial.poolFull(combat.expeditionBest, now)
+    const wasFull = imperial.poolFull(now)
     const bundle = imperial.claim(combat.expeditionBest, now)
     for (const [res, v] of Object.entries(bundle)) {
       if (v && v > 0) resources.gain(res as ResourceType, v)

@@ -8,6 +8,7 @@ import { fmt, fmtTime } from '@/lib/format'
 import type { ResourceType } from '@/data/buildings'
 import {
   IMPERIAL_CLAIM_CAP_SECONDS,
+  IMPERIAL_AUDIT_STRICT_BONUS,
   IMPERIAL_STRONGHOLDS,
   imperialTributeRate,
   type ImperialStrongholdDef,
@@ -147,7 +148,14 @@ const auditView = computed<AuditView | null>(() => {
     case 'passed':
       return a.paid
         ? { key: 'paid', text: t('map.imperialAuditPaid'), fightable: false, urgent: false }
-        : { key: 'passed', text: t('map.imperialAuditPassed'), fightable: false, urgent: false }
+        : {
+            key: 'passed',
+            text: t('map.imperialAuditPassed', {
+              pct: game.imperial.bonus === IMPERIAL_AUDIT_STRICT_BONUS ? 30 : 10,
+            }),
+            fightable: false,
+            urgent: false,
+          }
     case 'failed':
       return {
         key: 'failed',
@@ -490,18 +498,30 @@ function resourceName(res: ResourceType): string {
 .ip-claim {
   flex-shrink: 0;
 }
-/* 池临满警示（v1.82 QoL）：领取按钮转 alert 强调 */
+/* 池临满警示（v1.82 QoL）：领取按钮转 alert 强调；光晕静态挂伪元素，
+   动画只驱动 opacity（合成器友好，对齐行动队列 in-progress 先例） */
 .ip-claim.ip-claim-nearfull {
   --accent: var(--color-alert);
+  position: relative;
+}
+.ip-claim.ip-claim-nearfull::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: 0 0 12px 2px rgb(226 72 77 / 25%);
+  opacity: 0;
   animation: claim-pulse 1.6s ease-in-out infinite;
+  will-change: opacity;
+  pointer-events: none;
 }
 @keyframes claim-pulse {
   0%,
   100% {
-    box-shadow: 0 0 0 0 rgb(226 72 77 / 0%);
+    opacity: 0;
   }
   50% {
-    box-shadow: 0 0 0 4px rgb(226 72 77 / 25%);
+    opacity: 1;
   }
 }
 

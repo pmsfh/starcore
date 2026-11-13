@@ -57,7 +57,7 @@ export default {
   'map.imperialAuditTitle': 'Court Inspection',
   'map.imperialAuditPending': 'Inspection target: {name}. Fight or pay within {time}',
   'map.imperialAuditOverdue': 'Inspection overdue. {name} suspended; fight or pay to restore',
-  'map.imperialAuditPassed': 'Inspection passed. Next week’s tribute +10%',
+  'map.imperialAuditPassed': 'Inspection passed. Next week’s tribute +{pct}%',
   'map.imperialAuditPaid': 'Inspection settled by payment. No next-week bonus',
   'map.imperialAuditFailed': 'Inspection lost: {name}',
   'map.imperialAuditFight': 'Fight inspection',

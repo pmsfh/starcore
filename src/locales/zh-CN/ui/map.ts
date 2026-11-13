@@ -55,7 +55,7 @@ export default {
   'map.imperialAuditTitle': '帝庭巡检',
   'map.imperialAuditPending': '巡检目标：{name}，{time} 内迎战或打点',
   'map.imperialAuditOverdue': '巡检逾期，{name} 停摆中，迎战或打点后恢复',
-  'map.imperialAuditPassed': '本周巡检已通过，下周贡赋 +10%',
+  'map.imperialAuditPassed': '本周巡检已通过，下周贡赋 +{pct}%',
   'map.imperialAuditPaid': '本周巡检已打点，无下周加成',
   'map.imperialAuditFailed': '本周巡检失守：{name}',
   'map.imperialAuditFight': '迎战巡检',

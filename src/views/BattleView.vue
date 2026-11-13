@@ -48,7 +48,7 @@ const auditFightable = computed(() => {
   return !!a && (a.status === 'pending' || a.status === 'overdue')
 })
 
-/** 巡检迎战档位（v1.82）：从严敌方深度 +1、胜次下周贡赋 +20% */
+/** 巡检迎战档位（v1.82）：从严敌方深度 +1、胜次下周贡赋 +30% */
 const auditDifficulty = ref<ImperialAuditDifficulty>('standard')
 const isImperialAudit = computed(() => strongholdId.value === IMPERIAL_AUDIT_ID)
 
