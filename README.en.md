@@ -50,6 +50,23 @@ growing through "Singularity Restart" rebirth cycles.
 Requires Node.js 22.18+ (24.21 used in development); pnpm 9 is invoked via
 corepack (`packageManager` pins 9.15.4, fetched on first run).
 
+The repository's `install.sh` lets you choose the version:
+
+1. Latest development build: the newest commit on `main`, including unreleased
+   changes; requires Node.js
+2. Latest stable release: the prebuilt archive from the latest GitHub Release;
+   no Node.js required
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/renlang119/starcore/main/install.sh -o install.sh
+bash install.sh
+```
+
+Pass `--mode main` or `--mode release` to skip the menu; `--dir` sets the
+install directory. The built site is written to `dist/` under that directory.
+
+Or clone manually:
+
 ```bash
 git clone https://github.com/renlang119/starcore.git
 cd starcore
