@@ -4,7 +4,7 @@
 // C. 注档已完成挑战：领取按钮出现 → 点击 → 暗物质到账 + 按钮变已领取
 // D. 注档连续 5 天 + 今日已签到：badge 连续 5、圆点 5 亮
 // E. 换周重掷：注档旧周标识 → 加载后挑战重掷（challengeWeek 变当前周）
-// F. 成就 49 卡不回归；导航无新增项；移动视口不溢出
+// F. 成就 54 卡不回归；导航无新增项；移动视口不溢出
 // G. 扩类挑战（v1.21）：新 kind（远征/合成/强化/驻扎）注档渲染与领取，旧五键计数器兼容
 import { launch, check, finish, newSeededPage } from './starcore-pwlib.mjs';
 
@@ -202,10 +202,10 @@ console.log('== E. 注档旧周标识：加载后重掷 ==');
 }
 
 // F. 不回归项
-console.log('== F. 成就 49 卡 / 导航不增 / 移动视口 ==');
+console.log('== F. 成就 54 卡 / 导航不增 / 移动视口 ==');
 {
   const page = await newSeededPage(browser, makeSave(), '/achievements', { waitMs: 1500 });
-  check('成就页 49 卡', (await page.locator('.ach-card').count()) === 49);
+  check('成就页 54 卡', (await page.locator('.ach-card').count()) === 54);
   await page.context().close();
 
   const home = await newSeededPage(browser, makeSave(), '/', { viewport: { width: 390, height: 844 }, waitMs: 1500 });

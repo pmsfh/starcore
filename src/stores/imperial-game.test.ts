@@ -13,7 +13,7 @@ beforeEach(() => {
 })
 
 describe('game — 帝庭据点门面', () => {
-  it('领取贡赋写入资源并清池', () => {
+  it('领取贡赋写入资源并清池，成就只计满池领取', () => {
     const game = useGameStore()
     game.imperial.reset()
     game.resources.reset()
@@ -22,9 +22,17 @@ describe('game — 帝庭据点门面', () => {
     const t0 = Date.now()
     game.imperial.capture('imp_pass', t0)
     const before = resources.getAmount('energy').toNumber()
+    // 1 小时池（未满）：入账但不计成就
     game.claimImperialTribute(t0 + 3600 * 1000)
     expect(resources.getAmount('energy').toNumber()).toBeGreaterThan(before)
     expect(game.imperial.pool(IMPERIAL_ANCHOR_BEST, t0 + 3600 * 1000)).toEqual({})
+    expect(game.achievements.lifetimeInt.imperialClaims).toBe(0)
+    // 12 小时池（满）：入账且计一次
+    game.claimImperialTribute(t0 + (3600 + 12 * 3600) * 1000)
+    expect(game.achievements.lifetimeInt.imperialClaims).toBe(1)
+    // 满池后同刻再领（空池）：不重复计数
+    game.claimImperialTribute(t0 + (3600 + 12 * 3600) * 1000)
+    expect(game.achievements.lifetimeInt.imperialClaims).toBe(1)
   })
 
   it('整备扣费成功，资源不足失败', () => {
@@ -66,9 +74,17 @@ describe('game — 帝庭据点门面', () => {
     expect(game.imperial.audit?.status).toBe('pending')
     expect(game.settleImperialAudit(true)).toBe(true)
     expect(game.imperial.audit?.status).toBe('passed')
+    // 迎战胜利计入成就计数（v1.82）
+    expect(game.achievements.lifetimeInt.auditWins).toBe(1)
+    // 从严档位转发（v1.82）：bonus 1.2
+    game.imperial.ensureAudit('2026-W46b', Date.now() + 8 * 24 * 3600 * 1000)
+    expect(game.settleImperialAudit(true, 'strict')).toBe(true)
+    expect(game.imperial.bonus).toBe(1.2)
 
-    game.imperial.ensureAudit('2026-W46', Date.now() + 8 * 24 * 3600 * 1000)
+    game.imperial.ensureAudit('2026-W46c', Date.now() + 8 * 24 * 3600 * 1000)
     expect(game.settleImperialAudit(false)).toBe(true)
     expect(game.imperial.isOccupied('imp_pass')).toBe(false)
+    // 失守不增胜次
+    expect(game.achievements.lifetimeInt.auditWins).toBe(2)
   })
 })

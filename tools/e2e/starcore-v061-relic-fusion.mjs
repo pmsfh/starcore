@@ -3,7 +3,7 @@
 // B. 注档（含重复遗物）：点选材料 → 合成按钮亮起 → 合成成功产物弹窗 → 库存 -2
 // C. 校验矩阵：稀有度混选被拦（toast）、已装备卡置灰不可选、legendary 置灰
 // D. 套装：装备 2 件沉默者系 → partial 高亮 + 当前效果含套装标签；卸下后失活
-// E. 图鉴「X 件 / X 种」计数；成页 49 卡不回归；欧米伽传承文案显示 20 种
+// E. 图鉴「X 件 / X 种」计数；成页 54 卡不回归；欧米伽传承文案显示 20 种
 // F. 移动视口（390px）无横向溢出
 import { launch, check, finish, newSeededPage } from './starcore-pwlib.mjs';
 
@@ -149,10 +149,10 @@ console.log('== D. 套装：2 件 partial 激活 / 卸下失活 ==');
 }
 
 // E. 成就不回归
-console.log('== E. 成就页 49 卡 + 欧米伽传承 20 种口径 ==');
+console.log('== E. 成就页 54 卡 + 欧米伽传承 20 种口径 ==');
 {
   const page = await newSeededPage(browser, makeSave(), '/achievements');
-  check('成就页 49 卡', (await page.locator('.ach-card').count()) === 49);
+  check('成就页 54 卡', (await page.locator('.ach-card').count()) === 54);
   const omega = page.locator('.ach-card', { has: page.locator('text=欧米伽传承') });
   check('欧米伽传承卡存在', (await omega.count()) === 1);
   check('文案为「集齐全部 20 种遗物」', (await omega.textContent()).includes('集齐全部 20 种遗物'));

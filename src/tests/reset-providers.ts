@@ -57,6 +57,8 @@ export function resetProviderSingletons(): void {
     transcends: () => 0,
     playtime: () => 0,
     expeditionBest: () => 0,
+    imperialHeld: () => 0,
+    imperialTierSum: () => 0,
   })
 }
 
@@ -70,7 +72,9 @@ export function zeroAchievementProviders(
       | 'activeFullSets'
       | 'transcends'
       | 'playtime'
-      | 'expeditionBest',
+      | 'expeditionBest'
+      | 'imperialHeld'
+      | 'imperialTierSum',
       () => number
     >
   >
@@ -83,6 +87,8 @@ export function zeroAchievementProviders(
     transcends: () => 0,
     playtime: () => 0,
     expeditionBest: () => 0,
+    imperialHeld: () => 0,
+    imperialTierSum: () => 0,
     ...overrides,
   })
 }

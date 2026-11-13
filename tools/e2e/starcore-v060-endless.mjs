@@ -4,7 +4,7 @@
 // C. /battle/endless：深度面板（跟随前沿）、敌情预览、驻扎隐藏、出征胜利推进深度
 // D. 深度步进器：上下限钳制、重打不推进；失败不推进
 // E. 注档 expeditionBest=3：前沿第 4 层、旧层数值随深度递增；转生后入口重新锁定但档案深度保留
-// F. 常规据点战斗页不受影响（驻扎按钮仍在）；成就 49 卡不回归；移动视口不溢出
+// F. 常规据点战斗页不受影响（驻扎按钮仍在）；成就 54 卡不回归；移动视口不溢出
 // G. 远征里程碑（v1.20）：领取条显示/领取回执、补领逐档清账、终身数据不挂本轮解锁、已领幂等
 import { launch, check, finish, newSeededPage } from './starcore-pwlib.mjs';
 
@@ -206,7 +206,7 @@ console.log('== F. 常规据点战斗 + 移动视口不溢出 ==');
   await mob.context().close();
 
   const ach = await newSeededPage(browser, makeSave({}), '/achievements');
-  check('成就页仍 49 卡', (await ach.locator('.ach-card').count()) === 49);
+  check('成就页仍 54 卡', (await ach.locator('.ach-card').count()) === 54);
   await ach.context().close();
 }
 

@@ -3,7 +3,7 @@
 // B. 注档 node_deep 完成：gate 可用、双分支 mine/forge 可见但锁定、深空链不受影响
 // C. 注档 4 节点完成（旧档形态）：仅 gate 可用，其余恒星系节点锁定；旧档兼容（v7 无新字段）
 // D. 注档 9/10 完成：edge 可用、10 节点成就口径、恒星系层据点解锁（全表 21，本档 14）、自动化不误开新层
-// E. 配套科技 4 个出现在科技页且可研究态可购；成就页仍 49 卡 9 区
+// E. 配套科技 4 个出现在科技页且可研究态可购；成就页仍 54 卡 10 区
 // F. MapView 空态不误触（新节点未完成时「全部探索完毕」不出现）
 import { launch, check, finish, newSeededPage } from './starcore-pwlib.mjs';
 
@@ -161,7 +161,7 @@ console.log('== E. 新科技渲染 + 成就 34 卡不回归 ==');
   // 这里只验证渲染与状态类存在，不验证可研（前置链由 requires 数据保证）
   await page.context().close();
   const page2 = await newSeededPage(browser, makeSave({}), '/achievements');
-  check('成就页 49 卡', (await page2.locator('.ach-card').count()) === 49);
+  check('成就页 54 卡', (await page2.locator('.ach-card').count()) === 54);
   const sections = await page2.locator('.ach-section, section').count();
   check('成就分区渲染正常', sections >= 9);
   await page2.context().close();

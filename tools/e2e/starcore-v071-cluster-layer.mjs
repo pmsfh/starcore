@@ -5,7 +5,7 @@
 // D. 注档 16 节点全完成：21 据点口径、终章链据点全部解锁、hollow 无据点（星团层时点局部口径，不随新层变）
 // E. 自动化不误开新层（穷档 + 探索协议开着 → 无进行中探索）
 // F. 空态口径：16/34 完成不出空态；34/34 完成出空态且据点区块保留
-// G. 配套科技 4 个渲染 + 科技 59 卡 + 成就 49 卡 9 区 + 星团旅者成就存在
+// G. 配套科技 4 个渲染 + 科技 59 卡 + 成就 54 卡 10 区 + 星团旅者成就存在
 import { launch, check, finish, newSeededPage } from './starcore-pwlib.mjs';
 
 const OLD_NODES = [
@@ -241,7 +241,7 @@ console.log('== F. 空态不误触 / 全通空态 ==');
 }
 
 // G. 科技/成就面
-console.log('== G. 新科技渲染 + 59 卡 + 成就 49 卡 ==');
+console.log('== G. 新科技渲染 + 59 卡 + 成就 54 卡 ==');
 {
   const page = await newSeededPage(browser, makeSave({}), '/tech');
   for (const [id, zh] of NEW_TECHS) {
@@ -251,7 +251,7 @@ console.log('== G. 新科技渲染 + 59 卡 + 成就 49 卡 ==');
   check('科技卡总数 59', (await page.locator('.tech-card').count()) === 59);
   await page.context().close();
   const page2 = await newSeededPage(browser, makeSave({}), '/achievements');
-  check('成就页 49 卡', (await page2.locator('.ach-card').count()) === 49);
+  check('成就页 54 卡', (await page2.locator('.ach-card').count()) === 54);
   const sections = await page2.locator('.ach-section, section').count();
   check('成就分区渲染正常', sections >= 9);
   const achText = await page2.textContent('body');

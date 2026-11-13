@@ -91,6 +91,18 @@ describe('imperial-strongholds — 数据', () => {
     expect(audit.rewards).toEqual({})
   })
 
+  it('巡检迎战档位（v1.82）：从严敌方深度 +1，标准按整备档基准', () => {
+    const standard = imperialAuditStronghold(34, 3)
+    const strict = imperialAuditStronghold(34, 3, 'strict')
+    // 同一敌兵种构成下，从严整体面板更强（depth 36 → 37）
+    expect(strict.enemies).toHaveLength(standard.enemies.length)
+    const stdTotal = standard.enemies.reduce((s, e) => s + e.hp, 0)
+    const strTotal = strict.enemies.reduce((s, e) => s + e.hp, 0)
+    expect(strTotal).toBeGreaterThan(stdTotal)
+    // 默认参 = 标准（旧调用点行为不变）
+    expect(imperialAuditStronghold(34, 3)).toEqual(standard)
+  })
+
   it('巡检目标同周确定、必在接管集内', () => {
     const ids = ['imp_pass', 'imp_audit', 'imp_guard']
     const a = pickImperialAuditTarget(ids, '2026-W45')

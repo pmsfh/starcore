@@ -31,9 +31,9 @@ beforeEach(() => {
 })
 
 describe('achievements — 定义表完整性', () => {
-  it('共 49 个成就，id 唯一', () => {
-    expect(ACHIEVEMENTS).toHaveLength(49)
-    expect(ACHIEVEMENT_IDS.size).toBe(49)
+  it('共 54 个成就，id 唯一', () => {
+    expect(ACHIEVEMENTS).toHaveLength(54)
+    expect(ACHIEVEMENT_IDS.size).toBe(54)
   })
 
   it('类别/指标/阈值/效果字段合法', () => {
@@ -208,6 +208,39 @@ describe('achievements — 外部现值指标', () => {
     expect(store.checkAndUnlock().map((a) => a.id)).toContain('ach_battle_6')
     zeroAchievementProviders({ expeditionBest: () => 40 })
     expect(store.checkAndUnlock().map((a) => a.id)).toContain('ach_battle_7')
+  })
+
+  it('帝庭现值指标走 provider：接管/整备阈值边界（v1.82）', () => {
+    // 1 座接管 → ach_imperial_1（攻防 +3%），不满 6 座
+    zeroAchievementProviders({ imperialHeld: () => 1 })
+    const fresh1 = store.checkAndUnlock()
+    expect(fresh1.map((a) => a.id)).toContain('ach_imperial_1')
+    expect(fresh1.map((a) => a.id)).not.toContain('ach_imperial_2')
+    expect(store.getMult('combat_mult', 'attack').toNumber()).toBeCloseTo(1.03, 10)
+    // 满 6 座 + 整备总和 9 → ach_imperial_2（产出 +5%）+ ach_imperial_3（攻防 +5%）
+    zeroAchievementProviders({ imperialHeld: () => 6, imperialTierSum: () => 9 })
+    const fresh2 = store.checkAndUnlock()
+    expect(fresh2.map((a) => a.id)).toContain('ach_imperial_2')
+    expect(fresh2.map((a) => a.id)).toContain('ach_imperial_3')
+    expect(store.getMult('production_mult', 'energy').toNumber()).toBeCloseTo(1.05, 10)
+    // 未注入时按 0 判定（不误解锁）
+    zeroAchievementProviders()
+    expect(store.isUnlocked('ach_imperial_4')).toBe(false)
+    expect(store.isUnlocked('ach_imperial_5')).toBe(false)
+  })
+
+  it('帝庭终身计数：满池领取与迎战胜次达阈值解锁（v1.82）', () => {
+    // 满池领取 50 次 → ach_imperial_4（产出 +4%）；胜次 4 不到 ach_imperial_5
+    for (let i = 0; i < 50; i++) store.recordImperialClaim()
+    for (let i = 0; i < 4; i++) store.recordAuditWin()
+    const fresh = store.checkAndUnlock()
+    expect(fresh.map((a) => a.id)).toContain('ach_imperial_4')
+    expect(fresh.map((a) => a.id)).not.toContain('ach_imperial_5')
+    expect(store.getMult('production_mult', 'energy').toNumber()).toBeCloseTo(1.04, 10)
+    // 第 5 胜 → ach_imperial_5（攻防 +8%）
+    store.recordAuditWin()
+    expect(store.checkAndUnlock().map((a) => a.id)).toContain('ach_imperial_5')
+    expect(store.getMult('combat_mult', 'attack').toNumber()).toBeCloseTo(1.08, 10)
   })
 })
 

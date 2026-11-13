@@ -1,12 +1,12 @@
 // 星核纪元 v1.22 专项回归：成就扩展
-// A. 全新档：49 卡 9 区、汇总 0/49；v1.22 新成就卡渲染（合成/强化/套装/敌情/远征长线）
+// A. 全新档：54 卡 10 区、汇总 0/54；v1.22 新成就卡渲染（合成/强化/套装/敌情/远征长线）
 // B. 注档终身计数：合成 3 次 → 初试熔合解锁；强化 60 级 → 千锤百炼解锁、150 未达
 // C. 注档现值指标：敌方图鉴 20 种 → 侦察分析员；56 种 → 敌情全录；套装 1 → 套装初成
 // D. 远征长线：expeditionBest 30/40 → 深空远航者/深渊尽头；阈值边界 29/39 不解锁
 // E. 旧档兼容：缺 synths/enhanceLevels 键的 v1.21 档不废档，新指标从 0 起算
 // F. 真实操作链：合成一次 → 终身计数 +1 → 成就解锁 toast（走 relics.synthesize 注入通道）
 // G. 转生保留：注档合成 2 次 + 转生后终身计数仍在；成就页汇总跨转生累计
-// H. 移动视口：成就页 49 卡无横向溢出
+// H. 移动视口：成就页 54 卡无横向溢出
 import { launch, check, finish, newSeededPage } from './starcore-pwlib.mjs';
 
 function makeSave({
@@ -53,15 +53,15 @@ function makeSave({
 const browser = await launch();
 
 // A. 全新档渲染
-console.log('== A. 全新档：49 卡 9 区 + 汇总 0/49 ==');
+console.log('== A. 全新档：54 卡 10 区 + 汇总 0/54 ==');
 {
   const page = await newSeededPage(browser, makeSave(), '/achievements', { waitMs: 1500 });
   const cards = page.locator('.ach-card');
-  check(`49 张成就卡（实际 ${await cards.count()}）`, (await cards.count()) === 49);
+  check(`54 张成就卡（实际 ${await cards.count()}）`, (await cards.count()) === 54);
   const sections = await page.locator('.ach-section, section').count();
-  check('成就分区渲染正常（9 区）', sections >= 9);
+  check('成就分区渲染正常（10 区）', sections >= 10);
   const countText = (await page.locator('.summary-count').textContent()).replace(/\s/g, '');
-  check(`汇总 0/49（实际 ${countText}）`, countText === '0/49');
+  check(`汇总 0/54（实际 ${countText}）`, countText === '0/54');
   // 新成就卡可见（按名称定位，:text-is 精确匹配防子串误命中）
   for (const name of ['初试熔合', '千锤百炼', '套装初成', '侦察分析员', '深空远航者', '敌情全录']) {
     check(`新成就卡「${name}」渲染`, (await page.locator('.ach-card', { has: page.locator(`.ach-name:text-is("${name}")`) }).count()) === 1);
@@ -88,7 +88,7 @@ console.log('== B. 注档终身计数：合成/强化解锁 ==');
     check(`「${name}」已解锁`, await card.evaluate((el) => el.classList.contains('unlocked')));
   }
   const cnt = (await page.locator('.summary-count').textContent()).replace(/\s/g, '');
-  check(`汇总 3/49（实际 ${cnt}）`, cnt === '3/49');
+  check(`汇总 3/54（实际 ${cnt}）`, cnt === '3/54');
   await page.context().close();
 }
 
@@ -169,9 +169,9 @@ console.log('== E. v1.21 旧档（缺 synths/enhanceLevels）不废档 ==');
   delete save.achievements.lifetime.synths;
   delete save.achievements.lifetime.enhanceLevels;
   const page = await newSeededPage(browser, save, '/achievements', { waitMs: 1500 });
-  check('旧档成就页正常渲染（49 卡）', (await page.locator('.ach-card').count()) === 49);
+  check('旧档成就页正常渲染（54 卡）', (await page.locator('.ach-card').count()) === 54);
   const cnt = (await page.locator('.summary-count').textContent()).replace(/\s/g, '');
-  check(`汇总 0/49（实际 ${cnt}）`, cnt === '0/49');
+  check(`汇总 0/54（实际 ${cnt}）`, cnt === '0/54');
   await page.context().close();
 }
 
@@ -216,7 +216,7 @@ console.log('== F. 真实合成操作 → 终身计数 + 成就 ==');
   await page.locator('.side-nav .nav-item', { hasText: '成就' }).click();
   await page.waitForTimeout(1200);
   const cnt = (await page.locator('.summary-count').textContent()).replace(/\s/g, '');
-  check(`合成后汇总 ≥1/49（实际 ${cnt}）`, /^([1-9]\d*)\/49$/.test(cnt));
+  check(`合成后汇总 ≥1/54（实际 ${cnt}）`, /^([1-9]\d*)\/54$/.test(cnt));
   const card = page.locator('.ach-card', { has: page.locator('.ach-name:text-is("初试熔合")') });
   check('「初试熔合」随真实合成解锁', await card.evaluate((el) => el.classList.contains('unlocked')));
   await page.context().close();

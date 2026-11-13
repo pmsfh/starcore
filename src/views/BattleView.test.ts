@@ -689,13 +689,58 @@ describe('BattleView — 帝庭据点（v1.81）', () => {
     await wrapper.vm.$nextTick()
     const vm = wrapper.vm as any
     vm.startBattle()
-    await vm.$nextTick()
+    await wrapper.vm.$nextTick()
     // 结算即变（settleImperialAudit 已执行，实时源转 undefined）：快照接管渲染
     expect(vm.engagedStronghold).toBeTruthy()
     expect(vm.battleResult).toBeTruthy()
     expect(wrapper.find('.battle-view').exists()).toBe(true)
     vm.skipPlayback()
-    await vm.$nextTick()
+    await wrapper.vm.$nextTick()
     expect(wrapper.find('.modal-overlay').exists()).toBe(true)
+  })
+
+  it('巡检迎战档位选择（v1.82）：默认标准，切从严敌方增强并可切回', async () => {
+    routeState.path = '/battle/imperial_audit'
+    routeState.params = { id: 'imperial_audit' }
+    exploredNodes('node_galaxy_hub', 'node_arm_gate')
+    const imperial = useImperialStore()
+    imperial.hydrate({
+      completed: ['imp_pass'],
+      everCompleted: ['imp_pass'],
+      tiers: { imp_pass: 3 },
+      capturedAt: { imp_pass: 0 },
+      lastClaimAt: 0,
+      audit: {
+        week: '2026-W45',
+        targetId: 'imp_pass',
+        deadline: Date.now() + 86_400_000,
+        status: 'pending',
+      },
+    })
+    setupBattleReady()
+    // 深度下限 6 会钳住低 best 的档位差（max(6, best+2) vs max(6, best+3)），
+    // 设 best=30 使两档深度 32/33 可区分
+    useCombatStore().expeditionBest = 30
+    const wrapper = mountBattle()
+    await wrapper.vm.$nextTick()
+    const vm = wrapper.vm as any
+    // 档位面板仅巡检待迎战时出现，默认标准
+    expect(wrapper.find('[data-testid="audit-difficulty"]').exists()).toBe(true)
+    expect(vm.auditDifficulty).toBe('standard')
+    // 敌方名带深度前缀（D36·…），作为合成随档位重算的观察点
+    // （强度断言由 imperial-strongholds.test 数据层直测覆盖）
+    const standardName = (vm.stronghold as { enemies: { name: string }[] }).enemies[0].name
+    // 切从严：敌方深度 +1，hint 文案切换
+    await wrapper.find('[data-testid="audit-diff-strict"]').trigger('click')
+    await wrapper.vm.$nextTick()
+    expect(vm.auditDifficulty).toBe('strict')
+    const strictName = (vm.stronghold as { enemies: { name: string }[] }).enemies[0].name
+    expect(strictName).not.toBe(standardName)
+    expect(wrapper.text()).toContain('敌方深度 +1')
+    // 切回标准
+    await wrapper.find('[data-testid="audit-diff-standard"]').trigger('click')
+    await wrapper.vm.$nextTick()
+    expect(vm.auditDifficulty).toBe('standard')
+    expect((vm.stronghold as { enemies: { name: string }[] }).enemies[0].name).toBe(standardName)
   })
 })
