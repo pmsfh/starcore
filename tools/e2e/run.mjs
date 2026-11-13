@@ -71,6 +71,7 @@ const SUITE = [
   'starcore-v174-gates.mjs',
   'starcore-v175-imperial.mjs',
   'starcore-v181-imperial-ui.mjs',
+  'starcore-v182-imperial-audit.mjs',
   'starcore-boot-screen.mjs',
 ]
 
@@ -106,6 +107,7 @@ const REMOTE = [
   'starcore-v174-gates.mjs',
   'starcore-v175-imperial.mjs',
   'starcore-v181-imperial-ui.mjs',
+  'starcore-v182-imperial-audit.mjs',
   'starcore-boot-screen.mjs',
 ]
 
@@ -342,9 +344,10 @@ async function main() {
 
   console.log('')
   console.log(
-    `E2E_DONE mode=${mode} target=${target} pass=${pass} fail=${fail} log_dir=${logDir}${failed.length ? ` failed:[${failed.join(' ')}]` : ''}`,
+    `E2E_DONE mode=${mode} target=${target} pass=${pass} fail=${fail} log_dir=${logDir}${failed.length ? ` failed:[${failed.join(' ')}]` : ''}`
   )
-  if (failed.length) console.log(`失败脚本的明细日志见 ${logDir}/<脚本名>.log（搜「✗」定位失败项）。`)
+  if (failed.length)
+    console.log(`失败脚本的明细日志见 ${logDir}/<脚本名>.log（搜「✗」定位失败项）。`)
   process.exit(fail ? 1 : 0)
 }
 
