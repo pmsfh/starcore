@@ -18,6 +18,7 @@ import { ENCOUNTER_IDS } from '@/data/encounters'
 import {
   IMPERIAL_STRONGHOLDS,
   IMPERIAL_AUDIT_BONUS,
+  IMPERIAL_AUDIT_STRICT_BONUS,
   isLegalImperialTier,
 } from '@/data/imperial-strongholds'
 
@@ -427,7 +428,12 @@ function validateSaveData(data: unknown): data is SaveData {
         if (!_isNonNegFinite(at)) return false
       }
     }
-    if (imp.bonus !== undefined && imp.bonus !== 1 && imp.bonus !== IMPERIAL_AUDIT_BONUS)
+    if (
+      imp.bonus !== undefined &&
+      imp.bonus !== 1 &&
+      imp.bonus !== IMPERIAL_AUDIT_BONUS &&
+      imp.bonus !== IMPERIAL_AUDIT_STRICT_BONUS
+    )
       return false
     if (imp.audit !== undefined) {
       if (!_isObject(imp.audit)) return false

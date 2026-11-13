@@ -1,5 +1,5 @@
 /**
- * achievements.ts：成就/里程碑定义（v0.57 玩法扩展方案 2；v1.22 成就扩展扩至 49 条）
+ * achievements.ts：成就/里程碑定义（v0.57 玩法扩展方案 2；v1.22 成就扩展扩至 49 条；v1.82 帝庭类 5 条扩至 54 条）
  *
  * 设计口径：
  * - 成就统计基于「终身计数」：转生会重置单轮进度（totals/科技/据点等），
@@ -42,9 +42,22 @@ export type AchievementMetric =
   | 'activeFullSets' // 已激活完整套装数（读现值，v1.22）
   | 'transcends' // 转生次数（跨转生保留，读现值）
   | 'playtime' // 终身在线秒数
+  | 'imperialHeld' // 当前帝庭据点接管数（0-6，跨转生保留，读现值，v1.82）
+  | 'imperialTierSum' // 帝庭据点整备等级总和（0-18，跨转生保留，读现值，v1.82）
+  | 'auditWins' // 终身巡检迎战胜次（v1.82）
+  | 'imperialClaims' // 终身贡赋领取次数（v1.82）
 
 type AchievementCategory =
-  'energy' | 'dark' | 'build' | 'tech' | 'explore' | 'battle' | 'relic' | 'transcend' | 'time'
+  | 'energy'
+  | 'dark'
+  | 'build'
+  | 'tech'
+  | 'explore'
+  | 'battle'
+  | 'imperial'
+  | 'relic'
+  | 'transcend'
+  | 'time'
 
 export interface AchievementDef {
   id: string
@@ -64,6 +77,7 @@ export const ACHIEVEMENT_CATEGORIES: Record<AchievementCategory, { label: string
     tech: { label: t('content.achievements.cat.tech.label'), icon: 'i-nav-tech' },
     explore: { label: t('content.achievements.cat.explore.label'), icon: 'i-nav-explore' },
     battle: { label: t('content.achievements.cat.battle.label'), icon: 'i-ui-sword' },
+    imperial: { label: t('content.achievements.cat.imperial.label'), icon: 'i-nav-archive' },
     relic: { label: t('content.achievements.cat.relic.label'), icon: 'i-nav-relic' },
     transcend: { label: t('content.achievements.cat.transcend.label'), icon: 'i-nav-prestige' },
     time: { label: t('content.achievements.cat.time.label'), icon: 'i-ui-clock' },
@@ -417,6 +431,52 @@ export const ACHIEVEMENTS: AchievementDef[] = [
     metric: 'enemyKinds',
     threshold: ENEMY_KIND_TOTAL,
     effects: combat(3),
+  },
+  // 帝庭据点（v1.82：接管/整备读现值跨转生保留；迎战胜次与领取次数走终身计数），
+  {
+    id: 'ach_imperial_1',
+    name: t('content.achievements.ach_imperial_1.name'),
+    desc: t('content.achievements.ach_imperial_1.desc'),
+    category: 'imperial',
+    metric: 'imperialHeld',
+    threshold: 1,
+    effects: combat(3),
+  },
+  {
+    id: 'ach_imperial_2',
+    name: t('content.achievements.ach_imperial_2.name'),
+    desc: t('content.achievements.ach_imperial_2.desc'),
+    category: 'imperial',
+    metric: 'imperialHeld',
+    threshold: 6,
+    effects: prod(5),
+  },
+  {
+    id: 'ach_imperial_3',
+    name: t('content.achievements.ach_imperial_3.name'),
+    desc: t('content.achievements.ach_imperial_3.desc'),
+    category: 'imperial',
+    metric: 'imperialTierSum',
+    threshold: 9,
+    effects: combat(5),
+  },
+  {
+    id: 'ach_imperial_4',
+    name: t('content.achievements.ach_imperial_4.name'),
+    desc: t('content.achievements.ach_imperial_4.desc'),
+    category: 'imperial',
+    metric: 'imperialClaims',
+    threshold: 50,
+    effects: prod(4),
+  },
+  {
+    id: 'ach_imperial_5',
+    name: t('content.achievements.ach_imperial_5.name'),
+    desc: t('content.achievements.ach_imperial_5.desc'),
+    category: 'imperial',
+    metric: 'auditWins',
+    threshold: 5,
+    effects: combat(8),
   },
   // 遗物收藏（按当前持有数，遗物跨转生保留），
   {

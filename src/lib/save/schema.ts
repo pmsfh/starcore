@@ -127,6 +127,10 @@ export interface AchievementsSaveData {
     synths?: number
     /** 终身遗物强化总级数（v1.22 可选：旧档缺失视为 0） */
     enhanceLevels?: number
+    /** 终身巡检迎战胜次（v1.82 可选：旧档缺失视为 0） */
+    auditWins?: number
+    /** 终身贡赋领取次数（v1.82 可选：旧档缺失视为 0） */
+    imperialClaims?: number
   }
   /** 已解锁成就：id → 解锁时间戳（ms） */
   unlocked: Record<string, number>

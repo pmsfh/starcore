@@ -21,6 +21,7 @@ import type { ResourceType } from '@/data/buildings'
 import {
   IMPERIAL_AUDIT_BONUS,
   IMPERIAL_AUDIT_PAY_HOURS,
+  IMPERIAL_AUDIT_STRICT_BONUS,
   IMPERIAL_AUDIT_WINDOW_SECONDS,
   IMPERIAL_CLAIM_CAP_SECONDS,
   IMPERIAL_STRONGHOLDS,
@@ -30,6 +31,7 @@ import {
   isImperialStrongholdId,
   isLegalImperialTier,
   pickImperialAuditTarget,
+  type ImperialAuditDifficulty,
 } from '@/data/imperial-strongholds'
 
 export type ImperialAuditStatus = 'pending' | 'passed' | 'failed' | 'overdue'
@@ -175,6 +177,17 @@ export const useImperialStore = defineStore('imperial', () => {
     return bundle
   }
 
+  /** 满池判定（v1.82 成就指标）：任一资源占比达 12 小时上限即视为满池 */
+  function poolFull(best: number, now = Date.now()): boolean {
+    const bundle = pool(best, now)
+    const rates = tributeTotals(best, now)
+    for (const [res, v] of Object.entries(bundle)) {
+      const rate = rates[res as ResourceType] ?? 0
+      if (rate > 0 && v >= rate * IMPERIAL_CLAIM_CAP_SECONDS) return true
+    }
+    return false
+  }
+
   /** 下一级整备成本；已满级或非法 id 返回 null */
   function upgradeCost(id: string, best: number): Partial<Record<ResourceType, number>> | null {
     const def = getImperialStronghold(id)
@@ -242,12 +255,12 @@ export const useImperialStore = defineStore('imperial', () => {
     if (now >= a.deadline) audit.value = { ...a, status: 'overdue' }
   }
 
-  /** 迎战胜利：核验通过，下周贡赋 +10% */
-  function markAuditPassed(): boolean {
+  /** 迎战胜利：核验通过，下周贡赋按档位加成（标准 +10% / 从严 +20%） */
+  function markAuditPassed(difficulty: ImperialAuditDifficulty = 'standard'): boolean {
     const a = audit.value
     if (!a || !['pending', 'overdue'].includes(a.status)) return false
     audit.value = { ...a, status: 'passed', paid: false }
-    bonus.value = IMPERIAL_AUDIT_BONUS
+    bonus.value = difficulty === 'strict' ? IMPERIAL_AUDIT_STRICT_BONUS : IMPERIAL_AUDIT_BONUS
     return true
   }
 
@@ -382,6 +395,7 @@ export const useImperialStore = defineStore('imperial', () => {
     markAuditPassed,
     markAuditPaid,
     markAuditFailed,
+    poolFull,
     reset,
     serialize,
     hydrate,

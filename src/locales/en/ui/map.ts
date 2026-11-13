@@ -52,6 +52,7 @@ export default {
   'map.imperialPoolTitle': 'Tribute Pool',
   'map.imperialPoolCap': '12-hour cap',
   'map.imperialClaim': 'Claim tribute',
+  'map.imperialClaimNearFull': 'Pool nearly full — claim now',
   'map.imperialPoolEmpty': 'Tribute accruing',
   'map.imperialAuditTitle': 'Court Inspection',
   'map.imperialAuditPending': 'Inspection target: {name}. Fight or pay within {time}',

@@ -21,6 +21,7 @@ import { useDailyStore } from './daily'
 import { useArchiveStore } from './archive'
 import { useEncountersStore } from './encounters'
 import { useImperialStore } from './imperial'
+import type { ImperialAuditDifficulty } from '@/data/imperial-strongholds'
 import { createGameEffects, wireGameProviders } from './game-effects'
 import { createGamePersistence } from './game-persistence'
 import { createGameRewards } from './game-rewards'
@@ -102,6 +103,7 @@ export const useGameStore = defineStore('game', () => {
     daily,
     achievements,
     archive,
+    imperial,
   })
 
   /**
@@ -377,9 +379,14 @@ export const useGameStore = defineStore('game', () => {
   // 帝庭据点线门面（v1.80 系统层）：资源发放 / 扣费 / 巡检结算集中在此，
   // imperial store 保持纯状态，不直接引用 resources / combat。
   function claimImperialTribute(now = Date.now()): Partial<Record<ResourceType, number>> {
+    // 满池判定在领取前（领取即清池）；成就只计满池领取（防连点刷数）
+    const wasFull = imperial.poolFull(combat.expeditionBest, now)
     const bundle = imperial.claim(combat.expeditionBest, now)
     for (const [res, v] of Object.entries(bundle)) {
       if (v && v > 0) resources.gain(res as ResourceType, v)
+    }
+    if (wasFull && Object.values(bundle).some((v) => v && v > 0)) {
+      achievements.recordImperialClaim()
     }
     return bundle
   }
@@ -398,8 +405,14 @@ export const useGameStore = defineStore('game', () => {
     return imperial.markAuditPaid()
   }
 
-  function settleImperialAudit(victory: boolean): boolean {
-    return victory ? imperial.markAuditPassed() : imperial.markAuditFailed()
+  function settleImperialAudit(
+    victory: boolean,
+    difficulty: ImperialAuditDifficulty = 'standard'
+  ): boolean {
+    const ok = victory ? imperial.markAuditPassed(difficulty) : imperial.markAuditFailed()
+    // 迎战胜利计入成就计数（打点/失守不经此）
+    if (ok && victory) achievements.recordAuditWin()
+    return ok
   }
 
   return {

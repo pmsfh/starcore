@@ -17,7 +17,11 @@ import type { StrongholdDef } from '@/data/pve'
 import type { useCombatStore } from '@/stores/combat'
 import type { BattleLogEntry, BattleReplayFrame } from '@/stores/combat'
 import { useToast } from '@/composables/useToast'
-import { IMPERIAL_AUDIT_ID, getImperialStronghold } from '@/data/imperial-strongholds'
+import {
+  IMPERIAL_AUDIT_ID,
+  getImperialStronghold,
+  type ImperialAuditDifficulty,
+} from '@/data/imperial-strongholds'
 
 type CombatStore = ReturnType<typeof useCombatStore>
 /** 战斗结果类型由 store 推导（v0.77，替换 any） */
@@ -35,6 +39,8 @@ export interface BattleFlowDeps {
   isWeeklyBoss?: ComputedRef<boolean>
   /** 是否帝庭据点（v1.81：接管战斗 / 巡检迎战；胜利走接管或巡检记账，不入通关集） */
   isImperial?: ComputedRef<boolean>
+  /** 巡检迎战档位（v1.82：敌方深度与胜次加成按档位；仅巡检迎战读取） */
+  auditDifficulty?: Ref<ImperialAuditDifficulty>
 }
 
 export function useBattleFlow(deps: BattleFlowDeps) {
@@ -188,8 +194,9 @@ export function useBattleFlow(deps: BattleFlowDeps) {
       // 不走 grantRewards；不入通关集、不入图鉴，见各 store 排除口径）
       if (deps.isImperial?.value) {
         if (deps.strongholdId.value === IMPERIAL_AUDIT_ID) {
-          game.settleImperialAudit(true)
-          toast.show(t('battle.imperialAuditWin'))
+          const diff = deps.auditDifficulty?.value ?? 'standard'
+          game.settleImperialAudit(true, diff)
+          toast.show(t('battle.imperialAuditWin', { pct: diff === 'strict' ? 20 : 10 }))
         } else {
           game.imperial.capture(deps.strongholdId.value)
           toast.show(t('battle.imperialWin', { name: deps.stronghold.value?.name ?? '' }))
@@ -201,7 +208,7 @@ export function useBattleFlow(deps: BattleFlowDeps) {
     } else if (deps.isImperial?.value && deps.strongholdId.value === IMPERIAL_AUDIT_ID) {
       // 巡检迎战失败（v1.81）：目标失守（整备保留，重夺后恢复产出）；
       // 提示取巡检目标据点名（合成据点名是巡检舰队名，非失守对象）
-      game.settleImperialAudit(false)
+      game.settleImperialAudit(false, deps.auditDifficulty?.value ?? 'standard')
       const target = getImperialStronghold(game.imperial.audit?.targetId ?? '')
       toast.show(t('battle.imperialAuditLose', { name: target?.name ?? '' }))
     }

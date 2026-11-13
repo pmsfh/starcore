@@ -106,12 +106,20 @@ const poolFill = computed(() => {
   return Math.min(1, fill)
 })
 
+/** 池临满（v1.82 QoL：任一资源占比 ≥90%，领取按钮警示态 + 提示文案） */
+const poolNearFull = computed(() => poolFill.value >= 0.9)
+
 /** 巡检视图状态：pending / overdue 可迎战可打点，其余只读 */
 interface AuditView {
   key: 'pending' | 'overdue' | 'passed' | 'paid' | 'failed'
   text: string
   fightable: boolean
+  /** 窗口临近关闭（v1.82 QoL：pending 剩余不足 12 小时，卡面警示态） */
+  urgent: boolean
 }
+
+/** 巡检临期阈值（秒）：剩余不足此值的 pending 巡检进入警示态 */
+const AUDIT_URGENT_SECONDS = 12 * 3600
 
 const auditView = computed<AuditView | null>(() => {
   const a = game.imperial.audit
@@ -127,15 +135,26 @@ const auditView = computed<AuditView | null>(() => {
           time: fmtTime(Math.max(0, (a.deadline - now.value) / 1000)),
         }),
         fightable: true,
+        urgent: (a.deadline - now.value) / 1000 < AUDIT_URGENT_SECONDS,
       }
     case 'overdue':
-      return { key: 'overdue', text: t('map.imperialAuditOverdue', { name }), fightable: true }
+      return {
+        key: 'overdue',
+        text: t('map.imperialAuditOverdue', { name }),
+        fightable: true,
+        urgent: true,
+      }
     case 'passed':
       return a.paid
-        ? { key: 'paid', text: t('map.imperialAuditPaid'), fightable: false }
-        : { key: 'passed', text: t('map.imperialAuditPassed'), fightable: false }
+        ? { key: 'paid', text: t('map.imperialAuditPaid'), fightable: false, urgent: false }
+        : { key: 'passed', text: t('map.imperialAuditPassed'), fightable: false, urgent: false }
     case 'failed':
-      return { key: 'failed', text: t('map.imperialAuditFailed', { name }), fightable: false }
+      return {
+        key: 'failed',
+        text: t('map.imperialAuditFailed', { name }),
+        fightable: false,
+        urgent: false,
+      }
   }
   // status 为穷尽联合，此行仅为 lint 显式兜底（vue/return-in-computed-property）
   return null
@@ -191,7 +210,12 @@ function resourceName(res: ResourceType): string {
     </p>
     <template v-else>
       <!-- 巡检卡：时间敏感置顶 -->
-      <div v-if="auditView" class="imperial-audit" :data-testid="`imperial-audit-${auditView.key}`">
+      <div
+        v-if="auditView"
+        class="imperial-audit"
+        :class="{ 'ia-urgent': auditView.urgent }"
+        :data-testid="`imperial-audit-${auditView.key}`"
+      >
         <div class="ia-left">
           <span class="ia-title">{{ t('map.imperialAuditTitle') }}</span>
           <span class="ia-text">{{ auditView.text }}</span>
@@ -300,11 +324,16 @@ function resourceName(res: ResourceType): string {
           </div>
           <button
             class="btn-accent ip-claim"
+            :class="{ 'ip-claim-nearfull': poolNearFull }"
             :disabled="poolRows.length === 0"
             data-testid="imperial-pool-claim"
             @click="claimTribute"
           >
-            {{ t('map.imperialClaim') }}
+            {{
+              poolNearFull && poolRows.length > 0
+                ? t('map.imperialClaimNearFull')
+                : t('map.imperialClaim')
+            }}
           </button>
         </div>
       </div>
@@ -330,6 +359,14 @@ function resourceName(res: ResourceType): string {
   padding: var(--space-3);
   border: 1px solid var(--color-line);
   border-radius: var(--radius-md);
+}
+/* 巡检临期/逾期警示（v1.82 QoL）：边框与文字转 alert 色 */
+.imperial-audit.ia-urgent {
+  border-color: var(--color-alert);
+}
+.imperial-audit.ia-urgent .ia-text {
+  color: var(--color-alert);
+  font-weight: 600;
 }
 .ia-left {
   display: flex;
@@ -452,6 +489,20 @@ function resourceName(res: ResourceType): string {
 }
 .ip-claim {
   flex-shrink: 0;
+}
+/* 池临满警示（v1.82 QoL）：领取按钮转 alert 强调 */
+.ip-claim.ip-claim-nearfull {
+  --accent: var(--color-alert);
+  animation: claim-pulse 1.6s ease-in-out infinite;
+}
+@keyframes claim-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgb(226 72 77 / 0%);
+  }
+  50% {
+    box-shadow: 0 0 0 4px rgb(226 72 77 / 25%);
+  }
 }
 
 @media (max-width: 390px) {

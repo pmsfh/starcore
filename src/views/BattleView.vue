@@ -15,6 +15,7 @@ import {
   imperialBattleStronghold,
   imperialUnlocked,
   isImperialStrongholdId,
+  type ImperialAuditDifficulty,
 } from '@/data/imperial-strongholds'
 import { getUnit } from '@/data/units'
 import Icon from '@/components/ui/Icon.vue'
@@ -46,6 +47,10 @@ const auditFightable = computed(() => {
   const a = game.imperial.audit
   return !!a && (a.status === 'pending' || a.status === 'overdue')
 })
+
+/** 巡检迎战档位（v1.82）：从严敌方深度 +1、胜次下周贡赋 +20% */
+const auditDifficulty = ref<ImperialAuditDifficulty>('standard')
+const isImperialAudit = computed(() => strongholdId.value === IMPERIAL_AUDIT_ID)
 
 // 无尽远征（v0.60）：深度选择 + 按深度合成据点
 const endlessDepth = ref(1)
@@ -86,7 +91,11 @@ const liveStronghold = computed((): StrongholdDef | undefined => {
     if (strongholdId.value === IMPERIAL_AUDIT_ID) {
       if (!auditFightable.value) return undefined
       const a = game.imperial.audit
-      return imperialAuditStronghold(game.combat.expeditionBest, game.imperial.tierOf(a!.targetId))
+      return imperialAuditStronghold(
+        game.combat.expeditionBest,
+        game.imperial.tierOf(a!.targetId),
+        auditDifficulty.value
+      )
     }
     const def = getImperialStronghold(strongholdId.value)
     if (!def) return undefined
@@ -179,6 +188,7 @@ const bossFlow = useBattleFlow({
   endlessDepth,
   isWeeklyBoss,
   isImperial,
+  auditDifficulty,
 })
 /**
  * 展示源：交战快照优先于实时计算。巡检迎战结算后
@@ -256,6 +266,42 @@ const emptyStateText = computed(() => {
       :max-depth="endlessMaxDepth"
       @step="stepEndless"
     />
+
+    <!-- 巡检迎战档位（v1.82）：标准 / 从严，敌方深度与胜次加成随档位 -->
+    <div
+      v-if="isImperialAudit && auditFightable"
+      class="audit-difficulty"
+      data-testid="audit-difficulty"
+    >
+      <h3 class="section-title">{{ t('battle.auditDifficultyLabel') }}</h3>
+      <div class="difficulty-options">
+        <button
+          type="button"
+          class="btn-secondary diff-btn"
+          :class="{ 'diff-active': auditDifficulty === 'standard' }"
+          :disabled="playing"
+          data-testid="audit-diff-standard"
+          @click="auditDifficulty = 'standard'"
+        >
+          {{ t('battle.auditDifficultyStandard') }}
+        </button>
+        <button
+          type="button"
+          class="btn-secondary diff-btn"
+          :class="{ 'diff-active': auditDifficulty === 'strict' }"
+          :disabled="playing"
+          data-testid="audit-diff-strict"
+          @click="auditDifficulty = 'strict'"
+        >
+          {{ t('battle.auditDifficultyStrict') }}
+        </button>
+      </div>
+      <p class="diff-hint">
+        {{
+          auditDifficulty === 'strict' ? t('battle.auditStrictHint') : t('battle.auditStandardHint')
+        }}
+      </p>
+    </div>
 
     <!-- 敌方信息 -->
     <div>
@@ -396,6 +442,31 @@ const emptyStateText = computed(() => {
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
+}
+
+.audit-difficulty {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-line);
+  border-radius: var(--radius-lg);
+  padding: var(--space-3);
+}
+.difficulty-options {
+  display: flex;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+.diff-btn {
+  flex: 1;
+}
+.diff-btn.diff-active {
+  background: var(--color-quantum) !important;
+  color: var(--color-on-core) !important;
+  border-color: var(--color-quantum) !important;
+}
+.diff-hint {
+  font-size: var(--text-xs);
+  color: var(--color-t-tertiary);
+  margin-top: var(--space-2);
 }
 .enemy-card {
   background: var(--color-surface);

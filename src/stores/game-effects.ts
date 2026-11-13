@@ -127,6 +127,8 @@ export function wireGameProviders(deps: {
   achievements?: AchievementsStore
   /** v1.22 成就扩展：敌方图鉴 store（已收录种数现值） */
   archive?: ReturnType<typeof import('./archive').useArchiveStore>
+  /** v1.82 帝庭成就：现值指标（接管数/整备总和）store 注入 */
+  imperial?: ReturnType<typeof import('./imperial').useImperialStore>
 }): void {
   const { effectSystem, resources, relics, transcend, combat, military, exploration } = deps
 
@@ -160,6 +162,12 @@ export function wireGameProviders(deps: {
     transcends: () => transcend.totalTranscends,
     playtime: () => deps.totalPlayTime.value,
     expeditionBest: () => combat.expeditionBest,
+    imperialHeld: () => deps.imperial?.occupiedCount ?? 0,
+    imperialTierSum: () =>
+      (deps.imperial?.occupiedIds ?? []).reduce(
+        (sum, id) => sum + (deps.imperial?.tierOf(id) ?? 0),
+        0
+      ),
   })
   // 训练并行槽：科技加成后封顶 MAX_TRAINING_SLOTS（基础与递增细节见 military.ts）
   setTrainingSlotProvider(() =>

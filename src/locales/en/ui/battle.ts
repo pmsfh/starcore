@@ -67,6 +67,14 @@ export default {
   'battle.imperialLocked': 'Imperial stronghold not unlocked; cannot deploy',
   'battle.imperialAuditLocked': 'No inspection to fight this week',
   'battle.imperialWin': 'Taken over: {name}',
-  'battle.imperialAuditWin': 'Inspection passed. Next week’s tribute +10%',
+  'battle.imperialAuditWin': 'Inspection passed. Next week’s tribute +{pct}%',
   'battle.imperialAuditLose': 'Inspection lost. {name} suspended',
+
+  // Inspection engagement difficulty (v1.82)
+  'battle.auditDifficultyLabel': 'Engagement Difficulty',
+  'battle.auditDifficultyStandard': 'Standard',
+  'battle.auditDifficultyStrict': 'Strict',
+  'battle.auditStandardHint':
+    'Enemy scaled by target preparation. Win for next week’s tribute +10%',
+  'battle.auditStrictHint': 'Enemy depth +1. Win for next week’s tribute +20%',
 }

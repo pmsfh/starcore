@@ -65,6 +65,13 @@ export default {
   'battle.imperialLocked': '帝庭据点未解锁，无法出征',
   'battle.imperialAuditLocked': '本周无待迎战的巡检',
   'battle.imperialWin': '接管成功：{name}',
-  'battle.imperialAuditWin': '巡检通过，下周贡赋 +10%',
+  'battle.imperialAuditWin': '巡检通过，下周贡赋 +{pct}%',
   'battle.imperialAuditLose': '巡检失守，{name} 停摆',
+
+  // 巡检迎战档位（v1.82）
+  'battle.auditDifficultyLabel': '迎战档位',
+  'battle.auditDifficultyStandard': '标准',
+  'battle.auditDifficultyStrict': '从严',
+  'battle.auditStandardHint': '按目标整备档合成敌方，胜次下周贡赋 +10%',
+  'battle.auditStrictHint': '敌方深度 +1，胜次下周贡赋 +20%',
 }

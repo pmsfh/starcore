@@ -39,6 +39,8 @@ export type IntLifetimeKey =
   | 'battles'
   | 'synths' // v1.22 遗物合成次数
   | 'enhanceLevels' // v1.22 遗物强化总级数
+  | 'auditWins' // v1.82 巡检迎战胜次
+  | 'imperialClaims' // v1.82 贡赋领取次数
 /** 读外部现值的指标（不自持计数；playtime = game store 的 totalPlayTime，已入档） */
 export type ExternalMetric =
   | 'relicsOwned'
@@ -48,6 +50,8 @@ export type ExternalMetric =
   | 'transcends'
   | 'playtime'
   | 'expeditionBest'
+  | 'imperialHeld' // v1.82 当前帝庭据点接管数
+  | 'imperialTierSum' // v1.82 帝庭据点整备等级总和
 
 const INT_KEYS: IntLifetimeKey[] = [
   'upgrades',
@@ -57,6 +61,8 @@ const INT_KEYS: IntLifetimeKey[] = [
   'battles',
   'synths',
   'enhanceLevels',
+  'auditWins',
+  'imperialClaims',
 ]
 
 /** 外部现值指标 provider，由 game store 注入 */
@@ -70,6 +76,8 @@ export function setAchievementExternalProviders(providers: {
   transcends: ExternalProvider
   playtime: ExternalProvider
   expeditionBest: ExternalProvider
+  imperialHeld: ExternalProvider
+  imperialTierSum: ExternalProvider
 }): void {
   externalProviders = providers
 }
@@ -93,6 +101,8 @@ function emptyLifetimeInt(): Record<IntLifetimeKey, number> {
     battles: 0,
     synths: 0,
     enhanceLevels: 0,
+    auditWins: 0,
+    imperialClaims: 0,
   }
 }
 
@@ -116,6 +126,8 @@ export const useAchievementsStore = defineStore('achievements', () => {
     if (metric === 'transcends') return externalProviders.transcends?.() ?? 0
     if (metric === 'playtime') return externalProviders.playtime?.() ?? 0
     if (metric === 'expeditionBest') return externalProviders.expeditionBest?.() ?? 0
+    if (metric === 'imperialHeld') return externalProviders.imperialHeld?.() ?? 0
+    if (metric === 'imperialTierSum') return externalProviders.imperialTierSum?.() ?? 0
     if (metric === 'energy') return lifetimeBig.value.energy.toNumber()
     if (metric === 'dark') return lifetimeBig.value.dark.toNumber()
     return lifetimeInt.value[metric as IntLifetimeKey] ?? 0
@@ -160,9 +172,17 @@ export const useAchievementsStore = defineStore('achievements', () => {
   function recordEnhanceLevels(n: number): void {
     if (n > 0) lifetimeInt.value.enhanceLevels += n
   }
+  /** 巡检迎战胜次 +1（v1.82；仅迎战胜利经此，打点/失守不计） */
+  function recordAuditWin(): void {
+    lifetimeInt.value.auditWins++
+  }
+  /** 贡赋领取次数 +1（v1.82；每次成功领取经此） */
+  function recordImperialClaim(): void {
+    lifetimeInt.value.imperialClaims++
+  }
 
   /**
-   * 全表扫描解锁判定（49 条，tick 尾部每秒一次，开销可忽略）。
+   * 全表扫描解锁判定（54 条，tick 尾部每秒一次，开销可忽略）。
    * 新解锁成就入 toast 队列并返回定义列表。
    */
   function checkAndUnlock(): typeof ACHIEVEMENTS {
@@ -259,6 +279,8 @@ export const useAchievementsStore = defineStore('achievements', () => {
     recordResearch,
     recordExplore,
     recordBattle,
+    recordAuditWin,
+    recordImperialClaim,
     recordSynth,
     recordEnhanceLevels,
     checkAndUnlock,

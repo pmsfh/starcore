@@ -50,6 +50,7 @@ export default {
   'map.imperialPoolTitle': '贡赋池',
   'map.imperialPoolCap': '上限 12 小时',
   'map.imperialClaim': '领取贡赋',
+  'map.imperialClaimNearFull': '池将满溢，立即领取',
   'map.imperialPoolEmpty': '贡赋积累中',
   'map.imperialAuditTitle': '帝庭巡检',
   'map.imperialAuditPending': '巡检目标：{name}，{time} 内迎战或打点',

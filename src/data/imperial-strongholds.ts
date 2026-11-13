@@ -33,6 +33,8 @@ export const IMPERIAL_AUDIT_WINDOW_SECONDS = 72 * 3600
 export const IMPERIAL_AUDIT_PAY_HOURS = 24
 /** 巡检通过后下周贡赋加成 */
 export const IMPERIAL_AUDIT_BONUS = 1.1
+/** 从严迎战胜次加成（v1.82：敌方深度 +1，通过后下周贡赋乘数） */
+export const IMPERIAL_AUDIT_STRICT_BONUS = 1.2
 /** 巡检合成据点 id */
 export const IMPERIAL_AUDIT_ID = 'imperial_audit'
 
@@ -196,11 +198,18 @@ export function imperialBattleStronghold(def: ImperialStrongholdDef, best: numbe
   }
 }
 
-/** 巡检合成据点：深度按目标整备等级上浮，无掉落 */
-export function imperialAuditStronghold(best: number, tier: number): StrongholdDef {
+/** 巡检迎战档位（v1.82）：standard 按整备档基准；strict 敌方深度 +1、胜次加成更高 */
+export type ImperialAuditDifficulty = 'standard' | 'strict'
+
+/** 巡检合成据点：深度按目标整备等级上浮（从严 +1），无掉落 */
+export function imperialAuditStronghold(
+  best: number,
+  tier: number,
+  difficulty: ImperialAuditDifficulty = 'standard'
+): StrongholdDef {
   const level = Math.min(3, Math.max(1, Math.floor(tier)))
   const offset = level >= 3 ? 2 : level === 2 ? 1 : 0
-  const depth = Math.max(6, Math.floor(best) + offset)
+  const depth = Math.max(6, Math.floor(best) + offset + (difficulty === 'strict' ? 1 : 0))
   const base = endlessStronghold(depth)
   return {
     ...base,
