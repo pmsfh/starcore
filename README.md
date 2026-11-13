@@ -30,24 +30,38 @@
 
 ## 快速开始
 
-环境要求：Node.js 22.18 及以上（开发环境实测 24.21），pnpm 9 经 corepack
-调用（`packageManager` 锁定 9.15.4，首次运行自动拉取）。
+### 方式一：安装脚本
 
-也可以使用仓库根目录的 `starcore.sh`，运行后选择安装或部署：
-
-1. 最新开发版：`main` 分支最新提交，包含尚未发布的改动
-2. 最新稳定版：最新 Release 对应的 tag，同样从源码构建
+适合直接安装或部署，不必手动克隆。先下载脚本：
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/renlang119/starcore/main/starcore.sh -o starcore.sh
 bash starcore.sh
 ```
 
-也可以直接指定操作，例如 `bash starcore.sh install --source release`；
-`--dir` 选择安装目录，`--help` 查看全部参数。脚本会先检测 git、Node.js、
-corepack 等组件，缺少时询问是否安装。装好后站点产物在安装目录的 `dist/`。
+运行后按菜单选择：
 
-手动克隆：
+1. 安装最新开发版：`main` 分支最新提交，包含尚未发布的改动
+2. 安装最新稳定版：最新 Release 对应的 tag，同样从源码构建
+3. 安装并发布
+4. 仅发布已有构建
+5. 仅做环境检测
+
+也可以直接使用命令行：
+
+```bash
+bash starcore.sh install --source release --dir ./starcore
+bash starcore.sh deploy --dir ./starcore --dest /var/www/example --url https://example.com
+```
+
+`--help` 查看全部参数。脚本会先检测 git、Node.js 22.18+、corepack 等组件，
+缺少时询问是否安装；装好后站点产物在安装目录的 `dist/`。
+
+### 方式二：手动安装
+
+适合开发或需要自行控制构建流程。环境要求：Node.js 22.18 及以上（开发环境
+实测 24.21），pnpm 9 经 corepack 调用（`packageManager` 锁定 9.15.4，
+首次运行自动拉取）。
 
 ```bash
 git clone https://github.com/renlang119/starcore.git

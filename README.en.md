@@ -47,28 +47,42 @@ growing through "Singularity Restart" rebirth cycles.
 
 ## Quick Start
 
-Requires Node.js 22.18+ (24.21 used in development); pnpm 9 is invoked via
-corepack (`packageManager` pins 9.15.4, fetched on first run).
+### Option 1: Installer script
 
-The repository's `starcore.sh` covers both installation and deployment:
-
-1. Latest development build: the newest commit on `main`, including unreleased
-   changes
-2. Latest stable release: the tag behind the latest GitHub Release, built from
-   source the same way
+Best for a direct install or deployment without cloning by hand. Download the
+script first:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/renlang119/starcore/main/starcore.sh -o starcore.sh
 bash starcore.sh
 ```
 
-You can also run a command directly, for example
-`bash starcore.sh install --source release`; `--dir` sets the install directory
-and `--help` lists every option. The script checks git, Node.js, corepack and
-related tools first, and asks before installing anything missing. The built
+Then choose from the menu:
+
+1. Install the latest development build: the newest commit on `main`, including
+   unreleased changes
+2. Install the latest stable release: the tag behind the latest GitHub Release,
+   built from source the same way
+3. Install and deploy
+4. Deploy an existing build
+5. Run the environment check only
+
+You can also use the command line directly:
+
+```bash
+bash starcore.sh install --source release --dir ./starcore
+bash starcore.sh deploy --dir ./starcore --dest /var/www/example --url https://example.com
+```
+
+See `--help` for every option. The script checks git, Node.js 22.18+, corepack
+and related tools first, and asks before installing anything missing. The built
 site is written to `dist/` under the install directory.
 
-Or clone manually:
+### Option 2: Manual installation
+
+Best for development or when you want to control the build yourself. Requires
+Node.js 22.18+ (24.21 used in development); pnpm 9 is invoked via corepack
+(`packageManager` pins 9.15.4, fetched on first run).
 
 ```bash
 git clone https://github.com/renlang119/starcore.git
