@@ -368,7 +368,9 @@ const docRules = [
   { re: /(\d+)\s*(?:个|项)?\s*里程碑/, label: '成就（N 里程碑）', expect: T.achievements },
   { re: /(\d+)\s*milestones/, label: '成就（N milestones）', expect: T.achievements },
   { re: /成就\s*(\d+)\s*类/, label: '成就类别（成就 N 类）', expect: T.achCategories },
-  { re: /成就\s*(\d+)(?!\s*类)/, label: '成就（成就 N）', expect: T.achievements },
+  // (?![\d\s]*类)：两位数类别（如「成就 10 类」）下，(\d+) 回溯取首位的
+  // 空洞（「成就 1」）会误报；前瞻吞掉剩余数字再排除「类」，保持单数时代语义
+  { re: /成就\s*(\d+)(?![\d\s]*类)/, label: '成就（成就 N）', expect: T.achievements },
   { re: /(\d+)\s*种稀有度池/, label: '遗物（N 种稀有度池）', expect: T.relicPool },
   {
     re: /池[^。\d]{0,12}(\d+)\s*种（common/,
