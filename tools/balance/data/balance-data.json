@@ -5669,6 +5669,86 @@
       ]
     },
     {
+      "id": "ach_imp_1",
+      "category": "imperial",
+      "metric": "imperialHeld",
+      "threshold": 1,
+      "effects": [
+        {
+          "type": "combat_mult",
+          "target": "attack",
+          "value": 1.03
+        },
+        {
+          "type": "combat_mult",
+          "target": "defense",
+          "value": 1.03
+        }
+      ]
+    },
+    {
+      "id": "ach_imp_2",
+      "category": "imperial",
+      "metric": "imperialHeld",
+      "threshold": 6,
+      "effects": [
+        {
+          "type": "production_mult",
+          "target": "all",
+          "value": 1.05
+        }
+      ]
+    },
+    {
+      "id": "ach_imp_3",
+      "category": "imperial",
+      "metric": "imperialTierSum",
+      "threshold": 9,
+      "effects": [
+        {
+          "type": "combat_mult",
+          "target": "attack",
+          "value": 1.05
+        },
+        {
+          "type": "combat_mult",
+          "target": "defense",
+          "value": 1.05
+        }
+      ]
+    },
+    {
+      "id": "ach_imp_4",
+      "category": "imperial",
+      "metric": "imperialClaims",
+      "threshold": 50,
+      "effects": [
+        {
+          "type": "production_mult",
+          "target": "all",
+          "value": 1.04
+        }
+      ]
+    },
+    {
+      "id": "ach_imp_5",
+      "category": "imperial",
+      "metric": "auditWins",
+      "threshold": 10,
+      "effects": [
+        {
+          "type": "combat_mult",
+          "target": "attack",
+          "value": 1.08
+        },
+        {
+          "type": "combat_mult",
+          "target": "defense",
+          "value": 1.08
+        }
+      ]
+    },
+    {
       "id": "ach_relic_1",
       "category": "relic",
       "metric": "relicsOwned",
