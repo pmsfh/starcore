@@ -305,14 +305,14 @@ bundle），通过跨大版本升级根除；顺带将全部依赖升至锁定�
 
 ---
 
-## v0.43 — 修复: 代码评审修复补丁（20 项：前端 UI 层 9 项 + 逻辑/工程层 11 项）
+## v0.43 — 修复: 代码检查问题补丁（20 项：前端 UI 层 9 项 + 逻辑/工程层 11 项）
 
-**变更性质：修复（代码评审修复 20 项）**
+**变更性质：修复（代码检查问题 20 项）**
 **开发时间：2026-07-16**
 
 ### 概述
 
-针对代码评审意见完成 20 项修复，覆盖前端 UI 层 9 项与逻辑/工程层 11 项。由
+针对代码检查意见完成 20 项修复，覆盖前端 UI 层 9 项与逻辑/工程层 11 项。由
 于 v0.42（前次修复）此前暂缓部署未上线，本次部署实际从 v0.41 直接跳到
 v0.43，v0.42 的 6 项修复一并上线。
 
@@ -335,7 +335,7 @@ v0.43，v0.42 的 6 项修复一并上线。
     - 涉及文件：`src/components/ui/ModalOverlay.vue`
   - 导航 active 项补 aria-current：`SideNav.vue` 和 `BottomNav.vue` 的
     active 导航项未设置 `aria-current="page"` 属性，辅助技术无法识别当前页
-    面位置。（评审意见只提 SideNav，BottomNav 同样缺失已一并修复）。active
+    面位置。（检查意见只提 SideNav，BottomNav 同样缺失已一并修复）。active
     项补 `aria-current="page"`。
     - 涉及文件：`src/components/layout/SideNav.vue`、
       `src/components/layout/BottomNav.vue`
@@ -451,14 +451,14 @@ v0.43，v0.42 的 6 项修复一并上线。
 
 ---
 
-## v0.42 — 修复: 代码评审修复（6 项 + 1 项误报）
+## v0.42 — 修复: 代码检查问题（6 项 + 1 项误报）
 
-**变更性质：修复（代码评审修复 6 项 + 1 项误报）**
+**变更性质：修复（代码检查问题 6 项 + 1 项误报）**
 **开发时间：2026-07-16**
 
 ### 概述
 
-针对代码评审意见中的高严重度问题完成修复：6 项已修复（4 项前端代码 + 3 项
+针对代码检查意见中的高严重度问题完成修复：6 项已修复（4 项前端代码 + 3 项
 deploy.py 安全加固，其中 3 项安全加固同属一次提交）+ 1 项经核查为误报。构
 建与测试验证全绿，暂缓部署未上线。
 
@@ -466,7 +466,7 @@ deploy.py 安全加固，其中 3 项安全加固同属一次提交）+ 1 项经
 
 - CSS `-var(--x)` 无效语法修复：4 处 CSS 使用 `-var(--x)` 语法取负值，CSS
   规范不支持此写法，浏览器解析失败导致相关负边距/负位移样式不生效。统一改
-  为 `calc(-1 * var(--x))`，符合 CSS calc 函数规范。评审意见原列 3 处，前
+  为 `calc(-1 * var(--x))`，符合 CSS calc 函数规范。检查意见原列 3 处，前
   端在排查中额外发现第 4 处，一并修复
   - 涉及文件：`src/style.css`、`src/views/TechView.vue`、
     `src/components/ui/UpgradeCountdown.vue`、`src/views/PrestigeView.vue`
@@ -491,7 +491,7 @@ deploy.py 安全加固，其中 3 项安全加固同属一次提交）+ 1 项经
   `validate_remote_dir` 函数对路径进行白名单校验，dry-run 自测 10 种异常路
   径全部拦截。
   - 涉及文件：`deploy.py`
-- beforeunload 监听器（误报，无需修复）：评审意见列出 App.vue 缺少
+- beforeunload 监听器（误报，无需修复）：检查意见列出 App.vue 缺少
   `beforeunload` 事件监听器。经核查，`beforeunload` 监听器在初始提交即已存
   在于 `App.vue` 中（v0.05 Bug 5 修复时引入），无需修复。
 - 改动文件清单：
@@ -1472,14 +1472,14 @@ Icons.vue 进行 facade 工程重构，将单体大组件拆分为 7 个子组�
 
 ---
 
-## v0.21-24 — 修复: 代码评审修复与 TypeScript 严格度提升
+## v0.21-24 — 修复: 代码检查问题与 TypeScript 严格度提升
 
-**变更性质：修复（代码评审问题修复与严格模式收尾）**
+**变更性质：修复（代码检查问题与严格模式收尾）**
 **开发时间：2026-07-12**
 
 ### 概述
 
-共修复 6 个评审问题，含复查阶段修复的 2 个逻辑缺陷。
+共修复 6 个检查问题，含检查阶段修复的 2 个逻辑缺陷。
 同时启用 TypeScript 严格模式的两项未使用检查，清理 20 处未使用导入/变量，
 构建与测试全绿。
 
@@ -1514,7 +1514,7 @@ Icons.vue 进行 facade 工程重构，将单体大组件拆分为 7 个子组�
     件）；附带修复 lint 错误：`combat.ts` `let dmg` → `const dmg`、
     `storage.ts` `catch (e)` → `catch`。
     - 涉及文件：`tsconfig.app.json` + 15 个源码文件
-- 复查修复：
+- 检查修复：
   - 确认弹窗死循环：`confirmBulkAction` 调用 `assignAll` 再次触发 >100 检
     查又弹窗，无限递归。提取 `doAssignAll`/`doRemoveAll` 核心函数，确认弹
     窗直接调用核心。
@@ -2324,7 +2324,7 @@ ESLint/Prettier 规范两项工程化建设。
 ### 概述
 
 v0.02 的 CSS `!important` 覆盖方案虽有效但脆弱，依赖 CSS 优先级而非组件结
-构；`useBreakpoint` composable 已编写但未使用，代码评审指出应改用 `v-if`
+构；`useBreakpoint` composable 已编写但未使用，代码检查指出应改用 `v-if`
 结构性控制。本次从组件结构层面用 `v-if` 控制导航显隐，替代纯 CSS class 方
 案。
 
