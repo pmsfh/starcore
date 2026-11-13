@@ -28,8 +28,9 @@ growing through "Singularity Restart" rebirth cycles.
   boss scaled to the player's expedition frontier every Monday (v1.24)
 - **Imperial Strongholds**: 6 holdings along the tribute route on the star
   map; taken-over ones yield tribute continuously (12-hour pool cap, manual
-  claim); weekly inspections can be fought or paid off, each holding supports
-  3 readiness levels; progress persists through rebirth (v1.81)
+  claim); weekly inspections can be fought at standard or strict difficulty,
+  or paid off; each holding supports 3 readiness levels; progress persists
+  through rebirth (v1.81)
 - **Relics**: 20 kinds drawn from rarity pools; 3 of the same rarity fuse
   into 1 of the next tier; 4 set bonuses; each relic can be enhanced up to
   level 20 with energy
@@ -37,7 +38,7 @@ growing through "Singularity Restart" rebirth cycles.
   infinite talents stack, and automation protocols play for you
 - **Achievements**: 54 milestones tracked across rebirths, granting permanent
   bonuses (v1.22 adds synthesis, enhancement, set-collection and enemy-archive
-  long-term goals)
+  long-term goals; v1.82 adds five Imperial Chronicle goals)
 - **Daily Check-in**: streak-cycle rewards plus 3 weekly challenges drawn
   from 9 templates (combat, exploration, research, building, rebirth,
   expedition, synthesis, enhancement, garrison)
