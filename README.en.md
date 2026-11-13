@@ -50,20 +50,23 @@ growing through "Singularity Restart" rebirth cycles.
 Requires Node.js 22.18+ (24.21 used in development); pnpm 9 is invoked via
 corepack (`packageManager` pins 9.15.4, fetched on first run).
 
-The repository's `install.sh` lets you choose the version:
+The repository's `starcore.sh` covers both installation and deployment:
 
 1. Latest development build: the newest commit on `main`, including unreleased
-   changes; requires Node.js
-2. Latest stable release: the prebuilt archive from the latest GitHub Release;
-   no Node.js required
+   changes
+2. Latest stable release: the tag behind the latest GitHub Release, built from
+   source the same way
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/renlang119/starcore/main/install.sh -o install.sh
-bash install.sh
+curl -fsSL https://raw.githubusercontent.com/renlang119/starcore/main/starcore.sh -o starcore.sh
+bash starcore.sh
 ```
 
-Pass `--mode main` or `--mode release` to skip the menu; `--dir` sets the
-install directory. The built site is written to `dist/` under that directory.
+You can also run a command directly, for example
+`bash starcore.sh install --source release`; `--dir` sets the install directory
+and `--help` lists every option. The script checks git, Node.js, corepack and
+related tools first, and asks before installing anything missing. The built
+site is written to `dist/` under the install directory.
 
 Or clone manually:
 
@@ -184,9 +187,17 @@ The self-check covers Node, dependencies, build output, the browser and Python p
 
 ## Deployment
 
-A pure static SPA. The build output goes to `dist/` and is synced to a
-static site by `./deploy.sh` (site URL and target directory are configured
-via environment variables; see the script for details).
+A pure static SPA. The build output goes to `dist/`. The unified script can
+publish it to a local site:
+
+```bash
+./starcore.sh deploy --dest /var/www/example --url https://example.com
+```
+
+`--dest` is the target directory, and `--url` injects share metadata and
+verifies the live site. Add `--sudo`, `--delete`, `--backup` and other options
+as needed; see `./starcore.sh --help`. `deploy.sh` remains as a maintainer
+wrapper.
 
 ## Updating
 

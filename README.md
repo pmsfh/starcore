@@ -33,18 +33,19 @@
 环境要求：Node.js 22.18 及以上（开发环境实测 24.21），pnpm 9 经 corepack
 调用（`packageManager` 锁定 9.15.4，首次运行自动拉取）。
 
-也可以使用仓库根目录的 `install.sh`，由安装者选择版本：
+也可以使用仓库根目录的 `starcore.sh`，运行后选择安装或部署：
 
-1. 最新开发版：`main` 分支最新提交，包含尚未发布的改动，需要 Node.js
-2. 最新稳定版：GitHub 最新 Release 的预构建产物，无需 Node.js
+1. 最新开发版：`main` 分支最新提交，包含尚未发布的改动
+2. 最新稳定版：最新 Release 对应的 tag，同样从源码构建
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/renlang119/starcore/main/install.sh -o install.sh
-bash install.sh
+curl -fsSL https://raw.githubusercontent.com/renlang119/starcore/main/starcore.sh -o starcore.sh
+bash starcore.sh
 ```
 
-也可以直接指定 `--mode main` 或 `--mode release`，用 `--dir` 选择安装目录。
-装好后站点产物在安装目录的 `dist/`。
+也可以直接指定操作，例如 `bash starcore.sh install --source release`；
+`--dir` 选择安装目录，`--help` 查看全部参数。脚本会先检测 git、Node.js、
+corepack 等组件，缺少时询问是否安装。装好后站点产物在安装目录的 `dist/`。
 
 手动克隆：
 
@@ -154,8 +155,15 @@ corepack pnpm diagnose --fix  # 对可自动修复的缺件执行修复
 
 ## 部署
 
-纯静态 SPA。构建产物在 `dist/`，由 `./deploy.sh` 同步至静态站点
-（站点地址/目录经环境变量配置，见脚本内说明）。
+纯静态 SPA。构建产物在 `dist/`。统一脚本提供本机发布：
+
+```bash
+./starcore.sh deploy --dest /var/www/example --url https://example.com
+```
+
+`--dest` 是目标目录，`--url` 用于注入分享元数据并核验线上地址；
+`--sudo`、`--delete`、`--backup` 等按需开启，详见 `./starcore.sh --help`。
+`deploy.sh` 保留为维护者兼容入口。
 
 ## 更新
 
