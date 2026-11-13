@@ -120,10 +120,11 @@ starcore/
   unused / non-literal calls), zero hardcoded Chinese residuals and
   cross-locale key parity; wired into `corepack pnpm check`
 - **Coverage gate**: vitest coverage thresholds on three tiers (global lines
-  >= 92% / stores >= 97% / lib >= 92%, rounded down from the v1.66 measured
-  baseline), enforced via `corepack pnpm test:cov` in the check chain
+  >= 92% / stores >= 97% / lib >= 94%, global and stores rounded down from the
+  v1.66 measured baseline, lib from the v1.70 baseline), enforced via
+  `corepack pnpm test:cov` in the check chain
 - **Bundle size budget**: `scripts/check-size.mjs` gates the gzip total of the
-  dist output (js/css/html) at 256 KiB; over-budget fails the run
+  dist output (js/css/html) at 280 KiB; over-budget fails the run
   (`--warn-only` is the escape hatch for exceptional cases)
 - **Balance checks**: the CI `balance` job runs the v126 / v127 EV verification
   scripts in sequence (skipped explicitly when python3 is absent), see

@@ -97,10 +97,10 @@ starcore/
 - **文案守卫**：`scripts/check-locales.mjs` 校验文案键闭合（缺键 / 未使用 /
   非字面量调用）、硬编码中文零残留与多语言键面一致性，已并入 `corepack pnpm check` 门禁
 - **覆盖率门禁**：vitest coverage thresholds 三档（全局 lines ≥ 92% / stores
-  ≥ 97% / lib ≥ 92%，取 v1.66 实测基线取整留余），`corepack pnpm test:cov`
-  随 check 链强制生效
+  ≥ 97% / lib ≥ 94%，全局与 stores 取 v1.66 实测基线、lib 取 v1.70 实测基线，
+  均取整留余），`corepack pnpm test:cov` 随 check 链强制生效
 - **体积预算**：`scripts/check-size.mjs` 对 dist 产物（js/css/html）做 gzip
-  合计门禁，预算 256 KiB，超额挂红（`--warn-only` 为特殊情形逃生口）
+  合计门禁，预算 280 KiB，超额挂红（`--warn-only` 为特殊情形逃生口）
 - **数值核验**：CI `balance` 独立 job 依序运行 v126 / v127 两枚 EV 核验表
   （python3 缺失时显式跳过），详见 `tools/README.md`
 
