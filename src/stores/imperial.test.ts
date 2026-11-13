@@ -121,13 +121,13 @@ describe('imperial — 周巡检', () => {
     expect(store.audit?.targetId).toBe(a.targetId)
   })
 
-  it('迎战通过档位（v1.82）：从严下周贡赋 ×1.2，标准默认 ×1.1', () => {
+  it('迎战通过档位（v1.82）：从严下周贡赋 ×1.3，标准默认 ×1.1', () => {
     store.capture('imp_pass')
     store.ensureAudit('2026-W46', Date.now())
     expect(store.markAuditPassed('strict')).toBe(true)
-    expect(store.bonus).toBe(1.2)
+    expect(store.bonus).toBe(1.3)
     expect(store.rateOf('imp_pass', IMPERIAL_ANCHOR_BEST, Date.now())).toBeCloseTo(
-      1_250_000 * 1.2,
+      1_250_000 * 1.3,
       3
     )
     // 打点/失守后 bonus 归 1，再标准迎战回 1.1
@@ -137,6 +137,24 @@ describe('imperial — 周巡检', () => {
     store.ensureAudit('2026-W48', Date.now())
     expect(store.markAuditPassed('standard')).toBe(true)
     expect(store.bonus).toBe(1.1)
+  })
+
+  it('从严加成读回保留（v1.82）：hydrate 白名单认 1.1 与 1.3，异常值回落 1', () => {
+    const base = {
+      completed: ['imp_pass'],
+      everCompleted: ['imp_pass'],
+      tiers: {},
+      capturedAt: { imp_pass: 0 },
+      lastClaimAt: 0,
+    }
+    store.hydrate({ ...base, bonus: 1.3 })
+    expect(store.bonus).toBe(1.3)
+    store.hydrate({ ...base, bonus: 1.1 })
+    expect(store.bonus).toBe(1.1)
+    store.hydrate({ ...base, bonus: 1.2 as number })
+    expect(store.bonus).toBe(1)
+    store.hydrate({ ...base })
+    expect(store.bonus).toBe(1)
   })
 
   it('迎战失败：目标失守，整备保留', () => {

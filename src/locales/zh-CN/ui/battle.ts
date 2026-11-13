@@ -73,5 +73,5 @@ export default {
   'battle.auditDifficultyStandard': '标准',
   'battle.auditDifficultyStrict': '从严',
   'battle.auditStandardHint': '按目标整备档合成敌方，胜次下周贡赋 +10%',
-  'battle.auditStrictHint': '敌方深度 +1，胜次下周贡赋 +20%',
+  'battle.auditStrictHint': '敌方深度 +1，胜次下周贡赋 +30%',
 }

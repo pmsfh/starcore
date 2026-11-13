@@ -33,8 +33,8 @@ export const IMPERIAL_AUDIT_WINDOW_SECONDS = 72 * 3600
 export const IMPERIAL_AUDIT_PAY_HOURS = 24
 /** 巡检通过后下周贡赋加成 */
 export const IMPERIAL_AUDIT_BONUS = 1.1
-/** 从严迎战胜次加成（v1.82：敌方深度 +1，通过后下周贡赋乘数） */
-export const IMPERIAL_AUDIT_STRICT_BONUS = 1.2
+/** 从严迎战胜次加成（v1.82：敌方深度 +1，通过后下周贡赋乘数；+30% 与 +25% 强度台阶对价） */
+export const IMPERIAL_AUDIT_STRICT_BONUS = 1.3
 /** 巡检合成据点 id */
 export const IMPERIAL_AUDIT_ID = 'imperial_audit'
 

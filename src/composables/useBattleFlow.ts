@@ -196,7 +196,7 @@ export function useBattleFlow(deps: BattleFlowDeps) {
         if (deps.strongholdId.value === IMPERIAL_AUDIT_ID) {
           const diff = deps.auditDifficulty?.value ?? 'standard'
           game.settleImperialAudit(true, diff)
-          toast.show(t('battle.imperialAuditWin', { pct: diff === 'strict' ? 20 : 10 }))
+          toast.show(t('battle.imperialAuditWin', { pct: diff === 'strict' ? 30 : 10 }))
         } else {
           game.imperial.capture(deps.strongholdId.value)
           toast.show(t('battle.imperialWin', { name: deps.stronghold.value?.name ?? '' }))

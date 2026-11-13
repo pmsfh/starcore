@@ -76,10 +76,10 @@ describe('game — 帝庭据点门面', () => {
     expect(game.imperial.audit?.status).toBe('passed')
     // 迎战胜利计入成就计数（v1.82）
     expect(game.achievements.lifetimeInt.auditWins).toBe(1)
-    // 从严档位转发（v1.82）：bonus 1.2
+    // 从严档位转发（v1.82）：bonus 1.3
     game.imperial.ensureAudit('2026-W46b', Date.now() + 8 * 24 * 3600 * 1000)
     expect(game.settleImperialAudit(true, 'strict')).toBe(true)
-    expect(game.imperial.bonus).toBe(1.2)
+    expect(game.imperial.bonus).toBe(1.3)
 
     game.imperial.ensureAudit('2026-W46c', Date.now() + 8 * 24 * 3600 * 1000)
     expect(game.settleImperialAudit(false)).toBe(true)

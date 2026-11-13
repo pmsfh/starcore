@@ -5669,7 +5669,7 @@
       ]
     },
     {
-      "id": "ach_imp_1",
+      "id": "ach_imperial_1",
       "category": "imperial",
       "metric": "imperialHeld",
       "threshold": 1,
@@ -5687,7 +5687,7 @@
       ]
     },
     {
-      "id": "ach_imp_2",
+      "id": "ach_imperial_2",
       "category": "imperial",
       "metric": "imperialHeld",
       "threshold": 6,
@@ -5700,7 +5700,7 @@
       ]
     },
     {
-      "id": "ach_imp_3",
+      "id": "ach_imperial_3",
       "category": "imperial",
       "metric": "imperialTierSum",
       "threshold": 9,
@@ -5718,7 +5718,7 @@
       ]
     },
     {
-      "id": "ach_imp_4",
+      "id": "ach_imperial_4",
       "category": "imperial",
       "metric": "imperialClaims",
       "threshold": 50,
@@ -5731,10 +5731,10 @@
       ]
     },
     {
-      "id": "ach_imp_5",
+      "id": "ach_imperial_5",
       "category": "imperial",
       "metric": "auditWins",
-      "threshold": 10,
+      "threshold": 5,
       "effects": [
         {
           "type": "combat_mult",

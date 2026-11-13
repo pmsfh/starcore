@@ -341,7 +341,13 @@ export const useImperialStore = defineStore('imperial', () => {
     if (typeof data.lastClaimAt === 'number' && Number.isFinite(data.lastClaimAt)) {
       lastClaimAt.value = Math.max(0, data.lastClaimAt)
     }
-    bonus.value = data.bonus === IMPERIAL_AUDIT_BONUS ? IMPERIAL_AUDIT_BONUS : 1
+    // 读回白名单：标准/从严加成各自保留，其余（含旧档异常值）回落 1
+    bonus.value =
+      data.bonus === IMPERIAL_AUDIT_BONUS
+        ? IMPERIAL_AUDIT_BONUS
+        : data.bonus === IMPERIAL_AUDIT_STRICT_BONUS
+          ? IMPERIAL_AUDIT_STRICT_BONUS
+          : 1
     if (
       data.audit &&
       typeof data.audit === 'object' &&

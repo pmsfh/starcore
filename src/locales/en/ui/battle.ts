@@ -76,5 +76,5 @@ export default {
   'battle.auditDifficultyStrict': 'Strict',
   'battle.auditStandardHint':
     'Enemy scaled by target preparation. Win for next week’s tribute +10%',
-  'battle.auditStrictHint': 'Enemy depth +1. Win for next week’s tribute +20%',
+  'battle.auditStrictHint': 'Enemy depth +1. Win for next week’s tribute +30%',
 }
