@@ -60,7 +60,7 @@ bash starcore.sh deploy --dir ./starcore --dest /var/www/example --url https://e
 ### 方式二：手动安装
 
 适合开发或需要自行控制构建流程。环境要求：Node.js 22.18 及以上（开发环境
-实测 24.21），pnpm 9 经 corepack 调用（`packageManager` 锁定 9.15.4，
+实测 24.22.2），pnpm 9 经 corepack 调用（`packageManager` 锁定 9.15.4，
 首次运行自动拉取）。
 
 ```bash
@@ -112,7 +112,7 @@ starcore/
 ├─ public/          favicon、主屏图标、分享图与本地字体（Orbitron、JetBrains Mono）
 ├─ scripts/         质量脚本（计数守恒、文案缺键检查、产物体积预算）
 ├─ tools/           诊断工具（环境自检、端到端与数值校验）
-├─ .github/         CI 工作流（推送 main 自动跑全量检查）
+├─ .github/         CI 工作流（推送 main 与 PR 自动跑全量检查）
 ├─ changelog/       版本历史四档（活跃档 changelog.md 与三份历史存档）
 ├─ starcore.sh     安装与部署脚本
 └─ 工程配置（vite.config.ts、vitest.config.ts、tsconfig*.json、eslint.config.js）
@@ -133,6 +133,7 @@ starcore/
   合计门禁，预算 280 KiB，超额挂红（`--warn-only` 为特殊情形逃生口）
 - **数值核验**：CI `balance` 独立 job 依序运行 v126 / v127 两枚 EV 核验表
   （python3 缺失时显式跳过），详见 `tools/README.md`
+- **依赖审计**：CI `audit` 独立 job 跑全量 `pnpm audit`，漏洞清单保持清零
 
 ## 自检与诊断
 
