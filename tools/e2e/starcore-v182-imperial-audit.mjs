@@ -3,7 +3,7 @@
 // B. 从严迎战胜利：passed 卡文案 +30%（相对标准 +10%）
 // C. 读回保留：胜利后的真实档注入新 context，passed 卡仍 +30%（bonus 1.3 白名单）
 // D. 满池警示：池积 12 小时按钮文案「池将满溢」/ 领取后恢复
-// E. 成就页：帝庭纪事分区 5 卡渲染（54 卡基线由 v057/v122 覆盖）
+// E. 成就页：帝庭纪事分区 8 卡渲染（57 卡基线由 v057/v122 覆盖）
 // 时间控制：绝对时间戳制（lastClaimAt 拨早，page.clock 禁用惯例）
 import { launch, finish, check, savePayload, injectSave, BASE_URL } from './starcore-pwlib.mjs'
 
@@ -250,11 +250,11 @@ console.log('== D. 满池警示 ==')
 console.log('== E. 成就页帝庭纪事 ==')
 {
   const { ctx, page } = await newPage(browser, seedImperial(), '/achievements', 2000)
-  await v('E1 帝庭纪事分区与 5 卡渲染', async () => {
+  await v('E1 帝庭纪事分区与 8 卡渲染', async () => {
     const section = page.locator('.ach-section', { hasText: '帝庭纪事' })
     await section.waitFor({ state: 'visible', timeout: 8000 })
     const cards = await section.locator('.ach-card').count()
-    if (cards !== 5) throw new Error(`帝庭类卡数 ${cards} ≠ 5`)
+    if (cards !== 8) throw new Error(`帝庭类卡数 ${cards} ≠ 8`)
     const body = await section.textContent()
     for (const name of ['贡道首驿', '六驿贯通', '仪卫列装', '炉前常客', '帝庭裁决者']) {
       if (!body.includes(name)) throw new Error(`卡缺位: ${name}`)

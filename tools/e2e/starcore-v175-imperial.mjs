@@ -72,7 +72,7 @@ console.log('== C. 帝庭档案解锁态：15 条留档五节、计数 15/18 =='
     .first()
     .waitFor({ state: 'visible', timeout: 9000 });
   const text = await group.textContent();
-  check('计数 15/18', text.includes('已归档 15 / 18 条'));
+  check('计数 15/21', text.includes('已归档 15 / 21 条'));
   check('五节节名段头齐备', ['贡道', '核验', '仪卫', '裁决', '炉音'].every((n) => text.includes(n)));
   check('15 条卡片渲染', (await page.locator('[data-testid="archive-imperial-card"]').count()) === 15);
   check('首节首条与炉音末条可见', text.includes('当柴的航道') && text.includes('不熄的说法'));
