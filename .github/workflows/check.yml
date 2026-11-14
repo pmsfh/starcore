@@ -3,9 +3,16 @@ name: check
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
 
 permissions:
   contents: read
+
+# 同一分支的新推送取消旧运行，避免排队堆积
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   check:
@@ -15,7 +22,8 @@ jobs:
       - uses: pnpm/action-setup@v6
       - uses: actions/setup-node@v7
         with:
-          node-version: 22
+          node-version: 24
+          cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm check
 
@@ -35,3 +43,14 @@ jobs:
           python3 --version
           python3 tools/balance/starcore-v126-encounter-ev.py
           python3 tools/balance/starcore-v127-dispatch-ev.py
+
+  # 依赖漏洞扫描：按运行时依赖口径（--prod）防回归；dev 工具链的传递依赖另计
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+      - run: pnpm audit --prod
