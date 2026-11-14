@@ -1,9 +1,9 @@
 # 星核纪元 · 版本更新日志（历史存档 v0.01-v0.50）
 
-> 本文件为历史存档（50 个版本），不再更新；v0.51 起的条目见
+> 本文件为历史存档（36 个版本），不再更新；v0.51 起的条目见
 > [changelog-v0.51-v1.00.md](changelog-v0.51-v1.00.md)、
 > [changelog-v1.01-v1.50.md](changelog-v1.01-v1.50.md) 与
-> [changelog.md](changelog.md)（v1.51 起）。
+> [changelog.md](changelog.md)（v1.55 起）。
 > 条目已按统一风格整理，新 → 旧倒序。
 >
 > **完整性注记**：
@@ -15,6 +15,8 @@
 >    无验证段（早期条目体例未含）。
 > 3. **缺开发时间**：v0.11 / v0.10 / v0.09 / v0.07 / v0.04 / v0.03 / v0.01 共 7 条
 >    无「开发时间」标签，均为无记录，不作编造。
+
+---
 
 ---
 
@@ -41,6 +43,191 @@
   序 / 无产出不生成）
 - vue-tsc -b 零错误 + vite build 通过；lint:check / format:check 零输出
 - Playwright 回归：双端八路由无错误、移动端无溢出
+
+### 累积更新
+
+#### v0.50.1（原 v0.51）— 工程化: 新手引导存储口径对齐设计文档
+
+**变更性质：工程化（引导存储口径对齐设计文档）**
+**开发时间：2026-09-05**
+
+##### 概述
+
+新手引导的 localStorage 存储与体验增强设计规范 §3.3.4 不符（key 名与数据结
+构均不同）。本版本按文档对齐：key 改为 `starcore_onboarding`，结构改为
+JSON 对象（每个 step 一个 boolean）。
+
+##### 变更明细
+
+- `useOnboarding`：`STORAGE_KEY` 由 `sc_onboarding_v1` 改为
+  `starcore_onboarding`；持久化由「已完成 id 数组」改为「step → boolean 对
+  象」
+- 读取侧兼容防御：内容损坏时按全新处理，不抛错
+- 兼容性：
+  - 旧 key（`sc_onboarding_v1`）不再读取：老玩家会重新看到一遍引导气泡，属
+    一次性打扰，已确认接受
+  - 不影响游戏存档（引导状态与存档相互独立）
+
+##### 验证
+
+- vitest run 12 文件 86/86 通过（新增 useOnboarding 测试 5 例：首 step 显
+  示 / 对象结构写入 / skipAll / 预置跳过 / 损坏内容兜底）
+- vue-tsc -b 零错误 + vite build 通过；lint:check / format:check 零输出
+- Playwright 回归：行动队列 / 槽位 / 空状态 / 双端八路由全过
+
+---
+
+> v0.50 及更早的历史条目已归档（现档 [changelog-v0.01-v0.50.md](changelog-v0.01-v0.50.md)，历史存档不再更新，新条目继续在活跃档置顶）。
+
+#### v0.50.2（原 v0.52）— 文档: 治理收尾（矛盾回写 / 历史时点标注 / README 重写 / 设定文档入库）
+
+**变更性质：文档（治理收尾）**
+**开发时间：2026-09-05**
+
+##### 概述
+
+统一回写文档与实现的存量偏差：文档间矛盾按代码实际立场收尾、过时文档标注历
+史时点、README 重写、设定文档反向整理入库，并将战斗软墙设计意图文档化。纯
+文档 + 一处代码注释，无逻辑/存档变化
+
+##### 变更明细
+
+- Token 映射文档：核对补注已知豁免（`.section-title` 17px，最小字号口
+  径），并补充 `--color-core-deep` 与组件级注入变量口径
+- 推进方案文档：核心数值 28px 订正为 31px（`--text-2xl`）；产出率 11px 订
+  正为 12px；「三段式」标题订正为「四档」，推进方案/HomeView 注释同步，历
+  史复查文档保留原措辞
+- 历史文档标注：v0.41 复查文档与行动队列方案文档顶部加历史时点标注（过时项
+  已被后续版本修复，行号已漂移）
+- README 重写为项目门面（玩法/技术栈/开发/部署）
+- 《游戏设定与架构》反向整理入库（`docs/游戏设定与架构.md`，从 changelog
+  转述 + 当前代码核对整理，标注非原件）
+- 战斗软墙设计文档化：combat.ts 补充「保底 1 + 50 回合 = 软墙设计」注释，
+  并记入设定文档数值意图表
+
+##### 验证
+
+- vue-tsc -b 零错误 + vite build 通过；lint:check / format:check 零输出
+- vitest run 12 文件 86/86 通过
+- Playwright 回归：双端八路由无错误、移动端无溢出
+
+#### v0.50.3（原 v0.53）— 文档: 文档库整理（删 8 份历史草稿，保留文档全中文命名）
+
+**变更性质：文档（结构整理）**
+**开发时间：2026-09-05**
+
+##### 概述
+
+docs/ 文档库去重清理：删除 8 份历史文档（有效结论均已写入代码/本日志/保
+留文档），保留的 7 份活跃参考文档全部改为中文名。文档总量 8511 行 → 约
+4200 行。
+
+##### 变更明细
+
+- 文件名映射（旧 → 新）：
+  - p0-token-mapping.md → 设计Token规范.md
+  - p1-design-deliverables.md → 组件与按钮设计规范.md
+  - p2-atmosphere-visual-spec.md → 氛围视觉规范.md
+  - p2-interaction-state-spec.md → 交互状态规范.md
+  - p3-design-specs.md → 体验增强设计规范.md
+  - icon-design-spec.md → 图标设计规范.md
+  - 游戏设定与架构.md 不变（v0.50.2 入库）
+- 删除清单（git 历史可查）：
+  - home-ui-总体推进方案.md（P0–P3 计划表，全部实现完毕）与 home-ui-总体推
+    进方案-技术复查.md（计划阶段的技术检查）
+  - starcore-v0.41-复查-前端层.md（v0.41 时点检查，9/11 项已修复）
+  - ui-eval-report.md（早期评估，结论已转化）
+  - cache-strategy-evaluation.md（缓存评估，结论已应用于部署配置）
+  - old-icon-visual-tweaks.md + audits/old-icon-unification-audit.md（图标
+    历史草稿，已并入图标设计规范 v2.0；audits/ 目录随删）
+  - p1-2-行动队列合并-数据源梳理.md（合并前结构梳理，最终口径见 v0.49 条目
+    与代码注释）
+- 连带更新：
+  - 代码注释中文档名引用同步更新 5 处（EmptyState / useOnboarding /
+    useResourceParticles / HomeView）
+  - 保留文档中对退役文件的引用改为概念表述（「计划文档已退役，git 历史可
+    查」）
+  - 本日志的历史条目保留旧文件名不改（日志即历史）
+
+##### 验证
+
+- vue-tsc -b 零错误 + vite build 通过；lint:check / format:check 零输出
+- vitest run 12 文件 86/86 通过；Playwright 双端回归全过
+
+#### v0.50.4（原 v0.54）— 工程化: HomeView 结构拆分 + 移除未使用的 Tailwind 依赖
+
+**变更性质：工程化（结构优化）**
+**开发时间：2026-09-05**
+
+##### 概述
+
+HomeView.vue（1056 行）按板块拆分：行动队列数据组装抽为 composable，四个板
+块各成子组件，视图瘦身为编排层。另移除开发依赖中已不再使用的 Tailwind CSS
+（样式系统早已切换为原生 CSS 设计 Token）。纯结构重构，渲染输出（DOM 结构/
+类名/文案）与游戏行为零变化；存档不受影响。
+
+##### 变更明细
+
+- 新增 `src/composables/useActionQueue.ts`：行动队列数据组装与截断口径（进
+  行中全保留、可执行补足至总数 ≤6），逻辑自 HomeView 原样迁移
+- 新增 `src/components/home/` 四个子组件，模板与样式自 HomeView 原样迁移：
+  - HeroCore：星核核心视觉（能量值/产出率/三层状态环/点击跳转）
+  - ActionQueuePanel：行动队列渲染
+  - QuickActions：快速操作入口
+  - OverviewPanel：文明概况
+- `src/views/HomeView.vue`：1056 行 → 约 85 行，仅保留板块编排、新手引导状
+  态与双列布局样式
+- 测试迁移：`src/views/HomeView.test.ts` →
+  `src/composables/useActionQueue.test.ts`，5 条队列规则用例脱离视图挂载，
+  直接校验 composable 返回
+- 移除 devDependencies 中未使用的 tailwindcss；README 与《游戏设定与架构》
+  技术栈表述同步去掉 Tailwind CSS 4
+
+##### 验证
+
+- `pnpm build`（含 vue-tsc）通过
+- `pnpm test`：12 文件 86 用例全绿（队列 5 用例迁移至 composable 层，总数
+  不变）
+- `lint:check` / `format:check` 零输出
+- Playwright 回归四套全绿（release 双端八路由 / 空状态 / 训练槽位 / 行动队
+  列）
+- 部署后线上版本串核对一致
+
+#### v0.50.5（原 v0.55）— 工程化: 全局样式模块化拆分 + UpgradeCountdown 移入 build/
+
+**变更性质：工程化（结构优化）**
+**开发时间：2026-09-05**
+
+##### 概述
+
+style.css（763 行单文件）按职责拆为 src/styles/ 七个模块，style.css 改作
+@import 聚合入口；UpgradeCountdown 由通用 ui/ 目录移入业务目录 build/。
+选择器级零改动。纯结构重构，样式内容、渲染输出与游戏行为零变化；存档不受影
+响。
+
+##### 变更明细
+
+- `src/style.css` 拆分为聚合入口 + `src/styles/` 七模块：fonts（自托管字
+  体）、tokens（设计 Token）、base（重置+滚动条）、background（星点/星
+  云/暗角）、animations（keyframes+路由过渡）、utilities（工具类/布局/空态
+  /Modal/导航安全网/品牌名）、buttons（按钮系统）；@import 顺序保持原单文
+  件级联顺序
+- 清理 Token 段头注释中残留的「Tailwind 4 CSS-first」表述（v0.50.4 移除依赖
+  时漏网）
+- `UpgradeCountdown.vue`（632 行）自 `components/ui/` 移至
+  `components/build/`：该组件仅 BuildView 引用，属业务组件而非通用 UI；
+  BuildView import 路径同步更新
+- 校验：新旧 CSS 去注释排序 diff 仅两处预期注释行差异，选择器与声明零丢失
+
+##### 验证
+
+- 新旧 CSS 实质内容 diff 校验通过（仅预期注释差异）
+- `pnpm build`（含 vue-tsc）通过
+- `pnpm test`：12 文件 86 用例全绿
+- `lint:check` / `format:check` 零输出
+- Playwright 回归四套全绿（release 双端八路由 / 空状态 / 训练槽位 / 行动队
+  列）
+- 部署后线上版本串核对一致
 
 ---
 
@@ -117,52 +304,6 @@
 
 ---
 
-## v0.47 — 工程化: 依赖升级与构建/测试工具链现代化
-
-**变更性质：工程化（依赖升级与工具链现代化）**
-**开发时间：2026-09-05**
-
-### 概述
-
-安全检查发现 dev 工具链 14 个已知漏洞（5 moderate + 9 high，均不进生产
-bundle），通过跨大版本升级根除；顺带将全部依赖升至锁定大版本内最新稳定版。
-升级后 pnpm audit 漏洞清零。
-
-### 变更明细
-
-- 跨大版本：
-  - eslint 9 → 10.10.0（连带 @eslint/js 10）
-  - vitest 3 → 5.0.0（连带 @vitest/coverage-v8 5）
-  - jsdom 29 → 30.0.1（消除 undici 信息泄露/CRLF 注入链）
-  - @vue/test-utils 2.4 → 2.5.0
-  - pinia 3 → 4.0.3（新增 @vue/devtools-api 8 peer）
-  - vue-router 4 → 6 内大版本 5.3.1
-- 锁定大版本内更新：
-  - vue 3.5.39 → 3.5.42、vite 8.1 → 8.2.2、vue-tsc 3.3.11、tailwindcss
-    4.3.3、prettier 3.9.6、typescript-eslint 8.69.0、eslint-plugin-vue
-    10.10.0、@types/node 24.x 最新
-- 传递依赖加固（pnpm overrides）：
-  - brace-expansion ≥5.0.9（DoS）、nanoid ≥3.3.18（死循环）、postcss
-    ≥8.5.23（不完整修复）
-- 评估后暂缓：
-  - typescript 7：typescript-eslint 8.69 peer 上限 <6.1.0，生态未跟进，待
-    其发布后升级
-- 兼容性：
-  - eslint 10 flat config 无需迁移，现有 eslint.config.js 直接兼容
-  - vitest 5 配置格式无变化，8 文件 67 用例全部通过
-  - pinia 4 API 向后兼容，9 个 store 无需改动
-  - vue-router 5 路由定义与守卫 API 兼容，8 路由 + 测试 stub 均正常
-
-### 验证
-
-- pnpm audit 漏洞清零（14 → 0）
-- vue-tsc -b 零错误 + vite build 通过（产物体积无实质变化）
-- vitest run 8 文件 67/67 通过；lint:check / format:check 零输出
-- Playwright 双端（preview + 线上）回归：八路由无 404/无 console error、移
-  动端 375px 无溢出、五页空状态专项 24/24 通过
-
----
-
 ## v0.46 — 功能: 页面空状态补齐
 
 **变更性质：功能（页面空状态补缺）**
@@ -202,55 +343,51 @@ bundle），通过跨大版本升级根除；顺带将全部依赖升至锁定�
   由无 console error
 - 移动端 375px 无横向溢出回归通过
 
----
+### 累积更新
 
-## v0.45 — 工程化: eslint 修复、Prettier 统一与部署脚本重写
+#### v0.46.1（原 v0.47）— 工程化: 依赖升级与构建/测试工具链现代化
 
-**变更性质：工程化（工具链基线补齐 + 部署脚本重写）**
+**变更性质：工程化（依赖升级与工具链现代化）**
 **开发时间：2026-09-05**
 
-### 概述
+##### 概述
 
-工程基线补齐：eslint 因缺失依赖无法运行、存量源文件未统一格式、部署脚本指
-向失效主机、favicon 未声明四类问题一并修复，部署流程重写为「构建 → rsync
-同步 → 线上验证」的本地方案。
+安全检查发现 dev 工具链 14 个已知漏洞（5 moderate + 9 high，均不进生产
+bundle），通过跨大版本升级根除；顺带将全部依赖升至锁定大版本内最新稳定版。
+升级后 pnpm audit 漏洞清零。
 
-### 变更明细
+##### 变更明细
 
-- eslint 因缺失依赖无法运行：`eslint.config.js` 引用 `globals` 包提供浏览
-  器/ES 标准全局变量声明，但 `package.json` 未声明该依赖，`pnpm lint` 直接
-  因模块解析失败（ERR_MODULE_NOT_FOUND）退出，lint 流程形同虚设。
-  devDependencies 补充 `globals@17.12.0`。
-- 52 个源文件格式不统一：项目配置了 Prettier 但从未对存量代码执行格式化，
-  `pnpm format:check` 报 52 个文件格式不符（全部视图 + 大部分组件
-  /store/lib/测试/样式）。对 `src/` 全量执行一次 `pnpm format`（纯格式重
-  排，零语义变更）。
-- 部署脚本指向失效主机，完全失效：`deploy.py` 目标主机与构建产物路径均为早
-  已弃用的旧环境，当前环境执行必然失败。项目部署拓扑已变更为「单机构建 →
-  单机 nginx 静态站点」。
-  - 删除失效的 `deploy.py`（paramiko SSH 远程部署，含配套的
-    `start-dev.sh`）及过时评估文档 `docs/deploy-ssh-keypair-evaluation.md`
-  - 新增 `deploy.sh` 部署脚本：构建 → `rsync --delete` 同步 `dist/` 到
-    nginx 站点目录 → 修正权限 → 线上验证（HTTP 状态 + bundle 版本串核对）
-  - 同步方式从覆盖复制升级为 `rsync --delete`：站点内已从产物移除的旧文件
-    会被清除（本次即清除了 v0.44 已删但站点残留的 `icons.svg`），并排除
-    `.well-known/` 防误删证书续期目录
-- favicon 未声明，控制台 404（发布回归发现）：`index.html` 未声明
-  `<link rel="icon">`，浏览器回退请求 `/favicon.ico`。dev/preview 服务器无
-  该文件返回 404 并产生控制台错误；线上 nginx SPA fallback 将其回退到
-  index.html，返回 200 但内容并非图标（浏览器静默忽略）。`index.html` 补
-  `<link rel="icon" type="image/svg+xml" href="/favicon.svg">`
-  （`public/favicon.svg` 既有文件，og:image/twitter:image 已在引用）。
+- 跨大版本：
+  - eslint 9 → 10.10.0（连带 @eslint/js 10）
+  - vitest 3 → 5.0.0（连带 @vitest/coverage-v8 5）
+  - jsdom 29 → 30.0.1（消除 undici 信息泄露/CRLF 注入链）
+  - @vue/test-utils 2.4 → 2.5.0
+  - pinia 3 → 4.0.3（新增 @vue/devtools-api 8 peer）
+  - vue-router 4 → 6 内大版本 5.3.1
+- 锁定大版本内更新：
+  - vue 3.5.39 → 3.5.42、vite 8.1 → 8.2.2、vue-tsc 3.3.11、tailwindcss
+    4.3.3、prettier 3.9.6、typescript-eslint 8.69.0、eslint-plugin-vue
+    10.10.0、@types/node 24.x 最新
+- 传递依赖加固（pnpm overrides）：
+  - brace-expansion ≥5.0.9（DoS）、nanoid ≥3.3.18（死循环）、postcss
+    ≥8.5.23（不完整修复）
+- 评估后暂缓：
+  - typescript 7：typescript-eslint 8.69 peer 上限 <6.1.0，生态未跟进，待
+    其发布后升级
+- 兼容性：
+  - eslint 10 flat config 无需迁移，现有 eslint.config.js 直接兼容
+  - vitest 5 配置格式无变化，8 文件 67 用例全部通过
+  - pinia 4 API 向后兼容，9 个 store 无需改动
+  - vue-router 5 路由定义与守卫 API 兼容，8 路由 + 测试 stub 均正常
 
-### 验证
+##### 验证
 
-- `pnpm lint:check` 正常运行，结果 0 errors / 23 warnings（均为存量告警：
-  测试文件多组件声明、属性顺序等，不阻断，留待后续处理）。
-- `pnpm format:check` 全部通过；`vue-tsc -b` 零错误；`vite build` 产物体积
-  无实质变化；`vitest run` 8 文件 67/67 通过。
-- `./deploy.sh` 全流程通过，线上返回 200 且 bundle 版本串为 v0.45；preview
-  与线上 Playwright 回归（八路由遍历、控制台无 404/error、移动端 375px 无
-  溢出）全部通过。
+- pnpm audit 漏洞清零（14 → 0）
+- vue-tsc -b 零错误 + vite build 通过（产物体积无实质变化）
+- vitest run 8 文件 67/67 通过；lint:check / format:check 零输出
+- Playwright 双端（preview + 线上）回归：八路由无 404/无 console error、移
+  动端 375px 无溢出、五页空状态专项 24/24 通过
 
 ---
 
@@ -303,6 +440,56 @@ bundle），通过跨大版本升级根除；顺带将全部依赖升至锁定�
 - Playwright 回归：四档视口无横向滚动、Hero 产出率格式正确、八条路由无
   404、首屏渲染正常
 
+### 累积更新
+
+#### v0.44.1（原 v0.45）— 工程化: eslint 修复、Prettier 统一与部署脚本重写
+
+**变更性质：工程化（工具链基线补齐 + 部署脚本重写）**
+**开发时间：2026-09-05**
+
+##### 概述
+
+工程基线补齐：eslint 因缺失依赖无法运行、存量源文件未统一格式、部署脚本指
+向失效主机、favicon 未声明四类问题一并修复，部署流程重写为「构建 → rsync
+同步 → 线上验证」的本地方案。
+
+##### 变更明细
+
+- eslint 因缺失依赖无法运行：`eslint.config.js` 引用 `globals` 包提供浏览
+  器/ES 标准全局变量声明，但 `package.json` 未声明该依赖，`pnpm lint` 直接
+  因模块解析失败（ERR_MODULE_NOT_FOUND）退出，lint 流程形同虚设。
+  devDependencies 补充 `globals@17.12.0`。
+- 52 个源文件格式不统一：项目配置了 Prettier 但从未对存量代码执行格式化，
+  `pnpm format:check` 报 52 个文件格式不符（全部视图 + 大部分组件
+  /store/lib/测试/样式）。对 `src/` 全量执行一次 `pnpm format`（纯格式重
+  排，零语义变更）。
+- 部署脚本指向失效主机，完全失效：`deploy.py` 目标主机与构建产物路径均为早
+  已弃用的旧环境，当前环境执行必然失败。项目部署拓扑已变更为「单机构建 →
+  单机 nginx 静态站点」。
+  - 删除失效的 `deploy.py`（paramiko SSH 远程部署，含配套的
+    `start-dev.sh`）及过时评估文档 `docs/deploy-ssh-keypair-evaluation.md`
+  - 新增 `deploy.sh` 部署脚本：构建 → `rsync --delete` 同步 `dist/` 到
+    nginx 站点目录 → 修正权限 → 线上验证（HTTP 状态 + bundle 版本串核对）
+  - 同步方式从覆盖复制升级为 `rsync --delete`：站点内已从产物移除的旧文件
+    会被清除（本次即清除了 v0.44 已删但站点残留的 `icons.svg`），并排除
+    `.well-known/` 防误删证书续期目录
+- favicon 未声明，控制台 404（发布回归发现）：`index.html` 未声明
+  `<link rel="icon">`，浏览器回退请求 `/favicon.ico`。dev/preview 服务器无
+  该文件返回 404 并产生控制台错误；线上 nginx SPA fallback 将其回退到
+  index.html，返回 200 但内容并非图标（浏览器静默忽略）。`index.html` 补
+  `<link rel="icon" type="image/svg+xml" href="/favicon.svg">`
+  （`public/favicon.svg` 既有文件，og:image/twitter:image 已在引用）。
+
+##### 验证
+
+- `pnpm lint:check` 正常运行，结果 0 errors / 23 warnings（均为存量告警：
+  测试文件多组件声明、属性顺序等，不阻断，留待后续处理）。
+- `pnpm format:check` 全部通过；`vue-tsc -b` 零错误；`vite build` 产物体积
+  无实质变化；`vitest run` 8 文件 67/67 通过。
+- `./deploy.sh` 全流程通过，线上返回 200 且 bundle 版本串为 v0.44.1；preview
+  与线上 Playwright 回归（八路由遍历、控制台无 404/error、移动端 375px 无
+  溢出）全部通过。
+
 ---
 
 ## v0.43 — 修复: 代码检查问题补丁（20 项：前端 UI 层 9 项 + 逻辑/工程层 11 项）
@@ -313,8 +500,8 @@ bundle），通过跨大版本升级根除；顺带将全部依赖升至锁定�
 ### 概述
 
 针对代码检查意见完成 20 项修复，覆盖前端 UI 层 9 项与逻辑/工程层 11 项。由
-于 v0.42（前次修复）此前暂缓部署未上线，本次部署实际从 v0.41 直接跳到
-v0.43，v0.42 的 6 项修复一并上线。
+于 v0.41.1（前次修复）此前暂缓部署未上线，本次部署实际从 v0.41 直接跳到
+v0.43，v0.41.1 的 6 项修复一并上线。
 
 ### 变更明细
 
@@ -440,7 +627,7 @@ v0.43，v0.42 的 6 项修复一并上线。
   - `src/stores/game.test.ts`：显式校验替代 if 包裹
   - `vite.config.ts`：sourcemap + manualChunks + server.host 127.0.0.1
   - `start-dev.sh`：set -e + BASH_SOURCE + pnpm
-- 安全提醒：v0.42 已修复 `deploy.py` 中的凭据硬编码问题（改为环境变量
+- 安全提醒：v0.41.1 已修复 `deploy.py` 中的凭据硬编码问题（改为环境变量
   读取）。
 
 ### 验证
@@ -448,68 +635,6 @@ v0.43，v0.42 的 6 项修复一并上线。
 - vue-tsc -b：零错误
 - vite build：构建成功
 - npx vitest run：67/67 用例全部通过
-
----
-
-## v0.42 — 修复: 代码检查问题（6 项 + 1 项误报）
-
-**变更性质：修复（代码检查问题 6 项 + 1 项误报）**
-**开发时间：2026-07-16**
-
-### 概述
-
-针对代码检查意见中的高严重度问题完成修复：6 项已修复（4 项前端代码 + 3 项
-deploy.py 安全加固，其中 3 项安全加固同属一次提交）+ 1 项经核查为误报。构
-建与测试验证全绿，暂缓部署未上线。
-
-### 变更明细
-
-- CSS `-var(--x)` 无效语法修复：4 处 CSS 使用 `-var(--x)` 语法取负值，CSS
-  规范不支持此写法，浏览器解析失败导致相关负边距/负位移样式不生效。统一改
-  为 `calc(-1 * var(--x))`，符合 CSS calc 函数规范。检查意见原列 3 处，前
-  端在排查中额外发现第 4 处，一并修复
-  - 涉及文件：`src/style.css`、`src/views/TechView.vue`、
-    `src/components/ui/UpgradeCountdown.vue`、`src/views/PrestigeView.vue`
-- BuildView 模板类名对齐：`BuildView.vue` 模板中使用 `lock_msg`（下划
-  线），而 CSS 类名定义为 `lock-msg`（连字符），类名不匹配导致锁定提示样式
-  不生效。模板 `lock_msg` → `lock-msg`，与 CSS 类名对齐。
-  - 涉及文件：`src/views/BuildView.vue`
-- RelicView 槽位满守卫：`RelicView.vue` 中遗物装备槽位满时 `findIndex` 返
-  回 -1，未做 -1 守卫，后续直接用作索引访问数组导致运行时异常。增加 -1 守
-  卫判断，槽位满时 toast 提示"槽位已满"，不再尝试装备。
-  - 涉及文件：`src/views/RelicView.vue`
-- deploy.py 凭据管理加固：移除源码中的明文凭据处理，改为从环境变量读
-  取，缺失即退出并报错。
-  - 涉及文件：`deploy.py`
-- deploy.py SSH 策略加固：`deploy.py` 使用 `AutoAddPolicy`，首次连接未知主
-  机时自动接受并写入 known_hosts，存在中间人攻击风险。改为
-  `RejectPolicy`，拒绝未知主机连接，需提前在 known_hosts 中登记服务器指
-  纹。
-  - 涉及文件：`deploy.py`
-- deploy.py rm -rf 路径校验：`deploy.py` 中 `rm -rf` 删除远端目录的路径无
-  校验，异常路径（如空串、`/`、`/*`、相对路径等）可能导致误删。新增
-  `validate_remote_dir` 函数对路径进行白名单校验，dry-run 自测 10 种异常路
-  径全部拦截。
-  - 涉及文件：`deploy.py`
-- beforeunload 监听器（误报，无需修复）：检查意见列出 App.vue 缺少
-  `beforeunload` 事件监听器。经核查，`beforeunload` 监听器在初始提交即已存
-  在于 `App.vue` 中（v0.05 Bug 5 修复时引入），无需修复。
-- 改动文件清单：
-  - `src/style.css`：`-var(--x)` → `calc(-1 * var(--x))`
-  - `src/views/TechView.vue`：`-var(--x)` → `calc(-1 * var(--x))`
-  - `src/components/ui/UpgradeCountdown.vue`：`-var(--x)` →
-    `calc(-1 * var(--x))`
-  - `src/views/PrestigeView.vue`：`-var(--x)` → `calc(-1 * var(--x))`
-  - `src/views/BuildView.vue`：`lock_msg` → `lock-msg`
-  - `src/views/RelicView.vue`：findIndex -1 守卫 + toast
-  - `deploy.py`：凭据改环境变量 + RejectPolicy + rm -rf 路径校验
-
-### 验证
-
-- vue-tsc -b：零错误
-- vite build：构建成功
-- npx vitest run：8 文件 67/67 用例全部通过
-- deploy.py dry-run 路径校验：10 种异常路径全部拦截
 
 ---
 
@@ -585,6 +710,68 @@ Elevation 三级系统、状态色语义、视觉动线引导等；补齐响应�
 - vue-tsc -b：零错误
 - vite build：构建通过
 - npx vitest run：8 文件 67 用例全部通过
+
+### 累积更新
+
+#### v0.41.1（原 v0.42）— 修复: 代码检查问题（6 项 + 1 项误报）
+
+**变更性质：修复（代码检查问题 6 项 + 1 项误报）**
+**开发时间：2026-07-16**
+
+##### 概述
+
+针对代码检查意见中的高严重度问题完成修复：6 项已修复（4 项前端代码 + 3 项
+deploy.py 安全加固，其中 3 项安全加固同属一次提交）+ 1 项经核查为误报。构
+建与测试验证全绿，暂缓部署未上线。
+
+##### 变更明细
+
+- CSS `-var(--x)` 无效语法修复：4 处 CSS 使用 `-var(--x)` 语法取负值，CSS
+  规范不支持此写法，浏览器解析失败导致相关负边距/负位移样式不生效。统一改
+  为 `calc(-1 * var(--x))`，符合 CSS calc 函数规范。检查意见原列 3 处，前
+  端在排查中额外发现第 4 处，一并修复
+  - 涉及文件：`src/style.css`、`src/views/TechView.vue`、
+    `src/components/ui/UpgradeCountdown.vue`、`src/views/PrestigeView.vue`
+- BuildView 模板类名对齐：`BuildView.vue` 模板中使用 `lock_msg`（下划
+  线），而 CSS 类名定义为 `lock-msg`（连字符），类名不匹配导致锁定提示样式
+  不生效。模板 `lock_msg` → `lock-msg`，与 CSS 类名对齐。
+  - 涉及文件：`src/views/BuildView.vue`
+- RelicView 槽位满守卫：`RelicView.vue` 中遗物装备槽位满时 `findIndex` 返
+  回 -1，未做 -1 守卫，后续直接用作索引访问数组导致运行时异常。增加 -1 守
+  卫判断，槽位满时 toast 提示"槽位已满"，不再尝试装备。
+  - 涉及文件：`src/views/RelicView.vue`
+- deploy.py 凭据管理加固：移除源码中的明文凭据处理，改为从环境变量读
+  取，缺失即退出并报错。
+  - 涉及文件：`deploy.py`
+- deploy.py SSH 策略加固：`deploy.py` 使用 `AutoAddPolicy`，首次连接未知主
+  机时自动接受并写入 known_hosts，存在中间人攻击风险。改为
+  `RejectPolicy`，拒绝未知主机连接，需提前在 known_hosts 中登记服务器指
+  纹。
+  - 涉及文件：`deploy.py`
+- deploy.py rm -rf 路径校验：`deploy.py` 中 `rm -rf` 删除远端目录的路径无
+  校验，异常路径（如空串、`/`、`/*`、相对路径等）可能导致误删。新增
+  `validate_remote_dir` 函数对路径进行白名单校验，dry-run 自测 10 种异常路
+  径全部拦截。
+  - 涉及文件：`deploy.py`
+- beforeunload 监听器（误报，无需修复）：检查意见列出 App.vue 缺少
+  `beforeunload` 事件监听器。经核查，`beforeunload` 监听器在初始提交即已存
+  在于 `App.vue` 中（v0.05 Bug 5 修复时引入），无需修复。
+- 改动文件清单：
+  - `src/style.css`：`-var(--x)` → `calc(-1 * var(--x))`
+  - `src/views/TechView.vue`：`-var(--x)` → `calc(-1 * var(--x))`
+  - `src/components/ui/UpgradeCountdown.vue`：`-var(--x)` →
+    `calc(-1 * var(--x))`
+  - `src/views/PrestigeView.vue`：`-var(--x)` → `calc(-1 * var(--x))`
+  - `src/views/BuildView.vue`：`lock_msg` → `lock-msg`
+  - `src/views/RelicView.vue`：findIndex -1 守卫 + toast
+  - `deploy.py`：凭据改环境变量 + RejectPolicy + rm -rf 路径校验
+
+##### 验证
+
+- vue-tsc -b：零错误
+- vite build：构建成功
+- npx vitest run：8 文件 67/67 用例全部通过
+- deploy.py dry-run 路径校验：10 种异常路径全部拦截
 
 ---
 
@@ -742,129 +929,6 @@ Elevation 三级系统、状态色语义、视觉动线引导等；补齐响应�
 
 ---
 
-## v0.38 — 重构: 代码瘦身工程
-
-**变更性质：重构（代码瘦身，功能不变）**
-**开发时间：2026-07-15**
-
-### 概述
-
-6 项代码瘦身改动，目标为保持功能不变前提下让代码更整洁简洁。按风险递增顺序
-执行，每步独立验证。总体成果：JS gzip -3.7%、CSS gzip -35%、遗物存档体积
--71%、运行时依赖 -1、开发依赖 -1。
-
-### 变更明细
-
-- 移除 dayjs（零引用依赖清理）：
-  - 涉及文件：`package.json`
-  - 改动：移除 `dayjs` 依赖（项目源码中无任何 import 引用）
-  - 影响：运行时依赖 6→5
-- 移除 Tailwind CSS：
-  - 涉及文件：`package.json`、`vite.config.ts`、`src/style.css`、
-    `src/components/layout/SideNav.vue`、
-    `src/components/layout/BottomNav.vue`、
-    `src/components/layout/TopBar.vue`、
-    `src/components/layout/AppShell.vue`
-  - 移除 `@tailwindcss/vite` 插件和依赖
-  - `style.css` 中 `@theme` 块转换为 `:root` CSS 变量定义
-  - 补全 Preflight Reset 规则（h1-h6/img/svg/video/canvas/a/select/
-    border:0 solid 等）
-  - 导航组件中 Tailwind 响应式类（`hidden`/`md:flex`/`md:hidden`）改为
-    `useBreakpoint` + `v-if` 原生 CSS
-  - CSS gzip: 5.2→3.3KB（-36%）
-- 提取跨视图重复 CSS 为全局工具类：
-  - 涉及文件：`src/style.css`、各视图 Vue 文件
-  - 提取 9 个全局工具类到 `style.css`：`.page-title`、`.page-sub`、
-    `.section-title`、`.card`、`.stat`、`.time-tag`、`.empty-msg`、
-    `.glow-core`、`.font-display`/`.font-mono`
-  - 各视图中匹配的重复 CSS 声明改为使用全局类
-  - 保留各视图的变体覆盖（如不同颜色的 `.page-title`）
-  - CSS gzip ~3.4KB
-- 遗物存档精简：
-  - 涉及文件：`src/data/relics.ts`、`src/lib/storage.ts`、
-    `src/stores/relics.ts`、`src/stores/game.ts`、
-    `src/lib/save-migrate.ts`
-  - `RelicSaveData.owned` 从完整字段（9 字段：id/name/desc/rarity/icon/
-    effects/source/instanceId/obtainedAt）精简为 3 字段
-    （id/instanceId/obtainedAt）
-  - `src/data/relics.ts` 新增 `getRelicById()` 函数
-  - `src/stores/relics.ts` serialize 只写 3 字段；hydrate 从 RELIC_POOL 按
-    id 补全完整字段，旧格式完整字段降级兼容（id 在 RELIC_POOL 中找不到时保
-    留旧数据）
-  - SAVE_VERSION 3→4，`save-migrate.ts` 新增 v3→v4 迁移条目（hydrate 自动
-    兼容，无需显式转换）
-  - 遗物存档体积 ~280B/条 → ~80B/条（-71%）
-- 加密模块精简：
-  - 涉及文件：`src/lib/storage.ts`、`src/stores/game.ts`、
-    `src/lib/save-migrate.ts`、`src/lib/storage.test.ts`
-  - 移除 XOR 流密码 + CBC 反馈 + 密钥片段混淆 + xorshift32 PRNG（~130 行）
-  - 替换为 Base64 编码（~40 行），导出前缀 SCE- → SCB-
-  - 保留 FNV-1a 校验和（localStorage 备份防篡改）
-  - 导入时兼容旧 SCE- 前缀（尝试 Base64 解码，旧 XOR 密文无法解码为合法
-    JSON 会返回 invalid）
-  - `validateSaveData` / `_isObject` / `_isRecord` 校验函数保留
-  - SAVE_VERSION 4→5，`save-migrate.ts` 新增 v4→v5 迁移条目（存档结构无变
-    化，仅导出格式变更）
-  - storage.ts 367→259 行（-29%）
-  - 测试更新：前缀 SCE- → SCB-、版本 3 → 5、RelicSaveData 精简格式
-- Modal 组件提取：
-  - 涉及文件：`src/components/ui/ModalOverlay.vue`（新建）、
-    `src/views/ArmyView.vue`、`src/views/BattleView.vue`、
-    `src/views/PrestigeView.vue`
-  - 新增 `ModalOverlay.vue` 组件：封装 `<transition name="fade">` +
-    `.modal-overlay` + `.modal` 容器 + `useFocusTrap` + `role="dialog"` +
-    `aria-modal`
-  - Props：`modelValue`(v-model 双绑)、`ariaLabel`、`modalClass`(如
-    victory/defeat)
-  - Events：`update:modelValue`、`overlayClick`(点击遮罩)
-  - Slot：默认 slot 传入弹窗内容
-  - ArmyView：1 个弹窗改为 ModalOverlay
-  - BattleView：2 个弹窗各用独立 ModalOverlay 实例（解决原共用 modalRef 问
-    题）
-  - PrestigeView：2 个弹窗各用独立 ModalOverlay 实例
-  - 各视图移除 `import { useFocusTrap }` 和
-    `const modalRef = ref<HTMLElement | null>(null)` 等样板代码
-  - 各视图 scoped CSS 中 `.modal` 基础定义移除（由 ModalOverlay scoped CSS
-    承担）
-- 构建产物对比：
-  - JS gzip：84.5 KB → 81.4 KB，-3.7%
-  - CSS gzip：5.2 KB → 3.4 KB，-35%
-  - 运行时依赖：6 → 5，-1 (dayjs)
-  - 开发依赖：11 → 10，-1 (@tailwindcss/vite)
-  - storage.ts 行数：367 → 259，-29%
-  - 遗物存档体积/条：~280B → ~80B，-71%
-- 改动文件清单：
-  - `package.json`：版本号 0.37→0.38；移除 dayjs + @tailwindcss/vite
-  - `vite.config.ts`：移除 @tailwindcss/vite 插件
-  - `src/style.css`：@theme→:root；补全 Preflight Reset；新增全局工具类
-  - `src/data/relics.ts`：新增 getRelicById()
-  - `src/lib/storage.ts`：加密精简(XOR→Base64)；RelicSaveData 精简
-  - `src/stores/relics.ts`：serialize/hydrate 精简 + 旧格式降级
-  - `src/stores/game.ts`：SAVE_VERSION 3→5
-  - `src/lib/save-migrate.ts`：v3→v4→v5 迁移条目
-  - `src/lib/storage.test.ts`：测试更新(前缀/版本/存档格式)
-  - `src/components/ui/ModalOverlay.vue`：新建
-  - `src/views/ArmyView.vue`：ModalOverlay + CSS 去重
-  - `src/views/BattleView.vue`：ModalOverlay + CSS 去重
-  - `src/views/PrestigeView.vue`：ModalOverlay + CSS 去重
-  - `src/components/layout/SideNav.vue`：移除 Tailwind class
-  - `src/components/layout/BottomNav.vue`：移除 Tailwind class
-  - `src/components/layout/TopBar.vue`：移除 Tailwind class
-  - `src/components/layout/AppShell.vue`：移除 Tailwind class
-- 兼容性：
-  - SAVE_VERSION 3→5（跨版本迁移链完整）
-  - v3→v4：遗物存档精简，hydrate 自动补全 + 旧格式降级
-  - v4→v5：导出格式变更（SCE-→SCB-），线上存档（IndexedDB/localStorage）不
-    受影响
-  - 旧 SCE- 导出码无法再导入（XOR 密钥已移除），返回 invalid
-
-### 验证
-
-- vite build：构建通过
-- npx vitest run：8 文件 67 用例全部通过
-
----
-
 ## v0.37 — 重构: 旧图标统一化（39 个规范对齐 + 3 个零引用删除）
 
 **变更性质：重构（旧图标统一化）**
@@ -974,6 +1038,129 @@ Elevation 三级系统、状态色语义、视觉动线引导等；补齐响应�
 - npm run build：构建通过（132 modules, 842ms）
 - npx vitest run：8 文件 67 用例全部通过
 - symbol 总数校验：85 全唯一无悬空引用
+
+### 累积更新
+
+#### v0.37.1（原 v0.38）— 重构: 代码瘦身工程
+
+**变更性质：重构（代码瘦身，功能不变）**
+**开发时间：2026-07-15**
+
+##### 概述
+
+6 项代码瘦身改动，目标为保持功能不变前提下让代码更整洁简洁。按风险递增顺序
+执行，每步独立验证。总体成果：JS gzip -3.7%、CSS gzip -35%、遗物存档体积
+-71%、运行时依赖 -1、开发依赖 -1。
+
+##### 变更明细
+
+- 移除 dayjs（零引用依赖清理）：
+  - 涉及文件：`package.json`
+  - 改动：移除 `dayjs` 依赖（项目源码中无任何 import 引用）
+  - 影响：运行时依赖 6→5
+- 移除 Tailwind CSS：
+  - 涉及文件：`package.json`、`vite.config.ts`、`src/style.css`、
+    `src/components/layout/SideNav.vue`、
+    `src/components/layout/BottomNav.vue`、
+    `src/components/layout/TopBar.vue`、
+    `src/components/layout/AppShell.vue`
+  - 移除 `@tailwindcss/vite` 插件和依赖
+  - `style.css` 中 `@theme` 块转换为 `:root` CSS 变量定义
+  - 补全 Preflight Reset 规则（h1-h6/img/svg/video/canvas/a/select/
+    border:0 solid 等）
+  - 导航组件中 Tailwind 响应式类（`hidden`/`md:flex`/`md:hidden`）改为
+    `useBreakpoint` + `v-if` 原生 CSS
+  - CSS gzip: 5.2→3.3KB（-36%）
+- 提取跨视图重复 CSS 为全局工具类：
+  - 涉及文件：`src/style.css`、各视图 Vue 文件
+  - 提取 9 个全局工具类到 `style.css`：`.page-title`、`.page-sub`、
+    `.section-title`、`.card`、`.stat`、`.time-tag`、`.empty-msg`、
+    `.glow-core`、`.font-display`/`.font-mono`
+  - 各视图中匹配的重复 CSS 声明改为使用全局类
+  - 保留各视图的变体覆盖（如不同颜色的 `.page-title`）
+  - CSS gzip ~3.4KB
+- 遗物存档精简：
+  - 涉及文件：`src/data/relics.ts`、`src/lib/storage.ts`、
+    `src/stores/relics.ts`、`src/stores/game.ts`、
+    `src/lib/save-migrate.ts`
+  - `RelicSaveData.owned` 从完整字段（9 字段：id/name/desc/rarity/icon/
+    effects/source/instanceId/obtainedAt）精简为 3 字段
+    （id/instanceId/obtainedAt）
+  - `src/data/relics.ts` 新增 `getRelicById()` 函数
+  - `src/stores/relics.ts` serialize 只写 3 字段；hydrate 从 RELIC_POOL 按
+    id 补全完整字段，旧格式完整字段降级兼容（id 在 RELIC_POOL 中找不到时保
+    留旧数据）
+  - SAVE_VERSION 3→4，`save-migrate.ts` 新增 v3→v4 迁移条目（hydrate 自动
+    兼容，无需显式转换）
+  - 遗物存档体积 ~280B/条 → ~80B/条（-71%）
+- 加密模块精简：
+  - 涉及文件：`src/lib/storage.ts`、`src/stores/game.ts`、
+    `src/lib/save-migrate.ts`、`src/lib/storage.test.ts`
+  - 移除 XOR 流密码 + CBC 反馈 + 密钥片段混淆 + xorshift32 PRNG（~130 行）
+  - 替换为 Base64 编码（~40 行），导出前缀 SCE- → SCB-
+  - 保留 FNV-1a 校验和（localStorage 备份防篡改）
+  - 导入时兼容旧 SCE- 前缀（尝试 Base64 解码，旧 XOR 密文无法解码为合法
+    JSON 会返回 invalid）
+  - `validateSaveData` / `_isObject` / `_isRecord` 校验函数保留
+  - SAVE_VERSION 4→5，`save-migrate.ts` 新增 v4→v5 迁移条目（存档结构无变
+    化，仅导出格式变更）
+  - storage.ts 367→259 行（-29%）
+  - 测试更新：前缀 SCE- → SCB-、版本 3 → 5、RelicSaveData 精简格式
+- Modal 组件提取：
+  - 涉及文件：`src/components/ui/ModalOverlay.vue`（新建）、
+    `src/views/ArmyView.vue`、`src/views/BattleView.vue`、
+    `src/views/PrestigeView.vue`
+  - 新增 `ModalOverlay.vue` 组件：封装 `<transition name="fade">` +
+    `.modal-overlay` + `.modal` 容器 + `useFocusTrap` + `role="dialog"` +
+    `aria-modal`
+  - Props：`modelValue`(v-model 双绑)、`ariaLabel`、`modalClass`(如
+    victory/defeat)
+  - Events：`update:modelValue`、`overlayClick`(点击遮罩)
+  - Slot：默认 slot 传入弹窗内容
+  - ArmyView：1 个弹窗改为 ModalOverlay
+  - BattleView：2 个弹窗各用独立 ModalOverlay 实例（解决原共用 modalRef 问
+    题）
+  - PrestigeView：2 个弹窗各用独立 ModalOverlay 实例
+  - 各视图移除 `import { useFocusTrap }` 和
+    `const modalRef = ref<HTMLElement | null>(null)` 等样板代码
+  - 各视图 scoped CSS 中 `.modal` 基础定义移除（由 ModalOverlay scoped CSS
+    承担）
+- 构建产物对比：
+  - JS gzip：84.5 KB → 81.4 KB，-3.7%
+  - CSS gzip：5.2 KB → 3.4 KB，-35%
+  - 运行时依赖：6 → 5，-1 (dayjs)
+  - 开发依赖：11 → 10，-1 (@tailwindcss/vite)
+  - storage.ts 行数：367 → 259，-29%
+  - 遗物存档体积/条：~280B → ~80B，-71%
+- 改动文件清单：
+  - `package.json`：版本号 0.37→0.38；移除 dayjs + @tailwindcss/vite
+  - `vite.config.ts`：移除 @tailwindcss/vite 插件
+  - `src/style.css`：@theme→:root；补全 Preflight Reset；新增全局工具类
+  - `src/data/relics.ts`：新增 getRelicById()
+  - `src/lib/storage.ts`：加密精简(XOR→Base64)；RelicSaveData 精简
+  - `src/stores/relics.ts`：serialize/hydrate 精简 + 旧格式降级
+  - `src/stores/game.ts`：SAVE_VERSION 3→5
+  - `src/lib/save-migrate.ts`：v3→v4→v5 迁移条目
+  - `src/lib/storage.test.ts`：测试更新(前缀/版本/存档格式)
+  - `src/components/ui/ModalOverlay.vue`：新建
+  - `src/views/ArmyView.vue`：ModalOverlay + CSS 去重
+  - `src/views/BattleView.vue`：ModalOverlay + CSS 去重
+  - `src/views/PrestigeView.vue`：ModalOverlay + CSS 去重
+  - `src/components/layout/SideNav.vue`：移除 Tailwind class
+  - `src/components/layout/BottomNav.vue`：移除 Tailwind class
+  - `src/components/layout/TopBar.vue`：移除 Tailwind class
+  - `src/components/layout/AppShell.vue`：移除 Tailwind class
+- 兼容性：
+  - SAVE_VERSION 3→5（跨版本迁移链完整）
+  - v3→v4：遗物存档精简，hydrate 自动补全 + 旧格式降级
+  - v4→v5：导出格式变更（SCE-→SCB-），线上存档（IndexedDB/localStorage）不
+    受影响
+  - 旧 SCE- 导出码无法再导入（XOR 密钥已移除），返回 invalid
+
+##### 验证
+
+- vite build：构建通过
+- npx vitest run：8 文件 67 用例全部通过
 
 ---
 
@@ -1440,7 +1627,7 @@ Icons.vue 进行 facade 工程重构，将单体大组件拆分为 7 个子组�
 
 ### 变更明细
 
-- 快捷操作按钮宽度修复（UI）：v0.27 将 HomeView 快捷操作从 `<div>` 改为
+- 快捷操作按钮宽度修复（UI）：v0.25-29 将 HomeView 快捷操作从 `<div>` 改为
   `<ul><li>` 语义化结构后，`.action-card` 按钮不再是 flex 容器的直接子元
   素，flex stretch 不再生效，导致建筑项按钮过宽。`src/views/HomeView.vue`
   — `.action-card` CSS 增加 `width: 100%`，让按钮撑满 `<li>` 宽度。
@@ -1472,18 +1659,67 @@ Icons.vue 进行 facade 工程重构，将单体大组件拆分为 7 个子组�
 
 ---
 
-## v0.21-24 — 修复: 代码检查问题与 TypeScript 严格度提升
+## v0.20 — 功能: 晶体扇区建筑与晶脉学科技扩展
+
+**变更性质：功能（晶体扇区建筑 1→4、晶脉学科技 1→5）**
+**开发时间：2026-07-11**
+
+### 概述
+
+晶体扇区从 1 座建筑扩展为 4 座，晶脉学科技分支从 1 项扩展为 5 项，补上晶体
+产能的前中期阶梯。新建筑在旧存档中不存在，hydrate 时自动为 0 级，无需补
+偿；科技完成列表按 id 存储，新科技 id 不在旧列表中自然未完成，向后兼容。
+
+### 变更明细
+
+- 晶体扇区建筑（1→4）：
+  - 晶体矿场（已有）：产出 0.3/s，costGrowth 1.14，无前置科技
+  - 晶格培育室（新增）：产出 0.6/s，costGrowth 1.18，前置 crystal_growth
+  - 深晶钻探站（新增）：产出 2.0/s，costGrowth 1.22，前置
+    deep_crystal_mining
+  - 硅基星环（新增）：产出 7.0/s，costGrowth 1.25，前置
+    silicon_ring_theory
+- 晶脉学科技分支（1→5）：
+  - T1 晶格培育：解锁晶格培育室，成本 data:60, energy:400
+  - T2 晶体工艺（已有）：晶体产出 ×1.3，成本 data:100, energy:500
+  - T3 深晶开采：解锁深晶钻探站，成本 data:500, energy:4000, crystal:200
+  - T4 晶体工艺 II：晶体产出 ×1.4，成本 data:1500, energy:18000,
+    crystal:500
+  - T5 硅基星环理论：解锁硅基星环，成本 data:6000, energy:100000,
+    crystal:3000, alloy:1500
+- 其他改动：戴森云移除 maxLevel: 50（挂机游戏不应设等级上限）；存档版本 v1
+  →v2 迁移；新增 3 个 SVG 图标（i-crystal-nursery、i-deep-drill、
+  i-silicon-ring）
+- 涉及文件：
+  - `src/data/buildings.ts`：新增 3 个 BuildingDef + 戴森云移除 maxLevel
+  - `src/data/tech.ts`：新增 4 个晶脉学科技节点
+  - `src/stores/game.ts`：SAVE_VERSION 1→2，migrateSave v1→v2
+  - `src/components/ui/Icons.vue`：新增 3 个 SVG symbol
+  - `package.json`：version 0.19→0.20
+
+### 验证
+
+- simulate-production.py 模拟 24h 对比（贪婪策略）：晶体产出率增长 7.7x，
+  稀缺度从 180:1 降至 36:1；合金累计产出 +16.4%，基本不受影响；暗物质/数据
+  流基本不变
+- vue-tsc：零错误
+- vite build：成功
+- 线上部署：200 OK
+
+### 累积更新
+
+#### v0.20.1（原 v0.21-24）— 修复: 代码检查问题与 TypeScript 严格度提升
 
 **变更性质：修复（代码检查问题与严格模式收尾）**
 **开发时间：2026-07-12**
 
-### 概述
+##### 概述
 
 共修复 6 个检查问题，含检查阶段修复的 2 个逻辑缺陷。
 同时启用 TypeScript 严格模式的两项未使用检查，清理 20 处未使用导入/变量，
 构建与测试全绿。
 
-### 变更明细
+##### 变更明细
 
 - 优先修复：
   - 移除冗余 computed 包装函数：`game.ts` 暴露了 7 个 `computeXxx()` 函
@@ -1544,61 +1780,12 @@ Icons.vue 进行 facade 工程重构，将单体大组件拆分为 7 个子组�
   - 语义化 HTML 不足：大量模板改动，单独迭代
   - 模态弹窗焦点陷阱：需引入 focus-trap 库，单独迭代
 
-### 验证
+##### 验证
 
 - vue-tsc -b（含 noUnusedLocals/Parameters）：零错误
 - vite build：成功
 - vitest：54/54 全部通过
 - eslint：0 errors, 0 warnings
-
----
-
-## v0.20 — 功能: 晶体扇区建筑与晶脉学科技扩展
-
-**变更性质：功能（晶体扇区建筑 1→4、晶脉学科技 1→5）**
-**开发时间：2026-07-11**
-
-### 概述
-
-晶体扇区从 1 座建筑扩展为 4 座，晶脉学科技分支从 1 项扩展为 5 项，补上晶体
-产能的前中期阶梯。新建筑在旧存档中不存在，hydrate 时自动为 0 级，无需补
-偿；科技完成列表按 id 存储，新科技 id 不在旧列表中自然未完成，向后兼容。
-
-### 变更明细
-
-- 晶体扇区建筑（1→4）：
-  - 晶体矿场（已有）：产出 0.3/s，costGrowth 1.14，无前置科技
-  - 晶格培育室（新增）：产出 0.6/s，costGrowth 1.18，前置 crystal_growth
-  - 深晶钻探站（新增）：产出 2.0/s，costGrowth 1.22，前置
-    deep_crystal_mining
-  - 硅基星环（新增）：产出 7.0/s，costGrowth 1.25，前置
-    silicon_ring_theory
-- 晶脉学科技分支（1→5）：
-  - T1 晶格培育：解锁晶格培育室，成本 data:60, energy:400
-  - T2 晶体工艺（已有）：晶体产出 ×1.3，成本 data:100, energy:500
-  - T3 深晶开采：解锁深晶钻探站，成本 data:500, energy:4000, crystal:200
-  - T4 晶体工艺 II：晶体产出 ×1.4，成本 data:1500, energy:18000,
-    crystal:500
-  - T5 硅基星环理论：解锁硅基星环，成本 data:6000, energy:100000,
-    crystal:3000, alloy:1500
-- 其他改动：戴森云移除 maxLevel: 50（挂机游戏不应设等级上限）；存档版本 v1
-  →v2 迁移；新增 3 个 SVG 图标（i-crystal-nursery、i-deep-drill、
-  i-silicon-ring）
-- 涉及文件：
-  - `src/data/buildings.ts`：新增 3 个 BuildingDef + 戴森云移除 maxLevel
-  - `src/data/tech.ts`：新增 4 个晶脉学科技节点
-  - `src/stores/game.ts`：SAVE_VERSION 1→2，migrateSave v1→v2
-  - `src/components/ui/Icons.vue`：新增 3 个 SVG symbol
-  - `package.json`：version 0.19→0.20
-
-### 验证
-
-- simulate-production.py 模拟 24h 对比（贪婪策略）：晶体产出率增长 7.7x，
-  稀缺度从 180:1 降至 36:1；合金累计产出 +16.4%，基本不受影响；暗物质/数据
-  流基本不变
-- vue-tsc：零错误
-- vite build：成功
-- 线上部署：200 OK
 
 ---
 
@@ -1865,18 +2052,46 @@ v0.15 只改了倒计时主行的时间格式（`2h30m` → `2小时30分钟`）
 
 ---
 
-## v0.12 — 重构: 代码瘦身（前三优先级）
+## v0.11 — 功能: 编组批量编入/撤回快捷按钮
+
+**变更性质：功能（编队兵种行新增 6 个快捷操作按钮）**
+
+### 概述
+
+编队管理界面中，每个兵种只能通过点击 +1 按钮逐个编入编队，大批量操作需点击
+多次，撤回操作同理。本次为编队中每个兵种行增加 6 个快捷按钮：-10 / -1 / +1
+/ +10 / 全入 / 全撤。
+
+### 变更明细
+
+- `src/views/ArmyView.vue`：编队兵种行新增 6 个快捷操作按钮
+  - `-10`：从编队中撤回 10 个该兵种；`-1`：撤回 1 个
+  - `+1`：向编队编入 1 个；`+10`：编入 10 个
+  - `全入`：将所有已拥有的该兵种编入编队（`assignAll` 函数，disabled 条件
+    `getOwned(u.id) <= 0`）
+  - `全撤`：将该兵种从编队全部撤回（`removeAll` 函数，disabled 条件
+    `f.units[u.id] <= 0`）
+  - 按钮样式：`.fu-btn`（min-width 36px，height 28px）、`.fu-btn-wide`
+    （min-width 42px，用于全入/全撤）、`.fu-btn-remove`（撤回类按钮使用
+    alert 色彩）
+- `src/stores/military.ts`：新增/调整 `assignAll(formationId, unitId)` 和
+  `removeAll(formationId, unitId)` 函数；`removeAll` 中使用
+  `Math.max(0, ...)` 确保编队兵种数量不为负
+
+### 累积更新
+
+#### v0.11.1（原 v0.12）— 重构: 代码瘦身（前三优先级）
 
 **变更性质：重构（源码精简，净减约 75 行 + 类型安全提升）**
 **开发时间：2026-07-09**
 
-### 概述
+##### 概述
 
 对全部 42 个源码文件（5,730 行）进行只读评估，识别出四个优先级的精简项，本
 次执行前三个优先级：死导入/死代码清理、组件与样式整合、导航数据提取与类型
 修复。功能与内容未减少，仅代码更整洁。
 
-### 变更明细
+##### 变更明细
 
 - 死导入清理（净减 3 行）：删除 `src/stores/exploration.ts` 的
   `import type { TechEffect } from '@/data/tech'`、
@@ -1921,39 +2136,11 @@ v0.15 只改了倒计时主行的时间格式（`2h30m` → `2小时30分钟`）
   二优先级约 42 行 = CostTag 30 + Modal CSS 8 + TechView 4；三优先级约 10
   行 + any 类型修复 0 行）
 
-### 验证
+##### 验证
 
 - vue-tsc：零错误
 - Vite 构建：21 chunks
 - Vitest：41/41 通过
-
----
-
-## v0.11 — 功能: 编组批量编入/撤回快捷按钮
-
-**变更性质：功能（编队兵种行新增 6 个快捷操作按钮）**
-
-### 概述
-
-编队管理界面中，每个兵种只能通过点击 +1 按钮逐个编入编队，大批量操作需点击
-多次，撤回操作同理。本次为编队中每个兵种行增加 6 个快捷按钮：-10 / -1 / +1
-/ +10 / 全入 / 全撤。
-
-### 变更明细
-
-- `src/views/ArmyView.vue`：编队兵种行新增 6 个快捷操作按钮
-  - `-10`：从编队中撤回 10 个该兵种；`-1`：撤回 1 个
-  - `+1`：向编队编入 1 个；`+10`：编入 10 个
-  - `全入`：将所有已拥有的该兵种编入编队（`assignAll` 函数，disabled 条件
-    `getOwned(u.id) <= 0`）
-  - `全撤`：将该兵种从编队全部撤回（`removeAll` 函数，disabled 条件
-    `f.units[u.id] <= 0`）
-  - 按钮样式：`.fu-btn`（min-width 36px，height 28px）、`.fu-btn-wide`
-    （min-width 42px，用于全入/全撤）、`.fu-btn-remove`（撤回类按钮使用
-    alert 色彩）
-- `src/stores/military.ts`：新增/调整 `assignAll(formationId, unitId)` 和
-  `removeAll(formationId, unitId)` 函数；`removeAll` 中使用
-  `Math.max(0, ...)` 确保编队兵种数量不为负
 
 ---
 
@@ -1997,17 +2184,55 @@ v0.15 只改了倒计时主行的时间格式（`2h30m` → `2小时30分钟`）
 
 ---
 
-## v0.08 — 修复: 10 个低危问题修复与测试/规范工具链搭建
+## v0.07 — 修复: 部队训练离线不推进
+
+**变更性质：修复（离线/后台返回时训练队列不推进）**
+
+### 概述
+
+玩家反馈昨晚开始训练的部队进度条才走了约三分之一。根因是 `game.ts` 的
+`computeOfflineGains()` 在离线/后台返回时只补算资源产出、驻扎挂机收益和随
+机事件，完全没有推进训练队列：页面关闭过夜（`init()` →
+`computeOfflineGains()`）时训练进度完全冻结；标签页后台时 `tick()` 检测
+`dt > 60` 走 `computeOfflineGains(dt)` 后 `dt = 1`，训练每次只得 1 秒推进
+（浏览器后台 `setInterval` 被节流，偶尔触发 tick 时 `dt > 60`），与「一晚
+才走三分之一」的反馈吻合。
+
+### 变更明细
+
+- `src/stores/military.ts`（`applyTick`）：返回值从 `void` 改为返回
+  `TrainingTask[]`（已完成的训练任务列表），离线补算时调用 `applyTick` 推
+  进训练队列并获取完成的任务
+- `src/stores/game.ts`（`computeOfflineGains`）：新增训练队列推进逻辑，调
+  用 `military.applyTick(offlineDuration)` 推进训练；离线时长受 24h cap 约
+  束（86400 秒）；收集完成的训练任务在离线报告中展示
+- `src/components/layout/OfflineReport.vue`：新增训练完成展示区域
+- 影响范围：无回归风险（applyTick 返回值变更向后兼容）；存档兼容（无
+  SaveData 结构变更，无需版本迁移）；UI 增强（离线报告弹窗新增训练完成展
+  示）
+
+### 验证
+
+- 离线 5min 训练 10min：remaining 从 600s 推进到 300s
+- 再离线 5min 训练完成：remaining 归零，120 个突击兵入账
+- 在线持续 tick：3 次 tick（dt=1）后 remaining 从 60s 到 57s
+- 多任务并行：任务 A(50s) + B(80s) 推进 50s，A 完成入账，B 剩 30s
+- 离线超 24h：30h 离线受 cap 约束，只推进 24h（86400s）
+- npm run build：通过，108 模块转换，0 错误，built in 806ms
+
+### 累积更新
+
+#### v0.07.1（原 v0.08）— 修复: 10 个低危问题修复与测试/规范工具链搭建
 
 **变更性质：修复（10 个低危问题：6 条修复 + 2 条无需修复 + 2 条工程化）**
 **开发时间：2026-07-09**
 
-### 概述
+##### 概述
 
 修复 6 条代码级低危问题，确认 2 条无需修复，并完成 Vitest 单元测试与
 ESLint/Prettier 规范两项工程化建设。
 
-### 变更明细
+##### 变更明细
 
 - 代码级修复（6 条）：
   - 脚手架残留文件清理：删除 Vite 脚手架默认生成的无引用死文件
@@ -2077,50 +2302,12 @@ ESLint/Prettier 规范两项工程化建设。
     2、endOfLine: 'lf'；`package.json` 新增 `lint`、`lint:check`、
     `format`、`format:check` scripts
 
-### 验证
+##### 验证
 
 - vue-tsc：零错误
 - Vite 构建：成功（20 个产物文件）
 - Vitest：41/41 通过
 - ESLint/Prettier 配置加载正常
-
----
-
-## v0.07 — 修复: 部队训练离线不推进
-
-**变更性质：修复（离线/后台返回时训练队列不推进）**
-
-### 概述
-
-玩家反馈昨晚开始训练的部队进度条才走了约三分之一。根因是 `game.ts` 的
-`computeOfflineGains()` 在离线/后台返回时只补算资源产出、驻扎挂机收益和随
-机事件，完全没有推进训练队列：页面关闭过夜（`init()` →
-`computeOfflineGains()`）时训练进度完全冻结；标签页后台时 `tick()` 检测
-`dt > 60` 走 `computeOfflineGains(dt)` 后 `dt = 1`，训练每次只得 1 秒推进
-（浏览器后台 `setInterval` 被节流，偶尔触发 tick 时 `dt > 60`），与「一晚
-才走三分之一」的反馈吻合。
-
-### 变更明细
-
-- `src/stores/military.ts`（`applyTick`）：返回值从 `void` 改为返回
-  `TrainingTask[]`（已完成的训练任务列表），离线补算时调用 `applyTick` 推
-  进训练队列并获取完成的任务
-- `src/stores/game.ts`（`computeOfflineGains`）：新增训练队列推进逻辑，调
-  用 `military.applyTick(offlineDuration)` 推进训练；离线时长受 24h cap 约
-  束（86400 秒）；收集完成的训练任务在离线报告中展示
-- `src/components/layout/OfflineReport.vue`：新增训练完成展示区域
-- 影响范围：无回归风险（applyTick 返回值变更向后兼容）；存档兼容（无
-  SaveData 结构变更，无需版本迁移）；UI 增强（离线报告弹窗新增训练完成展
-  示）
-
-### 验证
-
-- 离线 5min 训练 10min：remaining 从 600s 推进到 300s
-- 再离线 5min 训练完成：remaining 归零，120 个突击兵入账
-- 在线持续 tick：3 次 tick（dt=1）后 remaining 从 60s 到 57s
-- 多任务并行：任务 A(50s) + B(80s) 推进 50s，A 完成入账，B 剩 30s
-- 离线超 24h：30h 离线受 cap 约束，只推进 24h（86400s）
-- npm run build：通过，108 模块转换，0 错误，built in 806ms
 
 ---
 
@@ -2217,12 +2404,12 @@ ESLint/Prettier 规范两项工程化建设。
     `src/data/explore.ts` 的 `NODE_MAP` + `getNode`）
   - 视图层重复 UI 模式（部分修复）：`src/components/ui/CostTag.vue` 组件已
     创建（接收 cost props，自动判断 enough/not-enough 状态），但各视图仍使
-    用内联标记，标记为遗留项（v0.12 瘦身中完成采用）
+    用内联标记，标记为遗留项（v0.11.1 瘦身中完成采用）
 - 遗留项：修复中引入新的未使用导入（newRelicInstanceId、UNITS、
-  calcDamage、TechEffect、lt/mul/div、CostTag，不影响运行，v0.12 清理）；
-  TechView 和 ArmyView 仍使用手动 canAfford+spendCost（实际安全，v0.12
+  calcDamage、TechEffect、lt/mul/div、CostTag，不影响运行，v0.11.1 清理）；
+  TechView 和 ArmyView 仍使用手动 canAfford+spendCost（实际安全，v0.11.1
   TechView 改用原子操作）；game.ts 仍约 400 行，视图仍通过 game 中转（不影
-  响功能，架构耦合偏高）；CostTag 组件已创建但未被视图使用（v0.12 正式采
+  响功能，架构耦合偏高）；CostTag 组件已创建但未被视图使用（v0.11.1 正式采
   用）
 
 ### 验证
@@ -2444,3 +2631,5 @@ v0.02 的 CSS `!important` 覆盖方案虽有效但脆弱，依赖 CSS 优先级
   本信息）
 - 配置文件：`package.json` / `tsconfig.json` / `tsconfig.node.json` /
   `vite.config.ts` / `index.html`
+
+---
