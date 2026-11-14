@@ -113,7 +113,7 @@ starcore/
 ├─ scripts/         质量脚本（计数守恒、文案缺键检查、产物体积预算）
 ├─ tools/           诊断工具（环境自检、端到端与数值校验）
 ├─ .github/         CI 工作流（推送 main 与 PR 自动跑全量检查）
-├─ changelog/       版本历史三档（活跃档 changelog.md 与两份历史存档）
+├─ changelog/       版本历史四档（活跃档 changelog.md 与三份历史存档）
 ├─ starcore.sh     安装与部署脚本
 └─ 工程配置（vite.config.ts、vitest.config.ts、tsconfig*.json、eslint.config.js）
 ```
@@ -164,8 +164,9 @@ corepack pnpm diagnose --fix  # 对可自动修复的缺件执行修复
 ## 版本历史
 
 - [changelog.md](changelog/changelog.md)：v1.51 起，新条目置顶
-- [changelog-v0.81-v1.56.md](changelog/changelog-v0.81-v1.56.md)：v0.81 至 v1.56 存档
-- [changelog-v0.01-v0.79.md](changelog/changelog-v0.01-v0.79.md)：v0.01 至 v0.79 存档
+- [changelog-v1.06-v1.48.md](changelog/changelog-v1.06-v1.48.md)：v1.06 至 v1.48 存档
+- [changelog-v0.58-v1.05.md](changelog/changelog-v0.58-v1.05.md)：v0.58 至 v1.05 存档
+- [changelog-v0.01-v0.57.md](changelog/changelog-v0.01-v0.57.md)：v0.01 至 v0.57 存档
 
 ## 部署
 
