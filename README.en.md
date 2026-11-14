@@ -136,7 +136,7 @@ starcore/
 ├─ scripts/         quality scripts (count conservation, message key checks, bundle size budget)
 ├─ tools/           diagnostics (environment self-check, end-to-end and numeric)
 ├─ .github/         CI workflow (full checks on push to main)
-├─ changelog/       version history; active file and three archives
+├─ changelog/       version history; active file and two archives
 ├─ starcore.sh      install and deployment script
 └─ project configs (vite.config.ts, vitest.config.ts, tsconfig*.json, eslint.config.js)
 ```
@@ -195,9 +195,8 @@ The self-check covers Node, dependencies, build output, the browser and Python p
 ## Version History
 
 - [changelog.md](changelog/changelog.md) · from v1.51, newest first
-- [changelog-v1.01-v1.50.md](changelog/changelog-v1.01-v1.50.md) · v1.01 to v1.50 archive
-- [changelog-v0.51-v1.00.md](changelog/changelog-v0.51-v1.00.md) · v0.51 to v1.00 archive
-- [changelog-v0.01-v0.50.md](changelog/changelog-v0.01-v0.50.md) · v0.01 to v0.50 archive
+- [changelog-v0.81-v1.56.md](changelog/changelog-v0.81-v1.56.md) · v0.81 to v1.56 archive
+- [changelog-v0.01-v0.79.md](changelog/changelog-v0.01-v0.79.md) · v0.01 to v0.79 archive
 
 ## Deployment
 
