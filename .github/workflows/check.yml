@@ -44,7 +44,7 @@ jobs:
           python3 tools/balance/starcore-v126-encounter-ev.py
           python3 tools/balance/starcore-v127-dispatch-ev.py
 
-  # 依赖漏洞扫描：按运行时依赖口径（--prod）防回归；dev 工具链的传递依赖另计
+  # 依赖漏洞扫描：pnpm audit 全量清零，CI 防回归
   audit:
     runs-on: ubuntu-latest
     steps:
@@ -53,4 +53,4 @@ jobs:
       - uses: actions/setup-node@v7
         with:
           node-version: 24
-      - run: pnpm audit --prod
+      - run: pnpm audit
