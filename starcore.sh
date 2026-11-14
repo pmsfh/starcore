@@ -5,6 +5,7 @@ set -euo pipefail
 
 REPO="renlang119/starcore"
 REPO_URL="https://github.com/${REPO}.git"
+SCRIPT_VERSION="2026-11-14"
 
 COMMAND=""
 SOURCE=""
@@ -27,8 +28,8 @@ warn() { printf '[提示] %s\n' "$*" >&2; }
 die() { printf '[失败] %s\n' "$*" >&2; exit 1; }
 
 usage() {
-  cat <<'EOF'
-星核纪元统一脚本
+  cat <<EOF
+星核纪元统一脚本 ${SCRIPT_VERSION}
 
 用法：
   bash starcore.sh                      交互选择操作
@@ -60,12 +61,14 @@ usage() {
   --no-install-deps       只报告缺失，不安装
   --dry-run               只打印将执行的命令
   -y, --yes               非交互，使用默认值
+  -v, --version           显示脚本版本
   -h, --help              显示本帮助
 
 环境变量：
   DEPLOY_DEST / DEPLOY_URL 可作为 --dest / --url 的默认值
   配置文件：./.deploy.env 或 ~/.config/starcore/deploy.env
 
+安装与构建耗时较长，建议在 screen 或 tmux 中运行，避免 SSH 断开中断。
 远程部署暂未实现，将在第二阶段加入。
 EOF
 }
@@ -130,6 +133,10 @@ while [[ $# -gt 0 ]]; do
       ;;
     -h | --help)
       usage
+      exit 0
+      ;;
+    -v | --version)
+      say "starcore.sh ${SCRIPT_VERSION}"
       exit 0
       ;;
     *)
@@ -469,8 +476,27 @@ resolve_release_tag() {
   printf '%s' "$tag"
 }
 
+# 安装前检查目标分区可用空间，低于建议值时询问（非交互继续）
+check_free_space() {
+  local target="$1" need_mb=1024 probe avail
+  probe="$target"
+  while [[ ! -d "$probe" && "$probe" != "/" ]]; do
+    probe="$(dirname "$probe")"
+  done
+  avail="$(df -Pk "$probe" 2>/dev/null | awk 'NR==2 {printf "%d", $4/1024}')"
+  [[ -n "$avail" ]] || return 0
+  if (( avail < need_mb )); then
+    warn "目标分区可用空间 ${avail} MB，低于建议的 ${need_mb} MB"
+    if [[ $YES -eq 0 && -t 0 ]] && ! ask_yes "空间可能不足，仍要继续？[y/N]：" "n"; then
+      die "已取消：请清理空间或换安装目录"
+    fi
+  fi
+}
+
 do_install() {
   local source="$SOURCE"
+  local start_ts log_file
+  start_ts="$(date +%s)"
   if [[ -z "$source" ]]; then
     if [[ $YES -eq 1 ]]; then
       source="release"
@@ -499,8 +525,13 @@ do_install() {
   fi
 
   if [[ -e "$DIR" && -n "$(ls -A "$DIR" 2>/dev/null || true)" ]]; then
+    if [[ -d "$DIR/.git" ]] && git -C "$DIR" remote get-url origin 2>/dev/null | grep -q "renlang119/starcore"; then
+      die "目录已是星核纪元安装：$DIR。更新请进入目录 git pull 后重新构建，或删除后重装"
+    fi
     die "目录已存在且非空：$DIR，请换一个目录或先手动清空"
   fi
+
+  check_free_space "$DIR"
 
   local tag="" commit=""
   if [[ "$source" == "release" ]]; then
@@ -509,10 +540,22 @@ do_install() {
   fi
 
   say "正在获取源码到 ${DIR} ..."
-  if [[ "$source" == "main" ]]; then
-    run git clone --depth 1 "$REPO_URL" "$DIR"
-  else
-    run git clone --depth 1 --branch "$tag" "$REPO_URL" "$DIR"
+  local clone_args=(clone --depth 1) attempt ok=0
+  [[ "$source" == "release" ]] && clone_args+=(--branch "$tag")
+  for attempt in 1 2 3; do
+    if run git "${clone_args[@]}" "$REPO_URL" "$DIR"; then
+      ok=1
+      break
+    fi
+    [[ -n "$DIR" && "$DIR" != "/" ]] && rm -rf "$DIR"
+    [[ $attempt -lt 3 ]] && {
+      warn "获取源码失败（第 ${attempt}/3 次），稍后重试 ..."
+      sleep 2
+    }
+  done
+  [[ $ok -eq 1 ]] || die "获取源码失败（已重试 3 次），请检查网络后重试"
+
+  if [[ "$source" == "release" ]]; then
     commit="$(git -C "$DIR" rev-parse HEAD)"
     local remote_commit
     remote_commit="$(git ls-remote "$REPO_URL" "refs/tags/${tag}" | awk '{print $1}')"
@@ -520,11 +563,23 @@ do_install() {
       warn "本地提交与远端 tag 不一致，请检查：${commit} / ${remote_commit:-未取到}"
   fi
 
-  say "正在安装依赖并构建 ..."
-  if [[ $DO_CHECK -eq 1 ]]; then
-    (cd "$DIR" && run corepack pnpm install --frozen-lockfile && run corepack pnpm check)
+  log_file="${DIR%/}/starcore-install-$(date +%Y%m%d-%H%M%S).log"
+  if ! : >>"$log_file" 2>/dev/null; then
+    warn "无法写入安装日志，构建输出只显示在终端"
+    log_file=""
+  fi
+  say "正在安装依赖并构建$([[ -n "$log_file" ]] && echo "（日志：${log_file}）") ..."
+  run_build() {
+    if [[ $DO_CHECK -eq 1 ]]; then
+      (cd "$DIR" && run corepack pnpm install --frozen-lockfile && run corepack pnpm check)
+    else
+      (cd "$DIR" && run corepack pnpm install --frozen-lockfile && run corepack pnpm build)
+    fi
+  }
+  if [[ -n "$log_file" ]]; then
+    run_build 2>&1 | tee -a "$log_file"
   else
-    (cd "$DIR" && run corepack pnpm install --frozen-lockfile && run corepack pnpm build)
+    run_build
   fi
 
   local version
@@ -540,6 +595,8 @@ do_install() {
     say "  开发预览：cd \"$(cd "$DIR" && pwd)\" && corepack pnpm dev"
   fi
   say "  本地预览：python3 -m http.server 8080 -d \"$(cd "$DIR" && pwd)/dist\""
+  [[ -n "$log_file" ]] && say "  日志：${log_file}"
+  say "  用时：$(( $(date +%s) - start_ts )) 秒"
 }
 
 # ---------- 部署 ----------
