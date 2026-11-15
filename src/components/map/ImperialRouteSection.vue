@@ -18,6 +18,8 @@ import {
   FORGE_INPUT_RESOURCES,
   FORGE_STABILITY_MAX,
   FORGE_TRIBUTE_COST,
+  FORGE_TRIBUTE_REFILL,
+  forgeYield,
   pickForgeResource,
   type ForgeInputResource,
 } from '@/data/imperial-strongholds'
@@ -224,6 +226,11 @@ const forgeTributeRows = computed(() =>
 )
 /** 当日剩余倾贡次数（0 时四按钮全部禁用） */
 const forgeRemaining = computed(() => game.imperial.forgeRemainingToday(now.value))
+/** 本次回礼预览：按倾贡后稳定度档位结算，普通与点名各一档 */
+const forgePreview = computed(() => {
+  const after = Math.min(FORGE_STABILITY_MAX, forgeStabilityNow.value + FORGE_TRIBUTE_REFILL)
+  return { base: forgeYield(after, false), picked: forgeYield(after, true) }
+})
 function enterForge(): void {
   game.enterForge()
 }
@@ -343,6 +350,74 @@ function resourceName(res: ResourceType): string {
             </template>
           </div>
         </div>
+        <!-- 炉域（v1.83）：贡道尽头的倾贡入口，解锁后先进入再倾贡 -->
+        <div class="imperial-forge" data-testid="imperial-forge">
+          <div class="if-head">
+            <span class="if-title">{{ t('content.imperialStrongholds.forge.name') }}</span>
+            <span
+              v-if="forgeEntered"
+              class="if-stab font-mono"
+              data-testid="imperial-forge-stability"
+            >
+              {{ t('content.imperialStrongholds.forge.stabilityLabel') }}
+              {{ Math.floor(forgeStabilityNow) }}/{{ FORGE_STABILITY_MAX }}
+            </span>
+          </div>
+          <p v-if="!forgeUnlocked" class="locked-text" data-testid="imperial-forge-locked">
+            {{ t('content.imperialStrongholds.forge.lockedDesc') }}
+          </p>
+          <template v-else>
+            <p class="if-desc">{{ t('content.imperialStrongholds.forge.desc') }}</p>
+            <button
+              v-if="!forgeEntered"
+              class="btn-accent if-enter"
+              data-testid="imperial-forge-enter"
+              @click="enterForge"
+            >
+              {{ t('content.imperialStrongholds.forge.enter') }}
+            </button>
+            <template v-else>
+              <div class="if-bar">
+                <div
+                  class="if-fill"
+                  :style="{ width: (forgeStabilityNow / FORGE_STABILITY_MAX) * 100 + '%' }"
+                />
+              </div>
+              <p class="if-pick font-mono" data-testid="imperial-forge-pick">
+                {{ t('content.imperialStrongholds.forge.pickHint', { res: forgePickedName }) }}
+              </p>
+              <p class="if-remaining font-mono" data-testid="imperial-forge-remaining">
+                {{ t('content.imperialStrongholds.forge.remaining', { n: forgeRemaining }) }}
+              </p>
+              <div class="if-tributes">
+                <button
+                  v-for="row in forgeTributeRows"
+                  :key="row.id"
+                  class="btn-secondary if-tribute"
+                  :class="{ 'if-picked': row.picked }"
+                  :disabled="!row.affordable || forgeRemaining === 0"
+                  :title="t('content.imperialStrongholds.forge.tributeHint')"
+                  :data-testid="`imperial-forge-tribute-${row.id}`"
+                  @click="giveTribute(row.id)"
+                >
+                  {{ t('content.imperialStrongholds.forge.tribute') }} · {{ row.name }}
+                  {{ fmt(row.cost) }}
+                  <span v-if="row.picked">×3</span>
+                </button>
+              </div>
+              <p class="if-preview font-mono" data-testid="imperial-forge-yield-preview">
+                {{
+                  t('content.imperialStrongholds.forge.yieldPreview', {
+                    base: fmt(forgePreview.base),
+                    picked: fmt(forgePreview.picked),
+                  })
+                }}
+              </p>
+              <p class="if-desc">{{ t('content.imperialStrongholds.forge.yieldDesc') }}</p>
+              <p class="if-desc">{{ t('content.imperialStrongholds.forge.stabilityDesc') }}</p>
+            </template>
+          </template>
+        </div>
       </div>
 
       <!-- 贡赋池 -->
@@ -377,67 +452,6 @@ function resourceName(res: ResourceType): string {
             }}
           </button>
         </div>
-      </div>
-
-      <!-- 炉域（v1.83）：贡道尽头的倾贡入口，解锁后先进入再倾贡 -->
-      <div class="imperial-forge" data-testid="imperial-forge">
-        <div class="if-head">
-          <span class="if-title">{{ t('content.imperialStrongholds.forge.name') }}</span>
-          <span
-            v-if="forgeEntered"
-            class="if-stab font-mono"
-            data-testid="imperial-forge-stability"
-          >
-            {{ t('content.imperialStrongholds.forge.stabilityLabel') }}
-            {{ Math.floor(forgeStabilityNow) }}/{{ FORGE_STABILITY_MAX }}
-          </span>
-        </div>
-        <p v-if="!forgeUnlocked" class="locked-text" data-testid="imperial-forge-locked">
-          {{ t('content.imperialStrongholds.forge.lockedDesc') }}
-        </p>
-        <template v-else>
-          <p class="if-desc">{{ t('content.imperialStrongholds.forge.desc') }}</p>
-          <button
-            v-if="!forgeEntered"
-            class="btn-accent if-enter"
-            data-testid="imperial-forge-enter"
-            @click="enterForge"
-          >
-            {{ t('content.imperialStrongholds.forge.enter') }}
-          </button>
-          <template v-else>
-            <div class="if-bar">
-              <div
-                class="if-fill"
-                :style="{ width: (forgeStabilityNow / FORGE_STABILITY_MAX) * 100 + '%' }"
-              />
-            </div>
-            <p class="if-pick font-mono" data-testid="imperial-forge-pick">
-              {{ t('content.imperialStrongholds.forge.pickHint', { res: forgePickedName }) }}
-            </p>
-            <p class="if-remaining font-mono" data-testid="imperial-forge-remaining">
-              {{ t('content.imperialStrongholds.forge.remaining', { n: forgeRemaining }) }}
-            </p>
-            <div class="if-tributes">
-              <button
-                v-for="row in forgeTributeRows"
-                :key="row.id"
-                class="btn-secondary if-tribute"
-                :class="{ 'if-picked': row.picked }"
-                :disabled="!row.affordable || forgeRemaining === 0"
-                :title="t('content.imperialStrongholds.forge.tributeHint')"
-                :data-testid="`imperial-forge-tribute-${row.id}`"
-                @click="giveTribute(row.id)"
-              >
-                {{ t('content.imperialStrongholds.forge.tribute') }} · {{ row.name }}
-                {{ fmt(row.cost) }}
-                <span v-if="row.picked">×3</span>
-              </button>
-            </div>
-            <p class="if-desc">{{ t('content.imperialStrongholds.forge.yieldDesc') }}</p>
-            <p class="if-desc">{{ t('content.imperialStrongholds.forge.stabilityDesc') }}</p>
-          </template>
-        </template>
       </div>
     </template>
   </section>
@@ -493,6 +507,10 @@ function resourceName(res: ResourceType): string {
   color: var(--color-t-secondary);
 }
 .if-desc {
+  font-size: var(--text-sm);
+  color: var(--color-t-secondary);
+}
+.if-preview {
   font-size: var(--text-sm);
   color: var(--color-t-secondary);
 }

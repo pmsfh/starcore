@@ -37,6 +37,7 @@ export default {
   'content.imperialStrongholds.forge.tributeHint': '投入固定量资源，回填炉火 +24',
   'content.imperialStrongholds.forge.yieldDesc':
     '回礼按稳定度档位结算：80/50/20 以上三档递增，点名资源 ×3，20 以下无回礼；每日 4 次。',
+  'content.imperialStrongholds.forge.yieldPreview': '回礼预览：普通 {base} · 点名 {picked} 数据',
   'content.imperialStrongholds.forge.tribute': '倾贡',
   'content.imperialStrongholds.forge.pickHint': '本周点名：{res}（回礼 ×3）',
   'content.imperialStrongholds.forge.lockedDesc': '需接管全部六座贡道据点，且至少一次通过巡检。',

@@ -183,6 +183,11 @@ console.log('== B. 进入链 ==')
     })
     const pick = await page.locator('[data-testid="imperial-forge-pick"]').textContent()
     if (!pick.includes('×3')) throw new Error('点名提示缺 ×3: ' + pick)
+    // 产出预览：进入后按当前稳定度档位显示普通与点名两档回礼
+    const preview = page.locator('[data-testid="imperial-forge-yield-preview"]')
+    await preview.waitFor({ state: 'visible', timeout: 8000 })
+    const previewText = (await preview.textContent()) || ''
+    if (!previewText.includes('回礼预览')) throw new Error('回礼预览缺位: ' + previewText)
     // 四个投入按钮（四选一，不含数据）
     for (const r of ['energy', 'crystal', 'alloy', 'dark']) {
       if (!(await page.locator(`[data-testid="imperial-forge-tribute-${r}"]`).count()))

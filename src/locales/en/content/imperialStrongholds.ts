@@ -40,6 +40,8 @@ export default {
   'content.imperialStrongholds.forge.tributeHint': 'Give a fixed amount to refill the fire by +24',
   'content.imperialStrongholds.forge.yieldDesc':
     'Returns scale with stability tiers above 80/50/20, named tribute ×3, none below 20; 4 per day.',
+  'content.imperialStrongholds.forge.yieldPreview':
+    'Return preview: {base} normally, {picked} when named',
   'content.imperialStrongholds.forge.tribute': 'Give Tribute',
   'content.imperialStrongholds.forge.pickHint': 'Named this week: {res} (return ×3)',
   'content.imperialStrongholds.forge.lockedDesc':
