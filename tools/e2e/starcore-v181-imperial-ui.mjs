@@ -220,7 +220,12 @@ console.log('== C/D. 领取与整备 ==')
   })
   await v('C2 领取后池清零（按钮转禁用）', async () => {
     await page.locator('[data-testid="imperial-pool-claim"]').click()
-    await page.waitForTimeout(600)
+    await page
+      .waitForFunction(
+        () => document.querySelector('[data-testid="imperial-pool-claim"]')?.disabled === true,
+        { timeout: 3000 },
+      )
+      .catch(() => {})
     const claim = page.locator('[data-testid="imperial-pool-claim"]')
     if (!(await claim.isDisabled())) throw new Error('领取后仍可用')
   })

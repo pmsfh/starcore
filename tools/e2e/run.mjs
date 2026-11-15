@@ -6,12 +6,14 @@
  *
  * 用法：
  *   node tools/e2e/run.mjs                    # 本地全量回归（自动起停预览，端口自 4173 起自动选择空闲）
+ *   node tools/e2e/run.mjs --jobs 2           # 本地全量两路并行
  *   node tools/e2e/run.mjs --remote <URL>     # 对远程目标运行重跑集
  *   node tools/e2e/run.mjs <脚本> [...]        # 运行任意脚本清单（默认本地预览）
  *
  * 选项：
  *   --remote <URL>   指定远程目标（等价于设置 SC_URL 环境变量）
  *   --port <N>       指定本地预览端口（缺省自 4173 起自动寻找空闲端口）
+ *   --jobs <N>       并行脚本数（缺省 1，建议不超过 CPU 核数）
  *   --no-start       不管理预览服务，使用已运行中的本地预览（PREVIEW_URL 可指定）
  *   --log-dir <DIR>  日志目录（缺省：系统临时目录下 starcore-e2e）
  *   --help           显示本说明
@@ -22,7 +24,7 @@ import fs from 'node:fs'
 import net from 'node:net'
 import os from 'node:os'
 import path from 'node:path'
-import { spawn, spawnSync } from 'node:child_process'
+import { spawn } from 'node:child_process'
 import { fileURLToPath } from 'node:url'
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..')
@@ -120,15 +122,17 @@ function printHelp() {
 
 用法：
   node tools/e2e/run.mjs                    本地全量回归（自动起停预览，自动选择空闲端口）
+  node tools/e2e/run.mjs --jobs 2           本地全量两路并行
   node tools/e2e/run.mjs --remote <URL>     对远程目标运行重跑集
   node tools/e2e/run.mjs <脚本> [...]        运行任意脚本清单（默认本地预览）
 
 选项：
-  --remote <URL>   指定远程目标（等价于设置 SC_URL 环境变量）
-  --port <N>       指定本地预览端口（缺省自 4173 起自动寻找空闲端口）
-  --no-start       不管理预览服务，使用已运行中的本地预览（PREVIEW_URL 可指定）
-  --log-dir <DIR>  日志目录（缺省：系统临时目录下 starcore-e2e）
-  --help           显示本说明`)
+  --remote <URL>    指定远程目标（等价于设置 SC_URL 环境变量）
+  --port <N>        指定本地预览端口（缺省自 4173 起自动寻找空闲端口）
+  --jobs <N>        并行脚本数（缺省 1，建议不超过 CPU 核数）
+  --no-start        不管理预览服务，使用已运行中的本地预览（PREVIEW_URL 可指定）
+  --log-dir <DIR>   日志目录（缺省：系统临时目录下 starcore-e2e）
+  --help            显示本说明`)
 }
 
 // 参数解析
@@ -137,6 +141,7 @@ let remote = process.env.SC_URL || null
 let port = null
 let noStart = false
 let logDir = path.join(os.tmpdir(), 'starcore-e2e')
+let jobs = 1
 const scripts = []
 for (let i = 0; i < argv.length; i++) {
   const a = argv[i]
@@ -152,6 +157,12 @@ for (let i = 0; i < argv.length; i++) {
     port = Number(argv[++i])
     if (!Number.isInteger(port) || port <= 0 || port > 65535) {
       console.error('--port 需要一个有效端口号')
+      process.exit(2)
+    }
+  } else if (a === '--jobs') {
+    jobs = Number(argv[++i])
+    if (!Number.isInteger(jobs) || jobs < 1 || jobs > 8) {
+      console.error('--jobs 需要 1 到 8 的整数')
       process.exit(2)
     }
   } else if (a === '--no-start') noStart = true
@@ -184,6 +195,7 @@ for (const s of list) {
 
 // 预览服务生命周期
 let previewProc = null
+const activeChildren = new Set()
 
 function freePort(start) {
   return new Promise((resolve, reject) => {
@@ -279,6 +291,13 @@ let cleaningUp = false
 async function cleanup() {
   if (cleaningUp) return
   cleaningUp = true
+  for (const child of activeChildren) {
+    try {
+      child.kill('SIGTERM')
+    } catch {
+      /* 已退出 */
+    }
+  }
   await stopPreview(targetPort)
 }
 process.on('SIGINT', () => {
@@ -287,6 +306,42 @@ process.on('SIGINT', () => {
 process.on('SIGTERM', () => {
   cleanup().finally(() => process.exit(143))
 })
+
+// 单脚本执行：独立日志文件，子进程退出后汇总
+function runScript(s, env) {
+  const logPath = path.join(logDir, `${s}.log`)
+  return new Promise((resolve) => {
+    let fd
+    let settled = false
+    const done = (ok) => {
+      if (settled) return
+      settled = true
+      try {
+        if (fd !== undefined) fs.closeSync(fd)
+      } catch {
+        /* 已关闭 */
+      }
+      resolve(ok)
+    }
+    try {
+      fd = fs.openSync(logPath, 'w')
+      const child = spawn('node', [s], { cwd: E2E_DIR, env, stdio: ['ignore', fd, fd] })
+      activeChildren.add(child)
+      child.on('error', (err) => {
+        console.error(`  [启动失败] ${s}: ${err.message}`)
+        activeChildren.delete(child)
+        done(false)
+      })
+      child.on('close', (code) => {
+        activeChildren.delete(child)
+        done(code === 0)
+      })
+    } catch (err) {
+      console.error(`  [启动失败] ${s}: ${err.message}`)
+      done(false)
+    }
+  })
+}
 
 // 主流程
 async function main() {
@@ -312,6 +367,7 @@ async function main() {
   console.log('===== 星核纪元 · 端到端诊断 =====')
   console.log(`模式：${mode === 'remote' ? '远程重跑' : '本地回归'}（${list.length} 个脚本）`)
   console.log(`目标：${target}`)
+  console.log(`并发：${jobs}${jobs > 1 ? ' 路' : ''}`)
   console.log(`日志：${logDir}`)
   console.log('')
 
@@ -327,20 +383,25 @@ async function main() {
   let pass = 0
   let fail = 0
   const failed = []
-  for (const s of list) {
-    const logPath = path.join(logDir, `${s}.log`)
-    const fd = fs.openSync(logPath, 'w')
-    const res = spawnSync('node', [s], { cwd: E2E_DIR, env, stdio: ['ignore', fd, fd] })
-    fs.closeSync(fd)
-    if (res.status === 0) {
-      console.log(`PASS  ${s}`)
-      pass += 1
-    } else {
-      console.log(`FAIL  ${s}`)
-      fail += 1
-      failed.push(s)
+  let cursor = 0
+  const worker = async () => {
+    while (true) {
+      const i = cursor++
+      if (i >= list.length) return
+      const s = list[i]
+      const ok = await runScript(s, env)
+      if (ok) {
+        console.log(`PASS  ${s}`)
+        pass += 1
+      } else {
+        console.log(`FAIL  ${s}`)
+        fail += 1
+        failed.push(s)
+      }
     }
   }
+  const workerCount = Math.min(jobs, list.length)
+  await Promise.all(Array.from({ length: workerCount }, () => worker()))
 
   await cleanup()
 

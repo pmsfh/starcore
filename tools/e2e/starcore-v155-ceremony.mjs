@@ -81,6 +81,7 @@ console.log('== A. 转生仪式：全屏演出 + 点击关闭 ==');
   check('仪式 overlay 出现', (await overlay.count()) === 1);
   const text = await overlay.textContent();
   check('仪式含标题与收益与次数（第 2 次）', text.includes('奇点重启') && text.includes('负熵') && text.includes('第 2 次奇点重启'));
+  await page.locator('.modal-overlay').waitFor({ state: 'detached', timeout: 3000 }).catch(() => {});
   check('确认弹窗已关闭', (await page.locator('.modal-overlay').count()) === 0);
   await overlay.click();
   await page.waitForTimeout(300);

@@ -59,7 +59,7 @@ ok('弹窗出现后存档未被替换（仍为 7）', (await readTranscends()) =
 
 // 2. 点遮罩取消 → 不执行
 await page.locator('.modal-overlay').first().click({ position: { x: 10, y: 10 } })
-await page.waitForTimeout(400)
+await page.locator('[role="dialog"]').waitFor({ state: 'detached', timeout: 3000 }).catch(() => {})
 ok('点遮罩后弹窗关闭', (await page.locator('[role="dialog"]').count()) === 0)
 ok('取消后存档仍未被替换', (await readTranscends()) === 7)
 
