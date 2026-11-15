@@ -408,6 +408,8 @@ export const useGameStore = defineStore('game', () => {
   /** 倾贡（v1.83）：扣投入（四选一）→ 结算 → 发 data → 计数（点名响应计 forgePicks） */
   function tributeForge(input: ForgeInputResource, now = Date.now()): number | null {
     if (!isForgeInputResource(input) || !imperial.forge) return null
+    // 日限先判：store 拒绝时不扣投入，避免资源无产出损失
+    if (imperial.forgeRemainingToday(now) <= 0) return null
     const cost = FORGE_TRIBUTE_COST[input]
     if (!resources.spendCost({ [input]: cost })) return null
     const result = imperial.tributeForge(input, daily.currentWeek, now)

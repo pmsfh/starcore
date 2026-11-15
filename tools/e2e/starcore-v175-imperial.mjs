@@ -1,7 +1,7 @@
 // 星核纪元 v1.75 专项回归：档案馆帝庭档案分组（贡道核验仪卫裁决炉音观察留档）
 // A. 锁定态：缺省档帝庭档案分组标题可见、留白提示、条目零渲染不剧透
 // B. 七门解锁后悬念：银河之门完成（未到银盘枢纽）仍锁定，与七门口径错开
-// C. 解锁态：银盘枢纽完成档五节 15 条渲染、计数 15/18（v1.81 炉前节锁定不计入）
+// C. 解锁态：银盘枢纽完成档五节 15 条渲染、计数 15/21（v1.81 炉前节与 v1.83 炉域节锁定不计入）
 import { launch, check, finish, newSeededPage } from './starcore-pwlib.mjs';
 
 function makeSave({ progress = {} } = {}) {
@@ -61,7 +61,7 @@ console.log('== B. 银河之门完成仍锁定（解锁挂银盘枢纽，与七�
 }
 
 // C. 解锁态：银盘枢纽完成（单点解锁）
-console.log('== C. 帝庭档案解锁态：15 条留档五节、计数 15/18 ==');
+console.log('== C. 帝庭档案解锁态：15 条留档五节、计数 15/21 ==');
 {
   const progress = { node_galaxy_hub: doneNode('node_galaxy_hub') };
   const page = await newSeededPage(browser, makeSave({ progress }), '/archive');

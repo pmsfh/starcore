@@ -156,6 +156,14 @@ describe('game — 炉域门面（v1.83）', () => {
     const r2 = game.tributeForge('energy', 0)
     expect(r2 ?? 0).toBeGreaterThanOrEqual(r1 ?? 0)
     expect(game.achievements.lifetimeInt.forgeTributes).toBe(2)
+    // 日限 4 次：第 3、4 次正常结算，第 5 次拒绝且不扣投入
+    expect(game.tributeForge('energy', 0)).not.toBeNull()
+    expect(game.tributeForge('energy', 0)).not.toBeNull()
+    expect(game.achievements.lifetimeInt.forgeTributes).toBe(4)
+    const energyBefore = resources.getAmount('energy').toNumber()
+    expect(game.tributeForge('energy', 0)).toBeNull()
+    expect(resources.getAmount('energy').toNumber()).toBe(energyBefore)
+    expect(game.achievements.lifetimeInt.forgeTributes).toBe(4)
   })
 
   it('倾贡资源不足：拒付且零计数', () => {
