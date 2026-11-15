@@ -1,7 +1,7 @@
 // 星核纪元 · 语言识别回退探针（非套件脚本）
 // 用途：浏览器语言非简体中文/英文时的识别与回退实测。当前规则（v1.17 起）：
 //   中文各变体（含繁体）→ 简体中文；英文族 → English；其余语言 → 统一英文。
-// 用法：node starcore-v116-locale-fallback-probe.mjs   （默认打本地预览；SC_URL 可指定远程）
+// 用法：node tools/e2e/manual/starcore-v116-locale-fallback-probe.mjs   （默认打本地预览；SC_URL 可指定远程）
 // 设计：每个用例 = 独立空上下文 + addInitScript 覆写 navigator.languages / navigator.language，
 //       加载后读取页面实际所见 languages、html[lang] 与首屏文本样例。
 import { chromium } from 'playwright-core'

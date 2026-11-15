@@ -6,7 +6,7 @@
  *  B. 选项 B 结算：卡片消失 + 回执出现 + 冷却窗口不重触
  *  C. 补充路径：移动视口 390px 无横向溢出 + 选项 A 结算入账 + 窗口未到不渲染
  *
- * 用法：node starcore-v126-encounter-probe.mjs [BASE_URL]
+ * 用法：node tools/e2e/manual/starcore-v126-encounter-probe.mjs [BASE_URL]
  *   BASE_URL 缺省本地预览；SC_URL 环境变量可指定远程地址
  */
 import { launch, check, finish, savePayload, injectSave, PREVIEW_URL } from '../starcore-pwlib.mjs'

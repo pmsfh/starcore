@@ -1,5 +1,5 @@
 // v0.91 星系层 4 枚新科技图标可读性验证 + 消费点核验（overlay 法）
-// 用法: node starcore-v091-icon-check.mjs  （SC_URL/OUT 可参）
+// 用法: node tools/e2e/manual/starcore-v091-icon-check.mjs  （SC_URL/OUT 可参）
 import { chromium } from 'playwright-core'
 
 import { EXE, PREVIEW_URL } from '../starcore-pwlib.mjs'
