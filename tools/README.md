@@ -36,18 +36,19 @@ corepack pnpm e2e starcore-v135-save-integrity.mjs  # 运行任意脚本清单
 ```bash
 python3 tools/balance/starcore-v126-encounter-ev.py   # 遭遇事件 EV 核验表
 python3 tools/balance/starcore-v127-dispatch-ev.py    # 派遣远征 EV 核验表
-python3 tools/balance/starcore-ev-ledger.py           # 全系统 EV 总账（三档画像全系统收支）
+python3 tools/balance/starcore-ev-ledger.py           # 全系统 EV 总账（三档画像全系统收支，含帝庭与炉域）
 python3 tools/balance/starcore-v123-trait-calib.py    # 编队特性校准模拟
 ```
 
 - 数据统一经导出器生成的快照 `tools/balance/data/balance-data.json`
   （生成命令 `corepack pnpm balance:export`，新鲜度校验 `corepack pnpm balance:export:check`
-  已挂 check 链尾：改数据表后须重新导出，否则 check 挂红）；快照 schema:3，
-  `units.cost` 投影与 `explore` / `weeklyBoss` / `transcend` / `profiles`
-  四域已并入（transcend 域自 `src/stores/transcend.ts` 模块级常量 SSR 载入；
-  profiles 三档画像：兵量与配装为校准声明手维护区，乘数聚值自
-  tech / achievements / relics / transcend 域真值连乘推导，聚值定长
-  12 位小数输出，跨运行时版本可复现；v092 / v120 / 总账脚本统一消费）；
+  已挂 check 链尾：改数据表后须重新导出，否则 check 挂红）；快照 schema:4，
+  `units.cost` 投影与 `explore` / `weeklyBoss` / `transcend` / `profiles` /
+  `imperial` 五域已并入（imperial 含 `forge` 子域，v1.83；transcend 域自
+  `src/stores/transcend.ts` 模块级常量 SSR 载入；profiles 三档画像：兵量与
+  配装为校准声明手维护区，乘数聚值自 tech / achievements / relics / transcend
+  域真值连乘推导，聚值定长 12 位小数输出，跨运行时版本可复现；v092 / v120 /
+  总账脚本统一消费）；
 - 脚本不再解析 TS 源码：公共加载与断言底座见 `tools/balance/lib/balance_data.py`，
   各脚本判据、输出列与退出码不变；
 - `starcore-v092-battle-sim.py`：战斗解析忠实移植，各模拟脚本的共享底座；
@@ -55,7 +56,7 @@ python3 tools/balance/starcore-v123-trait-calib.py    # 编队特性校准模拟
   v123 的特性面有意排除 `logistics_doctrine`（经济面特性不进战斗模拟，脚本内断言其战斗三字段保持中性）；
 - `starcore-v126-encounter-ev.py` / `starcore-v127-dispatch-ev.py`：EV 核验表（断言式，退出码即结论）；
 - `starcore-ev-ledger.py`：全系统 EV 总账（不挂版本号）：
-  三档玩家画像下训练 / 探索 / 远征 / 周强敌 / 派遣 / 驻扎收支入账，
+  三档玩家画像下训练 / 探索 / 远征 / 周强敌 / 派遣 / 驻扎 / 帝庭据点 / 炉域倾贡收支入账，
   转生（门槛与成本曲线断言）与自动协议（离线自动化节点标注）作结构标注，
   按时间口径分表（一次性 / 周频 / 时薪）不做跨口径加总，汇总两指标
   （稳态时薪净收支 + 一次性投入回收小时数）；折算率承 v1.27 定稿口径；
