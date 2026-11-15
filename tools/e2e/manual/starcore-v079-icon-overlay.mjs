@@ -1,7 +1,7 @@
 // 科技图标可读性核验：19 枚图标 overlay 法截图
 import { chromium } from 'playwright-core'
 
-import { EXE, PREVIEW_URL } from './starcore-pwlib.mjs'
+import { EXE, PREVIEW_URL } from '../starcore-pwlib.mjs'
 const SC_URL = process.env.SC_URL || PREVIEW_URL
 const OUT = process.env.OUT || '/tmp/tech-icons-overlay.png'
 

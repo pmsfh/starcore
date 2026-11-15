@@ -5,7 +5,7 @@
 // 设计：每个用例 = 独立空上下文 + addInitScript 覆写 navigator.languages / navigator.language，
 //       加载后读取页面实际所见 languages、html[lang] 与首屏文本样例。
 import { chromium } from 'playwright-core'
-import { EXE, PREVIEW_URL } from './starcore-pwlib.mjs'
+import { EXE, PREVIEW_URL } from '../starcore-pwlib.mjs'
 
 const URL = process.env.SC_URL || PREVIEW_URL
 const CASES = [

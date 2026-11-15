@@ -1,7 +1,7 @@
 // v1.18 档案馆图标区分度目检：i-nav-archive vs 近邻导航图标 overlay 对照
 import { chromium } from 'playwright-core'
 
-import { EXE, PREVIEW_URL } from './starcore-pwlib.mjs'
+import { EXE, PREVIEW_URL } from '../starcore-pwlib.mjs'
 const SC_URL = process.env.SC_URL || PREVIEW_URL
 const OUT = process.env.OUT || '/tmp/v118-archive-icon-overlay.png'
 

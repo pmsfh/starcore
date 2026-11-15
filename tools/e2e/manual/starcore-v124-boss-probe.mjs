@@ -6,7 +6,7 @@
  *   B. 解锁档（注入 silencer_3 + best=5）：/map 卡解锁态 + 奖励预览；
  *      战斗页渲染 Boss 编成、隐藏驻扎按钮与深度面板；console/pageerror 双路监听
  */
-import { launch, check, finish, savePayload, injectSave, BASE_URL } from './starcore-pwlib.mjs'
+import { launch, check, finish, savePayload, injectSave, BASE_URL } from '../starcore-pwlib.mjs'
 
 const BASE = BASE_URL
 import fs from 'node:fs'

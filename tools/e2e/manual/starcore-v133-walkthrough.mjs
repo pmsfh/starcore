@@ -9,7 +9,7 @@
 import fs from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
-import { saveCode, launch, check, finish, newSeededPage, savePayload, injectSave, BASE_URL } from './starcore-pwlib.mjs'
+import { saveCode, launch, check, finish, newSeededPage, savePayload, injectSave, BASE_URL } from '../starcore-pwlib.mjs'
 
 const OUT = process.env.OUT || path.join(os.tmpdir(), 'starcore-walkthrough')
 fs.mkdirSync(OUT, { recursive: true })

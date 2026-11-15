@@ -2,7 +2,7 @@
 // 用法: node starcore-v091-icon-check.mjs  （SC_URL/OUT 可参）
 import { chromium } from 'playwright-core'
 
-import { EXE, PREVIEW_URL } from './starcore-pwlib.mjs'
+import { EXE, PREVIEW_URL } from '../starcore-pwlib.mjs'
 const SC_URL = process.env.SC_URL || PREVIEW_URL
 const OUT = process.env.OUT || '/tmp/v091-icons.png'
 

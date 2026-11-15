@@ -9,7 +9,7 @@
  * 用法：node starcore-v126-encounter-probe.mjs [BASE_URL]
  *   BASE_URL 缺省本地预览；SC_URL 环境变量可指定远程地址
  */
-import { launch, check, finish, savePayload, injectSave, PREVIEW_URL } from './starcore-pwlib.mjs'
+import { launch, check, finish, savePayload, injectSave, PREVIEW_URL } from '../starcore-pwlib.mjs'
 // 注入正确姿势：ctx.addInitScript(injectSave, savePayload(save))，injectSave 在页面上下文执行
 
 const BASE = process.env.SC_URL || process.argv[2] || PREVIEW_URL

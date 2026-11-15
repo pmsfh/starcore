@@ -26,6 +26,7 @@ corepack pnpm e2e starcore-v135-save-integrity.mjs  # 运行任意脚本清单
 ```
 
 - 运行器自动管理本地预览服务的启动与停止；`--no-start` 可复用已运行的服务；
+- `manual/` 存放不进入默认清单的探针与走查脚本，用法见 `tools/e2e/manual/README.md`；
 - 每脚本日志分账写入日志目录（缺省系统临时目录 `starcore-e2e`，`--log-dir` 可改）；
 - 浏览器缺失时先运行 `corepack pnpm diagnose --fix`。
 

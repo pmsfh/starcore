@@ -2,7 +2,7 @@
 // 富档注档 + SPA 内真实点击：签到→建造→科技→训练→编队→探索→出征→驻扎
 // →远征深度推进→遗物强化→设置页双语切换→移动端 375 九路由。
 // 全程 console.error + HTTP>=400 双路监听（favicon 类只有 console 能抓到）。
-import { launch, check, finish, failCount, newSeededPage, BASE_URL } from './starcore-pwlib.mjs';
+import { launch, check, finish, failCount, newSeededPage, BASE_URL } from '../starcore-pwlib.mjs';
 
 const ALL_TECHS = ["fusion_tech", "energy_eff_1", "core_mining", "energy_eff_2", "dyson_theory", "crystal_eff_1", "refine_tech", "alloy_eff_1", "nano_forge_tech", "ion_casting", "alloy_eff_2", "stellar_forge_theory", "quantum_tech", "data_eff_1", "neural_arch", "research_speed", "data_eff_2", "holographic_computing", "military_basic", "weapon_upg", "armor_upg", "adv_units", "parallel_training_1", "parallel_training_2", "crystal_growth", "deep_crystal_mining", "crystal_eff_2", "silicon_ring_theory", "explore_basic", "explore_range_1", "explore_range_2", "dark_detection", "dark_matter_theory", "dark_capture", "dark_eff_1", "dark_singularity_well_theory", "singularity_theory", "prestige_boost", "offline_enhance", "stellar_charting", "wormhole_stabilization", "fleet_logistics", "dark_resonance", "starcluster_charting", "flagship_doctrine", "dark_amplifier", "precursor_memory", "arm_navigation", "armada_tactics", "dark_harvester", "neural_archive", "galaxy_charting", "galaxy_command", "dark_web", "galaxy_archive", "void_charting", "void_command", "dark_veil", "void_archive"];
 

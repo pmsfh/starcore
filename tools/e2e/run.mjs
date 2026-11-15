@@ -28,7 +28,7 @@ import { fileURLToPath } from 'node:url'
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..')
 const E2E_DIR = path.join(ROOT, 'tools', 'e2e')
 
-// 清单：本地全量回归（42）/ 远程重跑（32），
+// 清单：本地全量回归（44）/ 远程重跑（34），
 const SUITE = [
   'starcore-baseline-regress.mjs',
   'starcore-v045-release.mjs',
