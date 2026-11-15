@@ -30,7 +30,10 @@ growing through "Singularity Restart" rebirth cycles.
   map; taken-over ones yield tribute continuously (12-hour pool cap, manual
   claim); weekly inspections can be fought at standard or strict difficulty,
   or paid off; each holding supports 3 readiness levels; progress persists
-  through rebirth (v1.81)
+  through rebirth (v1.81); the Furnace Domain at the end of the route (v1.83)
+  takes one of four resources per tribute, refills furnace stability, and
+  returns data by stability tier and the weekly named resource, up to 4
+  tributes a day
 - **Relics**: 20 kinds drawn from rarity pools; 3 of the same rarity fuse
   into 1 of the next tier; 4 set bonuses; each relic can be enhanced up to
   level 20 with energy
