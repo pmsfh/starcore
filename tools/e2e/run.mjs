@@ -288,6 +288,7 @@ async function stopPreview(p) {
 
 let targetPort = null
 let cleaningUp = false
+let interrupted = false
 async function cleanup() {
   if (cleaningUp) return
   cleaningUp = true
@@ -301,9 +302,11 @@ async function cleanup() {
   await stopPreview(targetPort)
 }
 process.on('SIGINT', () => {
+  interrupted = true
   cleanup().finally(() => process.exit(130))
 })
 process.on('SIGTERM', () => {
+  interrupted = true
   cleanup().finally(() => process.exit(143))
 })
 
@@ -386,10 +389,12 @@ async function main() {
   let cursor = 0
   const worker = async () => {
     while (true) {
+      if (interrupted) return
       const i = cursor++
       if (i >= list.length) return
       const s = list[i]
       const ok = await runScript(s, env)
+      if (interrupted) return
       if (ok) {
         console.log(`PASS  ${s}`)
         pass += 1
@@ -404,6 +409,7 @@ async function main() {
   await Promise.all(Array.from({ length: workerCount }, () => worker()))
 
   await cleanup()
+  if (interrupted) return
 
   console.log('')
   console.log(
