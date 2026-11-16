@@ -32,7 +32,7 @@ import { fileURLToPath } from 'node:url'
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..')
 const E2E_DIR = path.join(ROOT, 'tools', 'e2e')
 
-// 清单：本地全量回归（39）/ 远程重跑（33），
+// 清单：本地全量回归（38）/ 远程重跑（32），
 const SUITE = [
   'starcore-baseline-regress.mjs',
   'starcore-v045-release.mjs',
@@ -48,7 +48,7 @@ const SUITE = [
   'starcore-v062-daily.mjs',
   'starcore-v077-ui-fixes.mjs',
   'starcore-v078-hygiene.mjs',
-  'starcore-v081-save-safety.mjs',
+  'starcore-save-suite.mjs',
   'starcore-v082-wiring.mjs',
   'starcore-v083-guard.mjs',
   'starcore-v084-hygiene.mjs',
@@ -64,7 +64,6 @@ const SUITE = [
   'starcore-v124-weekly-boss.mjs',
   'starcore-v126-encounter.mjs',
   'starcore-v127-dispatch.mjs',
-  'starcore-v135-save-integrity.mjs',
   'starcore-v155-ceremony.mjs',
   'starcore-v156-battle-replay.mjs',
   'starcore-v172-echo.mjs',
@@ -73,6 +72,7 @@ const SUITE = [
   'starcore-v182-imperial-audit.mjs',
   'starcore-v183-imperial-forge.mjs',
   'starcore-boot-screen.mjs',
+
 ]
 
 // 核心 12：启动与版本、主循环、存档、守卫、帝庭线；全部在 REMOTE 中，保证本地/线上通用
@@ -82,13 +82,14 @@ const CORE = [
   'starcore-v057-achievements.mjs',
   'starcore-v058-automation.mjs',
   'starcore-v062-daily.mjs',
-  'starcore-v081-save-safety.mjs',
+  'starcore-save-suite.mjs',
   'starcore-v082-wiring.mjs',
   'starcore-v083-guard.mjs',
-  'starcore-v135-save-integrity.mjs',
+  'starcore-v0863-import-confirm.mjs',
   'starcore-v181-imperial-ui.mjs',
   'starcore-v183-imperial-forge.mjs',
   'starcore-boot-screen.mjs',
+
 ]
 
 const REMOTE = [
@@ -98,7 +99,7 @@ const REMOTE = [
   'starcore-v058-automation.mjs',
   'starcore-v060-endless.mjs',
   'starcore-v062-daily.mjs',
-  'starcore-v081-save-safety.mjs',
+  'starcore-save-suite.mjs',
   'starcore-v082-wiring.mjs',
   'starcore-v083-guard.mjs',
   'starcore-v084-hygiene.mjs',
@@ -116,7 +117,6 @@ const REMOTE = [
   'starcore-v124-weekly-boss.mjs',
   'starcore-v126-encounter.mjs',
   'starcore-v127-dispatch.mjs',
-  'starcore-v135-save-integrity.mjs',
   'starcore-v155-ceremony.mjs',
   'starcore-v156-battle-replay.mjs',
   'starcore-v172-echo.mjs',
@@ -125,6 +125,7 @@ const REMOTE = [
   'starcore-v183-imperial-forge.mjs',
   'starcore-v182-imperial-audit.mjs',
   'starcore-boot-screen.mjs',
+
 ]
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms))
