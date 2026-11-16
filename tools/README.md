@@ -31,10 +31,10 @@ corepack pnpm e2e starcore-smoke-suite.mjs  # 运行任意脚本清单
 - 运行器自动管理本地预览服务的启动与停止；`--core` 只跑核心 12（日常与合并前，发版前跑全量），核心集全部包含在线上重跑集，可与 `--remote` 组合；`--jobs <N>` 设置并行脚本数，缺省 1，建议不超过 CPU 核数；`--no-start` 可复用已运行的服务；
 - 核心 12 = `smoke-suite` 发布校验（轻量模式只跑发布节）、`v056` 转生树、`v057` 成就、`v058` 自动化、`v062` 每日、`save-suite` 存档安全与签名、`v082` 接线、`v083` 守护、`v0863-import-confirm` 导入确认、`v181` 帝庭界面、`v183` 炉域、`boot-screen` 启动画面。
 - `manual/` 存放不进入默认清单的探针与走查脚本，用法见 `tools/e2e/manual/README.md`；
-- 星图五层专项已合并为 `starcore-map-layers.mjs`（原 v059 / v071 / v090 / v091 / v092 五件，断言与分层口径不变）；
-- 档案馆门控分组专项已合并为 `starcore-archive-groups.mjs`（原 v174 七门与 v175 帝庭档案两件，断言与解锁口径不变）；
-- 存档专项已合并为 `starcore-save-suite.mjs`（原 v081 存档安全链与 v135 完整性签名两件，38 项断言不变）；
-- 首屏、冒烟与发布校验三件已合并为 `starcore-smoke-suite.mjs`（原 baseline-regress / smoke / v045-release，35 断言逐条保留；`--core` 与 `--remote` 下走轻量模式，只跑发布校验节）；
+- `starcore-map-layers.mjs`：星图分层回归（据点守恒、分层解锁）；
+- `starcore-archive-groups.mjs`：档案馆门控分组回归（七门解锁、帝庭档案）；
+- `starcore-save-suite.mjs`：存档安全与完整性回归（备份、导入、签名校验）；
+- `starcore-smoke-suite.mjs`：首屏、冒烟与发布校验；在 `--core` 与 `--remote` 下走轻量模式，只执行发布校验部分；
 - 每脚本日志分账写入日志目录（缺省系统临时目录 `starcore-e2e`，`--log-dir` 可改）；
 - 浏览器缺失时先运行 `corepack pnpm diagnose --fix`。
 
@@ -67,14 +67,11 @@ python3 tools/balance/starcore-v123-trait-calib.py    # 编队特性校准模拟
 - `starcore-ev-ledger.py`：全系统 EV 总账（不挂版本号）：
   三档玩家画像下训练 / 探索 / 远征 / 周强敌 / 派遣 / 驻扎 / 帝庭据点 / 炉域倾贡收支入账，
   转生（门槛与成本曲线断言）与自动协议（离线自动化节点标注）作结构标注，
-  按时间口径分表（一次性 / 周频 / 时薪）不做跨口径加总，汇总两指标
-  （稳态时薪净收支 + 一次性投入回收小时数）；折算率承 v1.27 定稿口径；
-  遗物概率面不进账；先本地跑，合并后视运行时长再定是否进 CI balance job；
+  按时间类别分表（一次性 / 周频 / 时薪），不跨类别加总，汇总两指标
+  （稳态时薪净收支 + 一次性投入回收小时数）；折算率沿用 v1.27 定稿值；
+  遗物概率面不进账；
 - 改数值后先重新导出快照（`corepack pnpm balance:export`），再过核验表。
-- CI 口径（v1.67 起）：`.github/workflows/check.yml` 的 `balance` 独立 job 依序运行
+- CI 配置（v1.67 起）：`.github/workflows/check.yml` 的 `balance` 独立 job 依序运行
   v126 / v127 两枚 EV 核验表；`command -v python3` 守卫承担可选依赖语义，缺
   python3 时显式打印跳过说明、不硬失败（同 diagnose 的 Python 可选先例）。
-- 校准三枚（v120 / v123 / v124）不进 CI，理由与断言语况分开说：v123 / v124 对
-  FAIL 本就以非零退出码硬判、v120 为纯报告输出；
-  排除它们的真实原因是红线语义与「有意调参」耦合，调参触线也会红，作门禁会
-  产生预期外红灯，且全域扫描耗时更长。是否断言化收口另行议定，登记为候选。
+- 校准三枚（v120 / v123 / v124）不在 CI 中运行，按需在本地执行：其判定与数值调参耦合，且全域扫描耗时较长；v120 为纯报告输出，v123 / v124 以非零退出码判定失败。
