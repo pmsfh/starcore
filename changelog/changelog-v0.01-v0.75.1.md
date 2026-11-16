@@ -226,7 +226,6 @@
 - 单元测试 29 文件 378 用例全过
 - Playwright 十二脚本全过（preview 本地 + 部署后线上重跑）
 - 线上校验：.map 返回 404、站点目录无 .map 残留、版本串 v0.71.1
-- corepack pnpm build（含 vue-tsc）通过；lint/format 零输出
 - 单元测试 28 文件 371 用例全过（8.9s；兼容用例改写后 -7）
 - Playwright 十二脚本全过（本地 preview；v056 旧格式 seed 同步改 level 格
   式）
@@ -447,14 +446,12 @@ research 四个 store 新增 96 用例并把规范关键梯度固化为机器校
 - `lint:check` / `format:check` 零输出
 
 - `corepack pnpm test`：**22 文件 298 用例**全过（202 基线 + 96 新增）
-- `corepack pnpm build`（含 vue-tsc）通过
 - `lint:check` / `format:check` 零输出（新测试文件曾触发 Prettier 折行，
   format --write 修复后重跑通过）
 - 纯测试与文档变更，无运行时行为变化；Playwright 回归不受影响（未触 UI/数
   据契约）
 - `corepack pnpm test`：29 文件 362 用例全部通过
 - `corepack pnpm build`（含 vue-tsc 类型检查）通过
-- `lint:check` / `format:check` 零输出
 - 未触碰运行时代码与数据契约，Playwright 回归脚本不受影响
   （v0.65.1 先例：纯
   测试版本免跑，UI 契约由既有校验覆盖）
@@ -936,12 +933,8 @@ CSS，全局样式按职责拆为七个模块。纯动效、文档与结构改�
 
 - vitest run 12 文件 86/86 通过（新增 useOnboarding 测试 5 例：首 step 显
   示 / 对象结构写入 / skipAll / 预置跳过 / 损坏内容兜底）
-- vue-tsc -b 零错误 + vite build 通过；lint:check / format:check 零输出
 - Playwright 回归：行动队列 / 槽位 / 空状态 / 双端八路由全过
-- vue-tsc -b 零错误 + vite build 通过；lint:check / format:check 零输出
 - vitest run 12 文件 86/86 通过
-- Playwright 回归：双端八路由无错误、移动端无溢出
-- vue-tsc -b 零错误 + vite build 通过；lint:check / format:check 零输出
 - vitest run 12 文件 86/86 通过；Playwright 双端回归全过
 - `pnpm build`（含 vue-tsc）通过
 - `pnpm test`：12 文件 86 用例全绿（队列 5 用例迁移至 composable 层，总数
@@ -951,12 +944,7 @@ CSS，全局样式按职责拆为七个模块。纯动效、文档与结构改�
   列）
 - 部署后线上版本串核对一致
 - 新旧 CSS 实质内容 diff 校验通过（仅预期注释差异）
-- `pnpm build`（含 vue-tsc）通过
 - `pnpm test`：12 文件 86 用例全绿
-- `lint:check` / `format:check` 零输出
-- Playwright 回归四套全绿（release 双端八路由 / 空状态 / 训练槽位 / 行动队
-  列）
-- 部署后线上版本串核对一致
 
 ---
 
@@ -1338,7 +1326,7 @@ v0.43，v0.41.1 的 6 项修复一并上线。
 
 ---
 
-## v0.41.1 — UI: 氛围与体验升级十六项
+## v0.41.1 — UI: 氛围与体验升级 16 项
 
 **变更性质：UI + 修复**
 
@@ -1451,7 +1439,6 @@ v0.43，v0.41.1 的 6 项修复一并上线。
 - vite build：构建通过
 - npx vitest run：8 文件 67 用例全部通过
 
-- vue-tsc -b：零错误
 - vite build：构建成功
 - npx vitest run：8 文件 67/67 用例全部通过
 - deploy.py dry-run 路径校验：10 种异常路径全部拦截
@@ -1825,7 +1812,6 @@ gzip 减 35%，遗物存档体积减 71%，运行时与开发依赖各减一，�
 - symbol 总数校验：85 全唯一无悬空引用
 
 - vite build：构建通过
-- npx vitest run：8 文件 67 用例全部通过
 
 ---
 
@@ -2434,7 +2420,6 @@ Icons.vue 进行 facade 工程重构，将单体大组件拆分为 7 个子组�
 - 线上部署：200 OK
 
 - vue-tsc -b（含 noUnusedLocals/Parameters）：零错误
-- vite build：成功
 - vitest：54/54 全部通过
 - eslint：0 errors, 0 warnings
 
