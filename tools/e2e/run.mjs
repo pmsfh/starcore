@@ -32,10 +32,9 @@ import { fileURLToPath } from 'node:url'
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..')
 const E2E_DIR = path.join(ROOT, 'tools', 'e2e')
 
-// 清单：本地全量回归（38）/ 远程重跑（32），
+// 清单：本地全量回归（36）/ 远程重跑（32）/ 核心 12，
 const SUITE = [
-  'starcore-baseline-regress.mjs',
-  'starcore-v045-release.mjs',
+  'starcore-smoke-suite.mjs',
   'starcore-v046-empty-states.mjs',
   'starcore-v048-training-slots.mjs',
   'starcore-v049-action-queue.mjs',
@@ -52,7 +51,6 @@ const SUITE = [
   'starcore-v082-wiring.mjs',
   'starcore-v083-guard.mjs',
   'starcore-v084-hygiene.mjs',
-  'starcore-smoke.mjs',
   'starcore-v0863-import-confirm.mjs',
   'starcore-v0863-offline-report.mjs',
   'starcore-v095-error-fallback.mjs',
@@ -77,7 +75,7 @@ const SUITE = [
 
 // 核心 12：启动与版本、主循环、存档、守卫、帝庭线；全部在 REMOTE 中，保证本地/线上通用
 const CORE = [
-  'starcore-v045-release.mjs',
+  'starcore-smoke-suite.mjs',
   'starcore-v056-infinite-tree.mjs',
   'starcore-v057-achievements.mjs',
   'starcore-v058-automation.mjs',
@@ -93,7 +91,7 @@ const CORE = [
 ]
 
 const REMOTE = [
-  'starcore-v045-release.mjs',
+  'starcore-smoke-suite.mjs',
   'starcore-v056-infinite-tree.mjs',
   'starcore-v057-achievements.mjs',
   'starcore-v058-automation.mjs',
@@ -397,6 +395,7 @@ async function main() {
   console.log('')
 
   const env = { ...process.env }
+  if (core) env.E2E_LIGHT = '1'
   if (mode === 'remote') {
     env.SC_URL = target
     delete env.PREVIEW_URL

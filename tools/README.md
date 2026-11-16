@@ -25,15 +25,16 @@ corepack pnpm e2e --core                            # 本地核心 12（日常�
 corepack pnpm e2e --core --jobs 2                   # 核心 12 两路并行
 corepack pnpm e2e --jobs 2                          # 本地全量两路并行
 corepack pnpm e2e --remote https://example.com      # 对远程目标运行重跑集
-corepack pnpm e2e starcore-save-suite.mjs  # 运行任意脚本清单
+corepack pnpm e2e starcore-smoke-suite.mjs  # 运行任意脚本清单
 ```
 
 - 运行器自动管理本地预览服务的启动与停止；`--core` 只跑核心 12（日常与合并前，发版前跑全量），核心集全部包含在线上重跑集，可与 `--remote` 组合；`--jobs <N>` 设置并行脚本数，缺省 1，建议不超过 CPU 核数；`--no-start` 可复用已运行的服务；
-- 核心 12 = `v045` 发布校验、`v056` 转生树、`v057` 成就、`v058` 自动化、`v062` 每日、`save-suite` 存档安全与签名、`v082` 接线、`v083` 守护、`v0863-import-confirm` 导入确认、`v181` 帝庭界面、`v183` 炉域、`boot-screen` 启动画面。
+- 核心 12 = `smoke-suite` 发布校验（轻量模式只跑发布节）、`v056` 转生树、`v057` 成就、`v058` 自动化、`v062` 每日、`save-suite` 存档安全与签名、`v082` 接线、`v083` 守护、`v0863-import-confirm` 导入确认、`v181` 帝庭界面、`v183` 炉域、`boot-screen` 启动画面。
 - `manual/` 存放不进入默认清单的探针与走查脚本，用法见 `tools/e2e/manual/README.md`；
 - 星图五层专项已合并为 `starcore-map-layers.mjs`（原 v059 / v071 / v090 / v091 / v092 五件，断言与分层口径不变）；
 - 档案馆门控分组专项已合并为 `starcore-archive-groups.mjs`（原 v174 七门与 v175 帝庭档案两件，断言与解锁口径不变）；
 - 存档专项已合并为 `starcore-save-suite.mjs`（原 v081 存档安全链与 v135 完整性签名两件，38 项断言不变）；
+- 首屏、冒烟与发布校验三件已合并为 `starcore-smoke-suite.mjs`（原 baseline-regress / smoke / v045-release，35 断言逐条保留；`--core` 与 `--remote` 下走轻量模式，只跑发布校验节）；
 - 每脚本日志分账写入日志目录（缺省系统临时目录 `starcore-e2e`，`--log-dir` 可改）；
 - 浏览器缺失时先运行 `corepack pnpm diagnose --fix`。
 
