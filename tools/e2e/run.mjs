@@ -32,7 +32,7 @@ import { fileURLToPath } from 'node:url'
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..')
 const E2E_DIR = path.join(ROOT, 'tools', 'e2e')
 
-// 清单：本地全量回归（44）/ 远程重跑（34），
+// 清单：本地全量回归（40）/ 远程重跑（34），
 const SUITE = [
   'starcore-baseline-regress.mjs',
   'starcore-v045-release.mjs',
@@ -42,11 +42,10 @@ const SUITE = [
   'starcore-v056-infinite-tree.mjs',
   'starcore-v057-achievements.mjs',
   'starcore-v058-automation.mjs',
-  'starcore-v059-stellar-layer.mjs',
+  'starcore-map-layers.mjs',
   'starcore-v060-endless.mjs',
   'starcore-v061-relic-fusion.mjs',
   'starcore-v062-daily.mjs',
-  'starcore-v071-cluster-layer.mjs',
   'starcore-v077-ui-fixes.mjs',
   'starcore-v078-hygiene.mjs',
   'starcore-v081-save-safety.mjs',
@@ -56,9 +55,6 @@ const SUITE = [
   'starcore-smoke.mjs',
   'starcore-v0863-import-confirm.mjs',
   'starcore-v0863-offline-report.mjs',
-  'starcore-v090-arm-layer.mjs',
-  'starcore-v091-galaxy-layer.mjs',
-  'starcore-v092-void-layer.mjs',
   'starcore-v095-error-fallback.mjs',
   'starcore-v095-nav-a11y.mjs',
   'starcore-v115-en-locale.mjs',
@@ -111,7 +107,7 @@ const REMOTE = [
   'starcore-v0863-import-confirm.mjs',
   'starcore-v0863-offline-report.mjs',
   'starcore-v087-security.mjs',
-  'starcore-v092-void-layer.mjs',
+  'starcore-map-layers.mjs',
   'starcore-v095-error-fallback.mjs',
   'starcore-v095-nav-a11y.mjs',
   'starcore-v115-en-locale.mjs',
