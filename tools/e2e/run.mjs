@@ -32,7 +32,7 @@ import { fileURLToPath } from 'node:url'
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..')
 const E2E_DIR = path.join(ROOT, 'tools', 'e2e')
 
-// 清单：本地全量回归（40）/ 远程重跑（34），
+// 清单：本地全量回归（39）/ 远程重跑（33），
 const SUITE = [
   'starcore-baseline-regress.mjs',
   'starcore-v045-release.mjs',
@@ -68,8 +68,7 @@ const SUITE = [
   'starcore-v155-ceremony.mjs',
   'starcore-v156-battle-replay.mjs',
   'starcore-v172-echo.mjs',
-  'starcore-v174-gates.mjs',
-  'starcore-v175-imperial.mjs',
+  'starcore-archive-groups.mjs',
   'starcore-v181-imperial-ui.mjs',
   'starcore-v182-imperial-audit.mjs',
   'starcore-v183-imperial-forge.mjs',
@@ -121,8 +120,7 @@ const REMOTE = [
   'starcore-v155-ceremony.mjs',
   'starcore-v156-battle-replay.mjs',
   'starcore-v172-echo.mjs',
-  'starcore-v174-gates.mjs',
-  'starcore-v175-imperial.mjs',
+  'starcore-archive-groups.mjs',
   'starcore-v181-imperial-ui.mjs',
   'starcore-v183-imperial-forge.mjs',
   'starcore-v182-imperial-audit.mjs',
