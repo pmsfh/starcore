@@ -1,0 +1,109 @@
+name: e2e
+
+# PR 与 main 推送都跑全量，按代码路径过滤：纯文档、日志与数值工具提交不触发。
+# 线上重跑集只在部署后手动触发，避免拿仓库新版本去核对旧线上页面。
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/**'
+      - 'public/**'
+      - 'index.html'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'vite.config.ts'
+      - 'vitest.config.ts'
+      - 'tsconfig*.json'
+      - 'tools/e2e/**'
+      - 'tools/lib/**'
+      - '.github/workflows/e2e.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'src/**'
+      - 'public/**'
+      - 'index.html'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'vite.config.ts'
+      - 'vitest.config.ts'
+      - 'tsconfig*.json'
+      - 'tools/e2e/**'
+      - 'tools/lib/**'
+      - '.github/workflows/e2e.yml'
+  workflow_dispatch:
+    inputs:
+      url:
+        description: 线上站点地址
+        required: false
+        default: https://sc.pmtest.cc
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  local:
+    if: github.event_name != 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: 缓存 Chromium
+        uses: actions/cache@v6
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: playwright-${{ runner.os }}-
+      - name: 安装 Chromium
+        run: pnpm exec playwright-core install --with-deps chromium
+      - name: 构建
+        run: pnpm build
+      - name: 端到端全量
+        run: node tools/e2e/run.mjs --jobs 2 --log-dir "$RUNNER_TEMP/e2e-logs"
+      - name: 上传日志
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: e2e-logs-${{ github.run_id }}
+          path: ${{ runner.temp }}/e2e-logs
+          if-no-files-found: ignore
+
+  remote:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: 缓存 Chromium
+        uses: actions/cache@v6
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: playwright-${{ runner.os }}-
+      - name: 安装 Chromium
+        run: pnpm exec playwright-core install --with-deps chromium
+      - name: 线上重跑集
+        run: node tools/e2e/run.mjs --remote "${{ inputs.url }}" --log-dir "$RUNNER_TEMP/e2e-logs"
+      - name: 上传日志
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: remote-e2e-logs-${{ github.run_id }}
+          path: ${{ runner.temp }}/e2e-logs
+          if-no-files-found: ignore
