@@ -369,8 +369,7 @@ research 四个 store 新增 96 用例并把规范关键梯度固化为机器校
 2. **buildings.test.ts**（24 用例）：成本公式 ceil(base×growth^level) 逐资
    源验证 /大数等级精度 / 产出 = 每级 × 等级 × 乘数 / 解锁判定 /
    **规范守恒组**：增长率阶梯（1.18/1.15/1.13/1.10）、每级产出比 ≥×2（陷阱
-   层防线）、跳层无倒挂（同扇区 Lv0 回本单调不减）、离子铸造站 v0.65
-   修正口径
+   层防线）、跳层无倒挂（同扇区 Lv0 回本单调不减）、离子铸造站修正口径
 3. **exploration.test.ts**（20 用例）：前置链校验 / 扣费原子性 / 重复开始
    拒绝 /**完成时间锁定**（开始后 mult 变化不影响进行中探索）/ applyTick
    幂等 /旧档无 endTime 动态补算兼容 / getProgress 三点采样 / reset 与
@@ -426,7 +425,7 @@ research 四个 store 新增 96 用例并把规范关键梯度固化为机器校
     长度），数据规模漂移时测试自适配，不做硬编码
   - 涉及 UI 响应的校验严格等待 nextTick，规避响应式更新时序差异
 - exploration.test.ts 两处注释去除破折号，对齐全项目书写规范
-- changelog v0.65.2 条目 TechView 用例数勘误：10 → 9（实测各视图
+- changelog 本条 TechView 用例数勘误：10 → 9（实测各视图
   8/9/9/10/12/6/10 合计 64，与条目标题一致，偏差仅此一处）
 - changelog 历史条目（v0.50.1-v0.62.2）编号引用清理：变更标签统一为
   「变更性质」，v0.50.2/v0.62.2 条目的旧编号引用改写为语义化描述
@@ -453,7 +452,7 @@ research 四个 store 新增 96 用例并把规范关键梯度固化为机器校
 - `corepack pnpm test`：29 文件 362 用例全部通过
 - `corepack pnpm build`（含 vue-tsc 类型检查）通过
 - 未触碰运行时代码与数据契约，Playwright 回归脚本不受影响
-  （v0.65.1 先例：纯
+  （本条早前先例：纯
   测试版本免跑，UI 契约由既有校验覆盖）
 - build（含 vue-tsc）+ vitest 29 文件 362 用例全绿；lint:check
   /format:check 零输出
@@ -881,7 +880,7 @@ CSS，全局样式按职责拆为七个模块。纯动效、文档与结构改�
   - p2-interaction-state-spec.md → 交互状态规范.md
   - p3-design-specs.md → 体验增强设计规范.md
   - icon-design-spec.md → 图标设计规范.md
-  - 游戏设定与架构.md 不变（v0.50.2 入库）
+  - 游戏设定与架构.md 不变（本条早前入库）
 - 删除清单（git 历史可查）：
   - home-ui-总体推进方案.md（P0–P3 计划表，全部实现完毕）与 home-ui-总体推
     进方案-技术复查.md（计划阶段的技术检查）
