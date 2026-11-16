@@ -7,9 +7,8 @@
 > 当前版本：v1.84
 >
 > 本文件为活跃档（v1.55 起），新条目置顶，29 个版本条目；更早条目见
-> [changelog-v1.06-v1.48.md](changelog-v1.06-v1.48.md)（v1.06-v1.48）、
-> [changelog-v0.58-v1.05.md](changelog-v0.58-v1.05.md)（v0.58-v1.05）与
-> [changelog-v0.01-v0.57.md](changelog-v0.01-v0.57.md)（v0.01-v0.57）。
+> [changelog-v0.77.1-v1.48.6.md](changelog-v0.77.1-v1.48.6.md)（v0.77.1 至 v1.48.6）与
+> [changelog-v0.01-v0.75.1.md](changelog-v0.01-v0.75.1.md)（v0.01 至 v0.75.1）。
 
 ---
 
