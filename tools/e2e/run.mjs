@@ -6,6 +6,7 @@
  *
  * 用法：
  *   node tools/e2e/run.mjs                    # 本地全量回归（自动起停预览，端口自 4173 起自动选择空闲）
+ *   node tools/e2e/run.mjs --core             # 本地核心 12（日常与合并前）
  *   node tools/e2e/run.mjs --jobs 2           # 本地全量两路并行
  *   node tools/e2e/run.mjs --remote <URL>     # 对远程目标运行重跑集
  *   node tools/e2e/run.mjs <脚本> [...]        # 运行任意脚本清单（默认本地预览）
@@ -14,6 +15,7 @@
  *   --remote <URL>   指定远程目标（等价于设置 SC_URL 环境变量）
  *   --port <N>       指定本地预览端口（缺省自 4173 起自动寻找空闲端口）
  *   --jobs <N>       并行脚本数（缺省 1，建议不超过 CPU 核数）
+ *   --core           只跑核心 12（全部包含在远程重跑集，本地/远程通用）
  *   --no-start       不管理预览服务，使用已运行中的本地预览（PREVIEW_URL 可指定）
  *   --log-dir <DIR>  日志目录（缺省：系统临时目录下 starcore-e2e）
  *   --help           显示本说明
@@ -78,6 +80,22 @@ const SUITE = [
   'starcore-boot-screen.mjs',
 ]
 
+// 核心 12：启动与版本、主循环、存档、守卫、帝庭线；全部在 REMOTE 中，保证本地/线上通用
+const CORE = [
+  'starcore-v045-release.mjs',
+  'starcore-v056-infinite-tree.mjs',
+  'starcore-v057-achievements.mjs',
+  'starcore-v058-automation.mjs',
+  'starcore-v062-daily.mjs',
+  'starcore-v081-save-safety.mjs',
+  'starcore-v082-wiring.mjs',
+  'starcore-v083-guard.mjs',
+  'starcore-v135-save-integrity.mjs',
+  'starcore-v181-imperial-ui.mjs',
+  'starcore-v183-imperial-forge.mjs',
+  'starcore-boot-screen.mjs',
+]
+
 const REMOTE = [
   'starcore-v045-release.mjs',
   'starcore-v056-infinite-tree.mjs',
@@ -122,6 +140,7 @@ function printHelp() {
 
 用法：
   node tools/e2e/run.mjs                    本地全量回归（自动起停预览，自动选择空闲端口）
+  node tools/e2e/run.mjs --core             本地核心 12（日常与合并前）
   node tools/e2e/run.mjs --jobs 2           本地全量两路并行
   node tools/e2e/run.mjs --remote <URL>     对远程目标运行重跑集
   node tools/e2e/run.mjs <脚本> [...]        运行任意脚本清单（默认本地预览）
@@ -130,6 +149,7 @@ function printHelp() {
   --remote <URL>    指定远程目标（等价于设置 SC_URL 环境变量）
   --port <N>        指定本地预览端口（缺省自 4173 起自动寻找空闲端口）
   --jobs <N>        并行脚本数（缺省 1，建议不超过 CPU 核数）
+  --core            只跑核心 12（全部包含在远程重跑集，本地/远程通用）
   --no-start        不管理预览服务，使用已运行中的本地预览（PREVIEW_URL 可指定）
   --log-dir <DIR>   日志目录（缺省：系统临时目录下 starcore-e2e）
   --help            显示本说明`)
@@ -142,6 +162,7 @@ let port = null
 let noStart = false
 let logDir = path.join(os.tmpdir(), 'starcore-e2e')
 let jobs = 1
+let core = false
 const scripts = []
 for (let i = 0; i < argv.length; i++) {
   const a = argv[i]
@@ -165,7 +186,8 @@ for (let i = 0; i < argv.length; i++) {
       console.error('--jobs 需要 1 到 8 的整数')
       process.exit(2)
     }
-  } else if (a === '--no-start') noStart = true
+  } else if (a === '--core') core = true
+  else if (a === '--no-start') noStart = true
   else if (a === '--log-dir') {
     const v = argv[++i]
     if (!v) {
@@ -184,7 +206,11 @@ for (let i = 0; i < argv.length; i++) {
 }
 
 const mode = remote ? 'remote' : 'local'
-const list = scripts.length ? scripts : mode === 'remote' ? REMOTE : SUITE
+if (core && scripts.length) {
+  console.error('--core 不能与脚本清单同时使用')
+  process.exit(2)
+}
+const list = scripts.length ? scripts : core ? CORE : mode === 'remote' ? REMOTE : SUITE
 
 for (const s of list) {
   if (!fs.existsSync(path.join(E2E_DIR, s))) {
@@ -368,7 +394,8 @@ async function main() {
   }
 
   console.log('===== 星核纪元 · 端到端诊断 =====')
-  console.log(`模式：${mode === 'remote' ? '远程重跑' : '本地回归'}（${list.length} 个脚本）`)
+  const setName = core ? (mode === 'remote' ? '核心 · 远程' : '核心') : mode === 'remote' ? '远程重跑' : '本地回归'
+  console.log(`模式：${setName}（${list.length} 个脚本）`)
   console.log(`目标：${target}`)
   console.log(`并发：${jobs}${jobs > 1 ? ' 路' : ''}`)
   console.log(`日志：${logDir}`)

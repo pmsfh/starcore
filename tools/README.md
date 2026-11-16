@@ -21,12 +21,15 @@ corepack pnpm diagnose --fix  # 对可自动修复的缺件执行修复
 
 ```bash
 corepack pnpm e2e                                   # 本地全量回归（自动起停预览，自动选择空闲端口）
+corepack pnpm e2e --core                            # 本地核心 12（日常与合并前）
+corepack pnpm e2e --core --jobs 2                   # 核心 12 两路并行
 corepack pnpm e2e --jobs 2                          # 本地全量两路并行
 corepack pnpm e2e --remote https://example.com      # 对远程目标运行重跑集
 corepack pnpm e2e starcore-v135-save-integrity.mjs  # 运行任意脚本清单
 ```
 
-- 运行器自动管理本地预览服务的启动与停止；`--jobs <N>` 设置并行脚本数，缺省 1，建议不超过 CPU 核数；`--no-start` 可复用已运行的服务；
+- 运行器自动管理本地预览服务的启动与停止；`--core` 只跑核心 12（日常与合并前，发版前跑全量），核心集全部包含在线上重跑集，可与 `--remote` 组合；`--jobs <N>` 设置并行脚本数，缺省 1，建议不超过 CPU 核数；`--no-start` 可复用已运行的服务；
+- 核心 12 = `v045` 发布校验、`v056` 转生树、`v057` 成就、`v058` 自动化、`v062` 每日、`v081` 存档安全、`v082` 接线、`v083` 守护、`v135` 存档签名、`v181` 帝庭界面、`v183` 炉域、`boot-screen` 启动画面。
 - `manual/` 存放不进入默认清单的探针与走查脚本，用法见 `tools/e2e/manual/README.md`；
 - 每脚本日志分账写入日志目录（缺省系统临时目录 `starcore-e2e`，`--log-dir` 可改）；
 - 浏览器缺失时先运行 `corepack pnpm diagnose --fix`。
