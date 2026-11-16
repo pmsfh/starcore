@@ -964,9 +964,9 @@ CSS，原 763 行的 style.css 单文件按职责拆为七个模块。纯动效�
 
 - 移除训练汇总卡：训练中已有逐条进度（如「训练 突击兵 ×10 — 45%」），「N
   支部队训练中 · 查看进度」卡片信息重复，按行动队列方案文档建议移除
-- 截断规则调整：原「一律砍到 8 条」改为「进行中全保留（天然上限 7 = 4 探索 +
-  3 训练槽），可执行补足至总数 ≤6」，进行中条目承载实时进度，截断会丢信
-  息
+- 截断规则调整：原「一律砍到 8 条」改为「进行中全保留（天然上限 7 =
+  4 探索 + 3 训练槽），可执行补足至总数 ≤6」，进行中条目承载实时进度，
+  截断会丢信息
 - 可训练引导条件微调：仅无训练任务时显示「训练部队」入口
 - 文档回写：行动队列方案文档 §5 顶部标注最终定稿口径（无 category/count 字
   段、截断规则、一条建议项已移除），原始建议保留作历史脉络
@@ -1078,8 +1078,8 @@ CSS，原 763 行的 style.css 单文件按职责拆为七个模块。纯动效�
 
 ### 验证
 
-- `vue-tsc -b` 零错误 + `vite build` 通过 + `vitest run` 8 文件 67/67 通过 +
-  `lint:check` 零输出
+- `vue-tsc -b` 零错误 + `vite build` 通过 + `vitest run` 8 文件 67/67
+  通过 + `lint:check` 零输出
 - Playwright 专项回归 24/24 通过：五页空态渲染、空态文案、引导按钮跳转、存
   档注入模拟（全科技完成 / 全节点完成 / 军事解锁无部队 / 锁定扇区）、八路
   由无 console error
@@ -1174,9 +1174,9 @@ CSS，原 763 行的 style.css 单文件按职责拆为七个模块。纯动效�
   测试文件多组件声明、属性顺序等，不阻断，留待后续处理）。
 - `pnpm format:check` 全部通过；`vue-tsc -b` 零错误；`vite build` 产物体积
   无实质变化；`vitest run` 8 文件 67/67 通过。
-- `./deploy.sh` 全流程通过，线上返回 200 且 bundle 版本串为 v0.44.1；preview
-  与线上 Playwright 回归（八路由遍历、控制台无 404/error、移动端 375px 无
-  溢出）全部通过。
+- `./deploy.sh` 全流程通过，线上返回 200 且 bundle 版本串为 v0.44.1；
+  preview 与线上 Playwright 回归（八路由遍历、控制台无 404/error、移动端
+  375px 无溢出）全部通过。
 
 ---
 
@@ -1198,98 +1198,98 @@ v0.43，v0.41.1 的 6 项修复一并上线。
     computed 内对 `flashState`/`prevAmounts` 既读又写，在 computed 中产生
     副作用，违反 Vue 响应式最佳实践，可能导致无限重算或状态不一致。改为
     `watchEffect` + `ref`，消除 computed 内副作用。
-    - 涉及文件：`src/components/layout/TopBar.vue`
+    涉及文件：`src/components/layout/TopBar.vue`
   - BattleView.vue stronghold computed 非空断言：`BattleView.vue` 的
     `stronghold` computed 使用 `!` 非空断言，类型系统声称非空但实际可能为
     undefined，构成"类型谎言"。返回类型改为 `StrongholdDef | undefined`，
     模板侧 `v-if` 已守护。
-    - 涉及文件：`src/views/BattleView.vue`
+    涉及文件：`src/views/BattleView.vue`
   - ModalOverlay.vue script 混用：`ModalOverlay.vue` 同时使用
     `<script setup>` 和 `<script>` 两个脚本块，混用模式增加维护复杂度。合
     并为单一 `<script setup>` 块。
-    - 涉及文件：`src/components/ui/ModalOverlay.vue`
+    涉及文件：`src/components/ui/ModalOverlay.vue`
   - 导航 active 项补 aria-current：`SideNav.vue` 和 `BottomNav.vue` 的
     active 导航项未设置 `aria-current="page"` 属性，辅助技术无法识别当前页
     面位置。（检查意见只提 SideNav，BottomNav 同样缺失已一并修复）。active
     项补 `aria-current="page"`。
-    - 涉及文件：`src/components/layout/SideNav.vue`、
-      `src/components/layout/BottomNav.vue`
+    涉及文件：`src/components/layout/SideNav.vue`、
+    `src/components/layout/BottomNav.vue`
   - resources store allMeta 类型不精确：`resources` store 的 `allMeta` 类
     型定义不精确，使用方被迫做类型断言，类型安全链断裂，影响
     `OfflineReport.vue` 和 `BattleView.vue`。导出 `ResourceMeta` 接口，
     `allMeta` 类型放宽为 `Record<string, ResourceMeta>`，根因修复，
     使用方无需再做类型断言。
-    - 涉及文件：`src/stores/resources.ts`、
-      `src/components/layout/OfflineReport.vue`、
-      `src/views/BattleView.vue`
+    涉及文件：`src/stores/resources.ts`、
+    `src/components/layout/OfflineReport.vue`、
+    `src/views/BattleView.vue`
   - 消除 as any（前端部分）：前端视图中多处使用 `as any` 绕过类型检查，类
     型安全形同虚设。消除 `as any` 共 7 处，`TopBar.vue`（3 处）、
     `BattleView.vue`（2 处）、`OfflineReport.vue`（2 处），改为精确类型。
-    - 涉及文件：`src/components/layout/TopBar.vue`、
-      `src/views/BattleView.vue`、
-      `src/components/layout/OfflineReport.vue`
+    涉及文件：`src/components/layout/TopBar.vue`、
+    `src/views/BattleView.vue`、
+    `src/components/layout/OfflineReport.vue`
   - AppShell.vue 静态 span 星点改 v-for：`AppShell.vue` 中 6 个装饰性星点
     使用 6 个静态 `<span>` 硬编码，`.s1` 至 `.s6` 规则各自独立，冗余且难维
     护。改为 `v-for` 生成，`style.css` 移除 `.s1` 至 `.s6` 规则。
-    - 涉及文件：`src/components/layout/AppShell.vue`、`src/style.css`
+    涉及文件：`src/components/layout/AppShell.vue`、`src/style.css`
   - style.css 导航响应式注释更新：`style.css` 中导航响应式相关注释提到
     Tailwind，但 Tailwind 已移除，注释过时误导。更新注释为
     `useBreakpoint`。
-    - 涉及文件：`src/style.css`
+    涉及文件：`src/style.css`
   - index.html 补充 OG/Twitter meta 标签：`index.html` 缺少 Open Graph /
     Twitter Card meta 标签，社交分享无预览。补充 `og:title`/
     `og:description`/`og:type`/`og:image` + `twitter:card`/
     `twitter:title`/`twitter:description`/`twitter:image`。
-    - 涉及文件：`index.html`
+    涉及文件：`index.html`
 - 逻辑/工程层（11 项）：
   - exploration.ts applyTick 多探索到期仅处理一个：`exploration.ts` 的
     `applyTick` 在 `for` 循环内遇到第一个到期探索节点即 `return`，导致同一
     tick 内多个探索同时到期时仅处理第一个，其余被延迟到下一 tick。收集所有
     到期节点逐个处理并累积奖励返回。
-    - 涉及文件：`src/stores/exploration.ts`
+    涉及文件：`src/stores/exploration.ts`
   - doComputeOfflineGains 未更新 lastSaveTime：`game.ts` 的
     `doComputeOfflineGains` 在无 `elapsedOverride` 参数时不更新
     `lastSaveTime`，导致离线收益补算后下次存档时间基准错位。统一在函数末尾
     更新 `lastSaveTime`。
-    - 涉及文件：`src/stores/game.ts`
+    涉及文件：`src/stores/game.ts`
   - relics.ts as any（后端部分）：`relics.ts` 中 `const legacy = r as any`
     绕过类型检查。改为 `Partial<RelicDef>`。
-    - 涉及文件：`src/stores/relics.ts`
+    涉及文件：`src/stores/relics.ts`
   - package-lock.json 与 pnpm-lock.yaml 共存：项目同时存在
     `package-lock.json` 和 `pnpm-lock.yaml`，锁文件冲突可能导致依赖解析不
     一致。确认项目使用 pnpm，删除 `package-lock.json`，`package.json` 添加
     `"packageManager": "pnpm@9.15.4"`。
-    - 涉及文件：`package.json`（删除 `package-lock.json`）
+    涉及文件：`package.json`（删除 `package-lock.json`）
   - IndexedDB 写读无 checksum：`storage.ts` 的 IndexedDB 主存储写读无校验
     和，数据损坏无法检测。`writeSave` 统一 `{d,c}` 格式（数据 + 校验和），
     `readSave` 新增 `_parseStored` 兼容新旧格式。
-    - 涉及文件：`src/lib/storage.ts`
+    涉及文件：`src/lib/storage.ts`
   - _parseBackup 补调 validateSaveData：`_parseBackup` 在解析新旧格式备份
     时未调用 `validateSaveData`，损坏数据可能被静默接受。新旧格式路径均补
     调 `validateSaveData`。
-    - 涉及文件：`src/lib/storage.ts`
+    涉及文件：`src/lib/storage.ts`
   - validateSaveData 新增内容范围校验：`validateSaveData` 仅校验字段类型和
     结构，不校验内容范围，负数资源、无效 ID 等异常值可通过。新增内容范围校
     验，`amounts`/`totals` 非负有限、`levels`/`completed`/`military`/
     `combat`/`exploration`/`relics`/`transcend` 有效 ID 与结构。
-    - 涉及文件：`src/lib/storage.ts`
+    涉及文件：`src/lib/storage.ts`
   - vitest coverage 配置：`vitest.config.ts` 无 coverage 配置，无法生成测
     试覆盖率报告。添加 coverage 配置（v8 provider），`package.json` 添加
     `test:cov` script。
-    - 涉及文件：`vitest.config.ts`、`package.json`
+    涉及文件：`vitest.config.ts`、`package.json`
   - game.test.ts 校验静默通过：`game.test.ts` 中
     `if (game.canTranscend())` 包裹校验，条件不满足时校验被跳过，测试静默
     通过而非失败。改为显式校验，条件不满足即报失败。
-    - 涉及文件：`src/stores/game.test.ts`
+    涉及文件：`src/stores/game.test.ts`
   - vite.config.ts 构建优化：`vite.config.ts` 无 sourcemap 配置、无手动分
     包，`server.host` 设为 `true` 暴露到所有网络接口。添加
     `build.sourcemap` + `manualChunks` 函数分包（vue/decimal/storage），
     `server.host` 从 `true` 改为 `'127.0.0.1'`。
-    - 涉及文件：`vite.config.ts`
+    涉及文件：`vite.config.ts`
   - start-dev.sh 健壮性加固：`start-dev.sh` 无 `set -e`、路径用 `pwd` 绝对
     定位、包管理器调用用 `npm` 而非 `pnpm`。添加 `set -e`、路径改用
     `BASH_SOURCE` 相对定位、`npm` → `pnpm`。
-    - 涉及文件：`start-dev.sh`
+    涉及文件：`start-dev.sh`
 - 改动文件清单：
   - `src/components/layout/TopBar.vue`：computed 副作用改 watchEffect +
     ref；消除 3 处 as any
@@ -1351,8 +1351,8 @@ v0.43，v0.41.1 的 6 项修复一并上线。
   - 星云暗角：主界面四角添加星云暗角效果，视觉聚焦中心区域，增强沉浸感
   - 核心环三态映射：核心能量球外环映射三种状态（探索/科技/能量），根据当前
     主导玩法动态切换视觉语义
-  - 交互反馈游戏化：全局交互反馈升级：hover 上浮 + click 回弹 + flash 闪光 +
-    核心脉动，操作手感向游戏化靠拢
+  - 交互反馈游戏化：全局交互反馈升级：hover 上浮 + click 回弹 + flash
+    闪光 + 核心脉动，操作手感向游戏化靠拢
   - Elevation 三级系统：新增 --elevation-1/2/3 三级阴影 Token，统一卡片/弹
     窗/浮层的层叠视觉语言
   - 状态色语义：新增 --color-locked 状态色 Token，锁定/未解锁状态统一色彩
@@ -1373,8 +1373,8 @@ v0.43，v0.41.1 的 6 项修复一并上线。
   - 资源产出粒子动画：资源产出时粒子向上飘浮动画，全局上限 15 个粒子，
     visibilitychange 时暂停以节省性能
 - 改动文件清单：
-  - `src/views/HomeView.vue`：星云暗角 + 核心环三态 + 交互反馈 + Hero 光柱 +
-    快速操作入口 + 空状态 + 跃迁光效 + 粒子动画
+  - `src/views/HomeView.vue`：星云暗角 + 核心环三态 + 交互反馈 + Hero
+    光柱 + 快速操作入口 + 空状态 + 跃迁光效 + 粒子动画
   - `src/style.css`：Elevation 三级 Token + --color-locked + 暗角 + 星点闪
     烁 + 交互反馈动画 + 光柱 + 断点 + 跃迁光效
   - `src/components/layout/SideNav.vue`：可折叠
@@ -1468,10 +1468,10 @@ v0.43，v0.41.1 的 6 项修复一并上线。
   - 表层明度梯度拉大：surface / elevated / border-line 三层明度差加大，深
     色界面下卡片与背景层次关系更清晰，嵌套层级肉眼可辨
   - 辅色饱和度对齐：
-    - 辅色 quantum 从 `#34D399` 调整为 `#2EE6A0`，与其余辅色并排时视觉重量
-      更均匀，消除"偏灰"感
-    - 同步更新 buildings.ts / explore.ts / tech.ts / resources.ts 中
-      crystal 相关键色的 color 字段
+    辅色 quantum 从 `#34D399` 调整为 `#2EE6A0`，与其余辅色并排时视觉重量
+    更均匀，消除"偏灰"感
+    同步更新 buildings.ts / explore.ts / tech.ts / resources.ts 中
+    crystal 相关键色的 color 字段
   - 间距 Token 化（225 处）：建立 8 级间距变量（`--space-1` 至
     `--space-8`，4px 基准）；全项目 225 处硬编码间距统一引用 Token，卡片
     padding、模块 gap 不再各自为政
@@ -1484,23 +1484,23 @@ v0.43，v0.41.1 的 6 项修复一并上线。
     （`--icon-xs/sm/md/lg`），全项目图标视觉比例统一
 - 核心区重构（8 项）：
   - Hero 核心区重构放大：
-    - 核心能量球放大至 200px（移动端）/ 240px（桌面端），视觉冲击力显著提
-      升
-    - 伪元素光晕渗透至 240px / 288px，核心光芒扩散到周围背景，营造能量场包
-      裹感
-    - 核心可点击，跳转建造页（支持键盘 Enter），从纯展示元素变为首屏操作入
-      口
-    - 产出率标注 14px 字号并带 `/s` 后缀，负值红色高亮
+    核心能量球放大至 200px（移动端）/ 240px（桌面端），视觉冲击力显著提
+    升
+    伪元素光晕渗透至 240px / 288px，核心光芒扩散到周围背景，营造能量场包
+    裹感
+    核心可点击，跳转建造页（支持键盘 Enter），从纯展示元素变为首屏操作入
+    口
+    产出率标注 14px 字号并带 `/s` 后缀，负值红色高亮
   - 行动队列合并：「活跃事件」与「推荐行动」合并为单一「行动队列」模块；两
     类视觉语言：进行中（左色条 + 进度条 + 脉冲动画）、可执行（图标色块 +
     hover 上浮）；4 条跳转路由（建造/科技/探索/部队）全部保留，逐条验证无
     丢失
   - 桌面端双列布局：
-    - 内容区 max-width 从 720px 扩展至 1040px，大屏桌面端不再有大块留白
-    - 桌面端（≥768px）Hero（左 40%）与行动队列（右 60%）并排展示
-    - 文明概况指标从纵向堆叠改为 6 列横排
-    - 移动端（<768px）自动退化为单列布局，改动仅在 HomeView 内生效，不影响
-      其他页面
+    内容区 max-width 从 720px 扩展至 1040px，大屏桌面端不再有大块留白
+    桌面端（≥768px）Hero（左 40%）与行动队列（右 60%）并排展示
+    文明概况指标从纵向堆叠改为 6 列横排
+    移动端（<768px）自动退化为单列布局，改动仅在 HomeView 内生效，不影响
+    其他页面
   - 字体断裂修复（方案 B）：品牌名「星核纪元」中英文并排时气质断裂修复；采
     用 PingFang SC Bold + letter-spacing 4px + text-shadow 方案，中英文气
     质统一，零新增资源加载
@@ -2023,8 +2023,8 @@ Icons.vue 进行 facade 工程重构，将单体大组件拆分为 7 个子组�
   - 涉及文件：`src/data/tech.ts`
   - `holographic_computing.requires` 从 `['data_eff_2', 'neural_arch']` 改
     为 `['data_eff_2']`
-- crystal_eff_1 前置改为 crystal_growth + deep_crystal_mining 清理冗余前
-  置：`crystal_eff_1.requires` 从 `['refine_tech']` 改为
+- crystal_eff_1 前置调整：改为 crystal_growth + deep_crystal_mining
+  清理冗余前置：`crystal_eff_1.requires` 从 `['refine_tech']` 改为
   `['crystal_growth']`。crystal_eff_1（晶脉学 T2）原依赖 refine_tech（材料
   学 T1），跨分支依赖。改为依赖同分支的 crystal_growth（晶脉学 T1），让晶
   脉学形成独立分支（仍经 crystal_growth 间接依赖 refine_tech，但不再直接跨
@@ -2356,30 +2356,30 @@ Icons.vue 进行 facade 工程重构，将单体大组件拆分为 7 个子组�
     数，每个仅返回对应 `computed.value`，属 Options API 遗留风格。移除包装
     函数，直接暴露 computed 属性（`atkMult`、`defMult` 等），5 个调用方改
     为直接属性访问。
-    - 涉及文件：`src/stores/game.ts`、`src/views/BattleView.vue`、
-      `src/views/ArmyView.vue`、`src/views/MapView.vue`、
-      `src/views/TechView.vue`
+    涉及文件：`src/stores/game.ts`、`src/views/BattleView.vue`、
+    `src/views/ArmyView.vue`、`src/views/MapView.vue`、
+    `src/views/TechView.vue`
   - 明确存档加密安全边界：在 `storage.ts` 加密模块头部添加完整安全边界声
     明，明确「防君子不防小人」的混淆定位、纯前端单机游戏的固有约束、足以/
     不足以防御的场景。
-    - 涉及文件：`src/lib/storage.ts`
+    涉及文件：`src/lib/storage.ts`
 - 常规修复：
   - 驻扎收益改为 computed 缓存：`combat.ts` 新增 `garrisonProduction`
     computed，仅在 `garrisoned` 变化时重算合并产出，替代原每 tick 遍历所有
     驻扎据点；`game.ts` 的 tick 改为直接读取该 computed。
-    - 涉及文件：`src/stores/combat.ts`、`src/stores/game.ts`
+    涉及文件：`src/stores/combat.ts`、`src/stores/game.ts`
   - 编组全入/全撤确认弹窗：操作数量 >100 时弹出确认弹窗（≤100 保持原行
     为），防误操作。
-    - 涉及文件：`src/views/ArmyView.vue`
+    涉及文件：`src/views/ArmyView.vue`
   - 战斗奖励发放推迟到确认时：`startBattle` 不再立即发放奖励，新增
     `grantRewards()` 在 `confirmResult()` 或 `stayHere()` 时调用，使用
     `rewardsGranted` 标志位防重入。
-    - 涉及文件：`src/views/BattleView.vue`
+    涉及文件：`src/views/BattleView.vue`
   - TypeScript 严格度提升：启用 `noUnusedLocals: true` /
     `noUnusedParameters: true`，清理 20 处未使用导入/变量（涉及 15 个文
     件）；附带修复 lint 错误：`combat.ts` `let dmg` → `const dmg`、
     `storage.ts` `catch (e)` → `catch`。
-    - 涉及文件：`tsconfig.app.json` + 15 个源码文件
+    涉及文件：`tsconfig.app.json` + 15 个源码文件
 - 检查修复：
   - 确认弹窗死循环：`confirmBulkAction` 调用 `assignAll` 再次触发 >100 检
     查又弹窗，无限递归。提取 `doAssignAll`/`doRemoveAll` 核心函数，确认弹
@@ -2567,6 +2567,10 @@ v0.15 只改了倒计时主行的时间格式（`2h30m` → `2小时30分钟`）
   函数；`timePart` 和 `fmtEta` 统一使用该函数；移除 `fmtCountdown` 导
   入）、`package.json`（版本号 0.15 → 0.16）
 
+### 验证
+
+- 当时的验证记录未随条目留存。
+
 ---
 
 ## v0.15 — UI: 升级倒计时文案调整
@@ -2589,6 +2593,10 @@ v0.15 只改了倒计时主行的时间格式（`2h30m` → `2小时30分钟`）
 - 涉及文件：`src/components/ui/UpgradeCountdown.vue`（移除情况 C/D 中
   `（{{ manualResName }}）` 括号资源名显示，移除已无引用的 `manualResName`
   computed）、`package.json`（版本号 0.14 → 0.15）
+
+### 验证
+
+- 当时的验证记录未随条目留存。
 
 ---
 
@@ -2772,6 +2780,7 @@ v0.15 只改了倒计时主行的时间格式（`2h30m` → `2小时30分钟`）
 ## v0.10 — 修复: 训练数量默认值与下限修正
 
 **变更性质：修复（训练数量默认 1→0、下限 clamp、0 时禁用按钮）**
+**开发时间：未留存**
 
 ### 概述
 
@@ -2791,11 +2800,16 @@ v0.15 只改了倒计时主行的时间格式（`2h30m` → `2小时30分钟`）
   - 训练按钮在 `trainCount[u.id] === 0` 或资源不足时禁用：
     `!game.resources.canAfford(getUnitCost(u.id, trainCount[u.id]))`
 
+### 验证
+
+- 当时的验证记录未随条目留存。
+
 ---
 
 ## v0.09 — 修复: 训练 +10 按钮计数修正
 
 **变更性质：修复（+10 按钮 off-by-one）**
+**开发时间：未留存**
 
 ### 概述
 
@@ -2806,6 +2820,10 @@ v0.15 只改了倒计时主行的时间格式（`2h30m` → `2小时30分钟`）
 
 - `src/views/ArmyView.vue`：修正 +10 按钮的点击事件处理逻辑，确保
   `trainCount` 精确增加 10（`trainCount[u.id] += 10`）
+
+### 验证
+
+- 当时的验证记录未随条目留存。
 
 ---
 
@@ -2879,30 +2897,30 @@ v0.15 只改了倒计时主行的时间格式（`2h30m` → `2小时30分钟`）
   - TopBar 每帧重渲染：仅 5 个资源 pill，重渲染成本极低；实测 dev server
     下 TopBar 更新流畅，无卡顿
 - 工程化建设（2 条）：
-  - 引入 Vitest 单元测试：安装 `vitest` + `@vitest/coverage-v8`；新增
-    `vitest.config.ts`（environment=node，include=`src/**/*.test.ts`，配置
-    `@` 路径别名）；`package.json` 新增 `test`、`test:watch` scripts；4 个
-    测试文件 41 个用例全部通过
-    - `src/lib/format.test.ts`（16 用例）：fmt 零/小数/千位后缀/负数
-      /Decimal 输入/极大数/fixed 参数；fmtInt 千分位；fmtTime 秒/分/时/天/
-      非法值；pct 百分比；fmtRate 正负速率
-    - `src/lib/decimal.test.ts`（13 用例）：ser/deser 序列化往返精度；
-      deser 处理 null/undefined；D 处理 null/undefined；加减乘除；比较运
-      算；大数精度保留；ROUND_DOWN 行为
-    - `src/stores/combat.test.ts`（6 用例）：空编队战败；大兵力 vs 一级据
-      点胜利；小兵力 vs 四级据点失败；仅胜利有奖励；atkMult/defMult 影响战
-      局；serialize/hydrate 往返
-    - `src/lib/storage.test.ts`（6 用例）：exportSave 生成 SCE- 前缀；合法
-      数据往返；拒绝空串；拒绝非 SCE 串；拒绝篡改密文；拒绝损坏 JSON
-  - 添加 ESLint + Prettier 配置：ESLint（`eslint.config.js` flat config）
-    继承 @eslint/js recommended + typescript-eslint recommended +
-    eslint-plugin-vue flat/recommended + eslint-config-prettier，项目特定
-    规则 no-explicit-any off、no-unused-vars warn（argsIgnorePattern
-    `^_`）、no-namespace off、vue/multi-word-component-names off、
-    vue/html-self-closing off；Prettier（`.prettierrc.json`）semi: false、
-    singleQuote: true、trailingComma: 'es5'、printWidth: 100、tabWidth:
-    2、endOfLine: 'lf'；`package.json` 新增 `lint`、`lint:check`、
-    `format`、`format:check` scripts
+- 引入 Vitest 单元测试：安装 `vitest` + `@vitest/coverage-v8`；新增
+  `vitest.config.ts`（environment=node，include=`src/**/*.test.ts`，配置
+  `@` 路径别名）；`package.json` 新增 `test`、`test:watch` scripts；4 个
+  测试文件 41 个用例全部通过
+  - `src/lib/format.test.ts`（16 用例）：fmt 零/小数/千位后缀/负数
+    /Decimal 输入/极大数/fixed 参数；fmtInt 千分位；fmtTime 秒/分/时/天/
+    非法值；pct 百分比；fmtRate 正负速率
+  - `src/lib/decimal.test.ts`（13 用例）：ser/deser 序列化往返精度；
+    deser 处理 null/undefined；D 处理 null/undefined；加减乘除；比较运
+    算；大数精度保留；ROUND_DOWN 行为
+  - `src/stores/combat.test.ts`（6 用例）：空编队战败；大兵力 vs 一级据
+    点胜利；小兵力 vs 四级据点失败；仅胜利有奖励；atkMult/defMult 影响战
+    局；serialize/hydrate 往返
+  - `src/lib/storage.test.ts`（6 用例）：exportSave 生成 SCE- 前缀；合法
+    数据往返；拒绝空串；拒绝非 SCE 串；拒绝篡改密文；拒绝损坏 JSON
+- 添加 ESLint + Prettier 配置：ESLint（`eslint.config.js` flat config）
+  继承 @eslint/js recommended + typescript-eslint recommended +
+  eslint-plugin-vue flat/recommended + eslint-config-prettier，项目特定
+  规则 no-explicit-any off、no-unused-vars warn（argsIgnorePattern
+  `^_`）、no-namespace off、vue/multi-word-component-names off、
+  vue/html-self-closing off；Prettier（`.prettierrc.json`）semi: false、
+  singleQuote: true、trailingComma: 'es5'、printWidth: 100、tabWidth:
+  2、endOfLine: 'lf'；`package.json` 新增 `lint`、`lint:check`、
+  `format`、`format:check` scripts
 
 ### 验证
 
@@ -3015,11 +3033,11 @@ v0.15 只改了倒计时主行的时间格式（`2h30m` → `2小时30分钟`）
     创建（接收 cost props，自动判断 enough/not-enough 状态），但各视图仍使
     用内联标记，标记为遗留项（v0.11.1 瘦身中完成采用）
 - 遗留项：修复中引入新的未使用导入（newRelicInstanceId、UNITS、
-  calcDamage、TechEffect、lt/mul/div、CostTag，不影响运行，v0.11.1 清理）；
-  TechView 和 ArmyView 仍使用手动 canAfford+spendCost（实际安全，v0.11.1
-  TechView 改用原子操作）；game.ts 仍约 400 行，视图仍通过 game 中转（不影
-  响功能，架构耦合偏高）；CostTag 组件已创建但未被视图使用（v0.11.1 正式采
-  用）
+  calcDamage、TechEffect、lt/mul/div、CostTag，不影响运行，v0.11.1
+  清理）；TechView 和 ArmyView 仍使用手动 canAfford+spendCost（实际安全，
+  v0.11.1 TechView 改用原子操作）；game.ts 仍约 400 行，视图仍通过 game
+  中转（不影响功能，架构耦合偏高）；CostTag 组件已创建但未被视图使用
+  （v0.11.1 正式采用）
 
 ### 验证
 
@@ -3086,6 +3104,7 @@ v0.15 只改了倒计时主行的时间格式（`2h30m` → `2小时30分钟`）
 ## v0.04 — 修复: 移动端底部导航补齐
 
 **变更性质：修复（移动端导航缺失遗物/奇点重启入口）**
+**开发时间：未留存**
 
 ### 概述
 
@@ -3116,6 +3135,7 @@ v0.15 只改了倒计时主行的时间格式（`2h30m` → `2小时30分钟`）
 ## v0.03 — 修复: 导航显隐改为 v-if 结构控制
 
 **变更性质：修复（导航显隐从 CSS 覆盖改为组件结构控制）**
+**开发时间：未留存**
 
 ### 概述
 
@@ -3183,6 +3203,7 @@ v0.02 的 CSS `!important` 覆盖方案虽有效但脆弱，依赖 CSS 优先级
 ## v0.01 — 功能: 初始项目搭建
 
 **变更性质：功能（设计文档 + UI 原型 + 完整代码初始搭建）**
+**开发时间：未留存**
 
 ### 概述
 
@@ -3240,5 +3261,9 @@ v0.02 的 CSS `!important` 覆盖方案虽有效但脆弱，依赖 CSS 优先级
   本信息）
 - 配置文件：`package.json` / `tsconfig.json` / `tsconfig.node.json` /
   `vite.config.ts` / `index.html`
+
+### 验证
+
+- 当时的验证记录未随条目留存。
 
 ---
