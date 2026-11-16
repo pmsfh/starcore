@@ -1163,7 +1163,7 @@ CSS，全局样式按职责拆为七个模块。纯动效、文档与结构改�
   - 新增 `deploy.sh` 部署脚本：构建 → `rsync --delete` 同步 `dist/` 到
     nginx 站点目录 → 修正权限 → 线上验证（HTTP 状态 + bundle 版本串核对）
   - 同步方式从覆盖复制升级为 `rsync --delete`：站点内已从产物移除的旧文件
-    会被清除（本次即清除了本条累积更新已删但站点残留的 `icons.svg`），并排除
+    会被清除（本次即清除了本条早前已删但站点残留的 `icons.svg`），并排除
     `.well-known/` 防误删证书续期目录
 - favicon 未声明，控制台 404（发布回归发现）：`index.html` 未声明
   `<link rel="icon">`，浏览器回退请求 `/favicon.ico`。dev/preview 服务器无
