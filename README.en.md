@@ -85,7 +85,7 @@ site is written to `dist/` under the install directory.
 ### Option 2: Manual installation
 
 Best for development or when you want to control the build yourself. Requires
-Node.js 22.18+ (24.21 used in development); pnpm 9 is invoked via corepack
+Node.js 22.18+ (24.22.2 used in development); pnpm 9 is invoked via corepack
 (`packageManager` pins 9.15.4, fetched on first run).
 
 ```bash
@@ -167,6 +167,13 @@ starcore/
 - **Balance checks**: the CI `balance` job runs the v126 / v127 EV verification
   scripts in sequence (skipped explicitly when python3 is absent), see
   `tools/README.md`
+- **End-to-end regression**: the CI `e2e` workflow runs the full local suite
+  (36 scripts, two parallel lanes) on pull requests and pushes to main after
+  code-path filtering; documentation-only commits are skipped; the 32-script
+  online rerun set is triggered manually after deployment (local runs see
+  `tools/README.md`)
+- **Dependency audit**: the CI `audit` job runs a full `pnpm audit`, keeping
+  the vulnerability list at zero
 
 ## Self-check & Diagnostics
 
