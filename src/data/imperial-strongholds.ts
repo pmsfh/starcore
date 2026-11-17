@@ -22,7 +22,7 @@ import { fnv1a } from '@/lib/random'
 
 /** 贡赋基准档：EV 总账 A 档（best=34） */
 export const IMPERIAL_ANCHOR_BEST = 34
-/** 满接管贡赋 = 三路派遣稳态当量的 5%（设计目标，非运行时读取） */
+/** 满接管贡赋 = 三路派遣稳态当量的 5%（数值工具链读取，非运行时消费） */
 export const IMPERIAL_TRIBUTE_SHARE = 0.05
 /** 贡赋池累积上限：12 小时 */
 export const IMPERIAL_CLAIM_CAP_SECONDS = 12 * 3600

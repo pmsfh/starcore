@@ -14,7 +14,7 @@ import { EXPLORE_NODES, LAYER_INFO } from '@/data/explore'
 import { RELIC_POOL, RARITY_INFO, RELIC_SETS } from '@/data/relics'
 import { ACHIEVEMENTS, ACHIEVEMENT_CATEGORIES } from '@/data/achievements'
 import { NODE_STORIES } from '@/data/story'
-import { DEFAULT_NODES } from '@/stores/transcend'
+import { DEFAULT_NODES } from '@/data/transcend'
 
 const CJK = /[一-鿿]/
 

@@ -258,7 +258,7 @@ try {
   const exploreMod = await server.ssrLoadModule('/src/data/explore.ts')
   const weeklyBossMod = await server.ssrLoadModule('/src/data/weekly-boss.ts')
   const imperialMod = await server.ssrLoadModule('/src/data/imperial-strongholds.ts')
-  const transcendMod = await server.ssrLoadModule('/src/stores/transcend.ts')
+  const transcendMod = await server.ssrLoadModule('/src/data/transcend.ts')
 
   const power = (enemies) =>
     enemies.reduce((a, e) => a + (e.attack + e.defense + e.hp) * e.count, 0)
@@ -498,7 +498,7 @@ try {
         )
       ),
     },
-    // transcend：转生树（负熵支出面 + 自动协议节点标注）。自 store 模块载入
+    // transcend：转生树（负熵支出面 + 自动协议节点标注）。自数据表模块载入
     // DEFAULT_NODES（模块级 export const）；无限节点 maxLevel=Infinity 投影为
     // null（JSON 无穷限，null 即无限语义）。nextCost 公式（买断=基础成本、
     // 无限=ceil(cost×growth^level)）脚本侧同源重算，不导公式。

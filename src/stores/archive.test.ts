@@ -10,7 +10,8 @@
  */
 import { describe, it, expect, beforeEach } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
-import { useArchiveStore, ARCHIVE_ENEMY_KEYS } from './archive'
+import { useArchiveStore } from './archive'
+import { ARCHIVE_ENEMY_KEYS } from '@/data/pve'
 import { STRONGHOLDS, ENEMY_KIND_BUCKETS, ENEMY_KIND_TOTAL } from '@/data/pve'
 import { ENDLESS_STRONGHOLD_ID, endlessStronghold } from '@/data/endless'
 import { validateAndRepair } from '@/lib/save/validate'

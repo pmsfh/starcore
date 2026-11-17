@@ -105,7 +105,7 @@ const pveMod = await truthImport(join(ROOT, 'src', 'data', 'pve', 'index.ts'))
 const relicMod = await truthImport(join(ROOT, 'src', 'data', 'relics.ts'))
 const achMod = await truthImport(join(ROOT, 'src', 'data', 'achievements.ts'))
 const buildMod = await truthImport(join(ROOT, 'src', 'data', 'buildings.ts'))
-const transMod = await truthImport(join(ROOT, 'src', 'stores', 'transcend.ts'))
+const transMod = await truthImport(join(ROOT, 'src', 'data', 'transcend.ts'))
 
 const achTech3 = achMod.ACHIEVEMENTS.find((a) => a.id === 'ach_tech_3')
 const achRelic4 = achMod.ACHIEVEMENTS.find((a) => a.id === 'ach_relic_4')

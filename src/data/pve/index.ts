@@ -94,3 +94,12 @@ export const ENEMY_KIND_BUCKETS: ReadonlyMap<string, EnemyKindBucket> = (() => {
 
 /** 敌方种数（显示名聚合桶数；ach_battle_9 阈值同源） */
 export const ENEMY_KIND_TOTAL = ENEMY_KIND_BUCKETS.size
+
+/**
+ * 合法图鉴键全集（数据表派生，存档校验与图鉴白名单同源）：
+ * 正式据点每个敌方编成条目一个键，共 116 个（36 据点）。
+ * 远征 / 周 Boss 合成据点不在 STRONGHOLDS 内，天然不入册。
+ */
+export const ARCHIVE_ENEMY_KEYS: ReadonlySet<string> = new Set(
+  STRONGHOLDS.flatMap((s) => s.enemies.map((_, i) => enemyKey(s.id, i)))
+)

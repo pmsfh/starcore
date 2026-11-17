@@ -2,7 +2,7 @@
 import { t } from '@/i18n'
 import { computed, ref } from 'vue'
 import { useGameStore } from '@/stores/game'
-import { isInfiniteNode, nextCost, TRANSCEND_MIN_ENERGY } from '@/stores/transcend'
+import { isInfiniteNode, nextCost, TRANSCEND_MIN_ENERGY } from '@/data/transcend'
 import { fmt } from '@/lib/format'
 import { D } from '@/lib/decimal'
 import ConfirmModal from '@/components/ui/ConfirmModal.vue'

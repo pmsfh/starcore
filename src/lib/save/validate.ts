@@ -12,8 +12,8 @@ import { EXPLORE_NODES } from '@/data/explore'
 import { STRONGHOLDS } from '@/data/pve'
 import { MILESTONE_STEP } from '@/data/endless'
 import { RELIC_POOL, MAX_RELIC_LEVEL } from '@/data/relics'
-import { INFINITE_NODE_IDS, MAX_INFINITE_NODE_LEVEL } from '@/stores/transcend'
-import { ARCHIVE_ENEMY_KEYS } from '@/stores/archive'
+import { INFINITE_NODE_IDS, MAX_INFINITE_NODE_LEVEL } from '@/data/transcend'
+import { ARCHIVE_ENEMY_KEYS } from '@/data/pve'
 import { ENCOUNTER_IDS } from '@/data/encounters'
 import {
   IMPERIAL_STRONGHOLDS,

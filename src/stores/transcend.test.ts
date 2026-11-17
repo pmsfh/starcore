@@ -12,7 +12,8 @@
  */
 import { describe, it, expect, beforeEach } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
-import { useTranscendStore, isInfiniteNode, nextCost } from './transcend'
+import { useTranscendStore } from './transcend'
+import { isInfiniteNode, nextCost } from '@/data/transcend'
 import { D } from '@/lib/decimal'
 
 let store: ReturnType<typeof useTranscendStore>

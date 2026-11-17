@@ -17,18 +17,10 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import type { ArchiveSaveData } from '@/lib/storage'
-import { STRONGHOLDS, enemyKey, ENEMY_KIND_BUCKETS, type EnemyUnit } from '@/data/pve'
+import { enemyKey, ARCHIVE_ENEMY_KEYS, ENEMY_KIND_BUCKETS, type EnemyUnit } from '@/data/pve'
 import { ENDLESS_STRONGHOLD_ID } from '@/data/endless'
 import { WEEKLY_BOSS_ID } from '@/data/weekly-boss'
 import { isImperialStrongholdId, IMPERIAL_AUDIT_ID } from '@/data/imperial-strongholds'
-
-/**
- * 合法图鉴键全集（数据表派生，validate/hydrate 白名单同源）：
- * 正式据点每个敌方编成条目一个键，共 116 个（36 据点）。
- */
-export const ARCHIVE_ENEMY_KEYS: ReadonlySet<string> = new Set(
-  STRONGHOLDS.flatMap((s) => s.enemies.map((_, i) => enemyKey(s.id, i)))
-)
 
 /** 记录一次交战遭遇：该据点全部敌方条目入册（胜负都算，交战即见） */
 function encounter(strongholdId: string, enemies: EnemyUnit[], seen: Set<string>): void {
