@@ -122,7 +122,7 @@ starcore/
 ├─ src/
 │  ├─ components/   46 components (including 8 icon sub-components), grouped as ui / layout / home / relics / build / army / battle / map / settings
 │  ├─ composables/  13 composables (breakpoints, Toast, action queue, onboarding, particles, …)
-│  ├─ data/         20 data tables (buildings, tech, exploration, strongholds, relics, achievements, expeditions, weekly boss, encounters, dispatch, units, formation doctrines, navigation, story, background stars, gate echoes, alien behemoth notes, seven-gate files, imperial archive files, imperial strongholds)
+│  ├─ data/         27 data tables (buildings, tech, exploration, strongholds split by star layer across 6 files, relics, achievements, expeditions, weekly boss, encounters, dispatch, units, formation doctrines, navigation, story, background stars, gate echoes, alien behemoth notes, seven-gate files, imperial archive files, imperial strongholds)
 │  ├─ i18n/         i18n facade (message lookup and locale detection)
 │  ├─ lib/          19 core modules (decimal math, formatting, effect system, offline gains, random, integrity signatures, integer clamping, save pipeline under save/, batch and cost helpers, …)
 │  ├─ locales/      locale bundles (zh-CN baseline + en English, split by domain under ui/ and content/)

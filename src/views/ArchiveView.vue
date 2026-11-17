@@ -38,7 +38,7 @@ import { ECHO_ENTRIES, ECHO_SEGMENTS } from '@/data/echo'
 import { getBestiaryNoteForEntries, type BestiaryNote } from '@/data/bestiary'
 import Icon from '@/components/ui/Icon.vue'
 
-/** 据点四类 id（与 pve.ts 内部 StrongholdType 同源） */
+/** 据点四类 id（与 pve/types.ts 的 StrongholdType 同源） */
 type StrongholdType = keyof typeof STRONGHOLD_TYPES
 
 const game = useGameStore()

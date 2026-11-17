@@ -248,7 +248,7 @@ try {
   const unitsMod = await server.ssrLoadModule('/src/data/units.ts')
   const traitsMod = await server.ssrLoadModule('/src/data/traits.ts')
   const techMod = await server.ssrLoadModule('/src/data/tech.ts')
-  const pveMod = await server.ssrLoadModule('/src/data/pve.ts')
+  const pveMod = await server.ssrLoadModule('/src/data/pve/index.ts')
   const endlessMod = await server.ssrLoadModule('/src/data/endless.ts')
   const encountersMod = await server.ssrLoadModule('/src/data/encounters.ts')
   const dispatchMod = await server.ssrLoadModule('/src/data/dispatch.ts')

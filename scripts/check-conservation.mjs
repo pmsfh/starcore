@@ -101,7 +101,7 @@ await i18nMod.loadLocaleBundles()
 
 const techMod = await truthImport(join(ROOT, 'src', 'data', 'tech.ts'))
 const exploreMod = await truthImport(join(ROOT, 'src', 'data', 'explore.ts'))
-const pveMod = await truthImport(join(ROOT, 'src', 'data', 'pve.ts'))
+const pveMod = await truthImport(join(ROOT, 'src', 'data', 'pve', 'index.ts'))
 const relicMod = await truthImport(join(ROOT, 'src', 'data', 'relics.ts'))
 const achMod = await truthImport(join(ROOT, 'src', 'data', 'achievements.ts'))
 const buildMod = await truthImport(join(ROOT, 'src', 'data', 'buildings.ts'))
