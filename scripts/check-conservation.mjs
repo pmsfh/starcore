@@ -99,7 +99,7 @@ async function truthImport(abs) {
 const i18nMod = await truthImport(join(ROOT, 'src', 'i18n', 'index.ts'))
 await i18nMod.loadLocaleBundles()
 
-const techMod = await truthImport(join(ROOT, 'src', 'data', 'tech.ts'))
+const techMod = await truthImport(join(ROOT, 'src', 'data', 'tech', 'index.ts'))
 const exploreMod = await truthImport(join(ROOT, 'src', 'data', 'explore.ts'))
 const pveMod = await truthImport(join(ROOT, 'src', 'data', 'pve', 'index.ts'))
 const relicMod = await truthImport(join(ROOT, 'src', 'data', 'relics.ts'))

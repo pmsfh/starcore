@@ -1,0 +1,323 @@
+/**
+ * layers.ts：各星层的配套科技定义
+ * 恒星系层、星团层、星臂层、星系层与深空层各四项。
+ * 顺序即科技页「全部」视图的展示顺序，勿重排。
+ */
+import { t } from '@/i18n'
+import { combatPair } from '@/lib/effect-types'
+import type { TechDef } from './types'
+
+export const LAYER_TECHS: TechDef[] = [
+  // 恒星系层配套科技
+  {
+    id: 'stellar_charting',
+    name: t('content.tech.stellar_charting.name'),
+    desc: t('content.tech.stellar_charting.desc'),
+    branch: 'exploration',
+    icon: 'i-tech-explore-1',
+    tier: 4,
+    cost: { data: 8000, energy: 60000, alloy: 1500 },
+    requires: ['explore_range_2'],
+    effects: [
+      {
+        type: 'explore_mult',
+        value: 1.4,
+        label: t('content.tech.stellar_charting.effect.0.label'),
+      },
+    ],
+  },
+  {
+    id: 'wormhole_stabilization',
+    name: t('content.tech.wormhole_stabilization.name'),
+    desc: t('content.tech.wormhole_stabilization.desc'),
+    branch: 'exploration',
+    icon: 'i-tech-explore-2',
+    tier: 5,
+    cost: { data: 20000, energy: 200000, dark: 30 },
+    requires: ['stellar_charting'],
+    effects: [
+      {
+        type: 'explore_mult',
+        value: 1.5,
+        label: t('content.tech.wormhole_stabilization.effect.0.label'),
+      },
+    ],
+  },
+  {
+    id: 'fleet_logistics',
+    name: t('content.tech.fleet_logistics.name'),
+    desc: t('content.tech.fleet_logistics.desc'),
+    branch: 'military',
+    icon: 'i-tech-fleet',
+    tier: 5,
+    cost: { data: 6000, energy: 50000, alloy: 2000, dark: 10 },
+    requires: ['adv_units'],
+    effects: combatPair(1.3),
+  },
+  {
+    id: 'dark_resonance',
+    name: t('content.tech.dark_resonance.name'),
+    desc: t('content.tech.dark_resonance.desc'),
+    branch: 'dark',
+    icon: 'i-tech-dark-eff',
+    tier: 5,
+    cost: { data: 15000, energy: 120000, dark: 80 },
+    requires: ['dark_singularity_well_theory'],
+    effects: [
+      {
+        type: 'production_mult',
+        target: 'dark',
+        value: 1.5,
+        label: t('content.tech.dark_resonance.effect.0.label'),
+      },
+    ],
+  },
+  // 星团层配套科技（v0.71），
+  {
+    id: 'starcluster_charting',
+    name: t('content.tech.starcluster_charting.name'),
+    desc: t('content.tech.starcluster_charting.desc'),
+    branch: 'exploration',
+    icon: 'i-tech-explore-2',
+    tier: 6,
+    cost: { data: 100000, energy: 2000000, dark: 150 },
+    requires: ['wormhole_stabilization'],
+    effects: [
+      {
+        type: 'explore_mult',
+        value: 1.3,
+        label: t('content.tech.starcluster_charting.effect.0.label'),
+      },
+    ],
+  },
+  {
+    id: 'flagship_doctrine',
+    name: t('content.tech.flagship_doctrine.name'),
+    desc: t('content.tech.flagship_doctrine.desc'),
+    branch: 'military',
+    icon: 'i-tech-flagship',
+    tier: 6,
+    cost: { data: 60000, energy: 1500000, alloy: 50000, dark: 120 },
+    requires: ['fleet_logistics'],
+    effects: combatPair(1.25),
+  },
+  {
+    id: 'dark_amplifier',
+    name: t('content.tech.dark_amplifier.name'),
+    desc: t('content.tech.dark_amplifier.desc'),
+    branch: 'dark',
+    icon: 'i-tech-dark-eff',
+    tier: 6,
+    cost: { data: 80000, energy: 3000000, dark: 300 },
+    requires: ['dark_resonance'],
+    effects: [
+      {
+        type: 'production_mult',
+        target: 'dark',
+        value: 1.3,
+        label: t('content.tech.dark_amplifier.effect.0.label'),
+      },
+    ],
+  },
+  {
+    id: 'precursor_memory',
+    name: t('content.tech.precursor_memory.name'),
+    desc: t('content.tech.precursor_memory.desc'),
+    branch: 'computing',
+    icon: 'i-tech-data-2',
+    tier: 6,
+    cost: { data: 150000, energy: 2500000, dark: 200 },
+    requires: ['singularity_theory'],
+    effects: [
+      {
+        type: 'production_mult',
+        target: 'data',
+        value: 1.4,
+        label: t('content.tech.precursor_memory.effect.0.label'),
+      },
+    ],
+  },
+  // 星臂层配套科技（v0.90），
+  {
+    id: 'arm_navigation',
+    name: t('content.tech.arm_navigation.name'),
+    desc: t('content.tech.arm_navigation.desc'),
+    branch: 'exploration',
+    icon: 'i-tech-explore-3',
+    tier: 7,
+    cost: { data: 1000000, energy: 4000000, dark: 250 },
+    requires: ['starcluster_charting'],
+    effects: [
+      { type: 'explore_mult', value: 1.3, label: t('content.tech.arm_navigation.effect.0.label') },
+    ],
+  },
+  {
+    id: 'armada_tactics',
+    name: t('content.tech.armada_tactics.name'),
+    desc: t('content.tech.armada_tactics.desc'),
+    branch: 'military',
+    icon: 'i-tech-armada',
+    tier: 7,
+    cost: { data: 80000, energy: 3000000, alloy: 150000, dark: 220 },
+    requires: ['flagship_doctrine'],
+    effects: combatPair(1.25),
+  },
+  {
+    id: 'dark_harvester',
+    name: t('content.tech.dark_harvester.name'),
+    desc: t('content.tech.dark_harvester.desc'),
+    branch: 'dark',
+    icon: 'i-tech-dark-harvester',
+    tier: 7,
+    cost: { data: 1200000, energy: 6000000, dark: 400 },
+    requires: ['dark_amplifier'],
+    effects: [
+      {
+        type: 'production_mult',
+        target: 'dark',
+        value: 1.3,
+        label: t('content.tech.dark_harvester.effect.0.label'),
+      },
+    ],
+  },
+  {
+    id: 'neural_archive',
+    name: t('content.tech.neural_archive.name'),
+    desc: t('content.tech.neural_archive.desc'),
+    branch: 'computing',
+    icon: 'i-tech-data-3',
+    tier: 7,
+    cost: { data: 1800000, energy: 5000000, dark: 280 },
+    requires: ['precursor_memory'],
+    effects: [
+      {
+        type: 'production_mult',
+        target: 'data',
+        value: 1.4,
+        label: t('content.tech.neural_archive.effect.0.label'),
+      },
+    ],
+  },
+  // 星系层配套科技（v0.91），
+  {
+    id: 'galaxy_charting',
+    name: t('content.tech.galaxy_charting.name'),
+    desc: t('content.tech.galaxy_charting.desc'),
+    branch: 'exploration',
+    icon: 'i-tech-explore-4',
+    tier: 8,
+    cost: { data: 20000000, energy: 100000000, dark: 550 },
+    requires: ['arm_navigation'],
+    effects: [
+      { type: 'explore_mult', value: 1.3, label: t('content.tech.galaxy_charting.effect.0.label') },
+    ],
+  },
+  {
+    id: 'galaxy_command',
+    name: t('content.tech.galaxy_command.name'),
+    desc: t('content.tech.galaxy_command.desc'),
+    branch: 'military',
+    icon: 'i-tech-galaxy-command',
+    tier: 8,
+    cost: { data: 1600000, energy: 75000000, alloy: 3500000, dark: 480 },
+    requires: ['armada_tactics'],
+    effects: combatPair(1.25),
+  },
+  {
+    id: 'dark_web',
+    name: t('content.tech.dark_web.name'),
+    desc: t('content.tech.dark_web.desc'),
+    branch: 'dark',
+    icon: 'i-tech-dark-web',
+    tier: 8,
+    cost: { data: 25000000, energy: 150000000, dark: 900 },
+    requires: ['dark_harvester'],
+    effects: [
+      {
+        type: 'production_mult',
+        target: 'dark',
+        value: 1.3,
+        label: t('content.tech.dark_web.effect.0.label'),
+      },
+    ],
+  },
+  {
+    id: 'galaxy_archive',
+    name: t('content.tech.galaxy_archive.name'),
+    desc: t('content.tech.galaxy_archive.desc'),
+    branch: 'computing',
+    icon: 'i-tech-data-4',
+    tier: 8,
+    cost: { data: 40000000, energy: 120000000, dark: 600 },
+    requires: ['neural_archive'],
+    effects: [
+      {
+        type: 'production_mult',
+        target: 'data',
+        value: 1.4,
+        label: t('content.tech.galaxy_archive.effect.0.label'),
+      },
+    ],
+  },
+  // 深空层配套科技（v0.92），
+  {
+    id: 'void_charting',
+    name: t('content.tech.void_charting.name'),
+    desc: t('content.tech.void_charting.desc'),
+    branch: 'exploration',
+    icon: 'i-tech-explore-5',
+    tier: 9,
+    cost: { data: 50000000, energy: 250000000, dark: 1400 },
+    requires: ['galaxy_charting'],
+    effects: [
+      { type: 'explore_mult', value: 1.3, label: t('content.tech.void_charting.effect.0.label') },
+    ],
+  },
+  {
+    id: 'void_command',
+    name: t('content.tech.void_command.name'),
+    desc: t('content.tech.void_command.desc'),
+    branch: 'military',
+    icon: 'i-tech-void-command',
+    tier: 9,
+    cost: { data: 4000000, energy: 190000000, alloy: 8750000, dark: 1200 },
+    requires: ['galaxy_command'],
+    effects: combatPair(1.25),
+  },
+  {
+    id: 'dark_veil',
+    name: t('content.tech.dark_veil.name'),
+    desc: t('content.tech.dark_veil.desc'),
+    branch: 'dark',
+    icon: 'i-tech-dark-veil',
+    tier: 9,
+    cost: { data: 62500000, energy: 375000000, dark: 2250 },
+    requires: ['dark_web'],
+    effects: [
+      {
+        type: 'production_mult',
+        target: 'dark',
+        value: 1.3,
+        label: t('content.tech.dark_veil.effect.0.label'),
+      },
+    ],
+  },
+  {
+    id: 'void_archive',
+    name: t('content.tech.void_archive.name'),
+    desc: t('content.tech.void_archive.desc'),
+    branch: 'computing',
+    icon: 'i-tech-data-5',
+    tier: 9,
+    cost: { data: 100000000, energy: 300000000, dark: 1500 },
+    requires: ['galaxy_archive'],
+    effects: [
+      {
+        type: 'production_mult',
+        target: 'data',
+        value: 1.4,
+        label: t('content.tech.void_archive.effect.0.label'),
+      },
+    ],
+  },
+]
