@@ -67,8 +67,17 @@ ok('取消后存档仍未被替换', (await readTranscends()) === 7)
 await page.locator('button', { hasText: '导入存档' }).first().click()
 await page.waitForTimeout(400)
 await page.locator('button', { hasText: '确认导入' }).first().click()
-await page.waitForTimeout(1500)
-ok('确认后存档被替换（totalTranscends=0）', (await readTranscends()) === 0)
+// 导入会触发页面重载，evaluate 可能撞上导航：等目标值在新上下文就绪再断言
+await page
+  .waitForFunction(
+    () => {
+      const raw = localStorage.getItem('starcore_save_v1_backup')
+      return raw ? JSON.parse(JSON.parse(raw).d).transcend.totalTranscends === 0 : false
+    },
+    { timeout: 10000 }
+  )
+  .catch(() => {})
+ok('确认后存档被替换（totalTranscends=0）', (await readTranscends().catch(() => null)) === 0)
 
 await browser.close()
 console.log(fails === 0 ? '\n===== 全部通过 =====' : `\n===== ${fails} 项失败 =====`)

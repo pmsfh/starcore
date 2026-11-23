@@ -316,10 +316,15 @@ console.log('== F. 移动视口 390px ==');
     if (overflow > 1) throw new Error(`溢出 ${overflow}px`);
   });
   await v('F3 双按钮同排不换行', async () => {
+    // 等字体与入场动画稳定后再量，避免负载下拿到过渡中间态；同排允许 1px 亚像素差
+    await page.evaluate(() => document.fonts.ready);
+    await page.evaluate(
+      () => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)))
+    );
     const a = await page.locator('[data-testid="encounter-opt-A"]').boundingBox();
     const b = await page.locator('[data-testid="encounter-opt-B"]').boundingBox();
     if (!a || !b) throw new Error('按钮缺位');
-    if (a.y !== b.y) throw new Error('双按钮换行');
+    if (Math.abs(a.y - b.y) > 1) throw new Error(`双按钮换行（y ${a.y} / ${b.y}）`);
   });
   await v('F4 事件描述完整显示', async () => {
     const box = await page.locator('.enc-desc').boundingBox();

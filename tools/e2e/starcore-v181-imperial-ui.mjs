@@ -219,15 +219,19 @@ console.log('== C/D. 领取与整备 ==')
     if (!/\d/.test(txt)) throw new Error('池未显量: ' + txt.slice(0, 80))
   })
   await v('C2 领取后池清零（按钮转禁用）', async () => {
+    // 「清零」窗口只存在到下一 tick，轮询容易错过：先挂 MutationObserver 捕获禁用态
+    await page.evaluate(() => {
+      const btn = document.querySelector('[data-testid="imperial-pool-claim"]')
+      window.__claimDisabled = false
+      if (!btn) return
+      window.__claimMo = new MutationObserver(() => {
+        if (btn.disabled) window.__claimDisabled = true
+      })
+      window.__claimMo.observe(btn, { attributes: true, attributeFilter: ['disabled'] })
+    })
     await page.locator('[data-testid="imperial-pool-claim"]').click()
-    await page
-      .waitForFunction(
-        () => document.querySelector('[data-testid="imperial-pool-claim"]')?.disabled === true,
-        { timeout: 3000 },
-      )
-      .catch(() => {})
-    const claim = page.locator('[data-testid="imperial-pool-claim"]')
-    if (!(await claim.isDisabled())) throw new Error('领取后仍可用')
+    await page.waitForFunction(() => window.__claimDisabled, { timeout: 5000 })
+    await page.evaluate(() => window.__claimMo?.disconnect())
   })
   await v('D1 整备一次：等级 1→2', async () => {
     const up = page.locator('[data-testid="imperial-imp_pass-upgrade"]')

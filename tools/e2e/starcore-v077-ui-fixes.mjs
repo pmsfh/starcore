@@ -136,7 +136,10 @@ console.log('== D. Escape 关弹窗 + 焦点陷阱 ==');
   const focusIn = await page.evaluate(() => !!document.activeElement?.closest('.modal-overlay'));
   check('弹窗打开后焦点在弹窗内（immediate + 首元素聚焦）', focusIn);
   await page.keyboard.press('Escape');
-  await page.waitForTimeout(500);
+  // 关闭动画与焦点陷阱释放是异步的：等弹窗真正从 DOM 消失，不再用固定等待
+  await page
+    .waitForFunction(() => !document.querySelector('.modal-overlay'), { timeout: 8000 })
+    .catch(() => {});
   check('Escape 关闭弹窗', (await page.locator('.modal-overlay').count()) === 0);
   await page.context().close();
 }
