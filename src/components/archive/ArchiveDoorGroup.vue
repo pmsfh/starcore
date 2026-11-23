@@ -15,7 +15,9 @@ withDefaults(
 <template>
   <div class="gate-door">
     <h4 class="gate-door-name">{{ name }}</h4>
-    <p v-if="locked" class="gate-locked" :data-testid="lockedTestid">{{ lockedText }}</p>
+    <p v-if="locked" class="gate-locked locked-text" :data-testid="lockedTestid">
+      {{ lockedText }}
+    </p>
     <div v-else class="gate-grid">
       <article v-for="entry in entries" :key="entry.id" class="gate-card" :data-testid="testid">
         <h5 class="gate-name">{{ entry.name }}</h5>

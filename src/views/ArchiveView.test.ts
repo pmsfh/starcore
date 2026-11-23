@@ -164,6 +164,10 @@ describe('ArchiveView — 帝庭档案', () => {
     expect(wrapper.text()).toContain(IMPERIAL_SECTIONS[4].entries[2].note)
     // 炉前节：锁定提示可见、亲见留档零渲染不剧透
     expect(wrapper.find('[data-testid="archive-imperial-final-locked"]').exists()).toBe(true)
+    // 锁定提示须挂 locked-text 承接锁定灰蓝色（v1.85.4 拆件时漏挂，此处钉住）
+    expect(wrapper.find('[data-testid="archive-imperial-final-locked"]').classes()).toContain(
+      'locked-text'
+    )
     expect(wrapper.findAll('[data-testid="archive-imperial-final-card"]').length).toBe(0)
     expect(wrapper.text()).not.toContain('倾倒的规程')
   })
@@ -188,6 +192,9 @@ describe('ArchiveView — 帝庭档案', () => {
     const locked = mountView(ArchiveView)
     await locked.vm.$nextTick()
     expect(locked.find('[data-testid="archive-imperial-forge-locked"]').exists()).toBe(true)
+    expect(locked.find('[data-testid="archive-imperial-forge-locked"]').classes()).toContain(
+      'locked-text'
+    )
     expect(locked.findAll('[data-testid="archive-imperial-forge-card"]').length).toBe(0)
     expect(locked.text()).not.toContain('炉口的另一侧')
     locked.unmount()
