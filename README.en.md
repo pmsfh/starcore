@@ -120,7 +120,7 @@ Safari 14+; both desktop and mobile layouts are supported.
 ```text
 starcore/
 ├─ src/
-│  ├─ components/   53 components (including 8 icon sub-components), grouped as ui / layout / home / relics / build / army / battle / map / archive / settings
+│  ├─ components/   57 components (including 8 icon sub-components), grouped as ui / layout / home / relics / build / army / battle / map / archive / settings
 │  ├─ composables/  13 composables (breakpoints, Toast, action queue, onboarding, particles, …)
 │  ├─ data/         31 data tables (buildings, transcendence tree, tech split by discipline and star layer across 2 files, exploration, strongholds split by star layer across 6 files, relics, achievements, expeditions, weekly boss, encounters, dispatch, units, formation doctrines, navigation, story, background stars, gate echoes, alien behemoth notes, seven-gate files, imperial archive files, imperial strongholds)
 │  ├─ i18n/         i18n facade (message lookup and locale detection)

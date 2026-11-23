@@ -97,7 +97,7 @@ Vue 3 · TypeScript · Vite · Pinia · Vue Router · decimal.js · localforage
 ```text
 starcore/
 ├─ src/
-│  ├─ components/   53 个组件（含图标子组件 8 个），按 ui / layout / home / relics / build / army / battle / map / archive / settings 分组
+│  ├─ components/   57 个组件（含图标子组件 8 个），按 ui / layout / home / relics / build / army / battle / map / archive / settings 分组
 │  ├─ composables/  13 个组合式函数（断点、Toast、行动队列、引导、粒子等）
 │  ├─ data/         31 份数据表（建筑、转生树、科技（按学科与星层配套分 2 个文件）、探索、据点（按星层分 6 个文件）、遗物、成就、远征、周强敌、遭遇、派遣、部队、编队特性、导航、剧情、背景星点、门后回响、异星巨兽生态志、七门留档、帝庭档案、帝庭据点）
 │  ├─ i18n/         多语言门面（取词与语言识别）
