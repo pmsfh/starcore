@@ -194,7 +194,7 @@ corepack pnpm install   # 依赖有更新时执行
 ./starcore.sh deploy --dir . --dest /var/www/example --url https://example.com
 ```
 
-- 站点信息可用 `--dest` / `--url` 传入，也可写入 `deploy.env` 复用。
+- 站点信息可用 `--dest` / `--url` 传入，也可写入 `.deploy.env` 复用。
 - 更新不影响游戏存档，存档保存在浏览器本地。
 - 部署目标可以是任意可写目录；不可写时按需加 `--sudo`。
 - 不使用命令行时，也可以从

@@ -24,8 +24,8 @@ growing through "Singularity Restart" rebirth cycles.
 - **PVE Strongholds**: 36 strongholds in 4 categories; garrison conquered
   ones for idle output, plus an endless expedition with rising depth —
   every 10 layers conquered unlocks a one-time milestone reward
-  (lifetime progress; missed tiers can be claimed later), with a weekly
-  boss scaled to the player's expedition frontier every Monday (v1.24)
+  (lifetime progress; missed tiers can be claimed later), with a Weekly
+  Foe scaled to the player’s expedition frontier every Monday (v1.24)
 - **Imperial Strongholds**: 6 holdings along the tribute route on the star
   map; taken-over ones yield tribute continuously (12-hour pool cap, manual
   claim); weekly inspections can be fought at standard or strict difficulty,
@@ -42,7 +42,7 @@ growing through "Singularity Restart" rebirth cycles.
 - **Achievements**: 57 milestones tracked across rebirths, granting permanent
   bonuses (v1.22 adds synthesis, enhancement, set-collection and enemy-archive
   long-term goals; v1.82 adds five Imperial Chronicle goals;
-  v1.83 extends to eight: Under the Furnace Mouth / The Fire Feeder / The One Who Heard the Furnace)
+  v1.83 extends to eight: Beneath the Furnace Mouth / The Fire-Feeder / Those Who Heard the Furnace)
 - **Daily Check-in**: streak-cycle rewards plus 3 weekly challenges drawn
   from 9 templates (combat, exploration, research, building, rebirth,
   expedition, synthesis, enhancement, garrison)
@@ -232,7 +232,7 @@ corepack pnpm install   # run when dependencies have changed
 ./starcore.sh deploy --dir . --dest /var/www/example --url https://example.com
 ```
 
-- Pass site settings with `--dest` / `--url`, or keep them in `deploy.env`.
+- Pass site settings with `--dest` / `--url`, or keep them in `.deploy.env`.
 - Updates do not affect game saves, which are kept locally in the browser.
 - Any writable directory can be the target; add `--sudo` when needed.
 - If you prefer not to use the command line, a prebuilt archive is available

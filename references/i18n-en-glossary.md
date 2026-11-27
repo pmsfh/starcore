@@ -143,7 +143,7 @@
 ### ④ 成就与叙事定稿口径（v1.66 豁免登记）
 
 - **建造成就命名双风格并存**：奠基者 / 建筑宗师（人物式）与百塔耸立 / 千机互联（景象式）交错为既有序列风格，认可保留，不改名。
-- **成就类别后缀六三并存**：九类中六类带「里程碑 / Milestones」（battle / build / dark / energy / explore / tech），三类不带（relic / time / transcend）；后缀无功能价值，认可保留、不补齐。
+- **成就类别后缀六四并存**：十类中六类带「里程碑 / Milestones」（battle / build / dark / energy / explore / tech），四类不带（relic / time / transcend / imperial）；后缀无功能价值，认可保留、不补齐。
 - **「沉默者回响」三名同源**：终局据点名、敌方单位名与遗物套装名（Silent… 系 / Echo of the Silent Ones）一词三义，系门后文明伏笔的有意呼应，改名冻结。
 
 ### ⑤ 门总纲（v1.72 立节）
