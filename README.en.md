@@ -26,13 +26,13 @@ growing through "Singularity Restart" rebirth cycles.
   every 10 layers conquered unlocks a one-time milestone reward
   (lifetime progress; missed tiers can be claimed later), with a Weekly
   Foe scaled to the player’s expedition frontier every Monday (v1.24)
-- **Imperial Strongholds**: 6 holdings along the tribute route on the star
-  map; taken-over ones yield tribute continuously (12-hour pool cap, manual
-  claim); weekly inspections can be fought at standard or strict difficulty,
-  or paid off; each holding supports 3 readiness levels; progress persists
-  through rebirth (v1.81); the Furnace Domain at the end of the route (v1.83)
-  takes one of four resources per tribute, refills furnace stability, and
-  returns data by stability tier and the weekly named resource, up to 4
+- **Imperial Strongholds**: 6 Imperial strongholds along the tribute route on
+  the star map; taken-over ones yield tribute continuously (12-hour pool cap,
+  manual claim); weekly inspections can be fought at standard or strict
+  difficulty, or paid off; each holding supports 3 readiness levels; progress
+  persists through rebirth (v1.81); the Furnace Domain at the end of the route
+  (v1.83) takes one of four resources per tribute, refills furnace stability,
+  and returns data by stability tier and the weekly named resource, up to 4
   tributes a day
 - **Relics**: 20 kinds drawn from rarity pools; 3 of the same rarity fuse
   into 1 of the next tier; 4 set bonuses; each relic can be enhanced up to
@@ -139,7 +139,7 @@ starcore/
 ├─ public/          favicon, touch icon, share image and self-hosted fonts (Orbitron, JetBrains Mono)
 ├─ scripts/         quality scripts (count conservation, message key checks, bundle size budget)
 ├─ tools/           diagnostics (environment self-check, end-to-end and numeric)
-├─ .github/         CI workflow (full checks on push to main)
+├─ .github/         CI workflow (full checks on push to main and pull requests)
 ├─ changelog/       version history; active file and two archives
 ├─ starcore.sh      install and deployment script
 └─ project configs (vite.config.ts, vitest.config.ts, tsconfig*.json, eslint.config.js)
