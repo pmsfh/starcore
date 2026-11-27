@@ -4,11 +4,51 @@
 > 技术栈：Vue 3.5 + Vite 8 + Pinia 4 + TypeScript 6 + decimal.js 10 + localforage 1.10
 > 版本号规则：玩家可感知的功能、界面、数值与可见修复升第二位号；
 > 玩家无感知的内部改动升第三位号，并入当前第二位条目，不再单独成条
-> 当前版本：v1.85.5
+> 当前版本：v1.86.0
 >
-> 本文件为活跃档（v1.55 起），新条目置顶，30 个版本条目；更早条目见
+> 本文件为活跃档（v1.55 起），新条目置顶，31 个版本条目；更早条目见
 > [changelog-v0.77.1-v1.48.6.md](changelog-v0.77.1-v1.48.6.md)（v0.77.1 至 v1.48.6）与
 > [changelog-v0.01-v0.75.1.md](changelog-v0.01-v0.75.1.md)（v0.01 至 v0.75.1）。
+
+## v1.86.0 — 文档: 英语术语表与语言包译法统一
+
+**变更性质：文案（英文玩家可见；中文界面、机制与数值不变）**
+
+**开发时间：2026-11-27**
+
+### 概述
+
+帝庭与贡道篇章上线后，英语术语表没有跟上，同一概念在英文语言包里出现
+多种并行译法：贡道同时写作 tribute lane 与 tribute nodes，巡检在
+inspection 与 audit 之间摆动，长堤写作 Breakwater 与 causeway，界碑借用
+了航标的 beacon。本版先在术语表登记定稿译法，再以术语表为准统一 16 个
+英文语言包文件的 77 处取值，并订正双语 README 里与实现不一致的几处用语。
+中文语言包、键名键序、游戏代码、机制与数值均无变化。
+
+### 变更明细
+
+- 术语表：登记帝庭与贡道篇章 20 条（子节 17 条，另补主脑、白鲸群、转生
+  3 条），修订守门者、界碑、贡道说明与成就类别计数（九类改十类）
+- 术语分野：写明奇点重启（transcend）与转生（rebirth）两套系统的英文
+  取词，避免后续把奇点系统的词按转生去改
+- 专名统一：贡道 tribute route、贡道据点 tribute-route stronghold、
+  巡检 inspection、核验 audit、裁决舰队 arbiter、炉域 Furnace Domain、
+  炉前 Furnace Forecourt、整备 readiness、银盘枢纽 Disc Hub、
+  摇篮星区 Cradle Sector、界碑 boundary marker、长堤 Breakwater
+- 族名与人物：主脑 Master Mind、白鲸群 Void White Whales、
+  守门者 the Gatekeepers
+- 档案与成就：七门条目 The Mooring Marks、成就 Transcendence Master
+  保持原译、资源名 Data Stream output
+- README：英文三座炉前成就名、Weekly Foe、6 Imperial strongholds、
+  `.deploy.env` 与 CI 触发说明订正
+
+### 验证
+
+- 16 个英文语言包文件键名与键序不变，中文语言包与游戏代码零改动
+- 构建与全部测试通过：73 个测试文件 956 个用例，计数守恒与文案守卫
+  strict 0 告警
+- 文档一致性 0 项告警，数值快照新鲜度校验通过
+- 英文语言包取值与术语表逐条对应，旧译法全仓检索仅剩泛指用法
 
 ---
 
