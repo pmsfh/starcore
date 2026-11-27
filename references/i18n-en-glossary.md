@@ -66,6 +66,7 @@
 | 古代遗迹 | Ancient Ruins | 据点类型 |
 | 沉默者前哨站 | Silent Outposts | 据点类型 |
 | 转生 | rebirth | 转生树 `Rebirth Tree`、转生次数 `Rebirth count`；「跨转生保留」`kept across rebirths`；rebirth 只指转生，奇点重启（transcend）是另一套系统，英文用 Transcendence / Singularity（如成就 `Transcendence Master`、`Singularity Restarts`），不属本条（v1.85 补登） |
+| 系泊圆痕 | The Mooring Marks | 七门档案 gate_12 条目名，正文作 `mooring marks of varying depth`；中心词是痕，指锚位上深浅不一的系泊磨损痕迹，「圆」的意象由中文原文与正文语境承载，不在英文标题复制；不用 `Mooring Rings`（v1.85 登记） |
 
 ### 帝庭与贡道篇章（v1.85 补登，覆盖 v1.75–v1.83 篇章）
 

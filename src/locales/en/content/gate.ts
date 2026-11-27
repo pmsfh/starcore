@@ -86,11 +86,11 @@ export default {
   'content.gate.gate_11.note':
     'Chain reading: the cut cord still holds its link to the chain; only the mark is offline.',
 
-  'content.gate.gate_12.name': 'The Mooring Rings',
+  'content.gate.gate_12.name': 'The Mooring Marks',
   'content.gate.gate_12.text':
-    'Below the cords, the anchorage bore mooring rings of varying depth. The deepest of them matched a flagship’s berth to size. The moorings are older than the Breakwater.',
+    'Below the cords, the anchorage bore mooring marks of varying depth. The deepest of them matched a flagship’s berth to size. The moorings are older than the Breakwater.',
   'content.gate.gate_12.note':
-    'Chain reading: no resonance at the rings — long idle, never reused.',
+    'Chain reading: no resonance at the marks — long idle, never reused.',
 
   // Gate 5 · Arched Gate (silent; the beam is the gate, the crest faces the far side)
   'content.gate.door_05': 'Arched Gate',
