@@ -88,11 +88,11 @@ export default {
   'content.imperial.imp_11.note':
     'Registry note: last seat’s manifest verified, no shortfall reported.',
 
-  'content.imperial.imp_12.name': 'Where the Markers Stand',
+  'content.imperial.imp_12.name': 'Where the Boundary Markers Stand',
   'content.imperial.imp_12.text':
-    'The escort squadrons drew their line along both sides of the tribute route: raids inside it went to the verdict, raids outside to the patrol. The first thing a tribute raider learned was which side of the marker he stood on.',
+    'The escort squadrons drew their line along both sides of the tribute route: raids inside it went to the verdict, raids outside to the patrol. The first thing a tribute raider learned was which side of the boundary marker he stood on.',
   'content.imperial.imp_12.note':
-    'Registry note: markers inspected quarterly; a drifted marker is replaced.',
+    'Registry note: boundary markers inspected quarterly; a drifted boundary marker is replaced.',
 
   // Section 5 · Furnace Lore (faith and rumor; nothing of the furnace itself)
   'content.imperial.section_05': 'Furnace Lore',
