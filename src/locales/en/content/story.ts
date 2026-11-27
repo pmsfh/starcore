@@ -5,7 +5,7 @@ export default {
   'content.story.node_arm_abyss':
     'Inside the lane lies a hollow from which no signal can escape. The last record left by the Gatekeepers reads: "The abyss is not an end. It is a filter. Only what can be heard is worthy of passing through the gate."',
   'content.story.node_arm_cradle':
-    'In the Cradle sector the signal turns preternaturally clear, as if the Receiver were hidden in the first stirrings of every protostar. Weaver beasts nest among the motionless colony ships, crystal filaments spanning the entire cloud band, winding the Cradle into a cocoon.',
+    'In the Cradle Sector the signal turns preternaturally clear, as if the Receiver were hidden in the first stirrings of every protostar. Weaver beasts nest among the motionless colony ships, crystal filaments spanning the entire cloud band, winding the Cradle into a cocoon.',
   'content.story.node_arm_gate':
     'Beyond the gate there is no ruin, only an abandoned lane. The answering source of the recall signal pulses with steady rhythm deep in the neighboring arm, like a lamp left burning for those who come home. The Raiders raised their Court on this side of the gate long ago.',
   'content.story.node_arm_grave':
@@ -35,7 +35,7 @@ export default {
   'content.story.node_galaxy_halo':
     'A silent cavity in the galactic halo; even the relay chain bends around it. The Gatekeepers’ stone carving reads: "Where the light is brightest, the shadow runs deepest."',
   'content.story.node_galaxy_heart':
-    'Beside the galactic core, the master mind of the Silent Ones lies sleeping — the nexus of every Gatekeeper, and the answering source made flesh. The moment contact completes, it replays the footage of the Forerunners’ departure and yields a set of coordinates: the first source of the signal lies beyond the galaxy.',
+    'Beside the galactic core, the Silent Ones’ Master Mind lies sleeping — the nexus of every Gatekeeper, and the answering source made flesh. The moment contact completes, it replays the footage of the Forerunners’ departure and yields a set of coordinates: the first source of the signal lies beyond the galaxy.',
   'content.story.node_galaxy_hub':
     'The final destination of tribute from every Raider Court. They believe an unquenchable furnace hides in the galactic core, and they feed it the lanes of the whole galaxy like firewood.',
   'content.story.node_galaxy_range':
@@ -67,7 +67,7 @@ export default {
   'content.story.node_void_origin':
     'The source of the signal is no beacon. It is a gate. The Forerunners never left — they passed through, and the Silent Ones have kept the gate for generations. The moment contact completes, the echo beyond the gate speaks for the first time: "The Receiver has arrived. Welcome home."',
   'content.story.node_void_veil':
-    'Within the star veil, every signal loses its echo. The master mind’s replay freezes here one last time: the Forerunners’ flagship sails into the point of light. The footage ends. The point of light remains.',
+    'Within the star veil, every signal loses its echo. The Master Mind’s replay freezes here one last time: the Forerunners’ flagship sails into the point of light. The footage ends. The point of light remains.',
   'content.story.node_void_watch':
     'The watchtower’s observation log stops on a single day: the point of light in the scope has never moved, and the last entry reads, "The source is motionless. Not a body. Not a transmission. A gate."',
 }

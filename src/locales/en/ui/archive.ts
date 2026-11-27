@@ -31,10 +31,10 @@ export default {
   'archive.gateLocked': 'The answering gate has not yet been crossed.',
   'archive.imperialSection': 'Imperial Court Archive',
   'archive.imperialHint':
-    'Observation files of the tribute lanes, audits and verdicts, seen once the Disc Hub has been explored.',
+    'Observation files of the tribute routes, audits and verdicts, seen once the Disc Hub has been explored.',
   'archive.imperialCount': 'Filed {seen} / {total} entries',
   'archive.imperialLocked': 'The lanes are not yet walked to their end.',
-  'archive.imperialFinalLocked': 'Unlocks after taking all six route strongholds',
+  'archive.imperialFinalLocked': 'Unlocks after taking all six tribute-route strongholds',
   'archive.imperialForgeLocked':
-    'Recorded after your first entry into the furnace domain (kept across transcendence)',
+    'Recorded after your first entry into the furnace domain (kept across rebirths)',
 }

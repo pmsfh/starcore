@@ -114,7 +114,7 @@ export default {
   // v1.73 faction-themed expansion: Caravans / Audits / Remnants / Whale Lanterns
   'content.encounters.enc_tribute_convoy.name': 'Tribute Convoy',
   'content.encounters.enc_tribute_convoy.desc':
-    'A Court convoy rides the tribute lane with escort berths open',
+    'A Court convoy rides the tribute route with escort berths open',
   'content.encounters.enc_tribute_convoy.optA': 'Collect escort fee',
   'content.encounters.enc_tribute_convoy.optB': 'Ride along as escort',
   'content.encounters.enc_caravan_market.name': 'Caravan Market',
@@ -149,12 +149,12 @@ export default {
   'content.encounters.enc_imperial_audit.optB': 'Claim the audit fee',
   'content.encounters.enc_arbiter_salvage.name': 'Arbiter Wake',
   'content.encounters.enc_arbiter_salvage.desc':
-    'Scraps of verification records drift along the arbiter fleet’s wake',
+    'Scraps of audit records drift along the arbiter fleet’s wake',
   'content.encounters.enc_arbiter_salvage.optA': 'Copy the records',
   'content.encounters.enc_arbiter_salvage.optB': 'Trail the wake for more',
   'content.encounters.enc_tribute_escort.name': 'Tribute Escort',
   'content.encounters.enc_tribute_escort.desc':
-    'A full assault detail stands by for escort duty along the tribute lane',
+    'A full assault detail stands by for escort duty along the tribute route',
   'content.encounters.enc_tribute_escort.optA': 'Take the posted shift',
   'content.encounters.enc_tribute_escort.optB': 'Take the whole detail',
   'content.encounters.enc_ceremonial_guard.name': 'Ceremonial Rotation',
@@ -162,15 +162,15 @@ export default {
     'The Imperial honor rotation arrives, recruiting temporary guards',
   'content.encounters.enc_ceremonial_guard.optA': 'Sign up one round',
   'content.encounters.enc_ceremonial_guard.optB': 'Take the full term',
-  'content.encounters.enc_court_parade.name': 'Audit Review',
+  'content.encounters.enc_court_parade.name': 'Inspection Review',
   'content.encounters.enc_court_parade.desc':
-    'The Imperial review array is hiring heavy ceremonial guards',
+    'The Imperial inspection review array is hiring heavy ceremonial guards',
   'content.encounters.enc_court_parade.optA': 'Send an honor guard',
   'content.encounters.enc_court_parade.optB': 'Join the array',
   // v1.75 Imperial archive entry: registry visit / furnace tales
   'content.encounters.enc_registry_visit.name': 'Registry Visit',
   'content.encounters.enc_registry_visit.desc':
-    'A registry clerk rides the inspection fleet, collecting notes from along the tribute lanes',
+    'A registry clerk rides the inspection fleet, collecting notes from along the tribute routes',
   'content.encounters.enc_registry_visit.optA': 'File a note',
   'content.encounters.enc_registry_visit.optB': 'Ask where copies go',
   'content.encounters.enc_furnace_tale.name': 'Furnace Tales',
@@ -210,7 +210,7 @@ export default {
   'content.encounters.enc_derelict_beacon.optB': 'Take over upkeep',
   'content.encounters.enc_whale_song.name': 'Whale Chorus',
   'content.encounters.enc_whale_song.desc':
-    'The white whales’ song washes over the array, every band a long note',
+    'The Void White Whales’ song washes over the array, every band a long note',
   'content.encounters.enc_whale_song.optA': 'Record the full band',
   'content.encounters.enc_whale_song.optB': 'Dive along the long note',
   'content.encounters.enc_beacon_supply.name': 'Beacon Depot',

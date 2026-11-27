@@ -63,13 +63,13 @@ export default {
   'content.achievements.ach_explore_7.desc': 'Complete 120 explorations in total',
   'content.achievements.ach_explore_7.effect.0.label': 'Exploration efficiency +5%',
   'content.achievements.ach_explore_7.name': 'Void Pilgrimage',
-  'content.achievements.ach_imperial_1.desc': 'Take over your first imperial stronghold',
+  'content.achievements.ach_imperial_1.desc': 'Take over your first Imperial stronghold',
   'content.achievements.ach_imperial_1.name': 'First Waystation',
   'content.achievements.ach_imperial_2.desc':
-    'Take over all 6 imperial strongholds on the tribute route',
+    'Take over all 6 Imperial strongholds on the tribute route',
   'content.achievements.ach_imperial_2.name': 'Route Secured',
   'content.achievements.ach_imperial_3.desc':
-    'Reach 9 total preparation levels across imperial strongholds',
+    'Reach 9 total readiness levels across Imperial strongholds',
   'content.achievements.ach_imperial_3.name': 'Honor Guard',
   'content.achievements.ach_imperial_4.desc': 'Claim a full tribute pool 50 times',
   'content.achievements.ach_imperial_4.name': 'Keeper of the Hearth',

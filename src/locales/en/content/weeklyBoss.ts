@@ -13,7 +13,7 @@ export default {
   // Silent Ones family (flagship line: the ledger’s "unreachable" entries)
   'content.weeklyBoss.lore.silencer.1.name': 'Black-Box Flagship',
   'content.weeklyBoss.lore.silencer.1.origin':
-    'The ledger’s only "unclassifiable" entry; its black box sat in the archive, pending adjudication',
+    'The ledger’s only "unclassifiable" entry; its black box sat in the archive, pending the arbiters’ ruling',
   'content.weeklyBoss.lore.silencer.2.name': 'Silent Procession',
   'content.weeklyBoss.lore.silencer.2.origin':
     'Kept to one fixed course and ignored every ultimatum and tribute banner',
@@ -63,10 +63,10 @@ export default {
   // Behemoth family (matriarch line: beast plagues, as filed by the registry)
   'content.weeklyBoss.lore.beast.1.name': 'Tribute-Prowler Behemoth',
   'content.weeklyBoss.lore.beast.1.origin':
-    'An old beast that stalked the tribute lanes; its carapace was set with shards of tribute ships',
+    'An old beast that stalked the tribute routes; its carapace was set with shards of tribute ships',
   'content.weeklyBoss.lore.beast.2.name': 'Tidal Matriarch',
   'content.weeklyBoss.lore.beast.2.origin':
-    'Migrated with the pull of gravity tides to lay its eggs; every lane it crossed was rerouted',
+    'Migrated with the pull of gravity tides to lay its eggs; every tribute route it crossed was rerouted',
   'content.weeklyBoss.lore.beast.3.name': 'Crystal-Nesting Behemoth',
   'content.weeklyBoss.lore.beast.3.origin':
     'Fed on energy crystals to raise its nest; the crystal veins were sealed overnight',

@@ -40,7 +40,7 @@ export default {
   'content.pve.beast_7.enemy.4.name': 'Starwhale King',
   'content.pve.beast_7.name': 'Starwhale Pod',
   'content.pve.beast_8.desc':
-    'Behemoth pods cruising around the void beacons, taking their migration orders from the beacons’ lamp-speech',
+    'Behemoth pods cruising around the Void Beacons, taking their migration orders from the beacons’ lamp-speech',
   'content.pve.beast_8.enemy.0.name': 'Void White Whale Matriarch',
   'content.pve.beast_8.enemy.1.name': 'Void Weaver',
   'content.pve.beast_8.enemy.2.name': 'Void Whale Calf',
@@ -67,7 +67,7 @@ export default {
   'content.pve.raider_11.enemy.4.name': 'Marauder Dreadnought',
   'content.pve.raider_11.name': 'Imperial Court Arbiter Fleet',
   'content.pve.raider_12.desc':
-    'Raider remnants beyond the galaxy, hunting around the Forerunners’ void beacons',
+    'Raider remnants beyond the galaxy, hunting around the Forerunners’ Void Beacons',
   'content.pve.raider_12.enemy.0.name': 'Void Skiff',
   'content.pve.raider_12.enemy.1.name': 'Void Cruiser',
   'content.pve.raider_12.enemy.2.name': 'Void Sentinel Ship',
@@ -154,7 +154,7 @@ export default {
   'content.pve.ruin_5.enemy.3.name': 'Ruin Drone',
   'content.pve.ruin_5.name': 'Forerunner Beacon',
   'content.pve.ruin_6.desc':
-    'The resting place of an entire Forerunner expedition fleet; the Breakwater core still executes its final escort order',
+    'The resting place of an entire Forerunner expedition fleet; the Breakwater Core still executes its final escort order',
   'content.pve.ruin_6.enemy.0.name': 'Breakwater Core',
   'content.pve.ruin_6.enemy.1.name': 'Breakwater Warden',
   'content.pve.ruin_6.enemy.2.name': 'Forerunner Vigil',
@@ -199,7 +199,7 @@ export default {
   'content.pve.silencer_4.enemy.2.name': 'Silent Watcher',
   'content.pve.silencer_4.name': 'Homeport of the Silent Ones',
   'content.pve.silencer_5.desc':
-    'The Silent Sovereign enthroned in the Gallery of Gates, the true gatekeeper hub of the Frozen Gate',
+    'The Silent Sovereign enthroned in the Gallery of Gates, the true hub of the Gatekeepers at the Frozen Gate',
   'content.pve.silencer_5.enemy.0.name': 'Silent Sovereign',
   'content.pve.silencer_5.enemy.1.name': 'Homeport Bulwark',
   'content.pve.silencer_5.enemy.2.name': 'Gate Sentinel',

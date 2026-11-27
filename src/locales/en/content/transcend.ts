@@ -28,7 +28,7 @@ export default {
   'content.transcend.t_dark_1.effect.0.label': 'Dark Matter output ×1.5',
   'content.transcend.t_dark_1.name': 'Dark Matter Awakening',
   'content.transcend.t_data_1.desc': 'Data building production permanently +50%',
-  'content.transcend.t_data_1.effect.0.label': 'Data output ×1.5',
+  'content.transcend.t_data_1.effect.0.label': 'Data Stream output ×1.5',
   'content.transcend.t_data_1.name': 'Data Awakening',
   'content.transcend.t_energy_1.desc': 'Energy building production permanently +50%',
   'content.transcend.t_energy_1.effect.0.label': 'Energy output ×1.5',

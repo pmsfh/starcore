@@ -60,7 +60,7 @@ export default {
     'A silent cavity in the galactic halo; even the relay chain bends around it',
   'content.explore.node_galaxy_halo.name': 'Silent Halo',
   'content.explore.node_galaxy_heart.desc':
-    'Beside the galactic core sits the master mind of the Silent Ones, the answering source made flesh',
+    'Beside the galactic core sits the Silent Ones’ Master Mind, the answering source made flesh',
   'content.explore.node_galaxy_heart.name': 'Heart of the Galaxy',
   'content.explore.node_galaxy_hub.desc':
     'The disc-lane hub where two branches converge; the tribute endpoint of the Raider Court',

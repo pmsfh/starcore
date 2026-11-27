@@ -57,6 +57,7 @@
 | 挂机驻扎 | Idle Garrison | |
 | 挂机产出 | Idle output | |
 | 据点驻扎产出 | Garrison production | |
+| 数据产出 | Data Stream output | 产出速率；资源名 Data Stream 作定语，不用 Data output |
 | 星图档案 | Star Atlas Records | |
 | 敌方档案 | Hostile Records | |
 | 帝庭档案 | Imperial Court Archive | 档案馆分组（贡道、核验与裁决观察留档）；与帝庭威胁名录（Imperial threat ledger）分域不互串 |

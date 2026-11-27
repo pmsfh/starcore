@@ -33,9 +33,9 @@ export default {
     'In the instant of crossing, the seven answering sources that form the relay chain trembled node by node, like struck strings. For the first time, the seven gates kept one and the same beat.',
   'content.echo.echo_05.note': 'No break along the relay chain; delivery confirmed intact.',
 
-  'content.echo.echo_06.name': 'The Long Causeway',
+  'content.echo.echo_06.name': 'The Long Breakwater',
   'content.echo.echo_06.text':
-    'The fleet held its ring formation through the gate. The records on this side checked against the old archives: the formation matched the causeway of ships on the lane — the courtesy of those who went first.',
+    'The fleet held its ring formation through the gate. The records on this side checked against the old archives: the formation matched the breakwater of ships on the lane — the courtesy of those who went first.',
   'content.echo.echo_06.note':
     'The formation shares its crest with the ring structure; the line never broke.',
 
@@ -74,7 +74,7 @@ export default {
 
   'content.echo.echo_13.name': 'The Beacon Keeps Burning',
   'content.echo.echo_13.text':
-    'The void beacon still works, and its lamp speaks one phrase: "Course unchanged." The fleet that crossed the gate can no longer hear it — but the lamp was never lit for farewells.',
+    'The Void Beacon still works, and its lamp speaks one phrase: "Course unchanged." The fleet that crossed the gate can no longer hear it — but the lamp was never lit for farewells.',
   'content.echo.echo_13.note':
     'The beacon never received a stand-down order; perhaps it never will.',
 
@@ -134,7 +134,7 @@ export default {
 
   'content.echo.echo_24.name': 'Whales, New Course',
   'content.echo.echo_24.text':
-    'The white whales’ migration has changed: they still skirt that reach of space, but the arc of the detour now lingers a little toward the beacon.',
+    'The Void White Whales’ migration has changed: they still skirt that reach of space, but the arc of the detour now lingers a little toward the beacon.',
   'content.echo.echo_24.note': 'As if checking the lamp phrase — or paying respects.',
 
   'content.echo.echo_25.name': 'Answers Outnumber Questions',

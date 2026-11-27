@@ -81,10 +81,10 @@ export default {
   'content.tech.dark_web.effect.0.label': 'Dark Matter output ×1.3',
   'content.tech.dark_web.name': 'Dark Matter Web',
   'content.tech.data_eff_1.desc': 'Data building production +30%',
-  'content.tech.data_eff_1.effect.0.label': 'Data output ×1.3',
+  'content.tech.data_eff_1.effect.0.label': 'Data Stream output ×1.3',
   'content.tech.data_eff_1.name': 'Data Stream Optimization',
   'content.tech.data_eff_2.desc': 'Data building production +50% more',
-  'content.tech.data_eff_2.effect.0.label': 'Data output ×1.5',
+  'content.tech.data_eff_2.effect.0.label': 'Data Stream output ×1.5',
   'content.tech.data_eff_2.name': 'Neural Network',
   'content.tech.deep_crystal_mining.desc':
     'Mine deep crystals from the planetary crust; unlocks the Deep Crystal Drill',
@@ -118,8 +118,8 @@ export default {
   'content.tech.fusion_tech.effect.0.label': 'Unlock Fusion Reactor',
   'content.tech.fusion_tech.name': 'Fusion Ignition',
   'content.tech.galaxy_archive.desc':
-    'Tap into the galactic memory archive at the edge of the Silent Ones’ master mind; Data output +40%',
-  'content.tech.galaxy_archive.effect.0.label': 'Data output ×1.4',
+    'Tap into the galactic memory archive at the edge of the Silent Ones’ Master Mind; Data Stream output +40%',
+  'content.tech.galaxy_archive.effect.0.label': 'Data Stream output ×1.4',
   'content.tech.galaxy_archive.name': 'Galactic Memory Archive',
   'content.tech.galaxy_charting.desc':
     'Chart the complete map of the Galaxy Layer; exploration efficiency +30%',
@@ -146,8 +146,8 @@ export default {
   'content.tech.neural_arch.effect.0.label': 'Unlock Neural Hub',
   'content.tech.neural_arch.name': 'Deep Learning',
   'content.tech.neural_archive.desc':
-    'Decipher the vigil network of the Forerunner breakwater; Data output +40%',
-  'content.tech.neural_archive.effect.0.label': 'Data output ×1.4',
+    'Decipher the vigil network of the Forerunner Breakwater; Data Stream output +40%',
+  'content.tech.neural_archive.effect.0.label': 'Data Stream output ×1.4',
   'content.tech.neural_archive.name': 'Neural Archive',
   'content.tech.offline_enhance.desc': 'Offline earnings +20%',
   'content.tech.offline_enhance.effect.0.label': 'Offline earnings ×1.2',
@@ -161,8 +161,8 @@ export default {
   'content.tech.parallel_training_2.effect.0.label': '+1 parallel training slot',
   'content.tech.parallel_training_2.name': 'Mass Drills II',
   'content.tech.precursor_memory.desc':
-    'Access the storage network left by the Forerunners; Data output +40%',
-  'content.tech.precursor_memory.effect.0.label': 'Data output ×1.4',
+    'Access the storage network left by the Forerunners; Data Stream output +40%',
+  'content.tech.precursor_memory.effect.0.label': 'Data Stream output ×1.4',
   'content.tech.precursor_memory.name': 'Forerunner Memory Bank',
   'content.tech.prestige_boost.desc': 'Negative Entropy gained from rebirth +50%',
   'content.tech.prestige_boost.effect.0.label': 'Negative Entropy gain ×1.5',
@@ -196,8 +196,8 @@ export default {
   'content.tech.stellar_forge_theory.effect.0.label': 'Unlock Stellar Forge',
   'content.tech.stellar_forge_theory.name': 'Stellar Forge Theory',
   'content.tech.void_archive.desc':
-    'Tap into the memory archive behind the gate’s echo, holding the full records from before the Forerunners’ departure; Data output +40%',
-  'content.tech.void_archive.effect.0.label': 'Data output ×1.4',
+    'Tap into the memory archive behind the gate’s echo, holding the full records from before the Forerunners’ departure; Data Stream output +40%',
+  'content.tech.void_archive.effect.0.label': 'Data Stream output ×1.4',
   'content.tech.void_archive.name': 'Void Memory Archive',
   'content.tech.void_charting.desc':
     'Chart the void lanes beyond the galaxy; exploration efficiency +30%',

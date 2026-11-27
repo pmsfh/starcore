@@ -1,6 +1,6 @@
 /**
  * imperial: English content copy (Imperial Court · observation files of the
- * tribute lanes, audits, honor guard, verdicts and furnace lore)
+ * tribute routes, audits, honor guard, verdicts and furnace lore)
  *
  * Translated from the zh-CN baseline; en narrates in past tense with present-tense
  * quoted verdicts, third-person onlooker throughout. The archive group: 5 sections ×
@@ -11,24 +11,24 @@
  * furnace itself.
  */
 export default {
-  // Section 1 · Tribute Routes (the tribute lanes toward the galactic core)
+  // Section 1 · Tribute Routes (the tribute routes toward the galactic core)
   'content.imperial.section_01': 'Tribute Routes',
 
   'content.imperial.imp_01.name': 'Lanes as Firewood',
   'content.imperial.imp_01.text':
     'On the Disc Hub’s star charts, every lane toward the galactic core carried the tribute mark. The Court pilots said the lanes were not roads but firewood — tribute stacked fleet by fleet, to be burned for the furnace.',
   'content.imperial.imp_01.note':
-    'Registry note: lane marks verified; this season’s beacons unchanged.',
+    'Registry note: tribute route marks verified; this season’s beacons unchanged.',
 
-  'content.imperial.imp_02.name': 'Lanes That Give Way',
+  'content.imperial.imp_02.name': 'Routes That Give Way',
   'content.imperial.imp_02.text':
-    'The Starwhale pod migrated with the gravitational tides, and the tribute lanes rerouted wherever it passed. The reroute requests were always granted at once — the audit fleet saw no point in arguing with a pod.',
+    'The Starwhale pod migrated with the gravitational tides, and the tribute routes rerouted wherever it passed. The reroute requests were always granted at once — the audit fleet saw no point in arguing with a pod.',
   'content.imperial.imp_02.note':
     'Registry note: 17 reroutes this season, all tide-born; late penalties waived.',
 
   'content.imperial.imp_03.name': 'The Empty Escort Berth',
   'content.imperial.imp_03.text':
-    'The tribute caravans often flew with their escort berths empty. Not for want of coin — the owners had done the math: with the audit fleet patrolling this often, the tribute-raiding trade had gone out of business.',
+    'The tribute convoys often flew with their escort berths empty. Not for want of coin — the owners had done the math: with the audit fleet patrolling this often, the tribute-raiding trade had gone out of business.',
   'content.imperial.imp_03.note':
     'Registry note: vacant escort berths are the norm; see the caravan rolls.',
 
@@ -64,7 +64,7 @@ export default {
 
   'content.imperial.imp_08.name': 'The Borrowed Parade',
   'content.imperial.imp_08.text':
-    'Before a fleet review, the Imperial Court would borrow heavy squadrons from passing fleets to fill the parade. The loan slips were dated for return upon the review’s end, and the borrowed gun covers were never unbuttoned.',
+    'Before an inspection review, the Imperial Court would borrow heavy squadrons from passing fleets to fill the parade. The loan slips were dated for return upon the review’s end, and the borrowed gun covers were never unbuttoned.',
   'content.imperial.imp_08.note':
     'Registry note: parade loans are all on file; unsealing the covers takes another writ.',
 
@@ -88,11 +88,11 @@ export default {
   'content.imperial.imp_11.note':
     'Registry note: last seat’s manifest verified, no shortfall reported.',
 
-  'content.imperial.imp_12.name': 'Where the Beacons Stand',
+  'content.imperial.imp_12.name': 'Where the Markers Stand',
   'content.imperial.imp_12.text':
-    'The escort squadrons drew their line along both sides of the lane: raids inside it went to the verdict, raids outside to the patrol. The first thing a tribute raider learned was which side of the beacon he stood on.',
+    'The escort squadrons drew their line along both sides of the tribute route: raids inside it went to the verdict, raids outside to the patrol. The first thing a tribute raider learned was which side of the marker he stood on.',
   'content.imperial.imp_12.note':
-    'Registry note: beacons inspected quarterly; a drifted beacon is replaced.',
+    'Registry note: markers inspected quarterly; a drifted marker is replaced.',
 
   // Section 5 · Furnace Lore (faith and rumor; nothing of the furnace itself)
   'content.imperial.section_05': 'Furnace Lore',
@@ -111,7 +111,7 @@ export default {
 
   'content.imperial.imp_15.name': 'Never-Extinguishing',
   'content.imperial.imp_15.text':
-    'The words "never extinguishing" came from the oldest of the Courts’ tribute rolls. The clerk who wrote them never saw the furnace, only the fire of the lanes — a tribute road that had burned for billions of years earned the phrase.',
+    'The words "never extinguishing" came from the oldest of the Courts’ tribute rolls. The clerk who wrote them never saw the furnace, only the fire of the lanes — a tribute route that had burned for billions of years earned the phrase.',
   'content.imperial.imp_15.note':
     'Registry note: source verifiable, wording doubtful; retained as written.',
 
@@ -120,7 +120,7 @@ export default {
 
   'content.imperial.imp_16.name': 'The Unloading Rite',
   'content.imperial.imp_16.text':
-    'The tribute lanes ended at no temple, only the furnace. The unloading arms rose and fell by procedure; with every hold emptied, the fire steadied a shade. Nothing was spent on ceremony — stoker craft, not piety.',
+    'The tribute routes ended at no temple, only the furnace. The unloading arms rose and fell by procedure; with every hold emptied, the fire steadied a shade. Nothing was spent on ceremony — stoker craft, not piety.',
   'content.imperial.imp_16.note':
     'Registry note: unloading rites held by the Stoker Hall; no watching past the mooring line.',
 
@@ -132,12 +132,12 @@ export default {
 
   'content.imperial.imp_18.name': 'The Level Line',
   'content.imperial.imp_18.text':
-    'The furnace had never gone out. Reroutes, beast tides, dynasties turned — everything had happened on those lanes, yet the furnace log stayed a level line. The stokers said among themselves it was not men keeping the fire, but the fire keeping the furnace — and no one dared copy that into the ledgers.',
+    'The furnace had never gone out. Reroutes, beast tides, dynasties turned — everything had happened on those routes, yet the furnace log stayed a level line. The stokers said among themselves it was not men keeping the fire, but the fire keeping the furnace — and no one dared copy that into the ledgers.',
   'content.imperial.imp_18.note':
     'Registry note: furnace log sealed; this entry is oral record with no ledger copy.',
   // Section 7 · The Furnace Domain (firsthand records from inside, v1.83;
   // half-reveal: actions only, never the nature or origin)
-  'content.imperial.section_07': 'Within the Furnace',
+  'content.imperial.section_07': 'The Furnace Domain',
 
   'content.imperial.imp_19.name': 'Beyond the Furnace Mouth',
   'content.imperial.imp_19.text':

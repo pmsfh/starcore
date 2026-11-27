@@ -88,7 +88,7 @@ export default {
 
   'content.gate.gate_12.name': 'The Mooring Rings',
   'content.gate.gate_12.text':
-    'Below the cords, the anchorage bore mooring rings of varying depth. The deepest of them matched a flagship’s berth to size. The moorings are older than the causeway.',
+    'Below the cords, the anchorage bore mooring rings of varying depth. The deepest of them matched a flagship’s berth to size. The moorings are older than the Breakwater.',
   'content.gate.gate_12.note':
     'Chain reading: no resonance at the rings — long idle, never reused.',
 
@@ -124,7 +124,7 @@ export default {
 
   'content.gate.gate_17.name': 'The Quiet Before the Gate',
   'content.gate.gate_17.text':
-    'The space before the gate was unnaturally quiet; even the engines ran half a shade softer. The sound meter ruled that the gate was absorbing the soundscape before it, without pause. The keepers’ hush, perhaps, was learned before this very gate.',
+    'The space before the gate was unnaturally quiet; even the engines ran half a shade softer. The sound meter ruled that the gate was absorbing the soundscape before it, without pause. The Gatekeepers’ hush, perhaps, was learned before this very gate.',
   'content.gate.gate_17.note':
     'Chain reading: the absorption holds constant — beyond all the other gates combined.',
 
