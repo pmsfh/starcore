@@ -15,9 +15,11 @@
 | 王庭 | Court | 掠夺者各级王庭（Raider Court） |
 | 帝庭 | Imperial Court | 顶层称谓（如 Galactic Imperial Court） |
 | 沉默者 | the Silent Ones | |
-| 守门者 | Gatekeepers | |
+| 守门者 | the Gatekeepers | 沉默者世代传承的身份，带定冠词、首字母大写（2026-11-27 定稿）；语言包并存的 `keepers’`、小写 gatekeeper 等写法留待语言包批改时收口 |
 | 接收者 | the Receiver | |
 | 先驱者 | the Forerunners | |
+| 主脑 | Master Mind | 沉默者的应答源实体，写作 `the Silent Ones’ Master Mind`；大小写统一，不用 master mind（v1.85 补登） |
+| 白鲸群 | Void White Whales | 泛指统一用复数（2026-11-27 定稿）；作独立物种专名时用单数 `Void White Whale`，Pod 可省（v1.85 补登）；语言包并行的 `white whales` 留待语言包批改时收口 |
 
 ## 二、星图分区（九区）
 
@@ -62,6 +64,31 @@
 | 异星巨兽 | Alien Behemoths | 据点类型 |
 | 古代遗迹 | Ancient Ruins | 据点类型 |
 | 沉默者前哨站 | Silent Outposts | 据点类型 |
+| 转生 | rebirth | 转生树 `Rebirth Tree`、转生次数 `Rebirth count`；「跨转生保留」`kept across rebirths`；rebirth 只指转生，奇点重启（transcend）是另一套系统，英文用 Transcendence / Singularity（如成就 `Transcendence Master`、`Singularity Restarts`），不属本条（v1.85 补登） |
+
+### 帝庭与贡道篇章（v1.85 补登，覆盖 v1.75–v1.83 篇章）
+
+> 定稿依据 2026-11-27 双语文案检查报告 §四。本节是单一事实源：en 语言包中仍并存的写法（下列「收口」项）按本节批改，批改落地前以本表为准。
+
+| 中文 | 英语 | 说明 |
+|------|------|------|
+| 贡道 | tribute route | 叙事中泛指「航道」仍用 lane；收口 tribute lane(s) / Tribute Routes / Imperial Tribute Route / tribute nodes；贡道商队 tribute convoy、贡道关 Tribute Gate、贡道首驿 First Waystation 保留 |
+| 贡道据点 | tribute-route stronghold | 六座贡道据点 `the six tribute-route strongholds`；「帝庭据点」单说 `Imperial stronghold`；收口 route strongholds / Court strongholds / imperial strongholds |
+| 巡检 | inspection | 帝庭巡检 `Imperial Inspection`、巡检阅舰 `Inspection Review`、迎战巡检 `Engage the inspection`、通过巡检 `inspection passed`；收口 Audit Review / fleet review / audit passed |
+| 核验 | audit | 核验台 `Audit Platform`、核验舰 `audit ship`、核验舰队 `audit fleet`、档案节名 `Audits`；收口 verification |
+| 裁决舰队 / 裁决军团 | arbiter | 帝庭裁决舰队 `Imperial Court Arbiter Fleet`、虚空裁决军团 `Void Arbiter Legion`、裁决分舰队 `arbiter squadron`；`the arbiters’ ledger` 保留；裁决港 `Verdict Harbor` 作地名保留；收口 adjudication |
+| 炉域 | Furnace Domain | 专名 `Furnace Domain`（据点名、成就、档案节名 `The Furnace Domain`）；叙事首次出现 `the furnace domain`，后文可简称 `the domain`；收口 `Within the Furnace` |
+| 炉前 / 炉前庭 | Furnace Forecourt | 地名 `Furnace Forecourt`；泛指 `before the furnace` |
+| 整备 | readiness | 整备等级 `readiness level`；按钮「整备」定稿 `Raise readiness`（不与「升级」Upgrade 撞词，语言包批改时落地）；收口 preparation |
+| 贡赋 | tribute | 已一致；与「贡物」tribute goods 同词，叙事靠上下文区分 |
+| 倾贡 | give tribute / tribute | 动词 `give tribute`；名词「一次倾贡」`tribute`；成就 `Give tribute to the furnace 100 times` 已合规 |
+| 回礼 | return | 回礼预览 `Return preview` |
+| 点名 | named tribute | `Named this week: {res}`；「周点名」同此 |
+| 打点 | pay off | 三处同根，保留 |
+| 银盘枢纽 | Disc Hub | 简称亦大写；收口 `Silver Disk Hub` |
+| 摇篮星区 | Cradle Sector | 大小写统一；收口 Cradle Cluster / Cradle sector |
+| 界碑 | boundary marker | 「界碑群」可用 `boundary stones`；`beacon` 专属「航标」（Void Beacon），不用于界碑 |
+| 长堤 | Breakwater | 先驱者长堤 `Forerunner Breakwater`、`Breakwater Core`；回响「长堤入港」`The Long Breakwater`；收口 causeway |
 
 ## 五、用词分野（防混用）
 
