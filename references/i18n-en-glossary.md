@@ -73,7 +73,7 @@
 
 | 中文 | 英语 | 说明 |
 |------|------|------|
-| 贡道 | tribute route | 叙事中泛指「航道」仍用 lane；收口 tribute lane(s) / Tribute Routes / Imperial Tribute Route / tribute nodes；贡道商队 tribute convoy、贡道关 Tribute Gate、贡道首驿 First Waystation 保留 |
+| 贡道 | tribute route | 叙事中泛指「航道」仍用 lane；收口 tribute lane(s) / tribute nodes；贡道商队 tribute convoy、贡道关 Tribute Gate、贡道首驿 First Waystation 保留。档案节名 `Tribute Routes`、地图分区标题 `Imperial Tribute Route` 是定稿 tribute route 在标题位置的 Title Case 写法，属正常体例，不作待处理项 |
 | 贡道据点 | tribute-route stronghold | 六座贡道据点 `the six tribute-route strongholds`；「帝庭据点」单说 `Imperial stronghold`；收口 route strongholds / Court strongholds / imperial strongholds |
 | 巡检 | inspection | 帝庭巡检 `Imperial Inspection`、巡检阅舰 `Inspection Review`、迎战巡检 `Engage the inspection`、通过巡检 `inspection passed`；收口 Audit Review / fleet review / audit passed |
 | 核验 | audit | 核验台 `Audit Platform`、核验舰 `audit ship`、核验舰队 `audit fleet`、档案节名 `Audits`；收口 verification |
@@ -88,7 +88,7 @@
 | 打点 | pay off | 三处同根，保留 |
 | 银盘枢纽 | Disc Hub | 简称亦大写；收口 `Silver Disk Hub` |
 | 摇篮星区 | Cradle Sector | 大小写统一；收口 Cradle Cluster / Cradle sector |
-| 界碑 | boundary marker | 「界碑群」可用 `boundary stones`；`beacon` 专属「航标」（Void Beacon），不用于界碑 |
+| 界碑 | boundary marker | 定稿用全称 `boundary marker`（2026-11-27）；「界碑群」可用 `boundary stones`；`beacon` 专属「航标」（Void Beacon），不用于界碑 |
 | 长堤 | Breakwater | 先驱者长堤 `Forerunner Breakwater`、`Breakwater Core`；回响「长堤入港」`The Long Breakwater`；收口 causeway |
 
 ## 五、用词分野（防混用）
