@@ -43,7 +43,9 @@ const width = computed(() => props.pct + '%')
   height: 100%;
   background: var(--pb-fill, var(--color-core));
   border-radius: var(--pb-fill-radius, var(--pb-radius, var(--radius-pill, 999px)));
-  transition: var(--pb-transition, width 0.3s);
+  /* 过渡缺省关闭：width 过渡每帧触发布局，需要平滑推进的调用方经
+     --pb-transition 显式开启（血条 width 0.25s / 行动队列 0.5s / 成就 0.3s） */
+  transition: var(--pb-transition, none);
   box-shadow: var(--pb-glow, none);
 }
 </style>

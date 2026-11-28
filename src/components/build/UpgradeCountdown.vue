@@ -288,22 +288,26 @@ function toggleExpand() {
   margin-top: var(--space-1);
 }
 
-/* 展开面板 */
+/* 展开面板：0fr→1fr 轨道动画（外层 grid 定轨，内层 min-height:0 允许收缩，
+   替换原 max-height 0→500px 布局动画，展开速度随真实高度均匀） */
 .countdown-detail {
+  display: grid;
   overflow: hidden;
   animation: cdIn 0.25s var(--ease-out);
 }
 @keyframes cdIn {
   from {
     opacity: 0;
-    max-height: 0;
+    grid-template-rows: 0fr;
   }
   to {
     opacity: 1;
-    max-height: 500px;
+    grid-template-rows: 1fr;
   }
 }
 .countdown-detail-inner {
+  min-height: 0;
+  overflow: hidden;
   margin-top: var(--space-2);
   padding: var(--space-3);
   background: var(--color-elevated);
@@ -417,16 +421,16 @@ function toggleExpand() {
 .cd-expand-leave-active {
   transition:
     opacity var(--duration-base) var(--ease-out),
-    max-height 0.25s var(--ease-out);
+    grid-template-rows 0.25s var(--ease-out);
   overflow: hidden;
 }
 .cd-expand-enter-from,
 .cd-expand-leave-to {
   opacity: 0;
-  max-height: 0;
+  grid-template-rows: 0fr;
 }
 .cd-expand-enter-to,
 .cd-expand-leave-from {
-  max-height: 500px;
+  grid-template-rows: 1fr;
 }
 </style>

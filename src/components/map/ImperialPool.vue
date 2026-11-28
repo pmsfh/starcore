@@ -96,7 +96,8 @@ function claimTribute() {
 }
 .ip-bar {
   height: 4px;
-  border-radius: 2px;
+  /* 4px 高将 --radius-xs(3px) 钳回 2px 渲染，与原硬编码等值 */
+  border-radius: var(--radius-xs);
   background: var(--color-line);
   overflow: hidden;
 }

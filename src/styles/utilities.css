@@ -21,9 +21,9 @@
   color: var(--color-t-secondary);
   margin-top: calc(-1 * var(--space-3));
 }
-/* section-title 分级：主标题 17px + 完整左边线 2px */
+/* section-title 分级：主标题 --text-md（设计定值 17px）+ 完整左边线 2px */
 .section-title {
-  font-size: 17px;
+  font-size: var(--text-md);
   font-weight: 600;
   color: var(--color-t-primary);
   margin-bottom: var(--space-3);
@@ -130,7 +130,7 @@
 .modal-overlay {
   position: fixed;
   inset: 0;
-  z-index: 200;
+  z-index: var(--z-modal);
   background: color-mix(in srgb, var(--color-void) 85%, transparent);
   backdrop-filter: blur(8px);
   display: flex;

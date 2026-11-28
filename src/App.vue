@@ -139,7 +139,7 @@ async function clearAndRestart() {
 .loading-screen {
   position: fixed;
   inset: 0;
-  z-index: 999;
+  z-index: var(--z-loading);
   display: flex;
   flex-direction: column;
   align-items: center;

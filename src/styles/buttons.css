@@ -37,13 +37,23 @@
   transform: scale(0.95);
   transition: transform 0.1s var(--ease-out);
 } /* 按下 0.1s，释放回 0.15s 两段式 */
-.btn-primary:disabled {
-  background: var(--color-elevated);
-  color: var(--color-t-secondary); /* vs elevated 5.30 达 AA（v1.48；原 tertiary 4.30） */
+/* 禁用态四类统一：透明度与命中反馈一致；primary/accent 另降底色与文字色 */
+.btn-primary:disabled,
+.btn-secondary:disabled,
+.btn-accent:disabled,
+.btn-ghost:disabled {
   cursor: not-allowed;
   opacity: 0.4;
   pointer-events: none; /* 禁止 hover/active 反馈 */
-} /* 统一 .4 */
+}
+.btn-primary:disabled,
+.btn-accent:disabled {
+  background: var(--color-elevated);
+  color: var(--color-t-secondary); /* vs elevated 5.30 达 AA（v1.48；原 tertiary 4.30） */
+}
+.btn-secondary:disabled {
+  color: var(--color-t-secondary); /* 禁用文字降为二级，对齐主按钮，不再似可点 */
+}
 
 .btn-secondary {
   background: var(--color-elevated);
@@ -59,10 +69,14 @@
   transform: scale(0.95);
   transition: transform 0.1s var(--ease-out);
 } /* 按下 0.1s，释放回 0.15s 两段式 */
-.btn-secondary:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-  pointer-events: none;
+/* 激活态变体：底色经 --accent 注入，缺省 quantum；含 hover 选择防悬停丢底。
+   声明位于禁用态之后：激活与禁用并存时底色取激活值，透明度与命中反馈仍走禁用态
+   （与替换前 BattleView 激活类 !important 压禁用底色的行为一致） */
+.btn-secondary.active,
+.btn-secondary.active:hover {
+  background: var(--accent, var(--color-quantum));
+  color: var(--color-on-core);
+  border-color: var(--accent, var(--color-quantum));
 }
 
 .btn-accent {
@@ -79,13 +93,6 @@
   transform: scale(0.95);
   transition: transform 0.1s var(--ease-out);
 } /* 按下 0.1s，释放回 0.15s 两段式 */
-.btn-accent:disabled {
-  background: var(--color-elevated);
-  color: var(--color-t-secondary); /* vs elevated 5.30 达 AA（v1.48；原 tertiary 4.30） */
-  cursor: not-allowed;
-  opacity: 0.4;
-  pointer-events: none;
-}
 
 .btn-ghost {
   background: transparent;
@@ -100,11 +107,6 @@
   transform: scale(0.95);
   transition: transform 0.1s var(--ease-out);
 } /* 按下 0.1s，释放回 0.15s 两段式 */
-.btn-ghost:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-  pointer-events: none;
-} /* 已统一 */
 
 /* 尺寸变体 */
 .btn-primary.sm,

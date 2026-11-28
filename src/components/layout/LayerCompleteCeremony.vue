@@ -91,7 +91,7 @@ watch(() => game.exploration.layerCeremonyQueue[0], showNext, { immediate: true 
   transform: translateX(-50%);
   /* 定宽 shrink-to-fit 会按左缘剩余宽度收窄致文案折行，须显式内容宽 */
   width: max-content;
-  z-index: 400;
+  z-index: var(--z-ceremony);
   background: var(--color-surface);
   border: 1px solid var(--layer-color);
   border-radius: var(--radius-lg);

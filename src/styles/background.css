@@ -7,7 +7,7 @@ body::after {
   content: '';
   position: fixed;
   inset: 0;
-  z-index: 0;
+  z-index: var(--z-underlay);
   pointer-events: none;
   background:
     /* 星云团 1：青蓝色，左上区域 */
@@ -40,7 +40,7 @@ body::after {
 .star-field {
   position: fixed;
   inset: 0;
-  z-index: 0;
+  z-index: var(--z-underlay);
   pointer-events: none;
 }
 .star {
@@ -54,5 +54,5 @@ body::after {
 
 #app {
   position: relative;
-  z-index: 1;
+  z-index: var(--z-content);
 }

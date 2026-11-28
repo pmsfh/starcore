@@ -151,6 +151,7 @@ const game = useGameStore()
 .progress-bar {
   flex: 1;
   --pb-radius: var(--radius-xs);
+  --pb-transition: width 0.3s; /* 探索进度连续推进，保留平滑（原缺省值显式化） */
 }
 .progress-text {
   font-size: var(--text-xs);

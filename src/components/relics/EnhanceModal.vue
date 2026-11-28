@@ -215,4 +215,9 @@ const rarityColor = relicRarityColor
   white-space: nowrap;
   min-width: var(--touch-min);
 }
+/* 关闭按钮不折行：320 窄屏下与主按钮同行被挤至两字竖排（v1.86 复核项） */
+.confirm-actions > .btn-ghost {
+  white-space: nowrap;
+  min-width: var(--touch-min);
+}
 </style>

@@ -79,9 +79,24 @@
   --text-xs: 12px;
   --text-sm: 14px;
   --text-base: 16px;
+  --text-md: 17px; /* 分节标题档：设计定值 17px，原 .section-title 唯一硬编码豁免登记入表 */
   --text-lg: 20px;
   --text-xl: 25px;
   --text-2xl: 31px;
+
+  /* 层级（全局浮层自下而上阶梯；underlay 与 content 两档兼作组件内微层级。
+     数值沿用登记前各处实值，阶梯表与消费面见 docs/设计令牌规范.md） */
+  --z-underlay: 0;
+  --z-content: 1;
+  --z-content-top: 2;
+  --z-topbar: 40;
+  --z-nav: 50;
+  --z-onboarding: 60;
+  --z-modal: 200;
+  --z-transient: 300;
+  --z-ceremony: 400;
+  --z-ceremony-overlay: 500;
+  --z-loading: 999;
 
   /* 动效 */
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);

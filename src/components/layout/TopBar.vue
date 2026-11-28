@@ -137,7 +137,7 @@ onBeforeUnmount(() => {
 .top-bar {
   position: sticky;
   top: 0;
-  z-index: 40;
+  z-index: var(--z-topbar);
   background: color-mix(in srgb, var(--color-void) 85%, transparent);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
@@ -245,7 +245,7 @@ onBeforeUnmount(() => {
   bottom: 0;
   width: 28px;
   pointer-events: none;
-  z-index: 2;
+  z-index: var(--z-content-top);
   opacity: 0;
   transition: opacity var(--duration-fast) var(--ease-out);
 }
@@ -283,7 +283,7 @@ onBeforeUnmount(() => {
   box-shadow: var(--glow-1);
   pointer-events: none;
   animation: particleRise var(--duration, 1s) var(--ease-out) forwards;
-  z-index: 1;
+  z-index: var(--z-content);
 }
 @media (prefers-reduced-motion: reduce) {
   .res-particle {

@@ -311,6 +311,6 @@ const srSummary = computed(() =>
   left: 50%;
   transform: translateX(-50%);
   width: min(260px, 80vw);
-  z-index: 60;
+  z-index: var(--z-onboarding);
 }
 </style>

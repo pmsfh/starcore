@@ -60,7 +60,7 @@ timer.set(() => emit('close'), SHOW_MS)
 .ceremony-overlay {
   position: fixed;
   inset: 0;
-  z-index: 500;
+  z-index: var(--z-ceremony-overlay);
   display: flex;
   align-items: center;
   justify-content: center;

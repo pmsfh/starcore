@@ -261,7 +261,7 @@ watch(
   border: 1px solid var(--color-border-glow);
   border-radius: var(--radius-pill);
   padding: 2px;
-  z-index: 50;
+  z-index: var(--z-nav);
 }
 .extra-nav button {
   padding: 0 var(--space-3);
@@ -275,7 +275,7 @@ watch(
 .warp-overlay {
   position: fixed;
   inset: 0;
-  z-index: 300;
+  z-index: var(--z-transient);
   pointer-events: none;
   background: radial-gradient(
     ellipse at center,

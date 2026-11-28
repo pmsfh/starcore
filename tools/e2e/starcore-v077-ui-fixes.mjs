@@ -1,6 +1,6 @@
 // 星核纪元 v0.77 专项回归：UI 修复项（16 项）
 // A. 首页宽度：route.meta 加宽 .content--wide（替代失效的 :deep 覆盖）
-// B. toast z-index 300；五枚死样式已删除
+// B. toast 渲染层级 z-index 300（读生效值）；五枚死样式已删除
 // C. 未知据点 v-else 兜底 + 路由 catch-all
 // D. Escape 关弹窗（useFocusTrap onEscape）+ 焦点入弹窗
 // E. Icons 符号表全应用唯一挂载（无重复 symbol id）
@@ -78,9 +78,11 @@ console.log('== A. 首页宽度（route.meta 加宽）==');
 // B. toast z-index + 死样式删除
 console.log('== B. toast z-index + 死样式 ==');
 {
-  const page = await newSeededPage(browser, makeSave(), '/');
+  const page = await newSeededPage(browser, makeSave(), '/build');
+  // 层级令牌化后 CSSOM 声明值是 var(--z-transient)，改读生效值钉住运行时层级
+  await page.locator('.build-card').first().locator('button.btn-primary').click();
+  await page.waitForTimeout(400);
   const probe = await page.evaluate(() => {
-    const z = {};
     const dead = new Set();
     const deadNames = ['.card', '.glow-core', '.glow-amber', '.shadow-card', '.no-scrollbar'];
     for (const ss of document.styleSheets) {
@@ -93,14 +95,13 @@ console.log('== B. toast z-index + 死样式 ==');
       for (const r of rules) {
         if (!r.selectorText) continue;
         for (const sel of r.selectorText.split(',').map((x) => x.trim())) {
-          if (sel === '.toast') z.toast = r.style.zIndex;
           if (deadNames.includes(sel)) dead.add(sel);
         }
       }
     }
-    return { z: z.toast, dead: [...dead] };
+    return { z: getComputedStyle(document.querySelector('.toast')).zIndex, dead: [...dead] };
   });
-  check(`toast z-index = 300（实际 ${probe.z}）`, probe.z === '300');
+  check(`toast 渲染层级 z-index = 300（实际 ${probe.z}）`, probe.z === '300');
   check(`五枚死样式已删除（残留 ${probe.dead.join(',') || '无'}）`, probe.dead.length === 0);
   await page.context().close();
 }

@@ -343,6 +343,6 @@ function tryUpgrade(id: string) {
   position: relative;
   width: 100%;
   margin-bottom: var(--space-2);
-  z-index: 60;
+  z-index: var(--z-onboarding);
 }
 </style>

@@ -179,7 +179,6 @@ function claim(templateId: string) {
   min-width: 40px;
   --pb-track: var(--color-border-line);
   --pb-fill: var(--color-quantum);
-  --pb-transition: none;
 }
 .c-count {
   font-size: var(--text-xs);

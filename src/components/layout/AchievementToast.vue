@@ -54,7 +54,7 @@ watch(() => ach.toastQueue[0]?.id, showNext, { immediate: true })
   position: fixed;
   top: var(--space-4);
   right: var(--space-4);
-  z-index: 400;
+  z-index: var(--z-ceremony);
   display: flex;
   align-items: center;
   gap: var(--space-3);

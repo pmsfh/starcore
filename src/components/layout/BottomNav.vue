@@ -118,7 +118,7 @@ onUnmounted(() => {
   bottom: 0;
   left: 0;
   right: 0;
-  z-index: 50;
+  z-index: var(--z-nav);
   /* display: flex 由全局 @media (max-width:767px) 控制 */
   display: flex;
   background: color-mix(in srgb, var(--color-void) 95%, transparent);

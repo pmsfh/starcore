@@ -99,6 +99,6 @@ const quickActions = QUICK_ENTRIES.map(({ id, color, label }) => {
   transform: translateX(-50%);
   width: min(260px, 80vw);
   margin-bottom: var(--space-2);
-  z-index: 60;
+  z-index: var(--z-onboarding);
 }
 </style>

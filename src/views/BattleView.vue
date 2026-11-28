@@ -278,7 +278,10 @@ const emptyStateText = computed(() => {
         <button
           type="button"
           class="btn-secondary diff-btn"
-          :class="{ 'diff-active': auditDifficulty === 'standard' }"
+          :class="{
+            active: auditDifficulty === 'standard',
+            'diff-active': auditDifficulty === 'standard',
+          }"
           :disabled="playing"
           data-testid="audit-diff-standard"
           @click="auditDifficulty = 'standard'"
@@ -288,7 +291,10 @@ const emptyStateText = computed(() => {
         <button
           type="button"
           class="btn-secondary diff-btn"
-          :class="{ 'diff-active': auditDifficulty === 'strict' }"
+          :class="{
+            active: auditDifficulty === 'strict',
+            'diff-active': auditDifficulty === 'strict',
+          }"
           :disabled="playing"
           data-testid="audit-diff-strict"
           @click="auditDifficulty = 'strict'"
@@ -347,7 +353,7 @@ const emptyStateText = computed(() => {
       <button
         v-if="!isEndless && !isWeeklyBoss && !isImperial"
         class="btn-secondary"
-        :class="{ 'garrison-active': isGarrisoned }"
+        :class="{ active: isGarrisoned, 'garrison-active': isGarrisoned }"
         style="flex: 1"
         :disabled="garrisonDisabled"
         data-testid="battle-garrison"
@@ -458,11 +464,7 @@ const emptyStateText = computed(() => {
 .diff-btn {
   flex: 1;
 }
-.diff-btn.diff-active {
-  background: var(--color-quantum) !important;
-  color: var(--color-on-core) !important;
-  border-color: var(--color-quantum) !important;
-}
+/* 激活态外观由全局 .btn-secondary.active 变体承担，diff-active 仅作测试锚点 */
 .diff-hint {
   font-size: var(--text-xs);
   color: var(--color-t-tertiary);
@@ -494,12 +496,7 @@ const emptyStateText = computed(() => {
   display: flex;
   gap: var(--space-2);
 }
-
-.garrison-active {
-  background: var(--color-quantum) !important;
-  color: var(--color-on-core) !important;
-  border-color: var(--color-quantum) !important;
-}
+/* 驻扎激活态同样走全局 .btn-secondary.active 变体，garrison-active 仅作锚点 */
 
 .battle-playback {
   display: flex;

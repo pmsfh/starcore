@@ -398,6 +398,7 @@ const unitRows = computed(() =>
   --pb-radius: 2px;
   --pb-fill: var(--color-alert);
   --pb-fill-radius: 0;
+  --pb-transition: width 0.3s; /* 训练进度连续推进，保留平滑（原缺省值显式化） */
 }
 .q-time {
   font-size: var(--text-xs);
