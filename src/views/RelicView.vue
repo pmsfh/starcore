@@ -213,7 +213,7 @@ function onEnhanceFail(msg: string) {
           :style="{ '--c': getRarityColor(r.rarity) }"
         >
           <div class="r-head">
-            <Icon :name="r.icon" size="md" />
+            <Icon :name="r.icon" size="lg" />
             <span class="rarity-badge" :style="{ background: getRarityColor(r.rarity) }">{{
               RARITY_INFO[r.rarity].name
             }}</span>
@@ -399,9 +399,10 @@ function onEnhanceFail(msg: string) {
   pointer-events: none;
 }
 
+/* 两列下限为 0：空槽带 aspect-ratio，列宽若按内容撑开会超出容器（窄屏第二列被裁掉） */
 .slots-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--space-2);
 }
 .slot {
@@ -443,7 +444,7 @@ function onEnhanceFail(msg: string) {
   opacity: 0.7;
 }
 .empty-hint {
-  opacity: 0.72;
+  color: var(--color-t-secondary);
   line-height: 1.4;
 }
 

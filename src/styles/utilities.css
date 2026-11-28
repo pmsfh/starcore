@@ -121,7 +121,6 @@
 .empty-state .empty-hint {
   font-size: var(--text-xs);
   color: var(--color-t-tertiary);
-  opacity: 0.7;
 }
 
 /* ============================================================
@@ -214,11 +213,13 @@
   font-weight: 600;
   margin-bottom: var(--space-1);
 }
-/* 遗物卡面共用结构（v1.02 统一：图鉴/强化弹窗/合成产物三处同源） */
+/* 遗物卡面共用结构（v1.02 统一：图鉴/强化弹窗/合成产物三处同源）
+   三列网格：图标 / 稀有度徽标 / 余量；图标与徽标之间留出间距，不再贴在一起 */
 .r-head {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: auto auto 1fr;
   align-items: center;
+  column-gap: var(--space-2);
   margin-bottom: var(--space-1);
   color: var(--c);
 }

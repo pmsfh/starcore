@@ -215,9 +215,12 @@ function tryResearch(id: string) {
   transform: translateY(0) scale(0.98); /* 卡片按压回弹 */
   transition: transform 0.1s var(--ease-out);
 }
+/* 已完成态不再整卡降透明度（描述文字对比度只有 3.0）：靠 quantum 边框标识，描述降为三级文字色 */
 .tech-card.completed {
-  opacity: 0.6;
   border-color: var(--color-quantum);
+}
+.tech-card.completed .t-desc {
+  color: var(--color-t-tertiary);
 }
 
 .t-head {

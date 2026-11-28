@@ -210,4 +210,9 @@ const rarityColor = relicRarityColor
   gap: var(--space-2);
   flex: 1;
 }
+/* 主按钮不折行：窄屏下按钮被段位切换器挤到两行 */
+.enhance-actions .btn-primary {
+  white-space: nowrap;
+  min-width: var(--touch-min);
+}
 </style>

@@ -106,7 +106,7 @@ onBeforeUnmount(() => {
           <Icon class="r-icon" :name="r.icon" size="sm" />
           <span class="sr-only">{{ r.name }}</span>
           <span class="r-amount font-mono">{{ r.amount }}</span>
-          <span class="r-rate font-mono" :style="{ color: r.color }">{{ r.rate }}</span>
+          <span class="r-rate font-mono">{{ r.rate }}</span>
           <!-- 资源产出粒子 -->
           <span
             v-for="p in particles.filter((pt) => pt.resourceId === r.id)"
@@ -208,17 +208,17 @@ onBeforeUnmount(() => {
   font-weight: 600;
   color: var(--color-t-primary);
 }
-/* 产出率字号优化：较数值更小、更淡，建立视觉层级 */
+/* 产出率字号优化：较数值更小、更淡，建立视觉层级；
+   层级靠字号 / 字重 / 二级文字色拉开，不再用透明度压低（透明度版对比度 2.9~4.3，低于 AA） */
 .r-rate {
   font-size: var(--text-xs);
-  opacity: 0.55;
+  color: var(--color-t-secondary);
   font-weight: 400;
 }
 .version-tag {
   flex-shrink: 0;
   font-size: var(--text-xs);
   color: var(--color-t-secondary);
-  opacity: 0.6;
   white-space: nowrap;
   user-select: none;
 }
